@@ -1,0 +1,7 @@
+# Recurrent neural networks and their applications in NLP
+
+*Authors: Author 1, Author 2*
+
+*Supervisor: Supervisor*
+
+

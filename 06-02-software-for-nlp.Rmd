@@ -1,0 +1,7 @@
+# Software for NLP: The huggingface transformers module
+
+*Authors: Author 1, Author 2*
+
+*Supervisor: Supervisor*
+
+
