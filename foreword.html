@@ -21,6 +21,7 @@
   <meta name="twitter:description" content="In this seminar, we are planning to review modern NLP frameworks starting with a methodology that can be seen as the beginning of modern NLP: Word Embeddings." />
   
 
+<meta name="author" content="" />
 
 
 <meta name="date" content="2020-04-06" />
@@ -119,8 +120,18 @@
 <h1>Foreword</h1>
 <p><em>Author: Christoph Molnar</em></p>
 <!-- An experiment -->
-<p>This book is the result of an experiment in university teaching. Each semester, students of the Statistics Master can choose from a selection of seminar topics. Usually, every student in the seminar chooses a scientific paper, gives a talk about the paper and summarizes it in the form of a seminar paper. The supervisors help the students, they listen to the talks, read the seminar papers, grade the work and then … hide the seminar papers away in (digital) drawers. This seemed wasteful to us, given the huge amount of effort the students usually invest in seminars. An idea was born: Why not create a book with a website as the outcome of the seminar? Something that will last at least a few years after the end of the semester. In the summer term 2020, some Statistics Master students signed up for our seminar entitled “Limitations of Interpretable Machine Learning”. When they came to the kick-off meeting, they had no idea that they would write a book by the end of the semester.</p>
-<p>We were bound by the examination rules for conducting the seminar, but otherwise we could deviate from the traditional format. We deviated in several ways:</p>
+<p>This book is the result of an experiment in university teaching.
+Each semester, students of the Statistics Master can choose from a selection of seminar topics.
+Usually, every student in the seminar chooses a scientific paper, gives a talk about the paper and summarizes it in the form of a seminar paper.
+The supervisors help the students, they listen to the talks, read the seminar papers, grade the work and then … hide the seminar papers away in (digital) drawers.
+This seemed wasteful to us, given the huge amount of effort the students usually invest in seminars.
+An idea was born:
+Why not create a book with a website as the outcome of the seminar?
+Something that will last at least a few years after the end of the semester.
+In the summer term 2020, some Statistics Master students signed up for our seminar entitled “Limitations of Interpretable Machine Learning”.
+When they came to the kick-off meeting, they had no idea that they would write a book by the end of the semester.</p>
+<p>We were bound by the examination rules for conducting the seminar, but otherwise we could deviate from the traditional format.
+We deviated in several ways:</p>
 <ol style="list-style-type: decimal">
 <li>Each student project is part of a book, and not an isolated seminar paper.</li>
 <li>We gave challenges to the students, instead of papers. The challenge was to investigate a specific limitation of interpretable machine learning methods.</li>
@@ -142,7 +153,12 @@ The students had new ideas and new perspectives to approach the limitations of i
 <!-- Technical setup -->
 <div id="technical-setup" class="section level2 unnumbered">
 <h2>Technical Setup</h2>
-<p>The book chapters are written in the Markdown language. The simulations, data examples and visualizations were created with R <span class="citation">(R Core Team <a href="#ref-rlang">2018</a>)</span>. To combine R-code and Markdown, we used rmarkdown. The book was compiled with the bookdown package. We collaborated using git and github. For details, head over to the <a href="link/to/repo">book’s repository</a>.</p>
+<p>The book chapters are written in the Markdown language.
+The simulations, data examples and visualizations were created with R <span class="citation">(R Core Team <a href="#ref-rlang">2018</a>)</span>.
+To combine R-code and Markdown, we used rmarkdown.
+The book was compiled with the bookdown package.
+We collaborated using git and github.
+For details, head over to the <a href="link/to/repo">book’s repository</a>.</p>
 
 </div>
 </div>
@@ -213,7 +229,7 @@ gitbook.start({
   (function () {
     var script = document.createElement("script");
     script.type = "text/javascript";
-    var src = "";
+    var src = "true";
     if (src === "" || src === "true") src = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-MML-AM_CHTML";
     if (location.protocol !== "file:")
       if (/^https?:/.test(src))

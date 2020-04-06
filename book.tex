@@ -1,3 +1,7 @@
+\PassOptionsToPackage{unicode=true}{hyperref} % options for packages loaded elsewhere
+\PassOptionsToPackage{hyphens}{url}
+\PassOptionsToPackage{dvipsnames,svgnames*,x11names*}{xcolor}
+%
 \documentclass[]{krantz}
 \usepackage{lmodern}
 \usepackage{amssymb,amsmath}
@@ -6,12 +10,9 @@
 \ifnum 0\ifxetex 1\fi\ifluatex 1\fi=0 % if pdftex
   \usepackage[T1]{fontenc}
   \usepackage[utf8]{inputenc}
+  \usepackage{textcomp} % provides euro and other symbols
 \else % if luatex or xelatex
-  \ifxetex
-    \usepackage{mathspec}
-  \else
-    \usepackage{fontspec}
-  \fi
+  \usepackage{unicode-math}
   \defaultfontfeatures{Ligatures=TeX,Scale=MatchLowercase}
 \fi
 % use upquote if available, for straight quotes in verbatim environments
@@ -21,9 +22,14 @@
 \usepackage[]{microtype}
 \UseMicrotypeSet[protrusion]{basicmath} % disable protrusion for tt fonts
 }{}
-\PassOptionsToPackage{hyphens}{url} % url is loaded by hyperref
-\usepackage[unicode=true]{hyperref}
-\PassOptionsToPackage{usenames,dvipsnames}{color} % color is loaded by hyperref
+\IfFileExists{parskip.sty}{%
+\usepackage{parskip}
+}{% else
+\setlength{\parindent}{0pt}
+\setlength{\parskip}{6pt plus 2pt minus 1pt}
+}
+\usepackage{xcolor}
+\usepackage{hyperref}
 \hypersetup{
             pdftitle={Modern Approaches in Natural Language Processing},
             colorlinks=true,
@@ -32,11 +38,9 @@
             urlcolor=Blue,
             breaklinks=true}
 \urlstyle{same}  % don't use monospace font for urls
-\usepackage{natbib}
-\bibliographystyle{apalike}
 \usepackage{longtable,booktabs}
 % Fix footnotes in tables (requires footnote package)
-\IfFileExists{footnote.sty}{\usepackage{footnote}\makesavenoteenv{long table}}{}
+\IfFileExists{footnote.sty}{\usepackage{footnote}\makesavenoteenv{longtable}}{}
 \usepackage{graphicx,grffile}
 \makeatletter
 \def\maxwidth{\ifdim\Gin@nat@width>\linewidth\linewidth\else\Gin@nat@width\fi}
@@ -46,12 +50,6 @@
 % margins by default, and it is still possible to overwrite the defaults
 % using explicit options in \includegraphics[width, height, ...]{}
 \setkeys{Gin}{width=\maxwidth,height=\maxheight,keepaspectratio}
-\IfFileExists{parskip.sty}{%
-\usepackage{parskip}
-}{% else
-\setlength{\parindent}{0pt}
-\setlength{\parskip}{6pt plus 2pt minus 1pt}
-}
 \setlength{\emergencystretch}{3em}  % prevent overfull lines
 \providecommand{\tightlist}{%
   \setlength{\itemsep}{0pt}\setlength{\parskip}{0pt}}
@@ -121,6 +119,8 @@
 \makeatother
 
 \frontmatter
+\usepackage[]{natbib}
+\bibliographystyle{apalike}
 
 \title{Modern Approaches in Natural Language Processing}
 \author{}
@@ -143,35 +143,23 @@
 \setlength{\abovedisplayshortskip}{-5pt}
 
 {
-\hypersetup{linkcolor=black}
+\hypersetup{linkcolor=}
 \setcounter{tocdepth}{0}
 \tableofcontents
 }
-\chapter*{Preface}\label{preface}
+\hypertarget{preface}{%
+\chapter*{Preface}\label{preface}}
 
 
-In the last few years, there have been several breakthroughs concerning
-the methodologies used in Natural Language Processing (NLP). These
-breakthroughs originate from both new modeling frameworks as well as
-from improvements in the availability of computational and lexical
-resources.
+In the last few years, there have been several breakthroughs concerning the methodologies used in Natural Language Processing (NLP). These breakthroughs originate from both new modeling frameworks as well as from improvements in the availability of computational and lexical resources.
 
-In this seminar, we are planning to review these frameworks starting
-with a methodology that can be seen as the beginning of modern NLP: Word
-Embeddings.
+In this seminar, we are planning to review these frameworks starting with a methodology that can be seen as the beginning of modern NLP: Word Embeddings.
 
-We will further discuss the integration of embeddings into end-to-end
-trainable approaches, namely convolutional and recurrent neural
-networks. As Attention-based models and transfer learning approaches are
-the foundation of most of the recent state-of-the-art models, we will
-cover these two topics extensively in the second part of our seminar.
+We will further discuss the integration of embeddings into end-to-end trainable approaches, namely convolutional and recurrent neural networks. As Attention-based models and transfer learning approaches are the foundation of most of the recent state-of-the-art models, we will cover these two topics extensively in the second part of our seminar.
 
-We will furthermore talk about software implementations of these methods
-and benchmark tasks/data sets for evaluating state-of-the-art models.
+We will furthermore talk about software implementations of these methods and benchmark tasks/data sets for evaluating state-of-the-art models.
 
-This book is the outcome of the seminar ``Modern Approaches in Natural
-Language Processing'' which took place in summer 2020 at the Department
-of Statistics, LMU Munich.
+This book is the outcome of the seminar ``Modern Approaches in Natural Language Processing'' which took place in summer 2020 at the Department of Statistics, LMU Munich.
 
 \begin{figure}
 \centering
@@ -179,95 +167,83 @@ of Statistics, LMU Munich.
 \caption{Creative Commons License}
 \end{figure}
 
-This book is licensed under the
-\href{http://creativecommons.org/licenses/by-nc-sa/4.0/}{Creative
-Commons Attribution-NonCommercial-ShareAlike 4.0 International License}.
+This book is licensed under the \href{http://creativecommons.org/licenses/by-nc-sa/4.0/}{Creative Commons Attribution-NonCommercial-ShareAlike 4.0 International License}.
 
 \mainmatter
 
-\chapter*{Foreword}\label{foreword}
+\hypertarget{foreword}{%
+\chapter*{Foreword}\label{foreword}}
 
 
 \emph{Author: Christoph Molnar}
 
-This book is the result of an experiment in university teaching. Each
-semester, students of the Statistics Master can choose from a selection
-of seminar topics. Usually, every student in the seminar chooses a
-scientific paper, gives a talk about the paper and summarizes it in the
-form of a seminar paper. The supervisors help the students, they listen
-to the talks, read the seminar papers, grade the work and then \ldots{}
-hide the seminar papers away in (digital) drawers. This seemed wasteful
-to us, given the huge amount of effort the students usually invest in
-seminars. An idea was born: Why not create a book with a website as the
-outcome of the seminar? Something that will last at least a few years
-after the end of the semester. In the summer term 2020, some Statistics
-Master students signed up for our seminar entitled ``Limitations of
-Interpretable Machine Learning''. When they came to the kick-off
-meeting, they had no idea that they would write a book by the end of the
-semester.
+This book is the result of an experiment in university teaching.
+Each semester, students of the Statistics Master can choose from a selection of seminar topics.
+Usually, every student in the seminar chooses a scientific paper, gives a talk about the paper and summarizes it in the form of a seminar paper.
+The supervisors help the students, they listen to the talks, read the seminar papers, grade the work and then \ldots{} hide the seminar papers away in (digital) drawers.
+This seemed wasteful to us, given the huge amount of effort the students usually invest in seminars.
+An idea was born:
+Why not create a book with a website as the outcome of the seminar?
+Something that will last at least a few years after the end of the semester.
+In the summer term 2020, some Statistics Master students signed up for our seminar entitled ``Limitations of Interpretable Machine Learning''.
+When they came to the kick-off meeting, they had no idea that they would write a book by the end of the semester.
 
-We were bound by the examination rules for conducting the seminar, but
-otherwise we could deviate from the traditional format. We deviated in
-several ways:
+We were bound by the examination rules for conducting the seminar, but otherwise we could deviate from the traditional format.
+We deviated in several ways:
 
 \begin{enumerate}
 \def\labelenumi{\arabic{enumi}.}
 \tightlist
 \item
-  Each student project is part of a book, and not an isolated seminar
-  paper.
+  Each student project is part of a book, and not an isolated seminar paper.
 \item
-  We gave challenges to the students, instead of papers. The challenge
-  was to investigate a specific limitation of interpretable machine
-  learning methods.
+  We gave challenges to the students, instead of papers. The challenge was to investigate a specific limitation of interpretable machine learning methods.
 \item
   We designed the work to live beyond the seminar.
 \item
-  We emphasized collaboration. Students wrote some chapters in teams and
-  reviewed each others texts.
+  We emphasized collaboration. Students wrote some chapters in teams and reviewed each others texts.
 \end{enumerate}
 
-\section*{Technical Setup}\label{technical-setup}
+\hypertarget{technical-setup}{%
+\section*{Technical Setup}\label{technical-setup}}
 
 
-The book chapters are written in the Markdown language. The simulations,
-data examples and visualizations were created with R \citep{rlang}. To
-combine R-code and Markdown, we used rmarkdown. The book was compiled
-with the bookdown package. We collaborated using git and github. For
-details, head over to the \href{link/to/repo}{book's repository}.
+The book chapters are written in the Markdown language.
+The simulations, data examples and visualizations were created with R \citep{rlang}.
+To combine R-code and Markdown, we used rmarkdown.
+The book was compiled with the bookdown package.
+We collaborated using git and github.
+For details, head over to the \href{link/to/repo}{book's repository}.
 
-\chapter{Introduction}\label{introduction}
+\hypertarget{introduction}{%
+\chapter{Introduction}\label{introduction}}
 
 \emph{Author: }
 
 \emph{Supervisor: }
 
-\section{Intro About the Seminar
-Topic}\label{intro-about-the-seminar-topic}
+\hypertarget{intro-about-the-seminar-topic}{%
+\section{Intro About the Seminar Topic}\label{intro-about-the-seminar-topic}}
 
-\section{Outline of the Booklet}\label{outline-of-the-booklet}
+\hypertarget{outline-of-the-booklet}{%
+\section{Outline of the Booklet}\label{outline-of-the-booklet}}
 
-\chapter{Chapter 1}\label{chapter-1}
+\hypertarget{chapter-1}{%
+\chapter{Chapter 1}\label{chapter-1}}
 
 \emph{Authors: Author 1, Author 2}
 
 \emph{Supervisor: Supervisor}
 
-\section{Lorem Ipsum}\label{lorem-ipsum}
+\hypertarget{lorem-ipsum}{%
+\section{Lorem Ipsum}\label{lorem-ipsum}}
 
-Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy
-eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam
-voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet
-clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit
-amet. Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam
-nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat,
-sed diam voluptua. At vero eos et accusam et justo duo dolores et ea
-rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem
-ipsum dolor sit amet.
+Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet. Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet.
 
 \citet{rlang}
 
-\section{Using Figures}\label{using-figures}
+\hypertarget{using-figures}{%
+\section{Using Figures}\label{using-figures}}
 
 \begin{figure}
 
@@ -280,14 +256,12 @@ ipsum dolor sit amet.
 
 
 
-Referencing can be done by using the chunk label e.g.
-\texttt{\textbackslash{}@ref(fig:ch01-figure01)} for
-\ref{fig:ch01-figure01}.
+Referencing can be done by using the chunk label e.g. \texttt{\textbackslash{}@ref(fig:ch01-figure01)} for \ref{fig:ch01-figure01}.
 
-\textbf{NOTE!!!} Do not use underscores in chunk labels! This will crash
-the compilation \ldots{}
+\textbf{NOTE!!!} Do not use underscores in chunk labels! This will crash the compilation \ldots{}
 
-\section{Using Tex}\label{using-tex}
+\hypertarget{using-tex}{%
+\section{Using Tex}\label{using-tex}}
 
 HTML rendering uses MathJax while pdf rendering uses LaTeX:
 
@@ -295,7 +269,8 @@ HTML rendering uses MathJax while pdf rendering uses LaTeX:
 f(x) = x^2
 \]
 
-\section{Using Stored Results}\label{using-stored-results}
+\hypertarget{using-stored-results}{%
+\section{Using Stored Results}\label{using-stored-results}}
 
 \begin{tabular}{l|r|r|r|r}
 \hline
@@ -315,96 +290,93 @@ Speciesvirginica & -1.0235 & 0.3337 & -3.067 & 0.0026\\
 \hline
 \end{tabular}
 
-\chapter{Introduction Deep Learning for
-NLP}\label{introduction-deep-learning-for-nlp}
+\hypertarget{introduction-deep-learning-for-nlp}{%
+\chapter{Introduction Deep Learning for NLP}\label{introduction-deep-learning-for-nlp}}
 
 \emph{Authors: Author 1, Author 2}
 
 \emph{Supervisor: Supervisor}
 
-\chapter{Foundations/Applications of Modern
-NLP}\label{foundationsapplications-of-modern-nlp}
+\hypertarget{foundationsapplications-of-modern-nlp}{%
+\chapter{Foundations/Applications of Modern NLP}\label{foundationsapplications-of-modern-nlp}}
 
 \emph{Authors: Author 1, Author 2}
 
 \emph{Supervisor: Supervisor}
 
-\chapter{Recurrent neural networks and their applications in
-NLP}\label{recurrent-neural-networks-and-their-applications-in-nlp}
+\hypertarget{recurrent-neural-networks-and-their-applications-in-nlp}{%
+\chapter{Recurrent neural networks and their applications in NLP}\label{recurrent-neural-networks-and-their-applications-in-nlp}}
 
 \emph{Authors: Author 1, Author 2}
 
 \emph{Supervisor: Supervisor}
 
-\chapter{Convolutional neural networks and their applications in
-NLP}\label{convolutional-neural-networks-and-their-applications-in-nlp}
+\hypertarget{convolutional-neural-networks-and-their-applications-in-nlp}{%
+\chapter{Convolutional neural networks and their applications in NLP}\label{convolutional-neural-networks-and-their-applications-in-nlp}}
 
 \emph{Authors: Author 1, Author 2}
 
 \emph{Supervisor: Supervisor}
 
-\chapter{Introduction Transfer Learning for
-NLP}\label{introduction-transfer-learning-for-nlp}
+\hypertarget{introduction-transfer-learning-for-nlp}{%
+\chapter{Introduction Transfer Learning for NLP}\label{introduction-transfer-learning-for-nlp}}
 
 \emph{Authors: Author 1, Author 2}
 
 \emph{Supervisor: Supervisor}
 
-\chapter{Transfer Learning for NLP I}\label{transfer-learning-for-nlp-i}
+\hypertarget{transfer-learning-for-nlp-i}{%
+\chapter{Transfer Learning for NLP I}\label{transfer-learning-for-nlp-i}}
 
 \emph{Authors: Author 1, Author 2}
 
 \emph{Supervisor: Supervisor}
 
-\chapter{Attention and Self-Attention for
-NLP}\label{attention-and-self-attention-for-nlp}
+\hypertarget{attention-and-self-attention-for-nlp}{%
+\chapter{Attention and Self-Attention for NLP}\label{attention-and-self-attention-for-nlp}}
 
 \emph{Authors: Author 1, Author 2}
 
 \emph{Supervisor: Supervisor}
 
-\chapter{Transfer Learning for NLP
-II}\label{transfer-learning-for-nlp-ii}
+\hypertarget{transfer-learning-for-nlp-ii}{%
+\chapter{Transfer Learning for NLP II}\label{transfer-learning-for-nlp-ii}}
 
 \emph{Authors: Author 1, Author 2}
 
 \emph{Supervisor: Supervisor}
 
-\chapter{Introduction Resources for
-NLP}\label{introduction-resources-for-nlp}
+\hypertarget{introduction-resources-for-nlp}{%
+\chapter{Introduction Resources for NLP}\label{introduction-resources-for-nlp}}
 
 \emph{Authors: Author 1, Author 2}
 
 \emph{Supervisor: Supervisor}
 
-\chapter{Resources and Benchmarks for
-NLP}\label{resources-and-benchmarks-for-nlp}
+\hypertarget{resources-and-benchmarks-for-nlp}{%
+\chapter{Resources and Benchmarks for NLP}\label{resources-and-benchmarks-for-nlp}}
 
 \emph{Authors: Author 1, Author 2}
 
 \emph{Supervisor: Supervisor}
 
-\chapter{Software for NLP: The huggingface transformers
-module}\label{software-for-nlp-the-huggingface-transformers-module}
+\hypertarget{software-for-nlp-the-huggingface-transformers-module}{%
+\chapter{Software for NLP: The huggingface transformers module}\label{software-for-nlp-the-huggingface-transformers-module}}
 
 \emph{Authors: Author 1, Author 2}
 
 \emph{Supervisor: Supervisor}
 
-\chapter{Acknowledgements}\label{acknowledgements}
+\hypertarget{acknowledgements}{%
+\chapter{Acknowledgements}\label{acknowledgements}}
 
-The most important contributions are from the students themselves. The
-success of such projects highly depends on the students. And this book
-is a success, so thanks a lot to all the authors! The other important
-role is the supervisor. Thanks to all the supervisors who participated!
-Special thanks to
-\href{https://www.misoda.statistik.uni-muenchen.de/personen/professoren/heumann/index.html}{Christian
-Heumann} who enabled us to conduct the seminar in such an experimental
-way, supported us and gave valuable feedback for the seminar structure.
-Thanks a lot as well to the entire
-\href{https://www.statistik.uni-muenchen.de/}{Department of Statistics}
-and the \href{http://www.en.uni-muenchen.de/index.html}{LMU Munich} for
-the infrastructure.
+The most important contributions are from the students themselves.
+The success of such projects highly depends on the students.
+And this book is a success, so thanks a lot to all the authors!
+The other important role is the supervisor.
+Thanks to all the supervisors who participated!
+Special thanks to \href{https://www.misoda.statistik.uni-muenchen.de/personen/professoren/heumann/index.html}{Christian Heumann} who enabled us to conduct the seminar in such an experimental way, supported us and gave valuable feedback for the seminar structure.
+Thanks a lot as well to the entire \href{https://www.statistik.uni-muenchen.de/}{Department of Statistics} and the \href{http://www.en.uni-muenchen.de/index.html}{LMU Munich} for the infrastructure.
 
 The authors of this work take full responsibilities for its content.
 
