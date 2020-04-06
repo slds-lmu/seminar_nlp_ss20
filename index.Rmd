@@ -61,7 +61,7 @@ This seemed wasteful to us, given the huge amount of effort the students usually
 An idea was born:
 Why not create a book with a website as the outcome of the seminar?
 Something that will last at least a few years after the end of the semester.
-In the summer term 2019, some Statistics Master students signed up for our seminar entitled "Limitations of Interpretable Machine Learning".
+In the summer term 2020, some Statistics Master students signed up for our seminar entitled "Limitations of Interpretable Machine Learning".
 When they came to the kick-off meeting, they had no idea that they would write a book by the end of the semester.
 
 We were bound by the examination rules for conducting the seminar, but otherwise we could deviate from the traditional format.
