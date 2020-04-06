@@ -1,0 +1,10 @@
+Package: s20_modern_nlp
+Title: Modern Approaches in Natural Language Processing
+Version: 0.0.1
+Depends:
+  devtools,
+  knitr,
+  bookdown,
+  tidyverse,
+  ggpubr,
+  svglite
