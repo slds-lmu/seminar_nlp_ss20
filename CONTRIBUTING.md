@@ -46,6 +46,6 @@ There are four subdirectories:
 
 ### Naming convention
 
-Code, data, figures, and results are stored in subdirectories in the directories mentioned above named as the chapter itself. E.g. the R code `fit--model.R` for the chapter `03-00-xx.Rmd` is saved in `code/03-00-xx/fit-model.R`. The same holds for data, figures, and results. I personally like it to have an additional order in the naming of my figures etc. corresponding to the order in the chapter, e.g. `01-bla.png`.
+Code, data, figures, and results are stored in subdirectories in the directories mentioned above named as the chapter itself. E.g. the R code `fit--model.R` for the chapter `03-00-xx.Rmd` is saved in `code/03-00-xx/fit-model.R`. The same holds for data, figures, and results. I personally like it to have an additional order in the naming of my figures etc. corresponding to the order in the chapter, e.g. `01-bla.png`. Have a look at the `000-test.Rmd` to get an idea how the repo should be structured.
 
 __Another note about figures:__ Please save your figures as png or jpg since it is not possible to show pdf images in the html booklet.
