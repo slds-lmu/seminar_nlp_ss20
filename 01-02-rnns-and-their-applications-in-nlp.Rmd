@@ -5,3 +5,88 @@
 *Supervisor: Supervisor*
 
 
+The two fundamental deep-learning algorithms for sequence processing are recurrent neural networks and 1D convnets, the one-dimensional version of the 2D convnets that we covered in the previous chapters. We’ll discuss both of these approaches in this chapter.
+
+Applications of these algorithms include the following:
+
+- Document classification and timeseries classification, such as identifying the topic of an article or the author of a book  
+- Timeseries comparisons, such as estimating how closely related two documents or two stock tickers are  
+- Sequence-to-sequence learning, such as decoding an English sentence into French
+Sentiment analysis, such as classifying the sentiment of tweets or movie reviews as positive or negative  
+- Timeseries forecasting, such as predicting the future weather at a certain location, given recent weather data  
+
+Like all other neural networks, deep-learning models don’t take as input raw text: they only work with numeric tensors. Vectorizing text is the process of transforming text into numeric tensors. This can be done in multiple ways:
+
+- Segment text into words, and transform each word into a vector.  
+- Segment text into characters, and transform each character into a vector.  
+
+Text is being broken into different units (words, characters, n-grams) which are called *tokens* (the process is called *tokenization*). The tokens are used to create numeric vectors and the vectors are packed into sequence tensors.
+
+Encoding for tokens:
+* one-hot-encoding  
+* word embeddings
+
+*n-gram* is a group of n or less words that come after each other in a sentence. Same approach applies to the characters instead of words.
+**Example**  
+The cat sat on the mat.  
+We will decompose the sentence into bigrams (n-grams of size 2):
+{"The", "The cat", "cat", "cat sat", "sat", "sat on", "on", "on the", "the", "the mat", "mat"}
+
+This is called a *bag-of-words*, but the order of words will not remain, so that it looses the structure of the sentence that is why such method is used rather in shallow-learning-modells. 1-dim CNNs and RNNs are able to
+learn the order of the tokens.
+
+One-hot-encoding is binary, sparse and high dimensional, word embeddings are double, dense and low dimensional. Word embeddings are generated after the model has trained (it learnt them) but you can also read in pre-trained word embeddings into your model.
+
+The geometric relations between word vectors must represent their semantic relations, so that synonyms are close to each other (distance between vectors) and antonyms are far from each other. Other approach is to consider the direction of the word vectors.
+
+It is important to learn a new word embeddings space for each new task. This can be easily done with help of back propagation. In order to learn the weights of a layer we use an embedding layer. It takes two arguments (number of possible tokens and dimension of the embeddings). It is like a dictionary that takes an index (of the specific word), searches the internal dictionary and outputs the corresponding word vectors. The latter is a 3-D-tensor (samples, sequence_length, embedding_dimensionality) and can be processed by RNN or 1-D CNN.
+
+A new algorithm for word embeddings: Word2vec.
+
+There exist many pre-trained word embeddings data banks, which can be downloaded and used in an embedding layer of keras (GloVe for example).
+
+
+### RNNs
+RNNs processes sequences by going through the elements and 
+capturing the information based on the previous elements (basically it is an intern loop). We start with a zero vector 
+(because there is no state or memory yet), process the current state at time t (with weight matrix U) and the input from the previous state (with weight matrix W) and 
+give it as input to the next iteration (additional bias vector b can be added too).
+Basically, RNN is a for-loop that reuses the values which were calculated in the previous iteration. The total output is a 
+tensor with shape (time-steps, output-features), where each time step contains the output of the loop at time t. This is usually not needed because the last output at the end of the loop is sufficient because it contains information about the whole sequence. 
+
+Main problem if the simple RNN is a decaying gradient. Actually the simple RNN must have a long memory, e.g. remember what it learnt many layers ago. This problem can be solved by LSTM and GRU layers. 
+
+**LSTM** (Long Short Term Memory layer)
+Main point: there is a possibility to receive information from 
+many time steps away because the information is saved for the later use (carry track). This prevents the complete disappearing of older signals. The carry information is combined with the recurrent connection in the cell (carry information is weighted with matrix V). The carry information is updated too. So a LSTM-cell enables the reception of old information at the later time point. 
+LSTM layers perform especially good for question answering ad translation.
+
+RNNs can be used not only for text data, but also for example for time series like weather data.
+
+**GRU** (Gated Recurrent Unit, Chung et al. 2014)
+Similar to LSTM but better optimization and not so computationally expensive (although slightly worse performance than LSTM)
+
+
+**RNN with GRU and Dropout**
+Another problem: overfitting
+Not so trivial as classic dropout because during all time steps the same dropout mask must be used instead of changing it randomly every time (Yarin Gal 2016). 
+
+**Nesting of RNNs**
+This makes RNNs even more powerfull (Google translation algorithm uses nesting of 7 LSTM layers). One must remember that during nesting of RNNs all hidden layers must output the complete sequences (3-D tensors) and not only the output of the last time step.
+
+**Bidirectional RNNs**
+Often used for processing of the natural language. What if we start processing the time steps not from the oldest to the newest as before but from the newest to the oldest? For weather data it doesn't make any sense since the recent data has a greater influence on the nearest future than old data. But for other tasks it can deliver meaningfull results. For example text data, where it doesn't matter on which position in a sentence the word exactly stays. Performance is usually as good as if we trained the same dat in correct chronological order but in this case the model learns other representations and associations (smth like you die on the first day of your life and are born on the last day). Anyway it is sometimes usefull to learn such representations because of a new perspective, the model learns some new aspects that were lost during the chronological processing. In some situations this can improve the performance (**Ensemble Learning** has this idea).
+So bidirectional RNNs process the sequences from both directions in order to capture other additional patterns. One must also remember that bidirectional RNNs twice as many parameters have as the LSTMs.
+
+##### Further important concepts:
+- Recurrent Attention  
+- Sequence Masking
+
+**Model for Question Answering**
+Such models require more that one input, different inputs can be added, concantenated etc. Usually such models have two inputs: a question in a natural language and a text section with information that helps to answer that question. In the most simple case the answer is just one word (softmax classificator). In order to train such model we need an API. Possible APIs: you can give the model a *list with arrays* or a *dictionary* that contains labels as possible answers. Similar models can be developed for more than two inputs, for example if we want to predict some characteristics of a person (age, sex ...) based on their social media posts (this is rather a task of conv1D)
+
+**Siamese LSTM Models**
+Models for processing of symmetric inputs (for example we want to compare two sentences A and B and find out if they are semantically similar or not. It doesn't matter if we compare A to B or B to A, it is still one modell that has to do the task)
+
+
+
