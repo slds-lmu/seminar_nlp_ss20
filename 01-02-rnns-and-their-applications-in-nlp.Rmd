@@ -10,10 +10,14 @@ The two fundamental deep-learning algorithms for sequence processing are recurre
 Applications of these algorithms include the following:
 
 - Document classification and timeseries classification, such as identifying the topic of an article or the author of a book  
-- Timeseries comparisons, such as estimating how closely related two documents or two stock tickers are  
-- Sequence-to-sequence learning, such as decoding an English sentence into French
-Sentiment analysis, such as classifying the sentiment of tweets or movie reviews as positive or negative  
+- Timeseries comparisons, such as estimating how closely related two documents or two stock tickers are 
+- Sequence-to-sequence learning, such as decoding an English sentence into French and machine translation (RNN) 
+- Sentiment analysis, such as classifying the sentiment of tweets or movie reviews as positive or negative (part of text categorization tasks) (RNN)
 - Timeseries forecasting, such as predicting the future weather at a certain location, given recent weather data  
+- Summarization, we want to write a summary based on original text.  (RNN)
+- Part-of-speech tagging (entity recognition)  (RNN)  
+- Speech recognition (RNN)  
+- Question answering (RNN is used as an encoder)
 
 Like all other neural networks, deep-learning models don’t take as input raw text: they only work with numeric tensors. Vectorizing text is the process of transforming text into numeric tensors. This can be done in multiple ways:
 
@@ -26,14 +30,22 @@ Encoding for tokens:
 * one-hot-encoding  
 * word embeddings
 
-*n-gram* is a group of n or less words that come after each other in a sentence. Same approach applies to the characters instead of words.
+*n-gram* is a group of n or less words that come after each other in a sentence. Same approach applies to the characters instead of words. n-grams are used for *Language Models*, e.g.
+models where we want to predict next word given a sequence of words or
+(which is similar) to generate text. The output in this case
+a probability distribution of the next word x_{t+1}. The idea is to collect information
+about how frequent different n-grams are and use these to predict next word.
 **Example**  
 The cat sat on the mat.  
 We will decompose the sentence into bigrams (n-grams of size 2):
 {"The", "The cat", "cat", "cat sat", "sat", "sat on", "on", "on the", "the", "the mat", "mat"}
 
-This is called a *bag-of-words*, but the order of words will not remain, so that it looses the structure of the sentence that is why such method is used rather in shallow-learning-modells. 1-dim CNNs and RNNs are able to
-learn the order of the tokens.
+So we simply have to count n-grams in some large corpus of text and then compute the probability
+as usual. Problems with n-grams are: 1) what if a specific n-gram never occured in data?
+2) very expensive since with increasing n the model size grows exponentially. But in
+order to predict or to generate text correctly n must be usually relatively high.
+
+This is called a *bag-of-words*, but the order of words will not remain, so that it looses the structure of the sentence that is why such method is used rather in shallow-learning-modells. 1-dim CNNs and RNNs are able to learn the order of the tokens.
 
 One-hot-encoding is binary, sparse and high dimensional, word embeddings are double, dense and low dimensional. Word embeddings are generated after the model has trained (it learnt them) but you can also read in pre-trained word embeddings into your model.
 
@@ -47,19 +59,52 @@ There exist many pre-trained word embeddings data banks, which can be downloaded
 
 
 ### RNNs
-RNNs processes sequences by going through the elements and 
+RNNs process sequences by going through the elements and 
 capturing the information based on the previous elements (basically it is an intern loop). We start with a zero vector 
 (because there is no state or memory yet), process the current state at time t (with weight matrix U) and the input from the previous state (with weight matrix W) and 
-give it as input to the next iteration (additional bias vector b can be added too).
+give it as input to the next iteration (additional bias vector b can be added too). Weight matrices
+remain the same and are used repeatedly which makes RNNs extremely convenient to work
+with sequence data.
 Basically, RNN is a for-loop that reuses the values which were calculated in the previous iteration. The total output is a 
-tensor with shape (time-steps, output-features), where each time step contains the output of the loop at time t. This is usually not needed because the last output at the end of the loop is sufficient because it contains information about the whole sequence. 
+tensor with shape (time-steps, output-features), where each time step contains the output of the loop at time t. This is usually not needed because the last output at the end of the loop is sufficient because it contains information about the whole sequence (for example, for sentiment analysis only the last
+output is needed). The performance of a RNN is calculated by word error rate and perplexity. 
 
-Main problem if the simple RNN is a decaying gradient. Actually the simple RNN must have a long memory, e.g. remember what it learnt many layers ago. This problem can be solved by LSTM and GRU layers. 
+(sequence of 5 words -> 5-layer NN, one layer for each word)
+
+Advantages:
+- can process any length input
+- model size does not increase for longer input
+- weights are shared across the timesteps
+
+Disadvantages:
+- slow (in its classic use)
+- difficult to access information from many steps back (the model cannot learn
+dependencies between words that are several steps apart).
+
+Training RNNs we try to minimize the expected negative log-probability of
+predictions at each time step t (!). Backpropagation through time (BPTT) means that
+we compute the sums of gradients as we got back. For example, in order to
+calculate the gradient at t=4 we have to backpropagate 3 steps and sum up the 
+gradients. This is a main difference from usual NNs because the weights are shared by all time steps in the network and a chain rule must be applied.
+
+
+
+http://www.wildml.com/2015/10/recurrent-neural-networks-tutorial-part-3-backpropagation-through-time-and-vanishing-gradients/
+
+Simple RNN is also called "vanilla RNN". Main problem of the simple RNN is a decaying gradient. Actually the simple RNN must have a long memory, e.g. remember what it learnt many layers ago. This problem can be solved by LSTM and GRU layers. 
+
+Exploding gradients are a problem too but they are an obvious problem becuase 
+they just become NaN and the algorithm will crash. Solution for this problem is a rather easy one, too: just establish an upper-bound for the gradient. (Mikolov: clipping the gradients). Vanishing gradients are more problematic because it is not clear when they occur. Possible solutions:  
+- Good initialization (W = Identity) + ReLu  
+- Better: better units (LSTM or GRU)
 
 **LSTM** (Long Short Term Memory layer)
 Main point: there is a possibility to receive information from 
 many time steps away because the information is saved for the later use (carry track). This prevents the complete disappearing of older signals. The carry information is combined with the recurrent connection in the cell (carry information is weighted with matrix V). The carry information is updated too. So a LSTM-cell enables the reception of old information at the later time point. 
 LSTM layers perform especially good for question answering ad translation.
+[http://colah.github.io/posts/2015-08-Understanding-LSTMs/]
+http://www.wildml.com/2015/10/recurrent-neural-network-tutorial-part-4-implementing-a-grulstm-rnn-with-python-and-theano/
+
 
 RNNs can be used not only for text data, but also for example for time series like weather data.
 
@@ -75,8 +120,11 @@ Not so trivial as classic dropout because during all time steps the same dropout
 This makes RNNs even more powerfull (Google translation algorithm uses nesting of 7 LSTM layers). One must remember that during nesting of RNNs all hidden layers must output the complete sequences (3-D tensors) and not only the output of the last time step.
 
 **Bidirectional RNNs**
-Often used for processing of the natural language. What if we start processing the time steps not from the oldest to the newest as before but from the newest to the oldest? For weather data it doesn't make any sense since the recent data has a greater influence on the nearest future than old data. But for other tasks it can deliver meaningfull results. For example text data, where it doesn't matter on which position in a sentence the word exactly stays. Performance is usually as good as if we trained the same dat in correct chronological order but in this case the model learns other representations and associations (smth like you die on the first day of your life and are born on the last day). Anyway it is sometimes usefull to learn such representations because of a new perspective, the model learns some new aspects that were lost during the chronological processing. In some situations this can improve the performance (**Ensemble Learning** has this idea).
-So bidirectional RNNs process the sequences from both directions in order to capture other additional patterns. One must also remember that bidirectional RNNs twice as many parameters have as the LSTMs.
+Often used for processing of the natural language. What if we start processing the time steps not from the oldest to the newest as before but from the newest to the oldest? For weather data it doesn't make any sense since the recent data has a greater influence on the nearest future than old data. But for other tasks it can deliver meaningfull results. For example text data, where it doesn't matter on which position in a sentence the word exactly stays. Performance is usually as good as if we trained the same data in correct chronological order but in this case the model learns other representations and associations (smth like you die on the first day of your life and are born on the last day). Anyway it is sometimes usefull to learn such representations because of a new perspective, the model learns some new aspects that were lost during the chronological processing. In some situations this can improve the performance (**Ensemble Learning** has this idea).
+So bidirectional RNNs are just two RNNs stacked on top of each other which process the sequences from both directions in order to capture other additional patterns. One must also remember that bidirectional RNNs twice as many parameters have as the LSTMs.
+
+**Deep Bidirectional RNNs** are Bidirectional RNNs that now have multiple layers per time step (higher learning capacity but also more training data
+is required).
 
 ##### Further important concepts:
 - Recurrent Attention  
