@@ -57,6 +57,10 @@ A new algorithm for word embeddings: Word2vec.
 
 There exist many pre-trained word embeddings data banks, which can be downloaded and used in an embedding layer of keras (GloVe for example).
 
+**Example Tensor for Text Data**
+Eine Datenmenge für Textdokumente, in der jedes Dokument durch dieAnzahl der darin vorkommenden Wörter (die einer Liste von 20.000 gebräuch-lichen Wörtern entstammen) repräsentiert wird. Alle Dokumente werden alsVektoren mit 20.000 Werten codiert (jeweils ein Wert pro Wort in der Liste),sodass eine aus 500 Dokumenten bestehende Datenmenge in einem Tensormit der Shape (500, 20000) gespeichert werden kann.
+
+
 
 ### RNNs
 RNNs process sequences by going through the elements and 
@@ -98,12 +102,19 @@ they just become NaN and the algorithm will crash. Solution for this problem is 
 - Good initialization (W = Identity) + ReLu  
 - Better: better units (LSTM or GRU)
 
+Typical loss function for RNN: Connectionist Temporal Classification (CTC)
+
 **LSTM** (Long Short Term Memory layer)
 Main point: there is a possibility to receive information from 
-many time steps away because the information is saved for the later use (carry track). This prevents the complete disappearing of older signals. The carry information is combined with the recurrent connection in the cell (carry information is weighted with matrix V). The carry information is updated too. So a LSTM-cell enables the reception of old information at the later time point. 
+many time steps away because the information is saved for the later use (carry track or cell state that runs as a conveyer belt). This prevents the complete disappearing of older signals. The carry information is combined with the recurrent connection in the cell (carry information is weighted with matrix V). The carry information is updated too. So a LSTM-cell enables the reception of old information at the later time point. 
 LSTM layers perform especially good for question answering ad translation.
 [http://colah.github.io/posts/2015-08-Understanding-LSTMs/]
 http://www.wildml.com/2015/10/recurrent-neural-network-tutorial-part-4-implementing-a-grulstm-rnn-with-python-and-theano/
+Chris Olah: Videos
+
+
+
+
 
 
 RNNs can be used not only for text data, but also for example for time series like weather data.
@@ -138,3 +149,5 @@ Models for processing of symmetric inputs (for example we want to compare two se
 
 
 
+Link for papers on topic Deep Learning
+https://deepmind.com/research
