@@ -97,6 +97,8 @@ http://www.wildml.com/2015/10/recurrent-neural-networks-tutorial-part-3-backprop
 
 Simple RNN is also called "vanilla RNN". Main problem of the simple RNN is a decaying gradient. Actually the simple RNN must have a long memory, e.g. remember what it learnt many layers ago. This problem can be solved by LSTM and GRU layers. 
 
+Let's say we want to predict the next word (or a few words) in the sentence `"What time is it _"`. To do this, we feed individual words of the sequence to a RNN *one at time* (1 word = 1 layer). In every step it will combine information from the new word and all words that precede it and produce an output. After all elements were fed to RNN and encoded, the final output will be passed to the feed-forward layer which will classify it and produce the most probable word or symbol based on all previous information. In our example, it could be `"now"` or `"in Germany"` based on the previous context.
+
 Exploding gradients are a problem too but they are an obvious problem becuase 
 they just become NaN and the algorithm will crash. Solution for this problem is a rather easy one, too: just establish an upper-bound for the gradient. (Mikolov: clipping the gradients). Vanishing gradients are more problematic because it is not clear when they occur. Possible solutions:  
 - Good initialization (W = Identity) + ReLu  
