@@ -1,3 +1,7 @@
+---
+output:
+  html_document: default
+---
 **Recurrent neural networks**, or RNNs are a special family of neural networks which were delevoped for modeling *sequential data*. They process a sequence of values $x^{(1)}, ..., x^{(t)}$ by going through its elements one by one and capturing information based on the previous elements. This information is stored in **hidden states** $h^{(t)}$ as memory of the network. Core idea is rather simple: we start with a zero vector as a hidden state (because there is no memory yet), process the current state at time $t$ and the output from the previous hidden state, and give the result as an input to the next iteration. 
 
 Basically, a simple RNN is a for-loop that reuses the values which were calculated in the previous iteration. The total output is a 
@@ -13,7 +17,7 @@ One particular reason why recurrent networks became such a powerful technique in
 
 As each part of the output is a function of the previous parts of the output, back-propagation for the RNNs requires recursive computations of the gradient. The so-called **back-propagation in time** procedure is rather simple in theory and allows for the RNNs to access information from many steps back. In practice though, RNNs in their simple form are subject to two big problems: **exploading and vanishing gradients**. As we compute gradients recursively, they may become either very small or very large which leads to a complete loss of information about long-term dependencies. To avoid these problems, **gated RNNs** were developed which accumulate information about specific features over a long duration. We will have a look at two types of gated RNNs which are widely used in modern Natural Language Processing: *LSTM* and *GRU*.
 
-Over last couple of years, various extentions of RNNs were developed which resulted in their wide application in different fields of Natural Language Processing. Beside classical tasks as document classification and sentiment analysis more complicated challenges such as machine translation, part-of-speech tagging or speech recognition can be solved nowadays with help of cutting-edge versions of RNNs. An overview of these applications will be provided in the last part of Chapter 1.2.
+Over last couple of years, various extentions of RNNs were developed which resulted in their wide application in different fields of Natural Language Processing. Beside classical tasks as document classification and sentiment analysis more complicated challenges such as machine translation, part-of-speech tagging or speech recognition can be solved nowadays with help of cutting-edge versions of RNNs. An overview of these versions and their applications will be provided in the last part of Chapter 1.2.
 
 
 
