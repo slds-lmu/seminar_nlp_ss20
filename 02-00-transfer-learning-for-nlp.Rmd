@@ -1,7 +1,31 @@
+---
+output:
+  pdf_document: default
+  html_document: default
+---
 # Introduction: Transfer Learning for NLP
 
-*Authors: Author 1, Author 2*
+*Authors: Author 1, Joshua Wagner, Author 3*
 
-*Supervisor: Supervisor*
+*Supervisor: Matthias Aßenmacher*
 
 
+## general intro to transfer
+
+
+## transfer learning 1
+
+## (Self)-attention
+
+The most common models for language modeling and maschine translation were, and still are to some extent, recurrent neural networks with long short-term memory [@hochreiter1997long] or gated recurrent units [@gru]. These models commonly used an encoder and a decoder. Advanced models used attention, either based on Bahdanau attention [@bahdanau2014neural] or Loung attention [@luong2015effective].
+
+[@vaswani2017attention] introduced a new form of attention, self-attention, and with it a new class of models, the \textit{transformers}. A Transformer still consists of the typical encoder-decoder setup but uses a novel new architecture for both.
+
+```{r 02-transformer, echo=FALSE, out.width="60%", fig.cap="Transformer architecture for tensor2tensor. The encoder (left) and the decoder (right) are composed of N=6 identical layers. The decoder is connected to the encoder with a multi-head-attention sublayer. Figure 1 from [@vaswani2017attention]"}
+knitr::include_graphics(rep('figures/02-00/transformer.png'))
+```
+
+The early transformer from tensor2tensor consisted of a six layer deep encoder-decoder with multiple atttention sublayers. The encoder constists of only one attention layer and a position-wise fully connected feed-forward network. See Chapter [9](#Attention-and-self-Attention-for-nlp) for a deeper explanation of the architecture and the components. The decoder layers closly resemble the encoder layers with the addition of one extra attention sublayer wich utilizes the output from the encoder stack. The first attention sublayer of the decoder has an additional masking mechanism. This masking ,and an offset of the output embeddings by one, ensures that the predictions for position \textit{i} depend only on the previous known outputs. The second sublayer in the decoder mimics the function of the typical attention mechanisms in the previously seen sequence-to-sequence models from [@bahdanau2014neural; @luong2015effective]. Transformers also have the added benefit that ``Not only do individual attention heads clearly learn to perform different tasks, many appear to exhibit behavior related to the syntactic and semantic structure of the sentences''[@vaswani2017attention, Section 4]. This, and the fact that a self-attention layer is computationally much more efficient than the previous dominant model architectures, lead to the development of much deeper and more complex models build with self-attention. These models allowed for extensive pre-training on enormous quantities of text and can be fine-tuned to specific tasks in a fraction of the time it would take to train another model with comparable capabilties.  **B**idirectional **E**ncoder **R**epresentations from **T**ransformers developed by @bert and its successors started a new resurgence of transfer learning in NLP.
+
+
+## transfer learning 2
