@@ -21,7 +21,7 @@ The most common models for language modeling and maschine translation were, and 
 
 [@vaswani2017attention] introduced a new form of attention, self-attention, and with it a new class of models, the \textit{transformers}. A Transformer still consists of the typical encoder-decoder setup but uses a novel new architecture for both.
 
-```{r 02-transformer, echo=FALSE, out.width="60%", fig.cap="Transformer architecture for tensor2tensor. The encoder (left) and the decoder (right) are composed of N=6 identical layers. The decoder is connected to the encoder with a multi-head-attention sublayer. Figure 1 from [@vaswani2017attention]"}
+```{r 01-transformer, echo=FALSE, out.width="60%", fig.cap="Transformer architecture for tensor2tensor. The encoder (left) and the decoder (right) are composed of N=6 identical layers. The decoder is connected to the encoder with a multi-head-attention sublayer. Figure 1 from [@vaswani2017attention]"}
 knitr::include_graphics(rep('figures/02-00/transformer.png'))
 ```
 
