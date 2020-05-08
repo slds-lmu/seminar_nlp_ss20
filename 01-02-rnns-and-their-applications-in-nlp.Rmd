@@ -3,8 +3,9 @@ title: Recurrent neural networks and their applications in NLP
 author: Marianna Plesiak
 output: html_document:
   toc: true
-  toc_depth: 3
+  toc_depth: 4
 #bibliography: bibliography.bib
+\usepackage{amsmath}
 ---
 
 
@@ -29,16 +30,26 @@ library(here)
 knitr::include_graphics(here("/figures/01-02-rnns-and-their-applications-in-nlp/02_unfolded_graph.png"))
 ```
 
-Each node is associated with a network layer at a particular time instance. Vectors $h$ represent the outputs of the hidden states. At time $t$, a hidden layer $h^{(t)}$ combines information from the previous hidden state $h^{(t-1)}$ as well as the new input $x^{(t)}$ and passes it through to the next hidden layer. Such an architecture requires the initialization of $h^{(0)}$ since there is no memory at the very beginning of the sequence processing. The unfolded recurrence can be formalized with the following equations:
+Each node is associated with a network layer at a particular time instance. Inputs $x^{(t)}$ must be encoded as numeric vectors, for instance word embeddings or one-hot encoded vectors, see previous chapter. Reccurently connected vectors $h$ are called hidden states and represent the outputs of the hidden layers. At time $t$, a hidden state $h^{(t)}$ combines information from the previous hidden state $h^{(t-1)}$ as well as the new input $x^{(t)}$ and passes it through to the next hidden layer. Obviously, such an architecture requires the initialization of $h^{(0)}$ since there is no memory at the very beginning of the sequence processing. Given the hidden sequences, output vectors $\hat{y}^{(t)}$ are used to build the predictive distribution $Pr(x^{(t+1)}|y^{(t)})$ for the next input. Since the predictions are created at each time instance $t$, the total output has a shape [time_steps, output_features]. However in some cases this is not needed, for example in sentiment analysis the last output of the loop is sufficient because it contains the entire information about the sequence. (@ Chollet) (@ Graves 2012) 
 
-$h^{(t)} = g^{(t)}(x^{(t)},x^{(t-1)},...,x^{(2)}, x^{(1)}) \
- = f(h^{(t-1)},x^{(t)}; \theta)$
+The unfolded recurrence can be formalized as following:
+
+
+\begin{align}
+
+h^{(t)} & = g^{(t)}(x^{(t)},x^{(t-1)},...,x^{(2)}, x^{(1)}) \\
+& = f(h^{(t-1)},x^{(t)}| \theta)  (\#eq:recurrent)
  
-After $t$ steps, the function $g^{(t)}$ takes into account the whole sequence $(x^{(t)},x^{(t-1)},...,x^{(2)}, x^{(1)})$ and produces the hidden state $h^{(t)}$. Because of its cyclical structure, $g^{(t)}$ can be factorized into the repeated application of a same function $f$. This function can be considered a universal model which is shared across all time steps and is generalized for all sequence lengths. This is called parameter sharing and is illustrated in the unfolded computational graph as a reuse of the same matrices $W_1$, $W_2$ and $W_3$ through the entire network.
+\end{align}
 
-### Backpropagation 
+ 
+After $t$ steps, the function $g^{(t)}$ takes into account the whole sequence $(x^{(t)},x^{(t-1)},...,x^{(2)}, x^{(1)})$ and produces the hidden state $h^{(t)}$. Because of its cyclical structure, $g^{(t)}$ can be factorized into the repeated application of a same function $f$. This function can be considered a universal model which is shared across all time steps and is generalized for all sequence lengths. This is called parameter sharing and is illustrated in the unfolded computational graph as a reuse of the same matrices $U$, $W$ and $V$ through the entire network. (@ Goodfellow book)
 
-### Drawbacks
+Update equations:
+
+
+### Backpropagation and Drawbacks
+
 
 ## Gated RNNs
 
@@ -52,7 +63,7 @@ After $t$ steps, the function $g^{(t)}$ takes into account the whole sequence $(
 
 ### Applications
 
-* 
+
 
 
 
