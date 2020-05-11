@@ -1,0 +1,31 @@
+---
+output:
+  bookdown::html_document2: default
+    fig_caption: true
+bibliography: book.bib
+link-citations: yes
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = FALSE, message=FALSE,  warning=FALSE)
+library(knitr)
+```
+
+# Recurrent neural networks
+
+The main drawback of feedforward neural networks is that they assume a known and fixed length of input and output vectors. But for many natural language problems such as machine translation and speech recognition it is impossible to define optimal fixed dimensions a-priori. Other models that map a sequence of words to another sequence of words are needed [@sutskever2014sequence]. Recurrent neural networks or RNNs are a special family of neural networks which were explicitely developed for modeling sequential data like text. RNNs process a sequence of words or letters $x^{(1)}, ..., x^{(t)}$ by going through its elements one by one and capturing information based on the previous elements. This information is stored in hidden states $h^{(t)}$ as the network memory. Core idea is rather simple: we start with a zero vector as a hidden state (because there is no memory yet), process the current state at time $t$ as well as the output from the previous hidden state, and give the result as an input to the next iteration [@goodfellow2016deep]. 
+
+Basically, a simple RNN is a for-loop that reuses the values which are calculated in the previous iteration [@chollet2018deep]. An unfolded computational graph (figure \@ref(fig:unfolded)) can display the structure of a classical RNN. The gray square on the left represents a delay of one time step and the arrows on the right express the flow of information in time [@goodfellow2016deep]. 
+
+```{r unfolded, echo=FALSE, message=FALSE, fig.align="center",fig.cap="Right: Circuit diagram of a simple RNN. Left: Unfolded computational graph of a simple RNN. Source: Own figure based on Goodfellow, Bengio, and Courville 2016.", out.width = '100%'}
+
+library(here)
+knitr::include_graphics(here("/figures/01-02-rnns-and-their-applications-in-nlp/01_intro_folded_and_unfolded_graph.png"))
+```
+
+One particular reason why recurrent networks have become such a powerful technique in processing sequential data is parameter sharing. Weight matrices remain the same through the loop and they are used repeatedly, which makes RNNs extremely convenient to work with sequential data because the model size does not grow for longer inputs. Parameter sharing allows application of models to inputs of different length and enables generalization across different positions in real time [@goodfellow2016deep].
+
+As each part of the output is a function of the previous parts of the output, backpropagation for the RNNs requires recursive computations of the gradient. The so-called backpropagation through time or BPTT is rather simple in theory and allows for the RNNs to access information from many previous steps [@boden2002guide]. In practice though, RNNs in their simple form are subject to two big problems: exploding and vanishing gradients. As we compute gradients recursively, they may become either very small or very large, which leads to a complete loss of information about long-term dependencies . To avoid these problems, gated RNNs were developed and accumulation of information about specific features over a long duration became possible. The two most popular types of gated RNNs, which are widely used in modern NLP, are Long Short-Term Memory models (LSTM) and Gated Recurrent Units (GRU) [@goodfellow2016deep].
+
+Over last couple of years, various extentions of RNNs were developed which resulted in their wide application in different fields of NLP. Besides classical tasks as document classification and sentiment analysis, more complicated challenges such as machine translation, part-of-speech tagging or speech recognition can be solved nowadays with the help of advanced versions of RNNs. An overview of these versions and their applications in NLP will be provided in the last part of Chapter 4.
+
