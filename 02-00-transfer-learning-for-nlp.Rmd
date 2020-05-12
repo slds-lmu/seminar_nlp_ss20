@@ -5,7 +5,7 @@ output:
 ---
 # Introduction: Transfer Learning for NLP
 
-*Authors: Author 1, Joshua Wagner, Author 3*
+*Authors: Carolin Becker, Joshua Wagner, Bailan He*
 
 *Supervisor: Matthias Aßenmacher*
 
