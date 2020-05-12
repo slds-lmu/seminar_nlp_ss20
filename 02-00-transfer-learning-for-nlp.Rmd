@@ -10,29 +10,51 @@ output:
 *Supervisor: Matthias Aßenmacher*
 
 
-## general intro to transfer
+As discussed in the previous chapters, natural language processing (NLP) belongs to a very powerful tool in the field of processing human language. In recent years, there have been many proceedings and improvements in NLP to the state-of-art models like BERT. A decisive further development in the past was the way to transfer learning, but also self-attention. 
 
+In the next three chapters, various NLP models will be presented, which will be taken to a new level with the help of transfer learning in a first and a second step with self-attention and transformer-based model architectures. To understand the models of the next chapters, the idea and the advantages of the model architecture transfer learning, its benefits for NLP, and the concept of self-attention will be presented next, followed by an overview of the most important models. 
 
-## transfer learning 1
+## What is Transfer Learning?
 
-## (Self)-attention
-
-The most common models for language modeling and maschine translation were, and still are to some extent, recurrent neural networks with long short-term memory [@hochreiter1997long] or gated recurrent units [@gru]. These models commonly used an encoder and a decoder. Advanced models used attention, either based on Bahdanau attention [@bahdanau2014neural] or Loung attention [@luong2015effective].
-
-[@vaswani2017attention] introduced a new form of attention, self-attention, and with it a new class of models, the \textit{transformers}. A Transformer still consists of the typical encoder-decoder setup but uses a novel new architecture for both.
-
-```{r 01-transformer, echo=FALSE, out.width="60%", fig.cap="Transformer architecture for tensor2tensor. The encoder (left) and the decoder (right) are composed of N=6 identical layers. The decoder is connected to the encoder with a multi-head-attention sublayer. Figure 1 from [@vaswani2017attention]"}
-knitr::include_graphics(rep('figures/02-00/transformer.png'))
+```{r ch02-figure01, echo=FALSE, out.width="70%", fig.cap="(ref:ch02-figure01)", fig.align="center"}
+knitr::include_graphics("figures/02-00-transfer-learning-for-nlp/compare-classical-transferlearning-ml.PNG")
 ```
+(ref:ch02-figure01) Classic Machine Learning and Transfer Learning
 
-The early transformer from tensor2tensor consisted of a six layer deep encoder-decoder with multiple atttention sublayers. The encoder constists of only one attention layer and a position-wise fully connected feed-forward network. See Chapter [9](#Attention-and-self-Attention-for-nlp) for a deeper explanation of the architecture and the components. The decoder layers closly resemble the encoder layers with the addition of one extra attention sublayer wich utilizes the output from the encoder stack. The first attention sublayer of the decoder has an additional masking mechanism. This masking ,and an offset of the output embeddings by one, ensures that the predictions for position \textit{i} depend only on the previous known outputs. The second sublayer in the decoder mimics the function of the typical attention mechanisms in the previously seen sequence-to-sequence models from [@bahdanau2014neural; @luong2015effective]. Transformers also have the added benefit that ``Not only do individual attention heads clearly learn to perform different tasks, many appear to exhibit behavior related to the syntactic and semantic structure of the sentences''[@vaswani2017attention, Section 4]. This, and the fact that a self-attention layer is computationally much more efficient than the previous dominant model architectures, lead to the development of much deeper and more complex models build with self-attention. These models allowed for extensive pre-training on enormous quantities of text and can be fine-tuned to specific tasks in a fraction of the time it would take to train another model with comparable capabilties.  **B**idirectional **E**ncoder **R**epresentations from **T**ransformers developed by @bert and its successors started a new resurgence of transfer learning in NLP.
+In figure \@ref(fig:ch02-figure01) the difference between classical machine learning and transfer learning is shown. For classical machine learning for every special task, one model is trained. 
 
+Transfer learning allows us to deal with the learning task by using the existing labeled data of some related tasks or domains. Tasks are the objective of the model. e.g. the sentiment of a sentence, whereas the domain is where data comes from. e.g. all sentences are selected from Reddit. In the example above, we try to store the knowledge gained in task A in the source domain A and apply it to our problem of interest(domain B).
 
-## (Self-)attention, short version
+Generally, transfer learning has several advantages over classical machine learning: saving time for model training, mostly better performance, and not a need for a lot of training data. 
+
+Especially, the last advantage besides the better results and time is an important topic in NLP problems, as there is a lot of knowledge about many texts, but normally the training data only contains a small piece of it. @evolutiontransferlearning An classical NLP model captures and learns a variety of linguistic phenomena, such as long-term dependencies and negation, from a large-scale corpus. This knowledge can be transferred to initialize another model to perform well on a specific NLP task, such as sentiment analysis.
+
+## (Self-)attention
 The most common models for language modeling and maschine translation were, and still are to some extent, recurrent neural networks with long short-term memory [@hochreiter1997long] or gated recurrent units [@gru]. These models commonly used an encoder and a decoder. Advanced models used attention, either based on Bahdanau attention [@bahdanau2014neural] or Loung attention [@luong2015effective].
 
 [@vaswani2017attention] introduced a new form of attention, self-attention, and with it a new class of models, the \textit{transformers}. A Transformer still consists of the typical encoder-decoder setup but uses a novel new architecture for both. The encoder consists of 6 Layers with 2 sublayers each. The newly developed self-attention in the first sublayer allows a transformer model to process all input words at once and model the relationships between all words in a sentence. This allows transformers to model long-range dependencies in a sentence faster than the before seen RNN and CNN based models. The speed improvement and the fact that ``individual attention heads clearly learn to perform different tasks''[@vaswani2017attention] lead to the eventual development of **B**idirectional **E**ncoder **R**epresentations from **T**ransformers by @bert. **BERT** and its successors are, at the time of writing, the state-of-the-art models used for transfer learning in NLP. For a more in-depth explanation of the architecture of early transformers and self-attention see Chapter [9](#Attention-and-self-Attention-for-nlp) and [10](#Transfer-Learning-for-NLP-II) for **BERT**.
 
+## Overview over important NLP models
 
+```{r ch02-figure02, echo=FALSE, out.width="70%", fig.cap="(ref:ch02-figure02)", fig.align="center"}
+knitr::include_graphics("figures/02-00-transfer-learning-for-nlp/overview-tranferlearning.PNG")
+```
+(ref:ch02-figure02) Overview of the models and concepts presented in the following chapters
 
-## transfer learning 2
+In figure \@ref(fig:ch02-figure02) the following models will be presented in the next chapters. 
+
+First, the two model architectures ELMo and ULMFit will be presented which are mainly based on transfer learning in **Chapter 8: "Transfer Learning for NLP I"**: 
+
+* **ELMo** (Embeddings from Language Models) first published in @elmopaper uses a deep, bi-directional LSTM model to create word representations. This method goes beyond traditional embedding methods, as it analyses the words within the context
+
+* **ULMFiT**(Universal Language Model Fine-tuning for Text Classification) published in @ulmfitpaper improves transfer learning by Discriminative Fine-tuning (Discr) and Slanted Triangular Learning Rates (STLR). xxxxx Will add something here xxxxx
+
+Following this the concepts attention and self-attention will be further discussed in the **"Chapter 9: Attention and Self-Attention for NLP "**.
+
+In the **"Chapter 10: Transfer Learning for NLP II"** models like BERT, GTP2 and XLNet will be introduced as they include transfer learning in combination with self-attention: 
+
+* **BERT**
+
+* **GTP2**
+
+* **XLNet**
