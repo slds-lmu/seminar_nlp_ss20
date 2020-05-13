@@ -38,14 +38,15 @@ knitr::include_graphics("figures/02-00-transfer-learning-for-nlp/encoder_with_te
 knitr::include_graphics("figures/02-00-transfer-learning-for-nlp/overview-tranferlearning.PNG")
 ```
 
-## Overview over important NLP models
+## BERT
 
-- ELMO
+```{r figure06, echo=FALSE, out.width="70%", fig.cap="BERT structure, \n Alammar, Jay (2018). The Illustrated BERT, ELMo, and co. [Blog post]. Retrieved from http://jalammar.github.io/illustrated-bert/", fig.align="center"}
+knitr::include_graphics("figures/02-00-transfer-learning-for-nlp/bert-masked_task.png")
+```
 
-- ULMFit
 
-- BERT
+## GPT-2 and XLNet
 
-- GTP2
+* GPT-2: a tremendous multilayer Transformer Decoder.
 
-- XLNet
+* XLNet: borrows ideas from autoregressive language modeling (e.g., Transformer-XL @dai2019transformer) and autoencoding (e.g., BERT) while avoiding their limitations.
