@@ -21,7 +21,7 @@ knitr::include_graphics("figures/02-00-transfer-learning-for-nlp/compare-classic
 ```
 (ref:ch02-figure01) Classic Machine Learning and Transfer Learning
 
-In figure \@ref(fig:ch02-figure01) the difference between classical machine learning and transfer learning is shown. For classical machine learning for every special task, one model is trained. 
+In figure \@ref(fig:ch02-figure01) the difference between classical machine learning and transfer learning is shown. For classical machine learning for every special task or domain, one model is trained. 
 
 Transfer learning allows us to deal with the learning task by using the existing labeled data of some related tasks or domains. Tasks are the objective of the model. e.g. the sentiment of a sentence, whereas the domain is where data comes from. e.g. all sentences are selected from Reddit. In the example above, we try to store the knowledge gained in task A in the source domain A and apply it to our problem of interest(domain B).
 
@@ -43,11 +43,11 @@ knitr::include_graphics("figures/02-00-transfer-learning-for-nlp/overview-tranfe
 
 In figure \@ref(fig:ch02-figure02) the following models will be presented in the next chapters. 
 
-First, the two model architectures ELMo and ULMFit will be presented which are mainly based on transfer learning in **Chapter 8: "Transfer Learning for NLP I"**: 
+First, the two model architectures ELMo and ULMFit will be presented which are mainly based on transfer learning and LSTMs in **Chapter 8: "Transfer Learning for NLP I"**: 
 
 * **ELMo** (Embeddings from Language Models) first published in @elmopaper uses a deep, bi-directional LSTM model to create word representations. This method goes beyond traditional embedding methods, as it analyses the words within the context
 
-* **ULMFiT**(Universal Language Model Fine-tuning for Text Classification) published in @ulmfitpaper improves transfer learning by Discriminative Fine-tuning (Discr) and Slanted Triangular Learning Rates (STLR). xxxxx Will add something here xxxxx
+* **ULMFiT**(Universal Language Model Fine-tuning for Text Classification) consists of three steps: first, there is a general pre-training of the LM on a general domain (like WikiText-103 dataset), second, the LM is finetuned on the target task and the last step is the multilabel classifier fine tuning where the model provides a status for every input sentence.
 
 Following this the concepts attention and self-attention will be further discussed in the **"Chapter 9: Attention and Self-Attention for NLP "**.
 
