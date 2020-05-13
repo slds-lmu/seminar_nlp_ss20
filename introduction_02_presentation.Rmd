@@ -6,30 +6,35 @@ output:
     smaller: true
 ---
 
-```{r setup, include=FALSE}
+```{r setup2, include=FALSE}
 knitr::opts_chunk$set(echo = FALSE)
 ```
 
 ## What is Transfer Learning?
 
-```{r ch02-figure01, echo=FALSE, out.width="70%", fig.cap="Traditional ML vs. Transfer Learning", fig.align="center"}
+```{r figure01, echo=FALSE, out.width="70%", fig.cap="Traditional ML vs. Transfer Learning", fig.align="center"}
 knitr::include_graphics("figures/02-00-transfer-learning-for-nlp/compare-classical-transferlearning-ml.PNG")
+```
+
+## Attention
+```{r figure02, echo=FALSE, out.width="50%", fig.cap="Global attention model, Loung et al. 2015", fig.align="center"}
+knitr::include_graphics("figures/02-00-transfer-learning-for-nlp/Depiction-of-Global-Attention-in-an-Encoder-Decoder-Recurrent-Neural-Network.png")
 ```
 
 ## (Self-)attention
 
-```{r ch02-figure02, echo=FALSE, out.width="70%", fig.cap="Transformer example, Alammar, Jay (2018). The Illustrated Transformer [Blog post]. Retrieved from https://jalammar.github.io/illustrated-transformer/", fig.align="center"}
+```{r figure03, echo=FALSE, out.width="70%", fig.cap="Transformer example, Alammar, Jay (2018). The Illustrated Transformer [Blog post]. Retrieved from https://jalammar.github.io/illustrated-transformer/", fig.align="center"}
 knitr::include_graphics("figures/02-00-transfer-learning-for-nlp/The_transformer_encoder_decoder_stack.png")
 ```
 
 ## (Self-)attention
-```{r ch02-figure03, echo=FALSE, out.width="70%", fig.cap="Transformer Encoder Layer, \n Alammar, Jay (2018). The Illustrated Transformer [Blog post]. Retrieved from https://jalammar.github.io/illustrated-transformer/", fig.align="center"}
+```{r figure04, echo=FALSE, out.width="70%", fig.cap="Transformer Encoder Layer, \n Alammar, Jay (2018). The Illustrated Transformer [Blog post]. Retrieved from https://jalammar.github.io/illustrated-transformer/", fig.align="center"}
 knitr::include_graphics("figures/02-00-transfer-learning-for-nlp/encoder_with_tensors.png")
 ```
 
 ## Overview over important NLP models
 
-```{r ch02-figure04, echo=FALSE, out.width="70%", fig.cap="Transfer learning overview", fig.align="center"}
+```{r figure05, echo=FALSE, out.width="70%", fig.cap="Transfer learning overview", fig.align="center"}
 knitr::include_graphics("figures/02-00-transfer-learning-for-nlp/overview-tranferlearning.PNG")
 ```
 
