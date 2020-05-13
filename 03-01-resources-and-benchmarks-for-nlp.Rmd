@@ -1,7 +1,248 @@
 # Resources and Benchmarks for NLP
 
-*Authors: Author 1, Author 2*
+*Authors: Nico Hahn, Author 2*
 
-*Supervisor: Supervisor*
+*Supervisor: Daniel Schalk*
 
 
+Frameworks such as TensorFlow or Keras allow users to train a wide range of different models for different tasks. Let us assume that two models for a simple question-answer system are trained, one with attention and one without attention. How can these models be evaluated in order to find the model better suited to the task? Quite simply, through benchmarking. This section looks at some of the most commonly used benchmarking datasets and at pre-training resources.
+
+## Benchmark Datasets
+### SQuAD
+The first Version of the **S**tanford **Qu**estion **A**nswering **D**ataset was released in 2016. The dataset was created with the aim of advancing the field of reading comprehension. Reading text and answering questions about it is a demanding task for machines and requires large data sets of high quality. Most of the datasets before the release of the first version of SQuAD were either of high quality or of large size, but not both.  
+  
+With the help of crowdworkers, 107.785 question-answer pairs were created for 536 Wikipedia articles. For each question, the answer is a segment of text, or span, from the corresponding reading passage. 
+Pairs were collected in a two-step process. In the first step the crowdworkers were asked to generate five questions and their answers per paragraph.  
+  
+In the second step, each crowdworker was shown only the questions along with the paragraphs of the corresponding article and was asked to choose the shortest span in the paragraph that answered the question.  
+  
+The goal of this process was to get a more robust evaluation and to obtain an indicator of human performance on SQuAD.  
+  
+One shortcoming of reading comprehension systems is that they tend to make unreliable guesses on questions to which no correct answer is possible. With this in mind, the second version of SQuAD was released in 2018. In addition to the approximately 100.000 questions from the first version, 53.775 new, unanswerable questions on the same paragraphs are contained in this dataset.  
+  
+<!-- Below is an example of a paragraph along with some of the related questions. -->
+<!-- <br> -->
+<!-- <br> -->
+<!-- <table> -->
+<!-- <tbody> -->
+<!-- <tr style="height: 23px;background-color:#161616;color:white"> -->
+<!-- <td style="height: 23px;"> -->
+<!-- Example paragraph -->
+<!-- </td> -->
+<!-- </tr> -->
+<!-- <tr style="height: 83px;background-color:white;"> -->
+<!-- <td style="height: 83px;"> -->
+<!-- It is recognised that an epidemiological account of the plague is as important as an identification of symptoms, but researchers are hampered by <span style="color:#489132;font-weight:bold;">the lack of reliable statistics from this period</span>. Most work has been done on the spread of the plague in England, and even estimates of overall population at the start vary <span style="color:#e55381;font-weight:bold;">by over 100%</span> as no census was undertaken between the time of publication of the Domesday Book and the year 1377. Estimates of plague victims are usually extrapolated from figures from <span style="color:#3772ff;font-weight:bold;">the clergy</span>. -->
+<!-- </td> -->
+<!-- </tr> -->
+<!-- <tr style="height: 23px;background-color:white;"> -->
+<!-- <td style="height: 23px;">&nbsp;</td> -->
+<!-- </tr> -->
+<!-- <tr style="height: 23px;background-color:#161616;color:white;"> -->
+<!-- <td style="height: 23px;"> -->
+<!-- How much do estimations of the population during the plague vary? -->
+<!-- </td> -->
+<!-- </tr> -->
+<!-- <tr> -->
+<!-- <td style="height: 23px;"> -->
+<!-- <span style="color:#e55381;font-weight:bold;"> -->
+<!-- by over 100% -->
+<!-- <br> -->
+<!-- </span> -->
+<!-- <span style="font-style:italic"> -->
+<!-- by over 100% -->
+<!-- <br> -->
+<!-- over 100% -->
+<!-- </span> -->
+<!-- </td> -->
+<!-- </tr> -->
+<!-- <tr style="height: 23px;background-color:#161616;color:white;"> -->
+<!-- <td style="height: 23px;"> -->
+<!-- Why are researchers struggling to identify the history of the plague? -->
+<!-- </td> -->
+<!-- </tr> -->
+<!-- <tr> -->
+<!-- <td style="height: 23px;"> -->
+<!-- <span style="color:#489132;font-weight:bold;"> -->
+<!-- the lack of reliable statistics from this period -->
+<!-- <br> -->
+<!-- </span> -->
+<!-- <span style="font-style:italic"> -->
+<!-- the lack of reliable statistics -->
+<!-- <br> -->
+<!-- lack of reliable statistics -->
+<!-- </span> -->
+<!-- </td> -->
+<!-- </tr> -->
+<!-- <tr style="height: 23px;background-color:#161616;color:white;"> -->
+<!-- <td style="height: 23px;"> -->
+<!--  Where can population estimates be extrapolated from? -->
+<!-- </td> -->
+<!-- </tr> -->
+<!-- <tr> -->
+<!-- <td style="height: 23px;"> -->
+<!-- <span style="color:#3772ff;font-weight:bold;"> -->
+<!-- the clergy -->
+<!-- <br> -->
+<!-- </span> -->
+<!-- <span style="font-style:italic;"> -->
+<!-- figures from the clergy -->
+<!-- <br> -->
+<!-- figures from the clergy -->
+<!-- </span> -->
+<!-- </td> -->
+<!-- </tr> -->
+<!-- <tr style="height: 23px;background-color:#161616;color:white;"> -->
+<!-- <td style="height: 23px;"> -->
+<!-- In what year did the plague begin in England? -->
+<!-- </td> -->
+<!-- </tr> -->
+<!-- <tr> -->
+<!-- <td style="height: 23px;"> -->
+<!-- &lt;No Answer&gt; -->
+<!-- </td> -->
+<!-- </tr> -->
+<!-- <tr style="height: 23px;background-color:#161616;color:white;"> -->
+<!-- <td style="height: 23px;"> -->
+<!-- In what year was the Domesday Book written? -->
+<!-- </td> -->
+<!-- </tr> -->
+<!-- <tr> -->
+<!-- <td style="height: 23px;"> -->
+<!-- &lt;No Answer&gt; -->
+<!-- </td> -->
+<!-- </tr> -->
+<!-- </tbody> -->
+<!-- </table> -->
+The accuracy of models trained on SQuAD is evaluated using two different metrics, both ignoring punctuation and articles.  
+  
+**Exact match.** The percentage of predictions that match any one of the answers exactly.  
+  
+**(Macro-averaged) F1 score.** Each answer and prediction is tokenized into words. For every answer to a given question, the overlap between the prediction and each answer is calculated and the maximum F1 is chosen. This score is then average over all of the questions. [@rajpurkar2016squad; @rajpurkar2018know]  
+  
+To evaluate human performance, the second answer to each question is treated as the human prediction.  
+  
+Humans achieve an **EM** score of 86.831 and a **F1** score of 89.452.  
+  
+Currently, the best performing model achieves an **EM** score of 90.386 and a **F1** score of 92.777.  
+  
+The leaderboard can be viewed here:   
+  
+<center target="_blank">https://rajpurkar.github.io/SQuAD-explorer/ </center>
+
+### CoQA
+CoQA is a dataset for building **Co**nversational **Q**uestion **A**nswering systems. Humans are capable of gathering information through conversations that include several interrelated questions and answers. The aim of CoQA is to enable machines to answers conversational questions.  
+  
+The data set is made up of 127k Q/A pairs, covering seven different domains such as Children's Stories or Reddit. Five of these domains are used for in-domain evaluation and two are used for out-of-domain evaluation. To create the Q/A pairs, two people received a text passage, with one person asking the other person questions about the text and the other person answering. Using multiple annotators has a few advantages:
+
+1. A natural flow of conversation is created.
+2. If one person gives an incorrect answer or a vague questions is asked, the other person can raise a flag. Thus bad annotators can easily be identified.
+3. If there is a disagreement, the two annotators can discuss it via a chat window.
+
+Similar to SQuAD, three additional answers are collected for each question. However, since the answers influence the flow of the conversation, the next question always depends on the answer to the previous question. For this reason, two different answers to the same question can lead to two different follow-up questions. In order to avoid incoherent discussions, annotators are shown a question that they must answer first. After answering, they are shown the original answer, and they must then confirm that their answer has an identical meaning.  
+  
+<!-- Below is an example of a paragraph along with some of the related questions. -->
+<!-- <br> -->
+<!-- <br> -->
+<!-- <table> -->
+<!-- <tbody> -->
+<!-- <tr style="height: 23px;background-color:#161616;color:white"> -->
+<!-- <td style="height: 23px;"> -->
+<!-- Example paragraph -->
+<!-- </td> -->
+<!-- </tr> -->
+<!-- <tr style="height: 83px;background-color:white;"> -->
+<!-- <td style="height: 83px;"> -->
+<!-- Janet walked past <span style="color:#e55381;font-weight:bold;">the barn</span>, the big tree, and through the back yard to reach <span style="color:#489132;font-weight:bold;">the chicken pen</span>. Janet gathered the eggs from the chicken pen, <span style="color:#3772ff;font-weight:bold;">so</span> that <span style="color:#3772ff;font-weight:bold;">her father could make scrambled eggs</span> for breakfast. He would need at least 5 eggs for the meal, two for Janet and three for himself. Janet could only find four eggs in the chicken pen. She looked under every chicken, and in every nest, but could not find another egg. She placed the four eggs in her basket, and began to walk toward the house, when she heard a quacking sound. She went toward the sound and found a nest near the pond, with large brown eggs inside. "Quack" said a nearby duck, as Janet took an egg from the nest. Now she had enough for breakfast. -->
+<!-- </td> -->
+<!-- </tr> -->
+<!-- <tr style="height: 23px;background-color:white;"> -->
+<!-- <td style="height: 23px;">&nbsp;</td> -->
+<!-- </tr> -->
+<!-- <tr style="height: 23px;background-color:#161616;color:white;"> -->
+<!-- <td style="height: 23px;"> -->
+<!-- What did Janet walk past first? -->
+<!-- </td> -->
+<!-- </tr> -->
+<!-- <tr> -->
+<!-- <td style="height: 23px;"> -->
+<!-- <span style="color:#e55381;font-weight:bold;"> -->
+<!-- the barn -->
+<!-- <br> -->
+<!-- </span> -->
+<!-- <span style="font-style:italic"> -->
+<!-- The barn -->
+<!-- <br> -->
+<!-- the barn, the big tree, and through the back yard -->
+<!-- <br> -->
+<!-- The barn -->
+<!-- </span> -->
+<!-- </td> -->
+<!-- </tr> -->
+<!-- <tr style="height: 23px;background-color:#161616;color:white;"> -->
+<!-- <td style="height: 23px;"> -->
+<!-- What was Janet going to? -->
+<!-- </td> -->
+<!-- </tr> -->
+<!-- <tr> -->
+<!-- <td style="height: 23px;"> -->
+<!-- <span style="color:#489132;font-weight:bold;"> -->
+<!-- the chicken pen -->
+<!-- <br> -->
+<!-- </span> -->
+<!-- <span style="font-style:italic"> -->
+<!-- Gathered the eggs -->
+<!-- <br> -->
+<!-- the back yard -->
+<!-- <br> -->
+<!-- Chicken pen -->
+<!-- </span> -->
+<!-- </td> -->
+<!-- </tr> -->
+<!-- <tr style="height: 23px;background-color:#161616;color:white;"> -->
+<!-- <td style="height: 23px;"> -->
+<!-- Why did she gather eggs? -->
+<!-- </td> -->
+<!-- </tr> -->
+<!-- <tr> -->
+<!-- <td style="height: 23px;"> -->
+<!-- <span style="color:#3772ff;font-weight:bold;"> -->
+<!-- so her father could make scrambled eggs -->
+<!-- <br> -->
+<!-- </span> -->
+<!-- <span style="font-style:italic;"> -->
+<!-- So that her father could make scrambled eggs -->
+<!-- <br> -->
+<!-- so that her father could make scrambled eggs -->
+<!-- <br> -->
+<!-- So that her father could make scrambled eggs -->
+<!-- </span> -->
+<!-- </td> -->
+<!-- </tr> -->
+<!-- </tbody> -->
+<!-- </table> -->
+Compared to SQuAD 2.0, there is a greater variety of question types in CoQA. While almost half of the questions in the SQuAD start with *what*, less than a quarter of the questions in the CoQA begin with this token. Another major difference is that questions in CoQA are on average 5.5 words long, compared to an average length of 10.1 in SQuAD. It is also worth mentioning that about 10% of the answers in CoQA are either yes or no, whereas there are no such answers in SQuAD.   
+  
+Like SQuAD, trained models are evaluated using a macro-average F1 score. Models are evaluated separately on the in-domain dataset and the out-of-domain dataset. [@coqa2019]  
+  
+Humans achieve a **F1** score of 89.4 for in-domain and a **F1** score of 87.4 for out-of-domain.  
+  
+Currently, the best performing model achieves a **F1** score of 91.4 for in-domain and a **F1** score of 89.2 for out-of-domain.  
+  
+The leaderboard can be viewed here:   
+  
+<center target="_blank">https://stanfordnlp.github.io/coqa/ </center>
+
+
+<!-- Benchmarks:
+  - GLUE
+  - SuperGLUE
+  - CoQA In-domain Out-of-domain
+  - RACE RACE RACE-M RACE-H
+  - SNLI %acc
+  - VOiCES
+Pre-Training Recources:
+  - BERT
+  - ELMo
+  - StanfordNLP
+  - ELECTRA (Google AI) -->
