@@ -86,7 +86,6 @@ knitr::include_graphics("figures/02-00-transfer-learning-for-nlp/gpt_2_decoder.p
 
 ## XLNet
 
-
 **XLNet**: Borrows ideas from autoregressive language modeling (e.g., Transformer-XL) and autoencoding (e.g., BERT) while avoiding their limitations.
 
 ## Discussion
@@ -109,26 +108,15 @@ knitr::include_graphics("figures/02-00-transfer-learning-for-nlp/bert-nsp.png")
 
 ## BERT-4-Tasks 
 
-```{r figure012, echo=FALSE, out.width="70%", fig.cap="BERT-4-Tasks", fig.align="center"}
+```{r figure012, echo=FALSE, out.width="50%", fig.cap="BERT-4-Tasks", fig.align="center"}
 knitr::include_graphics("figures/02-00-transfer-learning-for-nlp/bert-based_model.png")
 ```
 
 ## XLNet permutation language model
 
-
-* XLNet: borrows ideas from autoregressive language modeling (e.g., Transformer-XL @dai2019transformer) and autoencoding (e.g., BERT) while avoiding their limitations.
-
-```{r figure013, echo=FALSE, out.width="70%", fig.cap="XLNet Permutation language model", fig.align= "center" }
+```{r figure013, echo=FALSE, out.width="60%", fig.cap="XLNet Permutation language model", fig.align= "center" }
 knitr::include_graphics("figures/02-00-transfer-learning-for-nlp/xlnet-pml.png")
 ```
-
-
-## Discussion
-
-**Thank you for your attention**
-
-
-## Extra images etc.
 
 ## Extra transformers 1
 
@@ -145,5 +133,5 @@ knitr::include_graphics("figures/02-00-transfer-learning-for-nlp/transformer.png
 ## Extra transformers 3
 
 ```{r figure_extra6, echo=FALSE, out.width="70%", fig.cap="Transformer: Encoder-Decoder, Alammar, Jay (2018). The Illustrated Transformer [Blog post]. Retrieved from https://jalammar.github.io/illustrated-transformer/", fig.align="center"}
-knitr::include_graphics("figures/02-00-transfer-learning-for-nlp/transformer.png")
+knitr::include_graphics("figures/02-00-transfer-learning-for-nlp/Transformer_decoder.png")
 ```
