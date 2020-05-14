@@ -33,27 +33,22 @@ knitr::include_graphics("figures/02-00-transfer-learning-for-nlp/ner_results.png
 Performance on Named Entity Recognition (NER) on CoNLL-2003 (English) over time.
 
 ## Attention
-<div style="float: left; width: 50%;">
-```{r figure02, echo=FALSE, out.width="100%", fig.cap="Global attention model, Loung et al. 2015", fig.align="center"}
-knitr::include_graphics("figures/02-00-transfer-learning-for-nlp/Depiction-of-Global-Attention-in-an-Encoder-Decoder-Recurrent-Neural-Network.png")
-```
-</div>
 
-<div style="float: right; width: 50%;">
-```{r figure08, echo=FALSE, out.width="90%", fig.cap=" Illustration of a CNN for sentence calssification, Source: Zhang, Y., & Wallace, B. (2015). A Sensitivity Analysis of (and Practitioners’ Guide to) Convolutional Neural Networks for Sentence Classification.", fig.align="center"}
-knitr::include_graphics("figures/02-00-transfer-learning-for-nlp/nlp-cnn.png")
-```
+<div align="center">
+<video width="800" height="450" controls>
+  <source src="figures/02-00-transfer-learning-for-nlp/seq2seq_7.mp4" type="video/mp4">
+</video>
 </div>
 
 
-## (Self-)attention
+## Transformers
 
-```{r figure03, echo=FALSE, out.width="70%", fig.cap="Transformer example, Alammar, Jay (2018). The Illustrated Transformer [Blog post]. Retrieved from https://jalammar.github.io/illustrated-transformer/", fig.align="center"}
-knitr::include_graphics("figures/02-00-transfer-learning-for-nlp/The_transformer_encoder_decoder_stack.png")
+```{r figure03, echo=FALSE, out.width="70%", fig.cap="Transformer, Alammar, Jay (2018). The Illustrated Transformer [Blog post]. Retrieved from https://jalammar.github.io/illustrated-transformer/", fig.align="center"}
+knitr::include_graphics("figures/02-00-transfer-learning-for-nlp/The_transformer_encoders_decoders.png")
 ```
 
-## (Self-)attention
-```{r figure07, echo=FALSE, out.width="60%", fig.cap="transformer gif", fig.align="center"}
+## Self-attention
+```{r figure04, echo=FALSE, out.width="60%", fig.cap="Transformer translation, David Chenell for  Google AI Blog: Transformer: A Novel Neural Network Architecture for Language Understanding, Retrieved from https://ai.googleblog.com/2017/08/transformer-novel-neural-network.html", fig.align="center"}
 knitr::include_graphics("figures/02-00-transfer-learning-for-nlp/transform20fps.gif")
 ```
 
@@ -64,6 +59,8 @@ knitr::include_graphics("figures/02-00-transfer-learning-for-nlp/transform20fps.
 >- less complex layers than CNNs
 
 >- -> faster than both with better results
+
+>- allows for training on even more data in reasonable time
 
 
 ## Overview over important NLP models
@@ -92,6 +89,11 @@ knitr::include_graphics("figures/02-00-transfer-learning-for-nlp/gpt_2_decoder.p
 
 **XLNet**: Borrows ideas from autoregressive language modeling (e.g., Transformer-XL) and autoencoding (e.g., BERT) while avoiding their limitations.
 
+## Discussion
+
+**Thank you for your attention**
+
+
 ## BERT-Input Representation
 
 ```{r figure010, echo=FALSE, out.width="70%", fig.cap="BERT-Input Representation", fig.align="center"}
@@ -113,6 +115,35 @@ knitr::include_graphics("figures/02-00-transfer-learning-for-nlp/bert-based_mode
 
 ## XLNet permutation language model
 
+
+* XLNet: borrows ideas from autoregressive language modeling (e.g., Transformer-XL @dai2019transformer) and autoencoding (e.g., BERT) while avoiding their limitations.
+
 ```{r figure013, echo=FALSE, out.width="70%", fig.cap="XLNet Permutation language model", fig.align= "center" }
 knitr::include_graphics("figures/02-00-transfer-learning-for-nlp/xlnet-pml.png")
+```
+
+
+## Discussion
+
+**Thank you for your attention**
+
+
+## Extra images etc.
+
+## Extra transformers 1
+
+```{r figure_extra4, echo=FALSE, out.width="70%", fig.cap="Transformer example, Alammar, Jay (2018). The Illustrated Transformer [Blog post]. Retrieved from https://jalammar.github.io/illustrated-transformer/", fig.align="center"}
+knitr::include_graphics("figures/02-00-transfer-learning-for-nlp/The_transformer_encoder_decoder_stack.png")
+```
+
+## Extra transformers 2
+
+```{r figure_extra5, echo=FALSE, out.width="70%", fig.cap="Transformer architecture, Lilian Weng (2018). Attention? Attention!, Retrieved from http://lilianweng.github.io/lil-log/2018/06/24/attention-attention.html", fig.align="center"}
+knitr::include_graphics("figures/02-00-transfer-learning-for-nlp/transformer.png")
+```
+
+## Extra transformers 3
+
+```{r figure_extra6, echo=FALSE, out.width="70%", fig.cap="Transformer: Encoder-Decoder, Alammar, Jay (2018). The Illustrated Transformer [Blog post]. Retrieved from https://jalammar.github.io/illustrated-transformer/", fig.align="center"}
+knitr::include_graphics("figures/02-00-transfer-learning-for-nlp/transformer.png")
 ```
