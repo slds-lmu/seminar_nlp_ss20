@@ -144,7 +144,7 @@ knitr::include_graphics("figures/02-00-transfer-learning-for-nlp/ulmfit.png")
 ```
 
 
-## ULMFiT
+## ELMO
 
 ```{r figure_extra8, echo=FALSE, out.width="70%", fig.cap="Retrieved from https://www.slideshare.net/shuntaroy/a-review-of-deep-contextualized-word-representations-peters-2018"  }
 knitr::include_graphics("figures/02-00-transfer-learning-for-nlp/elmo_shuntaroy.png")
