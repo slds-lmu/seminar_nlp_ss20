@@ -118,7 +118,7 @@ The accuracy of models trained on SQuAD is evaluated using two different metrics
   
 **Exact match.** The percentage of predictions that match any one of the answers exactly.  
   
-**(Macro-averaged) F1 score.** Each answer and prediction is tokenized into words. For every answer to a given question, the overlap between the prediction and each answer is calculated and the maximum F1 is chosen. This score is then average over all of the questions. [@rajpurkar2016squad; @rajpurkar2018know]  
+**(Macro-averaged) F1 score.** Each answer and prediction is tokenized into words. For every answer to a given question, the overlap between the prediction and each answer is calculated and the maximum F1 is chosen. This score is then averaged over all of the questions. [@rajpurkar2016squad; @rajpurkar2018know]  
   
 To evaluate human performance, the second answer to each question is treated as the human prediction.  
   
@@ -233,16 +233,31 @@ The leaderboard can be viewed here:
   
 <center target="_blank">https://stanfordnlp.github.io/coqa/ </center>
 
+### (Super)GLUE
+- General Language Understanding Evaluation
+- Evaluating performance of models across diverse set of existing tasks
+- Includes hand-crafted diagnostic test suite
+- superglue basically same mit schwierigeren tasks, software toolkit and leaderboard
 
-<!-- Benchmarks:
-  - GLUE
-  - SuperGLUE
-  - CoQA In-domain Out-of-domain
-  - RACE RACE RACE-M RACE-H
-  - SNLI %acc
-  - VOiCES
-Pre-Training Recources:
-  - BERT
-  - ELMo
-  - StanfordNLP
-  - ELECTRA (Google AI) -->
+### AQuA
+- Algebraic word problems with rattionales
+- 100k problems with natural language rationales
+- https://github.com/deepmind/AQuA
+
+### SNLI
+- **S**tanford **N**atural **L**anguage **I**nference Corpus
+- Understanding entailment and contradiction
+- https://nlp.stanford.edu/projects/snli/
+
+### LAMBADA 
+- **LA**nguage **M**odeling **B**roadened to **A**ccount for **D**iscourse **A**spects
+- Word prediction task
+  - Predict the last word of a sentence depending on the context
+- Models can't rely on local context, must be able to keep track of information in the broader discourse
+- https://www.aclweb.org/anthology/P16-1144.pdf
+
+## Pre-Training Resources
+- BERT/ALBERT/CamemBERT
+  - Trained on unlabeled data over different pre-training tasks
+  - WordPiece embeddings with a 30k token vocabulary
+- OpenAI GPT2
