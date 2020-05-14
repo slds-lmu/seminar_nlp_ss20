@@ -10,7 +10,14 @@ output:
 knitr::opts_chunk$set(echo = FALSE)
 ```
 
-## What is Transfer Learning?
+## Content
+
+1. Transfer Learning
+1. (Self-)attention
+1. Overview over important NLP models
+1. BERT
+
+## Transfer Learning
 
 ```{r figure01, echo=FALSE, out.width="70%", fig.cap="Traditional ML vs. Transfer Learning", fig.align="center"}
 knitr::include_graphics("figures/02-00-transfer-learning-for-nlp/compare-classical-transferlearning-ml.PNG")
@@ -32,7 +39,7 @@ knitr::include_graphics("figures/02-00-transfer-learning-for-nlp/The_transformer
 ```
 
 ## Self-attention
-```{r figure07, echo=FALSE, out.width="60%", fig.cap="Transformer translation, David Chenell for  Google AI Blog: Transformer: A Novel Neural Network Architecture for Language Understanding, Retrieved from https://ai.googleblog.com/2017/08/transformer-novel-neural-network.html", fig.align="center"}
+```{r figure04, echo=FALSE, out.width="60%", fig.cap="Transformer translation, David Chenell for  Google AI Blog: Transformer: A Novel Neural Network Architecture for Language Understanding, Retrieved from https://ai.googleblog.com/2017/08/transformer-novel-neural-network.html", fig.align="center"}
 knitr::include_graphics("figures/02-00-transfer-learning-for-nlp/transform20fps.gif")
 ```
 
@@ -60,14 +67,54 @@ knitr::include_graphics("figures/02-00-transfer-learning-for-nlp/bert-masked_tas
 ```
 
 
-## GPT-2 and XLNet
+## GPT-2 
 
-* GPT-2: a tremendous multilayer Transformer Decoder.
+**GPT-2: A tremendous multilayer Transformer Decoder.**
+```{r figure09, echo=FALSE, out.width="70%", fig.cap="BERT structure, \n Alammar, Jay (2019). The Illustrated GPT-2 [Blog post]. Retrieved from http://jalammar.github.io/illustrated-gpt2/", fig.align="center"}
+knitr::include_graphics("figures/02-00-transfer-learning-for-nlp/gpt_2_decoder.png")
+```
+
+
+## XLNet
+
+
+**XLNet**: Borrows ideas from autoregressive language modeling (e.g., Transformer-XL) and autoencoding (e.g., BERT) while avoiding their limitations.
+
+## Discussion
+
+**Thank you for your attention**
+
+
+## BERT-Input Representation
+
+```{r figure010, echo=FALSE, out.width="70%", fig.cap="BERT-Input Representation", fig.align="center"}
+knitr::include_graphics("figures/02-00-transfer-learning-for-nlp/bert_input_representation.jpg")
+```
+
+## BERT-Next Sentence Prediction(NSP)
+
+```{r figure011, echo=FALSE, out.width="70%", fig.cap="BERT-Next Sentence Prediction(NSP), \n Alammar, Jay (2018). The Illustrated BERT, ELMo, and co. [Blog post]. Retrieved from http://jalammar.github.io/illustrated-bert/", fig.align="center"}
+knitr::include_graphics("figures/02-00-transfer-learning-for-nlp/bert-nsp.png")
+```
+
+
+## BERT-4-Tasks 
+
+```{r figure012, echo=FALSE, out.width="70%", fig.cap="BERT-4-Tasks", fig.align="center"}
+knitr::include_graphics("figures/02-00-transfer-learning-for-nlp/bert-based_model.png")
+```
+
+## XLNet permutation language model
+
 
 * XLNet: borrows ideas from autoregressive language modeling (e.g., Transformer-XL @dai2019transformer) and autoencoding (e.g., BERT) while avoiding their limitations.
 
+```{r figure013, echo=FALSE, out.width="70%", fig.cap="XLNet Permutation language model", fig.align= "center" }
+knitr::include_graphics("figures/02-00-transfer-learning-for-nlp/xlnet-pml.png")
+```
 
-## Dsicussion
+
+## Discussion
 
 **Thank you for your attention**
 
