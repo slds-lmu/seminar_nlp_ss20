@@ -10,7 +10,14 @@ output:
 knitr::opts_chunk$set(echo = FALSE)
 ```
 
-## What is Transfer Learning?
+## Content
+
+1. Transfer Learning
+1. (Self-)attention
+1. Overview over important NLP models
+1. BERT
+
+## Transfer Learning
 
 ```{r figure01, echo=FALSE, out.width="70%", fig.cap="Traditional ML vs. Transfer Learning", fig.align="center"}
 knitr::include_graphics("figures/02-00-transfer-learning-for-nlp/compare-classical-transferlearning-ml.PNG")
