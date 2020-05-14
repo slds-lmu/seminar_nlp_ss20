@@ -1,5 +1,5 @@
 ---
-title: "Introduction to transfer learning"
+title: "Introduction to Transfer Learning"
 output: 
   ioslides_presentation:
     widescreen: true
@@ -92,6 +92,7 @@ knitr::include_graphics("figures/02-00-transfer-learning-for-nlp/gpt_2_decoder.p
 
 **Thank you for your attention**
 
+## Back-Up
 
 ## BERT-Input Representation
 
@@ -135,3 +136,19 @@ knitr::include_graphics("figures/02-00-transfer-learning-for-nlp/transformer.png
 ```{r figure_extra6, echo=FALSE, out.width="70%", fig.cap="Transformer: Encoder-Decoder, Alammar, Jay (2018). The Illustrated Transformer [Blog post]. Retrieved from https://jalammar.github.io/illustrated-transformer/", fig.align="center"}
 knitr::include_graphics("figures/02-00-transfer-learning-for-nlp/Transformer_decoder.png")
 ```
+
+## ULMFiT
+
+```{r figure_extra7, echo=FALSE, out.width="70%", fig.cap="Retrieved from Universal Language Model Fine-tuning for Text Classification by Howard and Ruder (https://arxiv.org/pdf/1801.06146.pdf)" }
+knitr::include_graphics("figures/02-00-transfer-learning-for-nlp/ulmfit.png")
+```
+
+
+## ULMFiT
+
+```{r figure_extra8, echo=FALSE, out.width="70%", fig.cap="Retrieved from https://www.slideshare.net/shuntaroy/a-review-of-deep-contextualized-word-representations-peters-2018"  }
+knitr::include_graphics("figures/02-00-transfer-learning-for-nlp/elmo_shuntaroy.png")
+```
+
+
+
