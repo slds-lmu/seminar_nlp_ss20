@@ -17,9 +17,18 @@ knitr::include_graphics("figures/02-00-transfer-learning-for-nlp/compare-classic
 ```
 
 ## Attention
-```{r figure02, echo=FALSE, out.width="50%", fig.cap="Global attention model, Loung et al. 2015", fig.align="center"}
+<div style="float: left; width: 50%;">
+```{r figure02, echo=FALSE, out.width="100%", fig.cap="Global attention model, Loung et al. 2015", fig.align="center"}
 knitr::include_graphics("figures/02-00-transfer-learning-for-nlp/Depiction-of-Global-Attention-in-an-Encoder-Decoder-Recurrent-Neural-Network.png")
 ```
+</div>
+
+<div style="float: right; width: 50%;">
+```{r figure08, echo=FALSE, out.width="90%", fig.cap=" Illustration of a CNN for sentence calssification, Source: Zhang, Y., & Wallace, B. (2015). A Sensitivity Analysis of (and Practitioners’ Guide to) Convolutional Neural Networks for Sentence Classification.", fig.align="center"}
+knitr::include_graphics("figures/02-00-transfer-learning-for-nlp/nlp-cnn.png")
+```
+</div>
+
 
 ## (Self-)attention
 
@@ -28,9 +37,18 @@ knitr::include_graphics("figures/02-00-transfer-learning-for-nlp/The_transformer
 ```
 
 ## (Self-)attention
-```{r figure04, echo=FALSE, out.width="70%", fig.cap="Transformer Encoder Layer, \n Alammar, Jay (2018). The Illustrated Transformer [Blog post]. Retrieved from https://jalammar.github.io/illustrated-transformer/", fig.align="center"}
-knitr::include_graphics("figures/02-00-transfer-learning-for-nlp/encoder_with_tensors.png")
+```{r figure07, echo=FALSE, out.width="60%", fig.cap="transformer gif", fig.align="center"}
+knitr::include_graphics("figures/02-00-transfer-learning-for-nlp/transform20fps.gif")
 ```
+
+## (Self-)attention
+
+>- whole sequence input encoding, not sequential input encoding
+
+>- less complex layers than CNNs
+
+>- -> faster than both with better results
+
 
 ## Overview over important NLP models
 
