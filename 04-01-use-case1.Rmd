@@ -1,7 +1,30 @@
-# Use-Case I
+# Use-Case I : Natural Language Generation
 
-*Authors: Author 1, Author 2*
+*Authors: Haris Jabbar, Author 2*
 
 *Supervisor: Supervisor*
 
 
+
+## Definition
+
+Reiter and Dale (2000) defined Natural Language Generation (NLG) as “the sub-field of artificial intelligence and computational linguistics that is concerned with the construction ofcomputer systems than can produce understandable texts in English or other human languages from some un- derlying non-linguistic representation ofinformation”
+
+## Architecture of NLG Systems
+
+
+
+## Use Cases
+
+![NLG Use Cases](figures/nlg_use_cases.png)
+
+## Commercial Activity
+
+1. https://www.narrativescience.com 
+2. https://automatedinsights.com 
+3. http://www.arria.com
+
+## Notes
+
+- Both text-to-text generation and data-to-text generation are instances of Natural Language Generation (NLG)
+- 
