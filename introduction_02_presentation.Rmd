@@ -113,14 +113,6 @@ knitr::include_graphics("figures/02-00-transfer-learning-for-nlp/bert-based_mode
 knitr::include_graphics("figures/02-00-transfer-learning-for-nlp/xlnet-pml.png")
 ```
 
-
-## Discussion
-
-**Thank you for your attention**
-
-
-## Extra images etc.
-
 ## Extra transformers 1
 
 ```{r figure_extra4, echo=FALSE, out.width="70%", fig.cap="Transformer example, Alammar, Jay (2018). The Illustrated Transformer [Blog post]. Retrieved from https://jalammar.github.io/illustrated-transformer/", fig.align="center"}
