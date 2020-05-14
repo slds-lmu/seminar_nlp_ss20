@@ -19,14 +19,14 @@ knitr::opts_chunk$set(echo = FALSE)
 
 ## Transfer Learning
 
-```{r figure01, echo=FALSE, out.width="70%", fig.cap="Traditional ML vs. Transfer Learning", fig.align="center"}
+```{r figure01, echo=FALSE, out.width="80%", fig.cap="Traditional ML vs. Transfer Learning", fig.align="center"}
 knitr::include_graphics("figures/02-00-transfer-learning-for-nlp/compare-classical-transferlearning-ml.PNG")
 ```
 
 
 ## Performance 
 
-```{r figure01a, echo=FALSE, out.width="70%", fig.cap="Traditional ML vs. Transfer Learning", fig.align="center"}
+```{r figure01a, echo=FALSE, out.width="100%", fig.cap="", fig.align="center"}
 knitr::include_graphics("figures/02-00-transfer-learning-for-nlp/ner_results.png")
 ```
 
