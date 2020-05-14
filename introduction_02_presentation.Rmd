@@ -23,6 +23,15 @@ knitr::opts_chunk$set(echo = FALSE)
 knitr::include_graphics("figures/02-00-transfer-learning-for-nlp/compare-classical-transferlearning-ml.PNG")
 ```
 
+
+## Performance 
+
+```{r figure01a, echo=FALSE, out.width="70%", fig.cap="Traditional ML vs. Transfer Learning", fig.align="center"}
+knitr::include_graphics("figures/02-00-transfer-learning-for-nlp/ner_results.png")
+```
+
+Performance on Named Entity Recognition (NER) on CoNLL-2003 (English) over time.
+
 ## Attention
 <div style="float: left; width: 50%;">
 ```{r figure02, echo=FALSE, out.width="100%", fig.cap="Global attention model, Loung et al. 2015", fig.align="center"}
