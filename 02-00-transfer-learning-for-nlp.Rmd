@@ -33,7 +33,7 @@ The most common models for language modeling and machine translation were, and s
 ## Overview over important NLP models
 
 ```{r ch02-figure02, echo=FALSE, out.width="70%", fig.cap="(ref:ch02-figure02)", fig.align="center"}
-knitr::include_graphics("figures/02-00-transfer-learning-for-nlp/overview-tranferlearning.PNG")
+knitr::include_graphics("figures/02-00-transfer-learning-for-nlp/overview-tranferlearning.png")
 ```
 (ref:ch02-figure02) Overview of the most important models for transfer learning
 
