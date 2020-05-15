@@ -1,8 +1,3 @@
----
-output:
-  pdf_document: default
-  html_document: default
----
 # Introduction: Transfer Learning for NLP
 
 *Authors: Carolin Becker, Joshua Wagner, Bailan He*
@@ -17,7 +12,7 @@ In the next three chapters, various NLP models will be presented, which will be 
 ## What is Transfer Learning?
 
 ```{r ch02-figure01, echo=FALSE, out.width="70%", fig.cap="(ref:ch02-figure01)", fig.align="center"}
-knitr::include_graphics("figures/02-00-transfer-learning-for-nlp/compare-classical-transferlearning-ml.PNG")
+knitr::include_graphics("figures/02-00-transfer-learning-for-nlp/compare-classical-transferlearning-ml.png")
 ```
 (ref:ch02-figure01) Classic Machine Learning and Transfer Learning
 
