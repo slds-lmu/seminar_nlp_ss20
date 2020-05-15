@@ -15,7 +15,7 @@ graphics: yes
 ---
 <!--- cover-image: images/cover.png -->
 
-```{r setup-index, include=FALSE}
+```{r setup, include=FALSE}
 options(
   htmltools.dir.version = FALSE, formatR.indent = 2, width = 55, digits = 4
 )
