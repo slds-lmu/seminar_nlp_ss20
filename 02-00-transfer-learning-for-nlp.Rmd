@@ -23,7 +23,7 @@ Transfer learning allows us to deal with the learning of a task by using the exi
 
 Generally, transfer learning has several advantages over classical machine learning: saving time for model training, mostly better performance, and not a need for a lot of training data in the target domain. 
 
-It is an especially important topic in NLP problems, as there is a lot of knowledge about many texts, but normally the training data only contains a small piece of it. An classical NLP model captures and learns a variety of linguistic phenomena, such as long-term dependencies and negation, from a large-scale corpus. This knowledge can be transferred to initialize another model to perform well on a specific NLP task, such as sentiment analysis. [@evolutiontransferlearning]
+It is an especially important topic in NLP problems, as there is a lot of knowledge about many texts, but normally the training data only contains a small piece of it. A classical NLP model captures and learns a variety of linguistic phenomena, such as long-term dependencies and negation, from a large-scale corpus. This knowledge can be transferred to initialize another model to perform well on a specific NLP task, such as sentiment analysis. [@evolutiontransferlearning]
 
 ## (Self-)attention
 The most common models for language modeling and machine translation were, and still are to some extent, recurrent neural networks with long short-term memory [@hochreiter1997long] or gated recurrent units [@gru]. These models commonly use an encoder and a decoder archictecture. Advanced models use attention, either based on Bahdanau's attention [@bahdanau2014neural] or Loung's attention [@luong2015effective].
