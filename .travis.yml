@@ -6,7 +6,6 @@ before_install:
 - sudo apt-get install texlive-latex-extra
 - sudo aptitude install texlive-math-extra
 - sudo aptitude install texlive-luatex texlive-xetex
-- sudo apt-get upgrade
 - sudo aptitude install fonts-oflb-asana-math
 before_script:
 - chmod +x ./_build.sh
