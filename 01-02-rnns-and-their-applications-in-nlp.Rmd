@@ -1,15 +1,6 @@
 ---
-title: Recurrent neural networks and their applications in NLP
-author: Marianna Plesiak
-output: html_document:
-  toc: true
-  toc_depth: 4
-#bibliography: bibliography.bib
-\usepackage{amsmath} 
-\usepackage{bm}
-\let\boldsymbol\amsboldsymbol
+header-includes: \usepackage{amsmath} \usepackage{bm}
 ---
-
 
 # Recurrent neural networks and their applications in NLP
 
@@ -18,9 +9,7 @@ output: html_document:
 *Supervisor: Christian Heumann*
 
 
-## RNNs 
-
-### Structure
+## Structure
 
 Recurrent neural networks allow to relax the  condition of non-cyclical connections in the classical feedforward neural networks which were described in the previous chapter. This means, while simple MLP (multilayer perceptrons) can only map from input to output vectors, RNNs allow the entire history of previous inputs to influence the network output. (@ Graves 2012)
 
@@ -41,25 +30,25 @@ h^{(t)} & = g^{(t)}(x^{(t)},x^{(t-1)},...,x^{(2)}, x^{(1)}) \\
 & = f(h^{(t-1)},x^{(t)}| \theta)  (\#eq:recurrent)
 \end{align}
 
-After $t$ steps, the function $g^{(t)}$ takes into account the whole sequence $(x^{(t)},x^{(t-1)},...,x^{(2)}, x^{(1)})$ and produces the hidden state $h^{(t)}$. Because of its cyclical structure, $g^{(t)}$ can be factorized into the repeated application of a same function $f$. This function can be considered a universal model which is shared across all time steps and is generalized for all sequence lengths. This is called parameter sharing and is illustrated in the unfolded computational graph as a reuse of the same matrices $\pmb{U}$, $\pmb{W}$ and $\pmb{V}$ through the entire network. (@ Goodfellow book)
+After $t$ steps, the function $g^{(t)}$ takes into account the whole sequence $(x^{(t)},x^{(t-1)},...,x^{(2)}, x^{(1)})$ and produces the hidden state $h^{(t)}$. Because of its cyclical structure, $g^{(t)}$ can be factorized into the repeated application of a same function $f$. This function can be considered a universal model which is shared across all time steps and is generalized for all sequence lengths. This is called parameter sharing and is illustrated in the unfolded computational graph as a reuse of the same matrices $\pmb{W_{xh}}$, $\pmb{W_{hh}}$ and $\pmb{W_{hy}}$ through the entire network. (@ Goodfellow book)
 
 Consider a recurrent neural network with one hidden layer that is used to predict words or characters, so the output is discrete and the model maps input sequence to output sequence of the same length. Then the forward propagation is computed by iterating the following equations:
 
 \begin{align}
-\pmb{h}^{(t)} & = \mathcal{H}(\pmb{a}+\pmb{W}\pmb{h}^{(t-1)}+\pmb{U}\pmb{x}^{(t)}) (\#eq:input-to-hidden) \\ 
-\pmb{y}^{(t)} & = \mathcal{Y}(\pmb{b}+\pmb{V}\pmb{h}^{(t)}) (\#eq:hidden-to-output) \\
+\pmb{h}^{(t)} & = \mathcal{H}(\pmb{a}+\pmb{W_{hh}}\pmb{h}^{(t-1)}+\pmb{W_{xh}}\pmb{x}^{(t)}) (\#eq:input-to-hidden) \\ 
+\pmb{y}^{(t)} & = \mathcal{Y}(\pmb{b}+\pmb{W_{hy}}\pmb{h}^{(t)}) (\#eq:hidden-to-output) \\
 \end{align}
 
 where the parameters and functions denote the following:
 
 * $\mathcal{H}$: hidden layer function. Usually it is a sigmoid activation function (@ Sutzkever et al 2014 and Mikolov 2010) or tanh or ReLu  
-* $\pmb{W}$: weight matrix connecting recurrent connections between hidden states    
-* $\pmb{U}$: weight matrix connecting inputs to hidden layer  
-* $\pmb{V}$: weight matrix connecting hidden states to outputs    
+* $\pmb{W_{hh}}$: weight matrix connecting recurrent connections between hidden states    
+* $\pmb{W_{xh}}$: weight matrix connecting inputs to hidden layer  
+* $\pmb{W_{hy}}$: weight matrix connecting hidden states to outputs (softmax if we want to predict next word or letter)  
 * $\mathcal{Y}$: output layer function. If the model is used to predict words, softmax function is usually chosen as it returns valid probabilities over the possible outputs (@) Mikolov 2010)  
 * $\pmb{a}$, $\pmb{b}$: input and output bias vectors. (Graves 2014) 
 
-Because inputs $x^{t}$ are usually encoded as one-hot-vectors, the dimension of a vector representing one word corresponds to the size of vocabulary (in practice 30000-200000 words according to @ Mikolov 2010). The size of a hidden layer must reflect the size of training data and is often chosen to be between 30 and 500 hidden units (@ Mikolov 2010). The model training requires initialization of the initial state $h^{(0)}$ as well as the weight matrices, which are usually set to small random values (@ Mikolov 2010). Since the network is used to compute the predictive distributions $Pr(x^{(t+1)}|y^{(t)})$ at each time instance $t$, the network distribution is denoted as
+Because inputs $x^{(t)}$ are usually encoded as one-hot-vectors, the dimension of a vector representing one word corresponds to the size of vocabulary (in practice 30000-200000 words according to @ Mikolov 2010). The size of a hidden layer must reflect the size of training data and is often chosen to be between 30 and 500 hidden units (@ Mikolov 2010). The model training requires initialization of the initial state $h^{(0)}$ as well as the weight matrices, which are usually set to small random values (@ Mikolov 2010). Since the network is used to compute the predictive distributions $Pr(x^{(t+1)}|y^{(t)})$ at each time instance $t$, the network distribution is denoted as
 
 \begin{align}
 Pr(x) & =\prod_{t=1}^{T} Pr(x^{(t+1)}|y^{(t)}) (\#eq:rnn-probability) \\
@@ -68,7 +57,7 @@ Pr(x) & =\prod_{t=1}^{T} Pr(x^{(t+1)}|y^{(t)}) (\#eq:rnn-probability) \\
 and the total loss used for training is simply the sum of the losses over all time steps denoted as the negative log-likelihood of $Pr(x)$:
 
 \begin{align}
-\mathcal{L(x)} & =-\sum_{t=1}^{T} \log{Pr(x^{(t+1)}|y^{(t)})} (\#eq:rnn-log-loss) \\
+\mathcal{L(x)} & =-\sum_{t=1}^{T} \log{Pr(x^{(t+1)}|y^{(t)})} (\#eq:rnn-log-loss) \\  
 \end{align}
 
 @ Graves 2014
@@ -76,6 +65,46 @@ and the total loss used for training is simply the sum of the losses over all ti
 
 ### Backpropagation and Drawbacks
 
+In order to train the model, one must calculate the gradients for the three weights matrices $W_{xh}$, $W_{hh}$ and $W_{hy}$. The algorithm differs from a regular backpropagation because we have to apply chain rule recursively and sum up the gradients through the network. 
+
+Gradients w.r.t. $W_{hy}$:  
+
+* for a single time step $t$:  
+
+\begin{align}
+\frac{\partial \mathcal{L^{(t)}}}{\partial W_{hy}} & = \frac{\partial \mathcal{L^{(t)}}}{\partial y^{(t)}} (\#eq:rnn-back-hy-one) \\ 
+\end{align}
+
+* for the whole sequence:  
+
+\begin{align}
+\frac{\partial \mathcal{L}}{\partial W_{hy}} & = \sum_{t=1}^{T} \frac{\partial \mathcal{L}}{\partial y^{(t)}} \frac{\partial y^{(t)}} {\partial W_{hy}}  (\#eq:rnn-back-hy-all) \\    
+\end{align}
+
+Gradients w.r.t. $W_{hh}$:
+
+* for a single time step $t$:
+
+\begin{align}
+\frac{\partial \mathcal{L^{(t)}}}{\partial W_{hh}} & = \frac{\partial \mathcal{L^{(t)}}}{\partial y^{(t)}} \frac{\partial y^{(t)}}{\partial h^{(t)}} \frac{\partial h^{(t)}}{\partial W_{hh}} 
+\end{align}
+
+The last part also depends on $h^{(t)}$ and the fradient can be rewriten again as:
+
+\begin{align}
+\frac{\partial \mathcal{L^{(t)}}}{\partial W_{hh}}
+& = \frac{\partial \mathcal{L^{(t)}}}{\partial y^{(t)}} \frac{\partial y^{(t)}}{\partial h^{(t)}} \frac{\partial h^{(t)}}{\partial h^{(t-1)}} \frac{\partial h^{(t-1)}}{\partial W_{hh}} \\
+& = \sum_{k=1}^{t} \frac{\partial \mathcal{L^{(t)}}}{\partial y^{(t)}} \frac{\partial y^{(t)}}{\partial h^{(t)}} \frac{\partial h^{(t)}}{\partial h^{(k)}} \frac{\partial h^{(k)}}{\partial W_{hh}}
+\end{align}
+
+
+* for the whole sequence:
+
+\begin{align}
+\frac{\partial \mathcal{L}}{\partial W_{hh}}
+& = \sum_{t} \sum_{k=1}^{t+1} \frac{\partial \mathcal{L^{(t)}}}{\partial y^{(t)}} \frac{\partial y^{(t)}}{\partial h^{(t)}} \frac{\partial h^{(t)}}{\partial h^{(k)}} \frac{\partial h^{(k)}}{\partial W_{hh}}
+\end{align}
+ 
 
 ## Gated RNNs
 
