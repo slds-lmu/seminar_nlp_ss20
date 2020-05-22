@@ -51,13 +51,13 @@ where the parameters and functions denote the following:
 Because inputs $x^{(t)}$ are usually encoded as one-hot-vectors, the dimension of a vector representing one word corresponds to the size of vocabulary (in practice 30000-200000 words according to @ Mikolov 2010). The size of a hidden layer must reflect the size of training data and is often chosen to be between 30 and 500 hidden units (@ Mikolov 2010). The model training requires initialization of the initial state $h^{(0)}$ as well as the weight matrices, which are usually set to small random values (@ Mikolov 2010). Since the network is used to compute the predictive distributions $Pr(x^{(t+1)}|y^{(t)})$ at each time instance $t$, the network distribution is denoted as
 
 \begin{align}
-Pr(x) & =\prod_{t=1}^{T} Pr(x^{(t+1)}|y^{(t)}) (\#eq:rnn-probability) \\
+Pr(x) & =\prod_{t} Pr(x^{(t+1)}|y^{(t)}) (\#eq:rnn-probability) \\
 \end{align}
 
 and the total loss used for training is simply the sum of the losses over all time steps denoted as the negative log-likelihood of $Pr(x)$:
 
 \begin{align}
-\mathcal{L(x)} & =-\sum_{t=1}^{T} \log{Pr(x^{(t+1)}|y^{(t)})} (\#eq:rnn-log-loss) \\  
+\mathcal{L(x)} & =-\sum_{t} \log{Pr(x^{(t+1)}|y^{(t)})} (\#eq:rnn-log-loss) \\  
 \end{align}
 
 @ Graves 2014
@@ -72,13 +72,13 @@ Gradients w.r.t. $W_{hy}$:
 * for a single time step $t$:  
 
 \begin{align}
-\frac{\partial \mathcal{L^{(t)}}}{\partial W_{hy}} & = \frac{\partial \mathcal{L^{(t)}}}{\partial y^{(t)}} (\#eq:rnn-back-hy-one) \\ 
+\frac{\partial \mathcal{L^{(t)}}}{\partial W_{hy}} & = \frac{\partial \mathcal{L^{(t)}}}{\partial y^{(t)}} \frac{\partial y^{(t)}}{\partial W_{hy}}(\#eq:rnn-back-hy-one) \\ 
 \end{align}
 
 * for the whole sequence:  
 
 \begin{align}
-\frac{\partial \mathcal{L}}{\partial W_{hy}} & = \sum_{t=1}^{T} \frac{\partial \mathcal{L}}{\partial y^{(t)}} \frac{\partial y^{(t)}} {\partial W_{hy}}  (\#eq:rnn-back-hy-all) \\    
+\frac{\partial \mathcal{L}}{\partial W_{hy}} & = \sum_{t} \frac{\partial \mathcal{L}}{\partial y^{(t)}} \frac{\partial y^{(t)}} {\partial W_{hy}}  (\#eq:rnn-back-hy-all) \\    
 \end{align}
 
 Gradients w.r.t. $W_{hh}$:
@@ -86,15 +86,15 @@ Gradients w.r.t. $W_{hh}$:
 * for a single time step $t$:
 
 \begin{align}
-\frac{\partial \mathcal{L^{(t)}}}{\partial W_{hh}} & = \frac{\partial \mathcal{L^{(t)}}}{\partial y^{(t)}} \frac{\partial y^{(t)}}{\partial h^{(t)}} \frac{\partial h^{(t)}}{\partial W_{hh}} 
+\frac{\partial \mathcal{L^{(t)}}}{\partial W_{hh}} & = \frac{\partial \mathcal{L^{(t)}}}{\partial y^{(t)}} \frac{\partial y^{(t)}}{\partial h^{(t)}} \frac{\partial h^{(t)}}{\partial W_{hh}} (\#eq:rnn-back-hh-one) 
 \end{align}
 
-The last part also depends on $h^{(t)}$ and the fradient can be rewriten again as:
+The last part $h^{(t)}$ also depends on $h^{(t-1)}$ and the gradient can be rewritten as:
 
 \begin{align}
 \frac{\partial \mathcal{L^{(t)}}}{\partial W_{hh}}
 & = \frac{\partial \mathcal{L^{(t)}}}{\partial y^{(t)}} \frac{\partial y^{(t)}}{\partial h^{(t)}} \frac{\partial h^{(t)}}{\partial h^{(t-1)}} \frac{\partial h^{(t-1)}}{\partial W_{hh}} \\
-& = \sum_{k=1}^{t} \frac{\partial \mathcal{L^{(t)}}}{\partial y^{(t)}} \frac{\partial y^{(t)}}{\partial h^{(t)}} \frac{\partial h^{(t)}}{\partial h^{(k)}} \frac{\partial h^{(k)}}{\partial W_{hh}}
+& = \sum_{k=0}^{t} \frac{\partial \mathcal{L^{(t)}}}{\partial y^{(t)}} \frac{\partial y^{(t)}}{\partial h^{(t)}} \frac{\partial h^{(t)}}{\partial h^{(k)}} \frac{\partial h^{(k)}}{\partial W_{hh}} (\#eq:rnn-back-hh-one-one) 
 \end{align}
 
 
@@ -102,8 +102,32 @@ The last part also depends on $h^{(t)}$ and the fradient can be rewriten again a
 
 \begin{align}
 \frac{\partial \mathcal{L}}{\partial W_{hh}}
-& = \sum_{t} \sum_{k=1}^{t+1} \frac{\partial \mathcal{L^{(t)}}}{\partial y^{(t)}} \frac{\partial y^{(t)}}{\partial h^{(t)}} \frac{\partial h^{(t)}}{\partial h^{(k)}} \frac{\partial h^{(k)}}{\partial W_{hh}}
+& = \sum_{t} \sum_{k=0}^{t} \frac{\partial \mathcal{L^{(t)}}}{\partial y^{(t)}} \frac{\partial y^{(t)}}{\partial h^{(t)}} \frac{\partial h^{(t)}}{\partial h^{(k)}} \frac{\partial h^{(k)}}{\partial W_{hh}} (\#eq:rnn-back-hh-all) 
 \end{align}
+
+
+Gradient w.r.t. $W_{xh}$ is similar to $W_{hh}$:
+
+* for a single step:
+
+\begin{align}
+\frac{\partial \mathcal{L^{(t)}}}{\partial W_{xh}}
+& = \frac{\partial \mathcal{L^{(t)}}}{\partial y^{(t)}} \frac{\partial y^{(t)}}{\partial h^{(t)}} \frac{\partial h^{(t)}}{\partial W_{xh}} \\
+& = \frac{\partial \mathcal{L^{(t)}}}{\partial y^{(t)}} \frac{\partial y^{(t)}}{\partial h^{(t)}} \frac{\partial h^{(t)}}{\partial W_{xh}} + \frac{\partial \mathcal{L^{(t)}}}{\partial y^{(t)}} \frac{\partial y^{(t)}}{\partial h^{(t)}} \frac{\partial  h^{(t)}}{\partial h^{(t-1)}} \frac{\partial h^{(t-1)}}{\partial W_{xh}} \\
+& = \sum_{k=0}^{t} \frac{\partial \mathcal{L^{(t)}}}{\partial y^{(t)}} \frac{\partial y^{(t)}}{\partial h^{(t)}} \frac{\partial h^{(t)}}{\partial h^{(k)}} \frac{\partial h^{(k)}}{\partial W_{xh}} (\#eq:rnn-back-xh-one) 
+\end{align}
+
+* for the whole sequence:
+
+\begin{align}
+\frac{\partial \mathcal{L}}{\partial W_{xh}}
+& = \sum_{t} \sum_{k=0}^{t} \frac{\partial \mathcal{L^{(t)}}}{\partial y^{(t)}} \frac{\partial y^{(t)}}{\partial h^{(t)}} \frac{\partial h^{(t)}}{\partial h^{(k)}} \frac{\partial h^{(k)}}{\partial W_{xh}} (\#eq:rnn-back-xh-all) 
+\end{align}
+
+
+
+
+
  
 
 ## Gated RNNs
