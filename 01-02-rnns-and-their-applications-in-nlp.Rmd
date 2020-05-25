@@ -9,7 +9,7 @@ header-includes: \usepackage{amsmath} \usepackage{bm}
 *Supervisor: Christian Heumann*
 
 
-## Structure
+## Architecture and Training
 
 Recurrent neural networks allow to relax the  condition of non-cyclical connections in the classical feedforward neural networks which were described in the previous chapter. This means, while simple MLP (multilayer perceptrons) can only map from input to output vectors, RNNs allow the entire history of previous inputs to influence the network output. (@ Graves 2012)
 
@@ -63,7 +63,7 @@ and the total loss used for training is simply the sum of the losses over all ti
 @ Graves 2014
 
 
-### Backpropagation and Drawbacks
+### Backpropagation and Problems
 
 In order to train the model, one must calculate the gradients for the three weights matrices $W_{xh}$, $W_{hh}$ and $W_{hy}$. The algorithm differs from a regular backpropagation because we have to apply chain rule recursively and sum up the gradients through the network. 
 
@@ -133,6 +133,20 @@ Gradient w.r.t. $W_{xh}$ is similar to $W_{hh}$:
 ## Gated RNNs
 
 ### LSTM
+
+Long Short Term Memory networks were introduced by @ Hochreiter Schmidhuber to deal with problems of long term dependencies. Instead of a simple hidden unit that combines inputs and previous hidden states linearly and outputs the non-linear transformation to the next step, hidden units are now extended by special input, forget and output gates which help to control the flow of information. Such more complex units are called memory cells and the following equations show how a LSTM uses the gating mechanism to calculate the hidden state within a memory cell: @ Hochreiter Schmidhuber
+
+\begin{align}
+f^{(t)} & = sigm(W_{xf}x^{(t)}+W_{hf}h^{(t-1)}+b_{f}) (\#eq:lstm-forget) \\
+i^{(t)} & = sigm(W_{xi}x^{(t)}+W_{hi}h^{(t-1)}+b_{i}) (\#eq:lstm-input) \\
+o^{(t)} & = sigm(W_{xo}x^{(t)}+W_{ho}h^{(t-1)}+b_{o}) (\#eq:lstm-output) \\
+g^{(t)} & = tanh(W_{xc}x^{(t)}+W_{hc}h^{(t-1)}+b_{c}) (\#eq:lstm-candidates) \\
+c^{(t)} & = f^{(t)}c^{(t-1)}+i^{(t)}g^{(t)} (\#eq:lstm-newcell) \\
+h^{(t)} & = o^{(t)}tanh(c^{(t)}) (\#eq:lstm-newoutput) \\
+\end{align}
+
+First, forget gate $f^{(t)}$ decides which values of the previous output $h^{(t-1)}$ to forget. The next step is deciding which information will be stored in the internal cell state $c^{(t)}$. This step consists of two parts: 1) multiplication of the old state $c^{(t-1)}$ by $f^{(t)}$ (forgetting information); 2) adding new candidates calculated in $g^{(t)}$ with help of its multiplication by values from the input gate $i^{(t)}$ (adding new information). The output $h^{(t)}$ is produced with help of the output gate $o^{(t)}$ and applying a $tanh$ function to the cell state in order to only output values which were chosen. @ Goodfellow 2014, @ Graves 2014
+
 
 ### GRU
 
