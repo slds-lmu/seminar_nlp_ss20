@@ -15,7 +15,7 @@ Recurrent neural networks allow to relax the  condition of non-cyclical connecti
 
 The repetitive structure of RNNs can be visualised with help of an **unfolded** computational graph(see @ figure 1). 
 
-```{r echo=FALSE, message=FALSE, fig.align="center",fig.cap="Unfolded computatinal graph of a RNN.", out.width = '80%'}
+```{r echo=FALSE, message=FALSE, fig.align="center",fig.cap="Unfolded computatinal graph of a RNN.", out.width = '100%'}
 
 knitr::include_graphics("figures/01-02-rnns-and-their-applications-in-nlp/02_unfolded_graph.PNG")
 ```
@@ -149,6 +149,18 @@ First, forget gate $f^{(t)}$ decides which values of the previous output $h^{(t-
 
 
 ### GRU
+
+Invented by Cho et al. 2014.
+Is simpler because it includes only two gates: reset and update
+
+The hidden unit is calculated as:
+
+\begin{align}
+r^{(t)} & = sigm(W_{xr}x^{(t)}+W_{hr}h^{(t-1)}) (\#eq:gru-reset) \\
+z^{(t)} & = sigm(W_{xz}x^{(t)}+W_{hz}h^{(t-1)}) (\#eq:gru-update) \\
+\tilde{h}^{(t)} & = tanh(W_{xh}x^{(t)}+W_{hh}(r^{(t)}h^{(t-1)})) (\#eq:gru-hidden) \\
+h^{(t)} & = z_jh_j^{(t-1)}+(1-z_j)\tilde{h}^{(t)} (\#eq:gru-hidden-output) \\
+\end{align}
 
 ## Versions
 
