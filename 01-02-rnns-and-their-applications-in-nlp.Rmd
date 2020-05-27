@@ -36,10 +36,8 @@ The unfolded recurrence can be formalized as following:
 
 
 \begin{align}
-
 h^{(t)} & = g^{(t)}(x^{(t)},x^{(t-1)},...,x^{(2)}, x^{(1)}) \\
 & = f(h^{(t-1)},x^{(t)}| \theta)  (\#eq:recurrent)
-
 \end{align}
 
 
