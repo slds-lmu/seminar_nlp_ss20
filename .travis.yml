@@ -8,7 +8,7 @@ cache:
   directories:
   - manuscript/cache
 before_install:
-- Rscript -e "install.packages(\"bookdown\")"
+  - Rscript -e "devtools::install()"
 before_script:
 - chmod +x ./_build.sh
 script: ./_build.sh
