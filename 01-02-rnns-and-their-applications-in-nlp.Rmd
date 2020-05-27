@@ -162,6 +162,15 @@ z^{(t)} & = sigm(W_{xz}x^{(t)}+W_{hz}h^{(t-1)}) (\#eq:gru-update) \\
 h^{(t)} & = z_jh_j^{(t-1)}+(1-z_j)\tilde{h}^{(t)} (\#eq:gru-hidden-output) \\
 \end{align}
 
+
+
+Illustration LSTM vs GRU
+
+```{r echo=FALSE, message=FALSE, fig.align="center",fig.cap="Structure of a hidden unit. Right: LSTM. Left: GRU. Ispired by http://colah.github.io/posts/2015-08-Understanding-LSTMs/", out.width = '100%'}
+
+knitr::include_graphics("figures/01-02-rnns-and-their-applications-in-nlp/03_lstm_vs_gru.PNG")
+```
+
 ## Versions
 
 ### Bidirectional and Deep RNNs
