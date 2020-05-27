@@ -1,12 +1,11 @@
 language: r
+install:
+- source ./texlive_install.sh
 cache:
   packages: true
-before_install:
-- sudo apt-get install texlive-full libv8-dev
-- sudo apt-get install texlive-latex-extra
-- sudo aptitude install texlive-math-extra
-- sudo aptitude install texlive-luatex texlive-xetex
-- sudo aptitude install fonts-oflb-asana-math
+  directories:
+    - /tmp/texlive
+    - $HOME/.texlive
 before_script:
 - chmod +x ./_build.sh
 script: ./_build.sh
