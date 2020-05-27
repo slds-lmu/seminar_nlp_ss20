@@ -8,4 +8,5 @@ Depends:
   tidyverse,
   ggpubr,
   svglite,
-  here
+  here,
+  cowplot
