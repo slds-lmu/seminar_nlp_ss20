@@ -1,11 +1,9 @@
 language: r
-install:
-- source ./texlive_install.sh
+install: echo "Nothing occurs at installation, only script"
+script:
+- Rscript install_texlive.R
 cache:
   packages: true
-  directories:
-    - /tmp/texlive
-    - $HOME/.texlive
 before_script:
 - chmod +x ./_build.sh
 script: ./_build.sh
