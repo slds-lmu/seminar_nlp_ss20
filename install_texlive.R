@@ -9,3 +9,4 @@ if (!requireNamespace("tinytex", quietly = TRUE)) {
   devtools::install_github(c('yihui/tinytex'), quiet = TRUE)
   tinytex::install_tinytex()
 }
+install.packages("bookdown")
