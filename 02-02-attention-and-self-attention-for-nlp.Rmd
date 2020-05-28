@@ -1,7 +1,40 @@
 # Attention and Self-Attention for NLP
 
-*Authors: Author 1, Author 2*
+*Authors: Joshua Wagner*
 
-*Supervisor: Supervisor*
+*Supervisor: Matthias Aßenmacher*
+
+Both attention and self-attention were important for the advances made in NLP.
+The first part is an overview of attention as it is a building block for self-attention.
+The second part focuses on self-attention which enabled the commonly used models
+for transfer learning that are seen today.
+
+## Attention
+In this part of the chapter we revisit the Encoder-Decoder architecture that was introduced
+in chapter [3](01-02-rnns-and-their-applications-in-nlp). We focus on the improvments
+that were made with the development of attention mechanisms on the example of neural machine translation (nmt).
+
+As seen in chapter [3](01-02-rnns-and-their-applications-in-nlp), traditional early
+encoder-decoder architecture passes the last hidden state of the encoder to the decoder.
+This leads to the problem that information is lost in long input sequences.
+Especially information found early in the sequence tends to be "forgotten" after
+the entire sequence is processed. The addition of bi-directional layers remidies
+this by processing the input in reversed order. The problem still persists for mid
+sections of very long input sequences. The development of attention enables the decoder to
+attend to the entire input sequence.
+
+### Bahdanau-Attention
+
+In 2015, Bahdanau et al. proposed with their
 
 
+### Luong-Attention
+
+### Attention Models
+Overview over models that use attention and different attentions used, segway to self-attention
+
+## Self-Attention
+general intro to self-attention 
+
+### Transformers
+explain transformer architecture, multi-head attention, dot-prod. attention
