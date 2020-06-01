@@ -5,7 +5,18 @@
 *Supervisor: Daniel Schalk*
 
 
+
+
 Frameworks such as TensorFlow or Keras allow users to train a wide range of different models for different tasks. Let us assume that two models for a simple question-answer system are trained, one with attention and one without attention. How can these models be evaluated in order to find the model better suited to the task? Quite simply, through benchmarking. This section looks at some of the most commonly used benchmarking datasets and at pre-training resources.
+
+## Metrics
+For many of the benchmarking datasets in natural language processing, a leaderboard exists in which different models are compared with each other. Depending on the task, the models are evaluated with different metrics. In this section we will introduce those used for the benchmarking datasets presented later.
+  
+**Exact match.** The percentage of predictions that match any one of the answers exactly.  
+  
+**(Macro-averaged) F1 score.** Each answer and prediction is tokenized into words. For every answer to a given question, the overlap between the prediction and each answer is calculated and the maximum F1 is chosen. This score is then averaged over all of the questions.
+
+
 
 ## Benchmark Datasets
 ### SQuAD
@@ -21,22 +32,19 @@ The goal of this process was to get a more robust evaluation and to obtain an in
 One shortcoming of reading comprehension systems is that they tend to make unreliable guesses on questions to which no correct answer is possible. With this in mind, the second version of SQuAD was released in 2018. In addition to the approximately 100.000 questions from the first version, 53.775 new, unanswerable questions on the same paragraphs are contained in this dataset.  
   
 
-The accuracy of models trained on SQuAD is evaluated using two different metrics, both ignoring punctuation and articles.  
+The accuracy of models trained on SQuAD is evaluated using two different metrics, exact match and (Macro-averaged) F1 score, both ignoring punctuation and articles.  
   
-**Exact match.** The percentage of predictions that match any one of the answers exactly.  
-  
-**(Macro-averaged) F1 score.** Each answer and prediction is tokenized into words. For every answer to a given question, the overlap between the prediction and each answer is calculated and the maximum F1 is chosen. This score is then averaged over all of the questions. [@rajpurkar2016squad; @rajpurkar2018know]  
-  
-To evaluate human performance, the second answer to each question is treated as the human prediction.  
+To evaluate human performance, the second answer to each question is treated as the human prediction.[@rajpurkar2016squad; @rajpurkar2018know]  
   
 Humans achieve an **EM** score of 86.831 and a **F1** score of 89.452.  
   
 Currently, the best performing model achieves an **EM** score of 90.386 and a **F1** score of 92.777.  
   
-The leaderboard can be viewed here:   
+Examples of SQuAD and the leaderboard and can be viewed here:   
   
-<center target="_blank">https://rajpurkar.github.io/SQuAD-explorer/ </center>
+\center https://rajpurkar.github.io/SQuAD-explorer/ 
 
+\flushleft
 ### CoQA
 CoQA is a dataset for building **Co**nversational **Q**uestion **A**nswering systems. Humans are capable of gathering information through conversations that include several interrelated questions and answers. The aim of CoQA is to enable machines to answers conversational questions.  
   
@@ -56,15 +64,27 @@ Humans achieve a **F1** score of 89.4 for in-domain and a **F1** score of 87.4 f
   
 Currently, the best performing model achieves a **F1** score of 91.4 for in-domain and a **F1** score of 89.2 for out-of-domain.  
   
-The leaderboard can be viewed here:   
+Examples of CoQA and the leaderboard and can be viewed here:   
   
-<center target="_blank">https://stanfordnlp.github.io/coqa/ </center>
+\center https://stanfordnlp.github.io/coqa/ 
 
+\flushleft
 ### (Super)GLUE
-- General Language Understanding Evaluation
-- Evaluating performance of models across diverse set of existing tasks
-- Includes hand-crafted diagnostic test suite
-- superglue basically same mit schwierigeren tasks, software toolkit and leaderboard
+Most models in NLP are designed to solve a specific task, such as answering questions from a particular domain. This limits the use of models for understanding natural language. In order to process language in a way that is not limited to a specific task, genre, or dataset, models should be able to solve a variety of tasks well.
+  
+The **G**eneral **L**anguage **U**nderstanding **E**valuation benchmark dataset is a collection of tools created with this in mind. It is designed to encourage and favour models that share common linguistic knowledge across tasks. These tasks include textual entailment, sentiment analysis and question answering. Some tasks come with a lot of training data, others with less. Common to all datasets is that they were not created specifically for GLUE, but are existing datasets. Models that are evaluated on GLUE only need to have the ability to process single-sentence and sentence-pair inputs and make appropriate predictions.
+GLUE also includes a hand-crafted diagnostic test suite that enables detailed linguistic analysis of models.
+The models are scored separately for each task and then a macro-average of these scores is calculated to determine a system's position on the ranking. If a task has multiple metrics, an unweighted average of these metrics is used as the score for the task when calculating the overall macro average. [@wang2018glue]
+The human baseline score is 87.1, while the best model score is currently 90.6.
+  
+A good year after the release of GLUE, models surpassed human performance. In response to this, a new benchmark, SuperGLUE, was introduced. It follows the same principles as GLUE, however the tasks included are more challenging. The two hardest tasks in GLUE remain, the rest were selected based on difficulty for current NLP approaches. [@wang2019superglue]
+For SuperGLUE, the human baseline score is 89.8, which is above the best model score, presently 89.3.
+
+More information about the tasks and the leaderboard for both GLUE and SuperGLUE is available here:
+  
+\center https://super.gluebenchmark.com/
+  
+\flushleft
 
 ### AQuA
 - Algebraic word problems with rattionales
@@ -88,3 +108,7 @@ The leaderboard can be viewed here:
   - Trained on unlabeled data over different pre-training tasks
   - WordPiece embeddings with a 30k token vocabulary
 - OpenAI GPT2
+
+## Resources for Resources
+https://paperswithcode.com/area/natural-language-processing
+https://datasets.quantumstat.com/
