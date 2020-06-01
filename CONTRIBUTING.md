@@ -31,7 +31,6 @@ Pushing changes made in the chapter are done by commits where you give a short d
 It's good practice to not push too many changes at once. It's better to have smaller commits. Also don't forget to push after you are done working! In the case of any crash of your system (or RStudio) it may happen that your work is gone if you haven't pushed your local changes.
 
 Another note: You can use `git status` to see what files contains local changes.
-
 ## Naming scheme for the repo
 
 ### Structuring of files
@@ -42,6 +41,7 @@ There are four subdirectories:
 - data
 - figures
 - results
+
 
 
 ### Naming convention
