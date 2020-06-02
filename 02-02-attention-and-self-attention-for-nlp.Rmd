@@ -72,21 +72,32 @@ is called "concat" in @luong2015effective and "additive attention" in @vaswani20
 because of the concatenation seen above. A nice byproduct of attention is a matrix of alignment scores
 which can be visualised to show the correlation between source and target words.
 
-![]()
+![Alignment Matrix visualised for a French to English translation. Image source: Fig 3 in @bahdanau2014neural](./figures/02-02-attention-and-self-attention-for-nlp/bahdanau-fig3.png)
 
 The attention model proposed by Bahdanau et al. is also called a global attention model as it attends
 to every input in the sequence.
 
 ### Luong-Attention
 
+- intro loung
 
+- different proposed score functions
+
+- differences to bahdanau
+
+- explanaiton for local attention
 
 
 ### Attention Models
 Overview over models that use attention and different attentions used, segway to self-attention
 
+- just a short overview over different attention models/score functions
+
+
 ## Self-Attention
-general intro to self-attention 
+general intro to self-attention
+
+- intro self attention, explanaition is done in the transformers part
 
 ### Transformers
-explain transformer architecture, multi-head attention, dot-prod. attention
+explain transformer architecture, multi-head attention, dot-prod. attention, explain the differences in computational cost to rnns and conv. models
