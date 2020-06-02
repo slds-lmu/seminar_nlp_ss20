@@ -69,8 +69,10 @@ $$
 were tanh is used as non-linear activation function and $v_\alpha$ and $W_\alpha$
 are the weight matrices to be learned by the alignment model. The alignment score function
 is called "concat" in @luong2015effective and "additive attention" in @vaswani2017attention
-because the forward and backward source hidden states generated in the bi-directional encoder and the
-target hidden states in the uni-directional decoder are concatenated.
+because of the concatenation seen above. A nice byproduct of attention is a matrix of alignment scores
+which can be visualised to show the correlation between source and target words.
+
+![]()
 
 The attention model proposed by Bahdanau et al. is also called a global attention model as it attends
 to every input in the sequence.
