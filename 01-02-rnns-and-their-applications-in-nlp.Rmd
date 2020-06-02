@@ -1,5 +1,6 @@
 ---
-header-includes: \usepackage{amsmath} \usepackage{bm}
+bibliography: book.bib
+link-citations: yes
 ---
 
 # Recurrent neural networks and their applications in NLP
@@ -9,13 +10,16 @@ header-includes: \usepackage{amsmath} \usepackage{bm}
 *Supervisor: Christian Heumann*
 
 
-## Architecture and Training
+## Structure and Training of Simple RNNs
 
-Recurrent neural networks allow to relax the  condition of non-cyclical connections in the classical feedforward neural networks which were described in the previous chapter. This means, while simple MLP (multilayer perceptrons) can only map from input to output vectors, RNNs allow the entire history of previous inputs to influence the network output. (@ Graves 2012)
+Recurrent neural networks allow to relax the  condition of non-cyclical connections in the classical feedforward neural networks which were described in the previous chapter. This means, while simple multilayer perceptrons can only map from input to output vectors, RNNs allow the entire history of previous inputs to influence the network output. (@ Graves 2012)
+The first part of this chapter provides the structure definition of RNNs, presents the principles of their training and explains problems with backpropagation. In the second part, gated units, an improved way to calculate hidden states, are explained. The third part gives an overview of some extended versions of RNNs and their applications in NLP.
 
-The repetitive structure of RNNs can be visualised with help of an **unfolded** computational graph(see @ figure 1). 
+### Network Structure and Forwardpropagation
 
-```{r echo=FALSE, message=FALSE, fig.align="center",fig.cap="Unfolded computatinal graph of a RNN.", out.width = '100%'}
+The repetitive structure of RNNs can be visualised with help of an unfolded computational graph(see @ figure 1). 
+
+```{r echo=FALSE, message=FALSE, fig.align="center",fig.cap="Unfolded computatinal graph of a RNN. Source: Own figure.", out.width = '100%'}
 
 knitr::include_graphics("figures/01-02-rnns-and-their-applications-in-nlp/02_unfolded_graph.PNG")
 ```
@@ -30,23 +34,23 @@ h^{(t)} & = g^{(t)}(x^{(t)},x^{(t-1)},...,x^{(2)}, x^{(1)}) \\
 & = f(h^{(t-1)},x^{(t)}| \theta)  (\#eq:recurrent)
 \end{align}
 
-After $t$ steps, the function $g^{(t)}$ takes into account the whole sequence $(x^{(t)},x^{(t-1)},...,x^{(2)}, x^{(1)})$ and produces the hidden state $h^{(t)}$. Because of its cyclical structure, $g^{(t)}$ can be factorized into the repeated application of a same function $f$. This function can be considered a universal model which is shared across all time steps and is generalized for all sequence lengths. This is called parameter sharing and is illustrated in the unfolded computational graph as a reuse of the same matrices $\pmb{W_{xh}}$, $\pmb{W_{hh}}$ and $\pmb{W_{hy}}$ through the entire network. (@ Goodfellow book)
+After $t$ steps, the function $g^{(t)}$ takes into account the whole sequence $(x^{(t)},x^{(t-1)},...,x^{(2)}, x^{(1)})$ and produces the hidden state $h^{(t)}$. Because of its cyclical structure, $g^{(t)}$ can be factorized into the repeated application of a same function $f$. This function can be considered a universal model which is shared across all time steps and is generalized for all sequence lengths. This is called parameter sharing and is illustrated in the unfolded computational graph as a reuse of the same matrices $W_{xh}$, $W_{hh}$ and $W_{hy}$ through the entire network. (@ Goodfellow book)
 
 Consider a recurrent neural network with one hidden layer that is used to predict words or characters, so the output is discrete and the model maps input sequence to output sequence of the same length. Then the forward propagation is computed by iterating the following equations:
 
 \begin{align}
-\pmb{h}^{(t)} & = \mathcal{H}(\pmb{a}+\pmb{W_{hh}}\pmb{h}^{(t-1)}+\pmb{W_{xh}}\pmb{x}^{(t)}) (\#eq:input-to-hidden) \\ 
-\pmb{y}^{(t)} & = \mathcal{Y}(\pmb{b}+\pmb{W_{hy}}\pmb{h}^{(t)}) (\#eq:hidden-to-output) \\
+h^{(t)} & = \mathcal{H}(a+W_{hh}h^{(t-1)}+W_{xh}x^{(t)}) (\#eq:input-to-hidden) \\ 
+y^{(t)} & = \mathcal{Y}(b+W_{hy}h^{(t)}) (\#eq:hidden-to-output) \\
 \end{align}
 
 where the parameters and functions denote the following:
 
 * $\mathcal{H}$: hidden layer function. Usually it is a sigmoid activation function (@ Sutzkever et al 2014 and Mikolov 2010) or tanh or ReLu  
-* $\pmb{W_{hh}}$: weight matrix connecting recurrent connections between hidden states    
-* $\pmb{W_{xh}}$: weight matrix connecting inputs to hidden layer  
-* $\pmb{W_{hy}}$: weight matrix connecting hidden states to outputs (softmax if we want to predict next word or letter)  
+* $W_{hh}$: weight matrix connecting recurrent connections between hidden states    
+* $W_{xh}$: weight matrix connecting inputs to hidden layer  
+* $W_{hy}$: weight matrix connecting hidden states to outputs (softmax if we want to predict next word or letter)  
 * $\mathcal{Y}$: output layer function. If the model is used to predict words, softmax function is usually chosen as it returns valid probabilities over the possible outputs (@) Mikolov 2010)  
-* $\pmb{a}$, $\pmb{b}$: input and output bias vectors. (Graves 2014) 
+* $a$, $b$: input and output bias vectors. (Graves 2014) 
 
 Because inputs $x^{(t)}$ are usually encoded as one-hot-vectors, the dimension of a vector representing one word corresponds to the size of vocabulary (in practice 30000-200000 words according to @ Mikolov 2010). The size of a hidden layer must reflect the size of training data and is often chosen to be between 30 and 500 hidden units (@ Mikolov 2010). The model training requires initialization of the initial state $h^{(0)}$ as well as the weight matrices, which are usually set to small random values (@ Mikolov 2010). Since the network is used to compute the predictive distributions $Pr(x^{(t+1)}|y^{(t)})$ at each time instance $t$, the network distribution is denoted as
 
@@ -63,7 +67,7 @@ and the total loss used for training is simply the sum of the losses over all ti
 @ Graves 2014
 
 
-### Backpropagation and Problems
+### Backpropagation 
 
 In order to train the model, one must calculate the gradients for the three weights matrices $W_{xh}$, $W_{hh}$ and $W_{hy}$. The algorithm differs from a regular backpropagation because we have to apply chain rule recursively and sum up the gradients through the network. 
 
@@ -125,7 +129,7 @@ Gradient w.r.t. $W_{xh}$ is similar to $W_{hh}$:
 \end{align}
 
 
-
+### Vanishing and Exploding Gradients
 
 
  
@@ -166,16 +170,34 @@ h^{(t)} & = z_jh_j^{(t-1)}+(1-z_j)\tilde{h}^{(t)} (\#eq:gru-hidden-output) \\
 
 Illustration LSTM vs GRU
 
-```{r echo=FALSE, message=FALSE, fig.align="center",fig.cap="Structure of a hidden unit. Right: LSTM. Left: GRU. Ispired by http://colah.github.io/posts/2015-08-Understanding-LSTMs/", out.width = '100%'}
+```{r echo=FALSE, message=FALSE, fig.align="center",fig.cap="Structure of a hidden unit. Right: LSTM. Left: GRU. Source: Own figure inspired by http://colah.github.io/posts/2015-08-Understanding-LSTMs/", out.width = '100%'}
 
 knitr::include_graphics("figures/01-02-rnns-and-their-applications-in-nlp/03_lstm_vs_gru.PNG")
 ```
 
-## Versions
+## Extentions of Simple RNNs
 
-### Bidirectional and Deep RNNs
+### Deep RNNs
 
-### Applications
+### Encoder-Decoder Architecture
+
+The problem of mapping variable-length input sequences to variable-length output sequences is known as Sequence-to-Sequence or seq2seq learning in NLP. Although originally applied in machine translation tasks (@ Sutskever 2014, @ Cho et al 2014), the seq2seq approach achieved state-of-the-art results also in speech recognition (@ Prabhavalkar) and video captioning (@ Venugopalan). According to @ Cho et al 2014, the seq2seq model consists of two parts as illustrated below:
+
+```{r echo=FALSE, message=FALSE, fig.align="center",fig.cap="Encoder-Decoder architecture. Source: Own figure.", out.width = '100%'}
+
+knitr::include_graphics("figures/01-02-rnns-and-their-applications-in-nlp/04_encoder_decoder.PNG")
+```
+
+The first part is the encoder, a RNN which is trained on input sequences in order to obtain a large summary vector $c$ with a fixed dimension. The second part is a decoder, another RNN which generates predictions. In contrast to a simple RNN described at the beginning of this chapter, outputs $y^{(t)}$ and decoder hidden states $h^{(t)}$ are both conditioned on the summary vector $c$ from the encoder part as well as on $y^{(t-1)}$ and are computed by:
+
+\begin{align}
+h^{(t)} & = f(h^{(t-1)},y^{(t-1)},c) (\#eq:decoder-hidden) \\
+P(y^{(t)}|y^{(t-1)},...y^{(1)},c) & = \mathcal{Y}(h^{(t-1)},y^{(t-1)},c) (\#eq:decoder-output) \\
+\end{align}
+
+Such a structure 
+
+### Bidirectional RNNs
 
 
 
