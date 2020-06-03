@@ -19,7 +19,7 @@ The first part of this chapter provides the structure definition of RNNs, presen
 
 The repetitive structure of RNNs can be visualised with help of an unfolded computational graph(see @ figure 1). 
 
-```{r echo=FALSE, message=FALSE, fig.align="center",fig.cap="Unfolded computatinal graph of a RNN. Source: Own figure.", out.width = '100%'}
+```{r 01-02-unfold, echo=FALSE, message=FALSE, fig.align="center",fig.cap="Unfolded computatinal graph of a RNN. Source: Own figure.", out.width = '100%'}
 
 knitr::include_graphics("figures/01-02-rnns-and-their-applications-in-nlp/02_unfolded_graph.PNG")
 ```
@@ -170,7 +170,7 @@ h^{(t)} & = z_jh_j^{(t-1)}+(1-z_j)\tilde{h}^{(t)} (\#eq:gru-hidden-output) \\
 
 Illustration LSTM vs GRU
 
-```{r echo=FALSE, message=FALSE, fig.align="center",fig.cap="Structure of a hidden unit. Right: LSTM. Left: GRU. Source: Own figure inspired by http://colah.github.io/posts/2015-08-Understanding-LSTMs/", out.width = '100%'}
+```{r 01-02-lstm-gru, echo=FALSE, message=FALSE, fig.align="center",fig.cap="Structure of a hidden unit. Right: LSTM. Left: GRU. Source: Own figure inspired by http://colah.github.io/posts/2015-08-Understanding-LSTMs/", out.width = '100%'}
 
 knitr::include_graphics("figures/01-02-rnns-and-their-applications-in-nlp/03_lstm_vs_gru.PNG")
 ```
@@ -179,11 +179,15 @@ knitr::include_graphics("figures/01-02-rnns-and-their-applications-in-nlp/03_lst
 
 ### Deep RNNs
 
+The figure \@ref(fig:01-02-unfold) shows that each layer is associated with one parameter matrix so that the model is considered shallow. This structure can be extended to a deep RNN although the depth of an RNN is not a trivial concept since its units are already expressed as a nonlinear function of multiple previous units. However, a deep RNN is defined as a network with several input, hidden, or output layers stacked on top of each other. Such a structure can be more efficient at representing complex dependencies although it also requires higher computational effort because the distances between two variables at $t$ and $t+1$ become longer. @ Pascanu 2014
+
+Pascanu et al. (2014) proposed three ways to make an RNN deeper. Extending input-to-hidden functions helps to transform the raw input, e.g. one-hot encoded vectors, into a more convenient and informative representations, e.g. word embeddings, for higher levels. A deep hidden-to-hidden composition allows for the hidden states to effectively add new information to the accumulated summaries from the previous steps. For example, the model preserves useful information from the past although new inputs vary strongly and rapidly. Finally, a deep hidden-to-output function is used to make hidden states more compact and therefore enables the model to summarize the previous inputs more efficiently. 
+
 ### Encoder-Decoder Architecture
 
 The problem of mapping variable-length input sequences to variable-length output sequences is known as Sequence-to-Sequence or seq2seq learning in NLP. Although originally applied in machine translation tasks (@ Sutskever 2014, @ Cho et al 2014), the seq2seq approach achieved state-of-the-art results also in speech recognition (@ Prabhavalkar) and video captioning (@ Venugopalan). According to @ Cho et al 2014, the seq2seq model consists of two parts as illustrated below:
 
-```{r echo=FALSE, message=FALSE, fig.align="center",fig.cap="Encoder-Decoder architecture. Source: Own figure.", out.width = '100%'}
+```{r 01-02-enc-dec, echo=FALSE, message=FALSE, fig.align="center",fig.cap="Encoder-Decoder architecture. Source: Own figure.", out.width = '100%'}
 
 knitr::include_graphics("figures/01-02-rnns-and-their-applications-in-nlp/04_encoder_decoder.PNG")
 ```
@@ -195,9 +199,10 @@ h^{(t)} & = f(h^{(t-1)},y^{(t-1)},c) (\#eq:decoder-hidden) \\
 P(y^{(t)}|y^{(t-1)},...y^{(1)},c) & = \mathcal{Y}(h^{(t-1)},y^{(t-1)},c) (\#eq:decoder-output) \\
 \end{align}
 
-Such a structure 
 
 ### Bidirectional RNNs
+
+One of the limitations of simple RNNs is that they can process the information only up to a present time instance. In many NLP fields however, prediction may also depend on future inputs. Bidirectional RNNs introduced by @ Schuster, Paliwal in 1997, handle this issue by training on inputs in original as well as reversed order. The idea is to stack two hidden layers one on another while one of the layers is responsible for the forward information flow and another one for the backward information flow. Such a composition allows using both past and future inputs at any time instance. Since both types of hidden states do not interact, the bidirectional RNNs follow almost the same training rules as a regular RNN with small differences regarding backpropagation. 
 
 
 
