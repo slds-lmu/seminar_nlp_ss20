@@ -1,7 +1,106 @@
+---
+output:
+  bookdown::html_document2: default
+    fig_caption: true
+header-includes: \usepackage{booktabs} \usepackage{longtable} \usepackage{array} \usepackage{multirow}
+  \usepackage[table]{xcolor} \usepackage{wrapfig} \usepackage{float} \floatplacement{figure}{H}
+bibliography: book.bib
+link-citations: yes
+---
+
 # Foundations/Applications of Modern NLP
 
-*Authors: Author 1, Author 2*
+*Authors: Viktoria Szabo*
 
-*Supervisor: Supervisor*
+*Supervisor: Christian Heumann*
 
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = FALSE, message=FALSE,  warning=FALSE)
+library(cowplot)
+library(ggplot2)
+library(knitr)
+library(here)
+```
+
+Word embeddings can be seen as the beginning of modern natural language processing. They are widely used in every kind of NLP task. One of the advantages is that you can download and use pre-trained word embeddings. With this, you can save a lot of time for training the final model. But if the task is not a standard one you probably want to train your own embeddings to get a better model performance for your specific task. In the following I will first describe the evolution from sparse representations of words to dense word embeddings. After that I will describe calculation methods for word embeddings within a neural network language model and with word2vec and GloVe. In the third part I will show how to improve the model performance regardless of the chosen model class based on hyperparameter tuning and system design choices and explain some model expansion to tackle problems of the aforementioned methods. The evaluation of word embeddings on different tasks and datasets is another topic which will be covered in the fourth part of this chapter. Last but not least I will present some resources to download pretrained word embeddings. 
+
+## The Evolution of Word Embeddings
+
+Since computers work with numeric representations, converting the text and sentences we want to analyze into numbers is unavoidable. One-Hot Encoding and Bag-of-Words (BOW) are two simple approaches how this could be down. These methods are usually used as input for calculating more elaborate word representations called word embeddings. Only use these approaches without calculating word embeddings if you have a small amount of distinct words in your document, the words are not meaningfully correlated and you have a lot of data to learn from.
+The **One-Hot Encoding** labels each word in the vocabulary with size n with an index. After that each word is represented by a vector with dimension n. Every dimension is zero except for the one corresponding to its index, which is set to one. A sentence is represented as a matrix of shape (NxN) where N is the number of unique words in the sentence or a document. You can see an example for this representation in figure \@ref(fig:onehot-bow).
+A little more elaborate approach compared to the first one is called **Bag-of-Words (BOW)** and belongs to the count-based approaches. This approach counts the occurrences and co-occurrences of all distinct words in a document or a text chunk. Each text chunk is then represented by a row in a matrix, where the columns are the words. You can see an example for this approach on the right side in figure \@ref(fig:onehot-bow).
+
+```{r onehot-bow, fig.show ='hold', fig.align = "default", fig.cap="One-Hot Encoding on the left and Bag-of-Words on the right. Source: Own figure.", out.width = '50%'}
+
+include_graphics(c("figures/01-01-foundations-applications-of-modern-NLP/01-01_one-hot.png", "figures/01-01-foundations-applications-of-modern-NLP/01-01_bow.png"))
+```
+
+These approaches definitely have some **positive points** about them. First of they are very simple to construct. Furthermore, they are robust to changes and it was observed that simple models trained on huge amounts of data outperform complex systems trained on less data. Bag-of-Words is especially useful if the number of distinct words is small and the sequence of the words doesn’t play a big role.
+Nevertheless, the **problems** coming from these approaches usually outweigh the positive points. The most obvious one is that these approaches give you very sparse input vectors, that means very large vectors with relatively few non-zero values. Many machine learning models won’t work well with very high dimensional and sparse features. Neural networks in particular struggle with this type of data. And with growing vocabulary the feature size vectors also increase by the same length. So, the dimensionality of these approaches is the same as the number of different words in your text. That means you need to estimate more parameters and therefore you require exponentially more data to do well enough to build a reasonably generalizable model. This is called the curse of dimensionality. But these problems can be solved with dimensionality reduction methods such as Principal Component Analysis or feature selection models where less informative context word, such as “the” are dropped. 
+The major drawback of these methods is that there is no notion of similarity between words. That means words like “cat” and “tiger” are represented as similar as “cat” and “car”. If the words “cat” and “tiger” would be represented as similar words one could use the information won from the more frequent word “cat” for sentences in which the less frequent word “tiger” appears. If the word embedding for “tiger” is similar to that of “cat” the network model can take a similar path instead of having to learn how to handle it completely anew. It’s very difficult to make predictions about things unlike you’ve ever seen before – much easier if it’s related to something you have seen.
+
+To overcome these problems **word embeddings** were introduced. Word embeddings use continuous vectors to represent each word in a vocabulary. These vectors have n dimensions, usually between 100 and 500, which represent different aspects of the word. With this semantic similarity can be maintained in the representation and generalization can be achieved. Through the vectors the words are mapped to a continuous vector space (in NLP usually called semantic space), where semantically similar words occur close to each other, while more dissimilar words are far from each other. Figure \@ref(fig:word-embedding1) shows a simple example to convey the idea behind this approach. In this example the words are represented by a three-dimensional vector.
+
+```{r word-embedding1, fig.align = "default", fig.cap="Example for word embeddings with three dimensions. Source: Own figure."}
+
+include_graphics("figures/01-01-foundations-applications-of-modern-NLP/01-01_word_embeddings_1.png")
+```
+
+If you want to represent higher dimensional word vectors you could use dimension reduction methods such as principal component analysis (PCA) to break down the number of dimensions into two or three and then plot the words. You can see an example of this for a few country names and their capitals in figure \@ref(fig:word-embedding2). You can see that the country names all have negative values on the x-axis and the capitals all have positive values on the x-axis. Furthermore, the countries have similar y-axis values as their corresponding capitals.
+
+```{r word-embedding2, fig.align = "default", fig.cap="Two-dimensional PCA projection of 1000-dimensional word vectors of countries and their capital cities. Source: Mikolov et al. 2013 (3)"}
+
+include_graphics("figures/01-01-foundations-applications-of-modern-NLP/01-01_word_embeddings_2.png")
+```
+
+## Methods to Obtain Word Embeddings
+
+The basic idea behind learning word embeddings is the so called “distributional hypothesis” (Harris, 1954). It states that words that occur in the same contexts tend to have similar meanings. For instance, Jupiter and Venus tend to have similar semantics since they usually appear in similar contexts, e.g., with words such as solar system, star, planet, and astronomy. That’s why machine learning and deep learning algorithms can find representations by themselves by evaluating the context in which a word occurs. Words that are used in similar contexts will be given similar representations. This is usually done as an unsupervised or self-supervised procedure, which is a big advantage and is one of the winning points when compared to other knowledge representation approaches. That means word embeddings can be thought of unsupervised feature extractors for words. However, the methods to find such similarities in the context of words vary. First finding word representations started out with the today so called more traditional count-based techniques, which collected word statistics like occurrence and co-occurrence frequencies of words as seen above with BOW. But these representations are often large and need some sort of dimensionality reduction. Later when neural networks were introduced into NLP the so-called predictive techniques, mainly popularized after 2013 with the introduction of word2vec, word embeddings supplanted the traditional count-based word representations. It is also said that these models learn “dense representations” since they directly learn low-dimensional word representations, without needing to resort to the additional dimensionality reduction step. In the following I will give an introduction to the best-known predictive approaches to model word embeddings.
+
+### Feedforward Neural Network Language Model (NNLM)
+
+
+### Word2Vec
+
+In 2013 Mikolov et. al proposed the two word2vec algorithms for learning word embeddings which led to a huge wave in NLP popularizing word embeddings. In contrast to the NNLM model above the word2vec algorithm first learns the embeddings in a specific model and then they are used as input in the final neural language model. The two Word2Vec algorithms named Continuous Bag-of-Words (CBOW) and Continuous Skip-Gram use shallow neural networks with an input layer, a projection layer and an output layer. That means compared to the previously explained feedforward NNLM the non-linear hidden layer in between is removed.
+The general idea behind CBOW is to predict the target word based on a window of context words. The order of context words does not influence the prediction, thus the name Bag-of-Words. While Skip-Gram tries to predict the context words given a target word. This is done while adjusting the initial weights during training so that a loss function is reduced. These weights are used in the end as word embeddings.
+In the CBOW architecture the N input (context) words are each one hot encoded vectors of size V, where V is the size of the vocabulary and N the number of future and history words. The projection layer is a standard fully connected (dense) layer with D neurons whose weights are the word embeddings and D is the number of dimensions for the word embeddings. The projection layer is shared for all words; thus, all words get projected into the same position (their vectors are averaged) in a linear manner. The output layer outputs probabilities for all words from the vocabulary and has therefore a dimensionality of V. That means the output is a probability distribution over all words in the vocabulary. A log-linear softmax classifier is used for the calculation of the probabilities, where the training criterion is to correctly classify the target word. The model architecture is shown in figure \@ref(fig:word-embedding2) on the left side.
+The continuous Skip-gram architecture also uses a log-linear classifier with continuous projection layer, but the input is only one “current” word, and the output layer consists of words within a certain range before and after the current word. Also, since the more distant words are usually less related to the current word, it weighs nearby context words more heavily than more distant context words by sampling less from those words in the training examples. You can find the model architecture on the right side of figure \@ref(fig:word-embedding2).
+
+```{r word2vec, fig.align = "default", fig.cap="Learning word embeddings with the model architecture of CBOW and Skip-Gram.  Source: Mikolov et al. 2013 (3)"}
+
+include_graphics("figures/01-01-foundations-applications-of-modern-NLP/01-01_word2vec.png")
+```
+
+Skip-gram works well with small amounts of training data and represents even words that are considered rare, whereas CBOW trains several times faster and has slightly better accuracy for frequent words.  
+
+### GloVe
+
+
+## Hyperparameter and System Design
+
+Once adapted across methods, hyperparameter tuning significantly improves performance in every task. In many cases, changing the setting of a single hyperparameter yields a greater increase in performance than switching to a better algorithm or training on a larger corpus. Levy et al. 2015 conducted a series of experiments where they assessed the contributions of diverse hyperparameters. They also show that when all methods are allowed to tune a similar set of hyperparameters, their performance is largely comparable. In fact, there is no consistent advantage to one algorithmic approach over another. Furthermore, I describe some system design choices, which will tackle some of the problems posed by the algorithms mentioned above.
+
+## Evaluation Methods
+
+**Word Similarity Task**
+
+There are six datasets to evaluate word similarity:
+
+ - WordSim353 (Finkelstein et al., 2002) partitioned into two datasets, WordSim Similarity and WordSim Relatedness (Zesch et al., 2008; Agirre et al., 2009),
+ - Bruni et al.’s (2012) MEN dataset,
+ - Radinsky et al.’s (2011) Mechanical Turk dataset,
+ - Luong et al.’s (2013) Rare Words dataset,
+ - Hill et al.’s (2014) SimLex-999 dataset.
+
+All these datasets contain word pairs together with human-assigned similarity scores. The word vectors are evaluated by ranking the pairs according to their cosine similarities, and measuring the correlation (Spearman’s ρ) with the human ratings.
+
+**Word Analogy Task**
+
+The two analogy datasets present questions of the form “a is to a∗ as b is to b∗”, where b∗ is hidden, and must be guessed from the entire vocabulary.
+
+- MSR’s analogy dataset (Mikolov et al., 2013c) contains 8000 morpho-syntactic analogy questions, such as “good is to best as smart is to smartest”.
+- Google’s analogy dataset (Mikolov et al., 2013a) contains 19544 questions, about half of the same kind as in MSR (syntactic analogies), and another half of a more semantic nature, such as capital cities (“Paris is to France as Tokyo is to Japan”). 
+
+## Sources and Applications of Word Embeddings
 
