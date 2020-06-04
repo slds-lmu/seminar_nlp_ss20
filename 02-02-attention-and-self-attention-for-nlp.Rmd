@@ -74,7 +74,7 @@ which can be visualised to show the correlation between source and target words.
 
 ![Alignment Matrix visualised for a French to English translation. Image source: Fig 3 in @bahdanau2014neural](./figures/02-02-attention-and-self-attention-for-nlp/bahdanau-fig3.png)
 
-The attention model proposed by Bahdanau et al. is also called a global attention model as it attends
+The attention model proposed by Bahdanau et al. is also called a soft/global attention model as it attends
 to every input in the sequence.
 
 ### Luong-Attention
@@ -85,7 +85,7 @@ to every input in the sequence.
 
 - differences to bahdanau
 
-- explanaiton for local attention
+- explanation for local/hard attention and differences to global/soft attention
 
 
 ### Attention Models
