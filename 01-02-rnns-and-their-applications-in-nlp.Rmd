@@ -18,11 +18,11 @@ The first part of this chapter provides the structure definition of RNNs, presen
 
 ### Network Structure and Forwardpropagation
 
-The repetitive structure of RNNs can be visualised with help of an unfolded computational graph (see \@ref(fig:01-02-unfold)). 
+The repetitive structure of RNNs can be visualised with help of an unfolded computational graph (see \@ref(fig:01-02-unfold)).
 
 ```{r 01-02-unfold, echo=FALSE, message=FALSE, fig.align="center",fig.cap="Unfolded computatinal graph of a RNN. Source: Own figure.", out.width = '100%'}
 
-knitr::include_graphics("figures/01-02-rnns-and-their-applications-in-nlp/02_unfolded_graph.PNG")
+knitr::include_graphics("figures/01-02-rnns-and-their-applications-in-nlp/02_unfolded_graph.png")
 ```
 
 Each node is associated with a network layer at a particular time instance. Inputs $x^{(t)}$ must be encoded as numeric vectors, for instance word embeddings or one-hot encoded vectors, see previous chapter. Reccurently connected vectors $h$ are called hidden states and represent the outputs of the hidden layer. At time $t$, a hidden state $h^{(t)}$ combines information from the previous hidden state $h^{(t-1)}$ as well as the new input $x^{(t)}$ and passes it through to the next hidden state. Obviously, such an architecture requires the initialization of $h^{(0)}$ since there is no memory at the very beginning of the sequence processing. Given the hidden sequences, output vectors $\hat{y}^{(t)}$ are used to build the predictive distribution $Pr(x^{(t+1)}|y^{(t)})$ for the next input [@graves2013generating]. Since the predictions are created at each time instance $t$, the total output has a shape [time_steps, output_features]. However in some cases this is not needed, for example in sentiment analysis the last output of the loop is sufficient because it contains the entire information about the sequence. [@chollet2018deep]
@@ -39,20 +39,20 @@ After $t$ steps, the function $g^{(t)}$ takes into account the whole sequence $(
 Consider a recurrent neural network with one hidden layer that is used to predict words or characters, so the output is discrete and the model maps input sequence to output sequence of the same length. Then the forward propagation is computed by iterating the following equations:
 
 \begin{align}
-h^{(t)} & = \mathcal{H}(a+W_{hh}h^{(t-1)}+W_{xh}x^{(t)}) (\#eq:input-to-hidden) \\ 
+h^{(t)} & = \mathcal{H}(a+W_{hh}h^{(t-1)}+W_{xh}x^{(t)}) (\#eq:input-to-hidden) \\
 y^{(t)} & = \mathcal{Y}(b+W_{hy}h^{(t)}) (\#eq:hidden-to-output) \\
 \end{align}
 
 where the parameters and functions denote the following:
 
-* $\mathcal{H}$: hidden layer function. Usually it is a sigmoid activation function ( @sutskever2014sequence and @mikolov2010recurrent) or tanh or ReLu  
-* $W_{hh}$: weight matrix connecting recurrent connections between hidden states    
-* $W_{xh}$: weight matrix connecting inputs to hidden layer  
-* $W_{hy}$: weight matrix connecting hidden states to outputs (softmax if we want to predict next word or letter)  
-* $\mathcal{Y}$: output layer function. If the model is used to predict words, softmax function is usually chosen as it returns valid probabilities over the possible outputs  [@mikolov2010recurrent]  
-* $a$, $b$: input and output bias vectors.  
+* $\mathcal{H}$: hidden layer function. Usually it is a sigmoid activation function ( @sutskever2014sequence and @mikolov2010recurrent) or tanh or ReLu
+* $W_{hh}$: weight matrix connecting recurrent connections between hidden states
+* $W_{xh}$: weight matrix connecting inputs to hidden layer
+* $W_{hy}$: weight matrix connecting hidden states to outputs (softmax if we want to predict next word or letter)
+* $\mathcal{Y}$: output layer function. If the model is used to predict words, softmax function is usually chosen as it returns valid probabilities over the possible outputs  [@mikolov2010recurrent]
+* $a$, $b$: input and output bias vectors.
 
-[@graves2013generating] 
+[@graves2013generating]
 
 Because inputs $x^{(t)}$ are usually encoded as one-hot-vectors, the dimension of a vector representing one word corresponds to the size of vocabulary. The size of a hidden layer must reflect the size of training data. The model training requires initialization of the initial state $h^{(0)}$ as well as the weight matrices, which are usually set to small random values [@mikolov2010recurrent]. Since the network is used to compute the predictive distributions $Pr(x^{(t+1)}|y^{(t)})$ at each time instance $t$, the network distribution is denoted as:
 
@@ -63,28 +63,28 @@ Pr(x) & =\prod_{t} Pr(x^{(t+1)}|y^{(t)}) (\#eq:rnn-probability) \\
 and the total loss used for training is simply the sum of the losses over all time steps denoted as the negative log-likelihood of $Pr(x)$:
 
 \begin{align}
-\mathcal{L(x)} & =-\sum_{t} \log{Pr(x^{(t+1)}|y^{(t)})} (\#eq:rnn-log-loss) \\  
+\mathcal{L(x)} & =-\sum_{t} \log{Pr(x^{(t+1)}|y^{(t)})} (\#eq:rnn-log-loss) \\
 \end{align}
 
 [@graves2013generating]
 
 
-### Backpropagation 
+### Backpropagation
 
 In order to train the model, one must calculate the gradients for the three weight matrices $W_{xh}$, $W_{hh}$ and $W_{hy}$. The algorithm differs from a regular backpropagation because a chain rule muste be applied recursively and the gradients are summed up through the network. [@boden2002guide]
 
-Gradients w.r.t. $W_{hy}$:  
+Gradients w.r.t. $W_{hy}$:
 
-* for a single time step $t$:  
+* for a single time step $t$:
 
 \begin{align}
-\frac{\partial \mathcal{L^{(t)}}}{\partial W_{hy}} & = \frac{\partial \mathcal{L^{(t)}}}{\partial y^{(t)}} \frac{\partial y^{(t)}}{\partial W_{hy}}(\#eq:rnn-back-hy-one) \\ 
+\frac{\partial \mathcal{L^{(t)}}}{\partial W_{hy}} & = \frac{\partial \mathcal{L^{(t)}}}{\partial y^{(t)}} \frac{\partial y^{(t)}}{\partial W_{hy}}(\#eq:rnn-back-hy-one) \\
 \end{align}
 
-* for the whole sequence:  
+* for the whole sequence:
 
 \begin{align}
-\frac{\partial \mathcal{L}}{\partial W_{hy}} & = \sum_{t} \frac{\partial \mathcal{L}}{\partial y^{(t)}} \frac{\partial y^{(t)}} {\partial W_{hy}}  (\#eq:rnn-back-hy-all) \\    
+\frac{\partial \mathcal{L}}{\partial W_{hy}} & = \sum_{t} \frac{\partial \mathcal{L}}{\partial y^{(t)}} \frac{\partial y^{(t)}} {\partial W_{hy}}  (\#eq:rnn-back-hy-all) \\
 \end{align}
 
 Gradients w.r.t. $W_{hh}$:
@@ -92,7 +92,7 @@ Gradients w.r.t. $W_{hh}$:
 * for a single time step $t$:
 
 \begin{align}
-\frac{\partial \mathcal{L^{(t)}}}{\partial W_{hh}} & = \frac{\partial \mathcal{L^{(t)}}}{\partial y^{(t)}} \frac{\partial y^{(t)}}{\partial h^{(t)}} \frac{\partial h^{(t)}}{\partial W_{hh}} (\#eq:rnn-back-hh-one) 
+\frac{\partial \mathcal{L^{(t)}}}{\partial W_{hh}} & = \frac{\partial \mathcal{L^{(t)}}}{\partial y^{(t)}} \frac{\partial y^{(t)}}{\partial h^{(t)}} \frac{\partial h^{(t)}}{\partial W_{hh}} (\#eq:rnn-back-hh-one)
 \end{align}
 
 The last part $h^{(t)}$ also depends on $h^{(t-1)}$ and the gradient can be rewritten as:
@@ -100,7 +100,7 @@ The last part $h^{(t)}$ also depends on $h^{(t-1)}$ and the gradient can be rewr
 \begin{align}
 \frac{\partial \mathcal{L^{(t)}}}{\partial W_{hh}}
 & = \frac{\partial \mathcal{L^{(t)}}}{\partial y^{(t)}} \frac{\partial y^{(t)}}{\partial h^{(t)}} \frac{\partial h^{(t)}}{\partial h^{(t-1)}} \frac{\partial h^{(t-1)}}{\partial W_{hh}} \\
-& = \sum_{k=0}^{t} \frac{\partial \mathcal{L^{(t)}}}{\partial y^{(t)}} \frac{\partial y^{(t)}}{\partial h^{(t)}} \frac{\partial h^{(t)}}{\partial h^{(k)}} \frac{\partial h^{(k)}}{\partial W_{hh}} (\#eq:rnn-back-hh-one-one) 
+& = \sum_{k=0}^{t} \frac{\partial \mathcal{L^{(t)}}}{\partial y^{(t)}} \frac{\partial y^{(t)}}{\partial h^{(t)}} \frac{\partial h^{(t)}}{\partial h^{(k)}} \frac{\partial h^{(k)}}{\partial W_{hh}} (\#eq:rnn-back-hh-one-one)
 \end{align}
 
 
@@ -108,7 +108,7 @@ The last part $h^{(t)}$ also depends on $h^{(t-1)}$ and the gradient can be rewr
 
 \begin{align}
 \frac{\partial \mathcal{L}}{\partial W_{hh}}
-& = \sum_{t} \sum_{k=0}^{t} \frac{\partial \mathcal{L^{(t)}}}{\partial y^{(t)}} \frac{\partial y^{(t)}}{\partial h^{(t)}} \frac{\partial h^{(t)}}{\partial h^{(k)}} \frac{\partial h^{(k)}}{\partial W_{hh}} (\#eq:rnn-back-hh-all) 
+& = \sum_{t} \sum_{k=0}^{t} \frac{\partial \mathcal{L^{(t)}}}{\partial y^{(t)}} \frac{\partial y^{(t)}}{\partial h^{(t)}} \frac{\partial h^{(t)}}{\partial h^{(k)}} \frac{\partial h^{(k)}}{\partial W_{hh}} (\#eq:rnn-back-hh-all)
 \end{align}
 
 
@@ -118,14 +118,14 @@ Gradient w.r.t. $W_{xh}$ is similar to $W_{hh}$:
 
 \begin{align}
 \frac{\partial \mathcal{L^{(t)}}}{\partial W_{xh}}
-& = \sum_{k=0}^{t} \frac{\partial \mathcal{L^{(t)}}}{\partial y^{(t)}} \frac{\partial y^{(t)}}{\partial h^{(t)}} \frac{\partial h^{(t)}}{\partial h^{(k)}} \frac{\partial h^{(k)}}{\partial W_{xh}} (\#eq:rnn-back-xh-one) 
+& = \sum_{k=0}^{t} \frac{\partial \mathcal{L^{(t)}}}{\partial y^{(t)}} \frac{\partial y^{(t)}}{\partial h^{(t)}} \frac{\partial h^{(t)}}{\partial h^{(k)}} \frac{\partial h^{(k)}}{\partial W_{xh}} (\#eq:rnn-back-xh-one)
 \end{align}
 
 * for the whole sequence:
 
 \begin{align}
 \frac{\partial \mathcal{L}}{\partial W_{xh}}
-& = \sum_{t} \sum_{k=0}^{t} \frac{\partial \mathcal{L^{(t)}}}{\partial y^{(t)}} \frac{\partial y^{(t)}}{\partial h^{(t)}} \frac{\partial h^{(t)}}{\partial h^{(k)}} \frac{\partial h^{(k)}}{\partial W_{xh}} (\#eq:rnn-back-xh-all) 
+& = \sum_{t} \sum_{k=0}^{t} \frac{\partial \mathcal{L^{(t)}}}{\partial y^{(t)}} \frac{\partial y^{(t)}}{\partial h^{(t)}} \frac{\partial h^{(t)}}{\partial h^{(k)}} \frac{\partial h^{(k)}}{\partial W_{xh}} (\#eq:rnn-back-xh-all)
 \end{align}
 
 [@chen2016gentle]
@@ -133,13 +133,13 @@ Gradient w.r.t. $W_{xh}$ is similar to $W_{hh}$:
 ### Vanishing and Exploding Gradients
 
 
- 
+
 
 ## Gated RNNs
 
 ### LSTM
 
-Long Short Term Memory networks were introduced by @hochreiter1997long to deal with problems of long term dependencies. Instead of a simple hidden unit that combines inputs and previous hidden states linearly and outputs the non-linear transformation to the next step, hidden units are now extended by special input, forget and output gates which help to control the flow of information. Such more complex units are called memory cells and the following equations show how a LSTM uses the gating mechanism to calculate the hidden state within a memory cell: 
+Long Short Term Memory networks were introduced by @hochreiter1997long to deal with problems of long term dependencies. Instead of a simple hidden unit that combines inputs and previous hidden states linearly and outputs the non-linear transformation to the next step, hidden units are now extended by special input, forget and output gates which help to control the flow of information. Such more complex units are called memory cells and the following equations show how a LSTM uses the gating mechanism to calculate the hidden state within a memory cell:
 
 \begin{align}
 f^{(t)} & = sigm(W_{xf}x^{(t)}+W_{hf}h^{(t-1)}+b_{f}) (\#eq:lstm-forget) \\
@@ -181,13 +181,13 @@ knitr::include_graphics("figures/01-02-rnns-and-their-applications-in-nlp/03_lst
 
 ### Bidirectional RNNs
 
-One of the limitations of simple RNNs is that they can process the information only up to a present time instance. In many NLP fields however, prediction may also depend on future inputs. Bidirectional RNNs, introduced by @schuster1997bidirectional, handle this issue by training on inputs in original as well as reversed order. The idea is to stack two hidden layers one on another while one of the layers is responsible for the forward information flow and another one for the backward information flow. Such a composition allows using both past and future inputs at any time instance. Since both types of hidden states do not interact, the bidirectional RNNs follow almost the same training rules as a regular RNN with small differences regarding backpropagation. 
+One of the limitations of simple RNNs is that they can process the information only up to a present time instance. In many NLP fields however, prediction may also depend on future inputs. Bidirectional RNNs, introduced by @schuster1997bidirectional, handle this issue by training on inputs in original as well as reversed order. The idea is to stack two hidden layers one on another while one of the layers is responsible for the forward information flow and another one for the backward information flow. Such a composition allows using both past and future inputs at any time instance. Since both types of hidden states do not interact, the bidirectional RNNs follow almost the same training rules as a regular RNN with small differences regarding backpropagation.
 
 ### Deep RNNs
 
 The figure \@ref(fig:01-02-unfold) shows that each layer is associated with one parameter matrix so that the model is considered shallow. This structure can be extended to a deep RNN although the depth of an RNN is not a trivial concept since its units are already expressed as a nonlinear function of multiple previous units. However, a deep RNN is defined as a network with several input, hidden, or output layers stacked on top of each other. Such a structure can be more efficient at representing complex dependencies although it also requires higher computational effort because the distances between two variables at $t$ and $t+1$ become longer. [@pascanu2013construct]
 
-@pascanu2013construct proposed three ways to make an RNN deeper. Extending input-to-hidden functions helps to transform the raw input, e.g. one-hot encoded vectors, into a more convenient and informative representations, e.g. word embeddings, for higher levels. A deep hidden-to-hidden composition allows for the hidden states to effectively add new information to the accumulated summaries from the previous steps. For example, the model preserves useful information from the past although new inputs vary strongly and rapidly. Finally, a deep hidden-to-output function is used to make hidden states more compact and therefore enables the model to summarize the previous inputs more efficiently. 
+@pascanu2013construct proposed three ways to make an RNN deeper. Extending input-to-hidden functions helps to transform the raw input, e.g. one-hot encoded vectors, into a more convenient and informative representations, e.g. word embeddings, for higher levels. A deep hidden-to-hidden composition allows for the hidden states to effectively add new information to the accumulated summaries from the previous steps. For example, the model preserves useful information from the past although new inputs vary strongly and rapidly. Finally, a deep hidden-to-output function is used to make hidden states more compact and therefore enables the model to summarize the previous inputs more efficiently.
 
 ### Encoder-Decoder Architecture
 
