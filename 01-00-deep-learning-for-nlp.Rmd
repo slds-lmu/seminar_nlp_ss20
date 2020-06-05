@@ -27,6 +27,10 @@ library(here)
 In natural language processing computers try to analyze and understand human language for the purpose of performing useful tasks. Therefore, they extract relevant information from words and sentences. But how exactly are they doing this? After the first wave of rationalist approaches with handwritten rules didn’t work out too well, neural networks were introduced to find those rules by themselves (see @Bengio.2003). But neural networks and other machine learning algorithms cannot handle non-numeric input, so we have to find a way to convert the text we want to analyze into numbers.
 There are a lot of possibilities to do that. Two simple approaches would be labeling each word with a number (One-Hot Encoding, figure \@ref(fig:onehot-bow)) or counting the frequency of words in different text fragments (Bag-of-Words, figure \@ref(fig:onehot-bow)). Both methods result in high-dimensional, sparse (mostly zero) data. And there is another major drawback using such kind of data as input. It does not convey any similarities between words. The word “cat” would be as similar to the word “tiger” as to “car”. That means the model cannot reuse information it already learned about cats for the much rarer word tiger. This will usually lead to poor model performance and is called a lack of generalization power.
 
+Her e is a typo.
+
+*Wrong annotation**
+
 ```{r onehot-bow, fig.show ='hold', fig.align = "default", fig.cap="One-Hot Encoding on the left and Bag-of-Words on the right. Source: Own figure.", out.width = '50%'}
 
 include_graphics(c("figures/01-00-deep-learning-for-nlp/01-01_one-hot.png", "figures/01-00-deep-learning-for-nlp/01-01_bow.png"))
