@@ -15,7 +15,7 @@ knitr::include_graphics("figures/02-03-transfer-learning-for-nlp/autoencoding.pn
 ```
 
 
-Autoencoding(AE) have been most successful pre-training objectives and figure \@ref(fig:ch02-03-figure01) shows the modeling of it. AE based model does not perform explicit density estimation but instead aims to reconstruct the original data from corrupted input. Specifically, given a text sequence $X = (x_1,...,x_T)$, AE factorizes the log-likelihood into a partial sum $log p(\bar{X}|\hat{X}) = \sum^T_{t=1} mask_t p(x_t|\hat{X})$, where $mask_t$ is an indicator to show if a token is masked,@yang2019xlnet.
+Autoencoding(AE) have been most successful pre-training objectives and figure \@ref(fig:ch02-03-figure01) shows the modeling of it. AE based model does not perform explicit density estimation but instead aims to reconstruct the original data from corrupted input. Specifically, given a text sequence $X = (x_1,...,x_T)$, AE factorizes the log-likelihood into a partial sum $$log p(\bar{X}|\hat{X}) = \sum^T_{t=1} mask_t p(x_t|\hat{X})$$, where $mask_t$ is an indicator to show if a token is masked,@yang2019xlnet.
 The training objective is to reconstuct the masked tokens $\bar{X}$ given the sequence $\hat{X}$, AE trys to find the best model $P$ to predict the masked tokens.
 
 ### Introduction of BERT
@@ -321,6 +321,6 @@ Nowadays NLP has become a competition between big companies. When BERT first cam
 
 After GPT-2, researchers at Google did the same thing, they proposed a general language model called T5 @raffel2019exploring, which is trained on 750GB corpus - ["C4 (Colossal Clean Crawled Corpus)"](https://www.tensorflow.org/datasets/catalog/c4). If you read the paper, the last page of it is a table of several experience results, which may cost millions of dollars to reproduce it.  
 
-On 28th May 2020, the "Arms race" goes into another level, GPT-3 @brown2020language emerged, the new paper takes GPT to the next level by making it even bigger - GPT-3 has 175 billion parameters and is trained on a dataset that has 450 billion of tokens. GPT-3 experiments with the three different settings: zero-shot, one-shot, and Few-shot to show that scaling up language models can greatly improve few-shot performance, sometimes even reaching competitiveness with prior SOTA approaches. However, it is conservatively estimated that training GPT-3 will cost one hundred million.
+On 28th May 2020, the "Arms race" goes into another level, GPT-3 @brown2020language emerged, the new paper takes GPT to the next level by making it even bigger - GPT-3 has 175 billion parameters and is trained on a dataset that has 450 billion of tokens ["GPT-3 Dataset"](https://github.com/openai/gpt-3). GPT-3 experiments with the three different settings: zero-shot, one-shot, and Few-shot to show that scaling up language models can greatly improve performance, sometimes even reaching competitiveness with prior SOTA approaches. However, it is conservatively estimated that training GPT-3 will cost one hundred million.
 
 Models like T5 and GPT-3 are very impressive, but the biggest problem at the moment is to find a way to make the current model put into use in industry. If it can't bring benefits, the AI industry can't be sustained by burning money. As for researchers, the truth is, it may not work with resources, but it is certainly not possible without resources now.
