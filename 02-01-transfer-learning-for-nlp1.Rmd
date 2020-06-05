@@ -164,10 +164,10 @@ Second, GTP uses a different model architecture. Instead of the multi-layer LSTM
 
 Third, in contrast to ELMO, that works character-wise, GPT uses tokens (subwords) from the words.
 
-```{r ch21-figure04, echo=FALSE, out.width="80%", fig.cap="GPT", fig.align="center"}
-knitr::include_graphics("figures/02-01-transfer-learning-for-nlp-1/gpt.png")
+```{r ch21-figuregpt, echo=FALSE, out.width="80%", fig.cap="GPT", fig.align="center"}
+knitr::include_graphics("figures/02-01-transfer-learning-for-nlp-1/gpt.PNG")
 ```
-As shown in figure `\@ref(fig:ch21-figure04)` GPT is a uni-directional transformer with 12 layers which have two sublayers connected by a feed-forward network:
+As shown in figure \@ref(fig:ch21-figuregpt) GPT is a uni-directional transformer with 12 layers which have two sublayers connected by a feed-forward network:
 First, the model is pre-trained by thousand books from Google books. Then, the parameters of the model are adopted on the specific task. 
 
 As the basic idea of transformers is discussed in the following chapters, further explanations of the functionality of the transformer model architectures will follow. 
