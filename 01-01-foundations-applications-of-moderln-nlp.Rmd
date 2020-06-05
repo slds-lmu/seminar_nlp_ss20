@@ -14,12 +14,9 @@ link-citations: yes
 
 *Supervisor: Christian Heumann*
 
-```{r setup, include=FALSE}
+```{r setup01-01, include=FALSE}
 knitr::opts_chunk$set(echo = FALSE, message=FALSE,  warning=FALSE)
-library(cowplot)
-library(ggplot2)
 library(knitr)
-library(here)
 ```
 
 Word embeddings can be seen as the beginning of modern natural language processing. They are widely used in every kind of NLP task. One of the advantages is that you can download and use pre-trained word embeddings. With this, you can save a lot of time for training the final model. But if the task is not a standard one you probably want to train your own embeddings to get a better model performance for your specific task. In the following I will first describe the evolution from sparse representations of words to dense word embeddings. After that I will describe calculation methods for word embeddings within a neural network language model and with word2vec and GloVe. In the third part I will show how to improve the model performance regardless of the chosen model class based on hyperparameter tuning and system design choices and explain some model expansion to tackle problems of the aforementioned methods. The evaluation of word embeddings on different tasks and datasets is another topic which will be covered in the fourth part of this chapter. Last but not least I will present some resources to download pretrained word embeddings. 
