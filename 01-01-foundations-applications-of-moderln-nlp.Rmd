@@ -27,7 +27,7 @@ Since computers work with numeric representations, converting the text and sente
 The **One-Hot Encoding** labels each word in the vocabulary with size n with an index. After that each word is represented by a vector with dimension n. Every dimension is zero except for the one corresponding to its index, which is set to one. A sentence is represented as a matrix of shape (NxN) where N is the number of unique words in the sentence or a document. You can see an example for this representation in figure \@ref(fig:onehot-bow).
 A little more elaborate approach compared to the first one is called **Bag-of-Words (BOW)** and belongs to the count-based approaches. This approach counts the occurrences and co-occurrences of all distinct words in a document or a text chunk. Each text chunk is then represented by a row in a matrix, where the columns are the words. You can see an example for this approach on the right side in figure \@ref(fig:onehot-bow).
 
-```{r onehot-bow, fig.show ='hold', fig.align = "default", fig.cap="One-Hot Encoding on the left and Bag-of-Words on the right. Source: Own figure.", out.width = '50%'}
+```{r onehot-bow-01-01, fig.show ='hold', fig.align = "default", fig.cap="One-Hot Encoding on the left and Bag-of-Words on the right. Source: Own figure.", out.width = '50%'}
 
 include_graphics(c("figures/01-01-foundations-applications-of-modern-NLP/01-01_one-hot.png", "figures/01-01-foundations-applications-of-modern-NLP/01-01_bow.png"))
 ```
