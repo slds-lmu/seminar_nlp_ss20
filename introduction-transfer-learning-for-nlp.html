@@ -24,7 +24,7 @@
 <meta name="author" content="" />
 
 
-<meta name="date" content="2020-06-04" />
+<meta name="date" content="2020-06-05" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
@@ -104,7 +104,11 @@
 </ul></li>
 </ul></li>
 <li class="chapter" data-level="6" data-path="convolutional-neural-networks-and-their-applications-in-nlp.html"><a href="convolutional-neural-networks-and-their-applications-in-nlp.html"><i class="fa fa-check"></i><b>6</b> Convolutional neural networks and their applications in NLP</a></li>
-<li class="chapter" data-level="7" data-path="introduction-transfer-learning-for-nlp.html"><a href="introduction-transfer-learning-for-nlp.html"><i class="fa fa-check"></i><b>7</b> Introduction: Transfer Learning for NLP</a></li>
+<li class="chapter" data-level="7" data-path="introduction-transfer-learning-for-nlp.html"><a href="introduction-transfer-learning-for-nlp.html"><i class="fa fa-check"></i><b>7</b> Introduction: Transfer Learning for NLP</a><ul>
+<li class="chapter" data-level="7.1" data-path="introduction-transfer-learning-for-nlp.html"><a href="introduction-transfer-learning-for-nlp.html#what-is-transfer-learning"><i class="fa fa-check"></i><b>7.1</b> What is Transfer Learning?</a></li>
+<li class="chapter" data-level="7.2" data-path="introduction-transfer-learning-for-nlp.html"><a href="introduction-transfer-learning-for-nlp.html#self-attention"><i class="fa fa-check"></i><b>7.2</b> (Self-)attention</a></li>
+<li class="chapter" data-level="7.3" data-path="introduction-transfer-learning-for-nlp.html"><a href="introduction-transfer-learning-for-nlp.html#overview-over-important-nlp-models"><i class="fa fa-check"></i><b>7.3</b> Overview over important NLP models</a></li>
+</ul></li>
 <li class="chapter" data-level="8" data-path="transfer-learning-for-nlp-i.html"><a href="transfer-learning-for-nlp-i.html"><i class="fa fa-check"></i><b>8</b> Transfer Learning for NLP I</a></li>
 <li class="chapter" data-level="9" data-path="attention-and-self-attention-for-nlp.html"><a href="attention-and-self-attention-for-nlp.html"><i class="fa fa-check"></i><b>9</b> Attention and Self-Attention for NLP</a></li>
 <li class="chapter" data-level="10" data-path="transfer-learning-for-nlp-ii.html"><a href="transfer-learning-for-nlp-ii.html"><i class="fa fa-check"></i><b>10</b> Transfer Learning for NLP II</a></li>
@@ -138,9 +142,96 @@
             <section class="normal" id="section-">
 <div id="introduction-transfer-learning-for-nlp" class="section level1">
 <h1><span class="header-section-number">Chapter 7</span> Introduction: Transfer Learning for NLP</h1>
-<p><em>Authors: Author 1, Author 2</em></p>
-<p><em>Supervisor: Supervisor</em></p>
+<p><em>Authors: Carolin Becker, Joshua Wagner, Bailan He</em></p>
+<p><em>Supervisor: Matthias Aßenmacher</em></p>
+<p>As discussed in the previous chapters, natural language processing (NLP) is a very powerful tool in the field of processing human language. In recent years, there have been many proceedings and improvements in NLP to the state-of-art models like BERT. A decisive further development in the past was the way to transfer learning, but also self-attention.</p>
+<p>In the next three chapters, various NLP models will be presented, which will be taken to a new level with the help of transfer learning in a first and a second step with self-attention and transformer-based model architectures. To understand the models in the next chapters, the idea and advantages of transfer learning are introduced. Additionally, the concept of self-attention and an overview over the most important models will be established</p>
+<div id="what-is-transfer-learning" class="section level2">
+<h2><span class="header-section-number">7.1</span> What is Transfer Learning?</h2>
+<div class="figure" style="text-align: center"><span id="fig:ch02-figure01"></span>
+<img src="figures/02-00-transfer-learning-for-nlp/compare-classical-transferlearning-ml.png" alt="Classic Machine Learning and Transfer Learning" width="70%" />
+<p class="caption">
+FIGURE 7.1: Classic Machine Learning and Transfer Learning
+</p>
+</div>
 
+<p>In figure <a href="introduction-transfer-learning-for-nlp.html#fig:ch02-figure01">7.1</a> the difference between classical machine learning and transfer learning is shown.</p>
+<p>For classical machine learning a model is trained for every special task or domain.
+Transfer learning allows us to deal with the learning of a task by using the existing labeled data of some related tasks or domains. Tasks are the objective of the model. e.g. the sentiment of a sentence, whereas the domain is where data comes from. e.g. all sentences are selected from Reddit. In the example above, knowledge gained in task A for source domain A is stored and applied to the problem of interest (domain B).</p>
+<p>Generally, transfer learning has several advantages over classical machine learning: saving time for model training, mostly better performance, and not a need for a lot of training data in the target domain.</p>
+<p>It is an especially important topic in NLP problems, as there is a lot of knowledge about many texts, but normally the training data only contains a small piece of it. A classical NLP model captures and learns a variety of linguistic phenomena, such as long-term dependencies and negation, from a large-scale corpus. This knowledge can be transferred to initialize another model to perform well on a specific NLP task, such as sentiment analysis. <span class="citation">(Malte and Ratadiya <a href="#ref-evolutiontransferlearning">2019</a>)</span></p>
+</div>
+<div id="self-attention" class="section level2">
+<h2><span class="header-section-number">7.2</span> (Self-)attention</h2>
+<p>The most common models for language modeling and machine translation were, and still are to some extent, recurrent neural networks with long short-term memory <span class="citation">(Hochreiter and Schmidhuber <a href="#ref-hochreiter1997long">1997</a>)</span> or gated recurrent units <span class="citation">(Chung et al. <a href="#ref-gru">2014</a>)</span>. These models commonly use an encoder and a decoder archictecture. Advanced models use attention, either based on Bahdanau’s attention <span class="citation">(Bahdanau, Cho, and Bengio <a href="#ref-bahdanau2014neural">2014</a>)</span> or Loung’s attention <span class="citation">(Luong, Pham, and Manning <a href="#ref-luong2015effective">2015</a>)</span>.</p>
+<p><span class="citation">Vaswani et al. (<a href="#ref-vaswani2017attention">2017</a>)</span> introduced a new form of attention, self-attention, and with it a new class of models, the . A Transformer still consists of the typical encoder-decoder setup but uses a novel new architecture for both. The encoder consists of 6 Layers with 2 sublayers each. The newly developed self-attention in the first sublayer allows a transformer model to process all input words at once and model the relationships between all words in a sentence. This allows transformers to model long-range dependencies in a sentence faster than RNN and CNN based models. The speed improvement and the fact that ``individual attention heads clearly learn to perform different tasks’’ <span class="citation">Vaswani et al. (<a href="#ref-vaswani2017attention">2017</a>)</span> lead to the eventual development of <strong>B</strong>idirectional <strong>E</strong>ncoder <strong>R</strong>epresentations from <strong>T</strong>ransformers by <span class="citation">Devlin et al. (<a href="#ref-bert">2018</a>)</span>. <strong>BERT</strong> and its successors are, at the time of writing, the state-of-the-art models used for transfer learning in NLP. The concepts attention and self-attention will be further discussed in the <a href="#Attention-and-self-Attention-for-nlp"><strong>“Chapter 9: Attention and Self-Attention for NLP”</strong></a>.</p>
+</div>
+<div id="overview-over-important-nlp-models" class="section level2">
+<h2><span class="header-section-number">7.3</span> Overview over important NLP models</h2>
+<div class="figure" style="text-align: center"><span id="fig:ch02-figure02"></span>
+<img src="figures/02-00-transfer-learning-for-nlp/overview-tranferlearning.png" alt="Overview of the most important models for transfer learning" width="70%" />
+<p class="caption">
+FIGURE 7.2: Overview of the most important models for transfer learning
+</p>
+</div>
+
+<p>The models in figure <a href="introduction-transfer-learning-for-nlp.html#fig:ch02-figure02">7.2</a> will be presented in the next three chapters.</p>
+<p>First, the two model architectures ELMo and ULMFit will be presented, which are mainly based on transfer learning and LSTMs, in <a href="#Transfer-Learning-for-NLP-I"><strong>Chapter 8: “Transfer Learning for NLP I”</strong></a>:</p>
+<ul>
+<li><p><strong>ELMo</strong> (Embeddings from Language Models) first published in <span class="citation">Peters et al. (<a href="#ref-elmopaper">2018</a>)</span> uses a deep, bi-directional LSTM model to create word representations. This method goes beyond traditional embedding methods, as it analyses the words within the context</p></li>
+<li><p><strong>ULMFiT</strong> (Universal Language Model Fine-tuning for Text Classification) consists of three steps: first, there is a general pre-training of the LM on a general domain (like WikiText-103 dataset), second, the LM is finetuned on the target task and the last step is the multilabel classifier fine tuning where the model provides a status for every input sentence.</p></li>
+</ul>
+<p>In the <a href="#Transfer-Learning-for-NLP-II"><strong>“Chapter 10: Transfer Learning for NLP II”</strong></a> models like BERT, GTP2 and XLNet will be introduced as they include transfer learning in combination with self-attention:</p>
+<ul>
+<li><p><strong>BERT</strong> (Bidirectional Encoder Representations from Transformers <span class="citation">Devlin et al. (<a href="#ref-bert">2018</a>)</span>) is published by researchers at Google AI Language group.
+It is regarded as a milestone in the NLP community by proposing a bidirectional Language model based on Transformer. BERT uses the Transformer Encoder as the structure of the pre-train model and addresses the unidirectional constraints by proposing new pre-training objectives: the “masked language model”(MLM) and a “next sentence prediction”(NSP) task. BERT advances state-of-the-art performance for eleven NLP tasks and its improved variants <strong>Albert</strong> <span class="citation">Lan et al. (<a href="#ref-lan2019albert">2019</a>)</span> and <strong>Roberta</strong> <span class="citation">Liu et al. (<a href="#ref-liu2019roberta">2019</a>)</span> also reach great success.</p></li>
+<li><p><strong>GPT2</strong> (Generative Pre-Training-2, <span class="citation">Radford et al. (<a href="#ref-radford2019gpt2">2019</a>)</span>) is proposed by researchers at OpenAI. GPT-2 is a tremendous multilayer Transformer Decoder and the largest version includes 1.543 billion parameters. Researchers create a new dataset “WebText” to train GPT-2 and it achieves state-of-the-art results on 7 out of 8 tested datasets in a zero-shot setting but still underfits “WebText”.</p></li>
+<li><p><strong>XLNet</strong> is proposed by researchers at Google Brain and CMU<span class="citation">(Yang et al. <a href="#ref-yang2019xlnet">2019</a>)</span>. It borrows ideas from autoregressive language modeling (e.g., Transformer-XL <span class="citation">Dai et al. (<a href="#ref-dai2019transformer">2019</a>)</span>) and autoencoding (e.g., BERT) while avoiding their limitations. By using a permutation operation during training, bidirectional contexts can be captured and make it a generalized order-aware autoregressive language model. Empirically, XLNet outperforms BERT on 20 tasks and achieves state-of-the-art results on 18 tasks.</p></li>
+</ul>
+
+</div>
+</div>
+<h3>References</h3>
+<div id="refs" class="references">
+<div id="ref-bahdanau2014neural">
+<p>Bahdanau, Dzmitry, Kyunghyun Cho, and Yoshua Bengio. 2014. “Neural Machine Translation by Jointly Learning to Align and Translate.” <em>arXiv Preprint arXiv:1409.0473</em>.</p>
+</div>
+<div id="ref-gru">
+<p>Chung, Junyoung, Çaglar Gülçehre, KyungHyun Cho, and Yoshua Bengio. 2014. “Empirical Evaluation of Gated Recurrent Neural Networks on Sequence Modeling.” <em>CoRR</em> abs/1412.3555. <a href="http://arxiv.org/abs/1412.3555" class="uri">http://arxiv.org/abs/1412.3555</a>.</p>
+</div>
+<div id="ref-dai2019transformer">
+<p>Dai, Zihang, Zhilin Yang, Yiming Yang, Jaime Carbonell, Quoc V Le, and Ruslan Salakhutdinov. 2019. “Transformer-Xl: Attentive Language Models Beyond a Fixed-Length Context.” <em>arXiv Preprint arXiv:1901.02860</em>. <a href="https://arxiv.org/abs/1901.02860" class="uri">https://arxiv.org/abs/1901.02860</a>.</p>
+</div>
+<div id="ref-bert">
+<p>Devlin, Jacob, Ming-Wei Chang, Kenton Lee, and Kristina Toutanova. 2018. “BERT: Pre-Training of Deep Bidirectional Transformers for Language Understanding.” <em>CoRR</em> abs/1810.04805. <a href="http://arxiv.org/abs/1810.04805" class="uri">http://arxiv.org/abs/1810.04805</a>.</p>
+</div>
+<div id="ref-hochreiter1997long">
+<p>Hochreiter, Sepp, and Jürgen Schmidhuber. 1997. “Long Short-Term Memory.” <em>Neural Computation</em> 9 (8). MIT Press: 1735–80.</p>
+</div>
+<div id="ref-lan2019albert">
+<p>Lan, Zhenzhong, Mingda Chen, Sebastian Goodman, Kevin Gimpel, Piyush Sharma, and Radu Soricut. 2019. “Albert: A Lite Bert for Self-Supervised Learning of Language Representations.” <em>arXiv Preprint arXiv:1909.11942</em>. <a href="https://arxiv.org/abs/1909.11942" class="uri">https://arxiv.org/abs/1909.11942</a>.</p>
+</div>
+<div id="ref-liu2019roberta">
+<p>Liu, Yinhan, Myle Ott, Naman Goyal, Jingfei Du, Mandar Joshi, Danqi Chen, Omer Levy, Mike Lewis, Luke Zettlemoyer, and Veselin Stoyanov. 2019. “Roberta: A Robustly Optimized Bert Pretraining Approach.” <em>arXiv Preprint arXiv:1907.11692</em>. <a href="https://arxiv.org/abs/1907.11692" class="uri">https://arxiv.org/abs/1907.11692</a>.</p>
+</div>
+<div id="ref-luong2015effective">
+<p>Luong, Minh-Thang, Hieu Pham, and Christopher D Manning. 2015. “Effective Approaches to Attention-Based Neural Machine Translation.” <em>arXiv Preprint arXiv:1508.04025</em>.</p>
+</div>
+<div id="ref-evolutiontransferlearning">
+<p>Malte, Aditya, and Pratik Ratadiya. 2019. “Evolution of Transfer Learning in Natural Language Processing.”</p>
+</div>
+<div id="ref-elmopaper">
+<p>Peters, Matthew E., Mark Neumann, Mohit Iyyer, Matt Gardner, Christopher Clark, Kenton Lee, and Luke Zettlemoyer. 2018. “Deep Contextualized Word Representations.”</p>
+</div>
+<div id="ref-radford2019gpt2">
+<p>Radford, Alec, Jeffrey Wu, Rewon Child, David Luan, Dario Amodei, and Ilya Sutskever. 2019. “Language Models Are Unsupervised Multitask Learners.”</p>
+</div>
+<div id="ref-vaswani2017attention">
+<p>Vaswani, Ashish, Noam Shazeer, Niki Parmar, Jakob Uszkoreit, Llion Jones, Aidan N Gomez, Łukasz Kaiser, and Illia Polosukhin. 2017. “Attention Is All You Need.” In <em>Advances in Neural Information Processing Systems</em>, 5998–6008.</p>
+</div>
+<div id="ref-yang2019xlnet">
+<p>Yang, Zhilin, Zihang Dai, Yiming Yang, Jaime Carbonell, Russ R Salakhutdinov, and Quoc V Le. 2019. “XLNet: Generalized Autoregressive Pretraining for Language Understanding.” In <em>Advances in Neural Information Processing Systems 32</em>, edited by H. Wallach, H. Larochelle, A. Beygelzimer, F. dAlché-Buc, E. Fox, and R. Garnett, 5753–63. Curran Associates, Inc. <a href="http://papers.nips.cc/paper/8812-xlnet-generalized-autoregressive-pretraining-for-language-understanding.pdf" class="uri">http://papers.nips.cc/paper/8812-xlnet-generalized-autoregressive-pretraining-for-language-understanding.pdf</a>.</p>
+</div>
 </div>
             </section>
 
