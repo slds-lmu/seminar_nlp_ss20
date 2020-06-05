@@ -14,7 +14,7 @@ link-citations: yes
 
 *Supervisor: Christian Heumann*
 
-```{r setup01-01, include=FALSE}
+```{r setup-01-01, include=FALSE}
 knitr::opts_chunk$set(echo = FALSE, message=FALSE,  warning=FALSE)
 library(knitr)
 ```
