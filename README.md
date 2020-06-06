@@ -4,9 +4,9 @@ In the last few years, there have been several breakthroughs concerning the meth
 
 In this seminar, we are planning to review these frameworks starting with a methodology that can be seen as the beginning of modern NLP: Word Embeddings.
 
-We will further discuss the integration of embeddings into end-to-end trainable approaches, namely convolutional and recurrent neural networks. As Attention-based models and transfer learning approaches are the foundation of most of the recent state-of-the-art models, we will cover these two topics extensively in the second part of our seminar.
+We will further include a chapter about the integration of embeddings into end-to-end trainable approaches, namely convolutional and recurrent neural networks. As Attention-based models and transfer learning approaches are the foundation of most of the recent state-of-the-art models, we will cover these two topics extensively in the second part of our our booklet.
 
-We will furthermore talk about software implementations of these methods and benchmark tasks/data sets for evaluating state-of-the-art models.
+Further parts will cover existing software implementations of transfer learning architectures and benchmark tasks/data sets for evaluating state-of-the-art models. In the concluding chapter, two use cases of the discussed methods will be presented.
 
 
 ## How this book came about
