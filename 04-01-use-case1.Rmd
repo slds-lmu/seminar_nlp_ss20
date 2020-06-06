@@ -55,6 +55,7 @@ The most ubiquitous architecture for NLG is the encoder-decoder architecture, an
 
 ![Encoder-Decoder (Inference)](figures/04-01-use-case1/encoder_decoder_inf.jpg)
 
+
 The architecture can be seen as conditional probability P(y/x) with 'y' being the decoder and it is conditioned on 'x' (the encoder). Hence the NLG task becomes generating text through decoder conditioned on some input, coming from the encoder.
 
 ### Encoder :
