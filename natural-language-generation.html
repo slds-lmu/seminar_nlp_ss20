@@ -4,11 +4,11 @@
 
   <meta charset="utf-8" />
   <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-  <title>Chapter 12 Resources and Benchmarks for NLP | Modern Approaches in Natural Language Processing</title>
+  <title>Chapter 15 Natural Language Generation | Modern Approaches in Natural Language Processing</title>
   <meta name="description" content="In this seminar, we are planning to review modern NLP frameworks starting with a methodology that can be seen as the beginning of modern NLP: Word Embeddings." />
   <meta name="generator" content="bookdown 0.19 and GitBook 2.6.7" />
 
-  <meta property="og:title" content="Chapter 12 Resources and Benchmarks for NLP | Modern Approaches in Natural Language Processing" />
+  <meta property="og:title" content="Chapter 15 Natural Language Generation | Modern Approaches in Natural Language Processing" />
   <meta property="og:type" content="book" />
   
   
@@ -16,7 +16,7 @@
   
 
   <meta name="twitter:card" content="summary" />
-  <meta name="twitter:title" content="Chapter 12 Resources and Benchmarks for NLP | Modern Approaches in Natural Language Processing" />
+  <meta name="twitter:title" content="Chapter 15 Natural Language Generation | Modern Approaches in Natural Language Processing" />
   
   <meta name="twitter:description" content="In this seminar, we are planning to review modern NLP frameworks starting with a methodology that can be seen as the beginning of modern NLP: Word Embeddings." />
   
@@ -31,8 +31,8 @@
   <meta name="apple-mobile-web-app-status-bar-style" content="black" />
   
   
-<link rel="prev" href="introduction-resources-for-nlp.html"/>
-<link rel="next" href="software-for-nlp-the-huggingface-transformers-module.html"/>
+<link rel="prev" href="use-bases-for-nlp.html"/>
+<link rel="next" href="the-architectures.html"/>
 <script src="libs/jquery/jquery.min.js"></script>
 <link href="libs/gitbook/css/style.css" rel="stylesheet" />
 <link href="libs/gitbook/css/plugin-table.css" rel="stylesheet" />
@@ -170,19 +170,66 @@
           <div class="page-inner">
 
             <section class="normal" id="section-">
-<div id="resources-and-benchmarks-for-nlp" class="section level1">
-<h1><span class="header-section-number">Chapter 12</span> Resources and Benchmarks for NLP</h1>
-<p><em>Authors: Author 1, Author 2</em></p>
-<p><em>Supervisor: Supervisor</em></p>
-
+<div id="natural-language-generation" class="section level1">
+<h1><span class="header-section-number">Chapter 15</span> Natural Language Generation</h1>
+<p><em>Author: Haris Jabbar</em></p>
+<p><em>Supervisor: Matthias Aßenmacher</em></p>
+<div id="introduction-1" class="section level2">
+<h2><span class="header-section-number">15.1</span> Introduction</h2>
+<p>Machine learning systems can be differentiated into two types : Discriminative and Generative. While discriminative systems like classification, regression, clustering are the more well known type, it’s the Generative systems that hold greater promise of achieving Artificial General Intelligence. In essence, a Generative system is expected to produce images, text or audio that would be meaningful to the users. That’s a much harder problem than just identifying a horse in a picture or fitting a line through a set of datapoints.</p>
+<p>In this chapter, I will tackle this generative process in Natural Language Processing domain. Understandably, it’s called Natural Language Generation (NLG).</p>
+</div>
+<div id="definition" class="section level2">
+<h2><span class="header-section-number">15.2</span> Definition</h2>
+<p>Reiter and Dale (2000) defined Natural Language Generation (NLG) as “the sub-field of artificial intelligence and computational linguistics that is concerned with the construction of computer systems than can produce understandable texts in English or other human languages from some underlying non-linguistic representation of information”</p>
+</div>
+<div id="domains-of-nlg-systems" class="section level2">
+<h2><span class="header-section-number">15.3</span> Domains of NLG Systems</h2>
+<p>NLG systems have a wide variety of application areas.</p>
+<ol style="list-style-type: decimal">
+<li>Text-to-Text
+<ul>
+<li>Machine Translation</li>
+<li>Text Summarization</li>
+</ul></li>
+<li>Data-to-Text
+<ul>
+<li>Image Captioning</li>
+<li>Business Intelligence</li>
+</ul></li>
+<li>Ideas-to-Text
+<ul>
+<li>Poetry/Song Generation</li>
+<li>Mimic an artist</li>
+<li>Fake News</li>
+</ul></li>
+<li>Dialog Systems (Chatbots)
+<ul>
+<li>Goal Oriented</li>
+<li>Open ended conversations</li>
+</ul></li>
+</ol>
+<div class="figure">
+<img src="figures/nlg_use_cases.png" alt="NLG Use Cases" />
+<p class="caption">NLG Use Cases</p>
+</div>
+</div>
+<div id="commercial-activity" class="section level2">
+<h2><span class="header-section-number">15.4</span> Commercial Activity</h2>
+<ol style="list-style-type: decimal">
+<li><a href="https://www.narrativescience.com" class="uri">https://www.narrativescience.com</a></li>
+<li><a href="https://automatedinsights.com" class="uri">https://automatedinsights.com</a></li>
+<li><a href="http://www.arria.com" class="uri">http://www.arria.com</a></li>
+</ol>
+</div>
 </div>
             </section>
 
           </div>
         </div>
       </div>
-<a href="introduction-resources-for-nlp.html" class="navigation navigation-prev " aria-label="Previous page"><i class="fa fa-angle-left"></i></a>
-<a href="software-for-nlp-the-huggingface-transformers-module.html" class="navigation navigation-next " aria-label="Next page"><i class="fa fa-angle-right"></i></a>
+<a href="use-bases-for-nlp.html" class="navigation navigation-prev " aria-label="Previous page"><i class="fa fa-angle-left"></i></a>
+<a href="the-architectures.html" class="navigation navigation-next " aria-label="Next page"><i class="fa fa-angle-right"></i></a>
     </div>
   </div>
 <script src="libs/gitbook/js/app.min.js"></script>
@@ -213,7 +260,7 @@ gitbook.start({
 "size": 2
 },
 "edit": {
-"link": "https://github.com/compstat-lmu/seminar_nlp_ss20/edit/master/03-01-resources-and-benchmarks-for-nlp.Rmd",
+"link": "https://github.com/compstat-lmu/seminar_nlp_ss20/edit/master/04-01-use-case1.Rmd",
 "text": "Edit"
 },
 "history": {

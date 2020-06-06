@@ -4,11 +4,11 @@
 
   <meta charset="utf-8" />
   <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-  <title>Chapter 12 Resources and Benchmarks for NLP | Modern Approaches in Natural Language Processing</title>
+  <title>Chapter 16 The Architectures | Modern Approaches in Natural Language Processing</title>
   <meta name="description" content="In this seminar, we are planning to review modern NLP frameworks starting with a methodology that can be seen as the beginning of modern NLP: Word Embeddings." />
   <meta name="generator" content="bookdown 0.19 and GitBook 2.6.7" />
 
-  <meta property="og:title" content="Chapter 12 Resources and Benchmarks for NLP | Modern Approaches in Natural Language Processing" />
+  <meta property="og:title" content="Chapter 16 The Architectures | Modern Approaches in Natural Language Processing" />
   <meta property="og:type" content="book" />
   
   
@@ -16,7 +16,7 @@
   
 
   <meta name="twitter:card" content="summary" />
-  <meta name="twitter:title" content="Chapter 12 Resources and Benchmarks for NLP | Modern Approaches in Natural Language Processing" />
+  <meta name="twitter:title" content="Chapter 16 The Architectures | Modern Approaches in Natural Language Processing" />
   
   <meta name="twitter:description" content="In this seminar, we are planning to review modern NLP frameworks starting with a methodology that can be seen as the beginning of modern NLP: Word Embeddings." />
   
@@ -31,8 +31,8 @@
   <meta name="apple-mobile-web-app-status-bar-style" content="black" />
   
   
-<link rel="prev" href="introduction-resources-for-nlp.html"/>
-<link rel="next" href="software-for-nlp-the-huggingface-transformers-module.html"/>
+<link rel="prev" href="natural-language-generation.html"/>
+<link rel="next" href="question-answer-systems.html"/>
 <script src="libs/jquery/jquery.min.js"></script>
 <link href="libs/gitbook/css/style.css" rel="stylesheet" />
 <link href="libs/gitbook/css/plugin-table.css" rel="stylesheet" />
@@ -170,19 +170,88 @@
           <div class="page-inner">
 
             <section class="normal" id="section-">
-<div id="resources-and-benchmarks-for-nlp" class="section level1">
-<h1><span class="header-section-number">Chapter 12</span> Resources and Benchmarks for NLP</h1>
-<p><em>Authors: Author 1, Author 2</em></p>
-<p><em>Supervisor: Supervisor</em></p>
+<div id="the-architectures" class="section level1">
+<h1><span class="header-section-number">Chapter 16</span> The Architectures</h1>
+<p>There are many architectures that are peculiar to an NLG system. While some are used in other domains as well, in the following sections I will explain them with a focus on language generation.</p>
+<div id="encoder-decoder-architecture" class="section level2">
+<h2><span class="header-section-number">16.1</span> Encoder-Decoder Architecture</h2>
+<p>The most ubiquitous architecture for NLG is the encoder-decoder architecture, and especially the decoder part of it. Hence I will explain it in some detail. The architecture is shown in following figures:</p>
+<div class="figure">
+<img src="figures/encoder_decoder_trg.jpg" alt="Encoder-Decoder (Training)" />
+<p class="caption">Encoder-Decoder (Training)</p>
+</div>
+<div class="figure">
+<img src="figures/encoder_decoder_inf.jpg" alt="Encoder-Decoder (Inference)" />
+<p class="caption">Encoder-Decoder (Inference)</p>
+</div>
+<p>The architecture can be seen as conditional probability P(y/x) with ‘y’ being the decoder and it is conditioned on ‘x’ (the encoder). Hence the NLG task becomes generating text through decoder conditioned on some input, coming from the encoder.</p>
+<div id="encoder" class="section level3">
+<h3><span class="header-section-number">16.1.1</span> Encoder :</h3>
+<p>As stated above, the purpose of this part of the network is to provide conditional information on which the decoder generates text. As such, this part can have ANY architecture. It can be a convolutional neural network for image based conditioning, or RNN/LSTM/Transformer architecture for text or audio based conditioning. But for the purpose of illustration we are using an RNN/LSTM and text as input condition.</p>
+<p>The thing to note here is that the richer the feature vector going from encoder to decoder, the more information decoder would have to generate better output. This was the motivation to move from single feature vector (\cite) to multiple vectors and subsequently to a transformer based architecture.</p>
+</div>
+<div id="decoder" class="section level3">
+<h3><span class="header-section-number">16.1.2</span> Decoder :</h3>
+<p>The decoder is the most distinctive part of an NLG system. Almost all decoders have the same form as shown in the figures above. The purpose is to generate text tokens (\cite) one after the other until a terminating criteria is met. This termination is usually a termination token (&lt;end&gt; in the figures).</p>
+<p>During training, we are given an input (text/image/audio) and the ‘gold label text’ that we want the system to learn to generate for that particular input. In the given example, the input is text “How are you?” and the gold label is “I am good”. The input goes through the encoder and produces a feature vector that is used as the input to decoder. The decoder than generates tokens one by one and the loss is calculated after the softmax layer from the generated token and the gold label token. Note the inclusion of an extra token ‘&lt;null&gt;’ as the first token. The last token of the gold label should produce the ‘&lt;end&gt;’ token.</p>
+<p>During inference, we don’t have the gold label, so the output of one step is used as input to next step, as shown in the figure. Note that it matches with the setup during training. The generator stops when ‘&lt;end&gt;’ token is emitted; thus completing the inference.</p>
+</div>
+</div>
+<div id="attention-architecture" class="section level2">
+<h2><span class="header-section-number">16.2</span> Attention Architecture</h2>
+<p>The attention architecture is introduced in detail in section (\cite). Here I will briefly mention its use in NLG systems. Looking at the picture below, we can see that the attention is from decoder to encoder.</p>
+<div class="figure">
+<img src="figures/encoder_decoder_attn.jpg" alt="Encoder-Decoder (Inference)" />
+<p class="caption">Encoder-Decoder (Inference)</p>
+</div>
+<p>In other words, before generating each token, the decoder attends to all tokens in the encoder, as shown. The query is the decoder token and key/values are all encoder token. That way the decoder has much richer information to base its output on.</p>
+</div>
+<div id="decoding-algorithm-at-inference" class="section level2">
+<h2><span class="header-section-number">16.3</span> Decoding Algorithm at Inference</h2>
+<p>Now I will explain the decoding algorithms that are used to generate text from the softmax layer.</p>
+<p>As explained above, during inference, the tokens are generated sequentially. In a vanilla version of decoding, at each step of the sequence, the token with highest probability in the softmax layer is generated. This is called ‘greedy decoding’, but it has been shown to produce suboptimal text. There are few improvements over this greedy approach.</p>
+<div id="beam-search" class="section level3">
+<h3><span class="header-section-number">16.3.1</span> Beam Search</h3>
+<p>In greedy decoder we simply output the maximum probability token at each step. But if we track multiple words at each step and then output the sequence formed by highest probability combination, we get beam search. The number of tokens we keep track of is the length of beam (k). The algorithm than goes as follows:</p>
+<ol style="list-style-type: decimal">
+<li>Select k-tokens with highest probability at step 0.</li>
+<li>Use these k-tokens to generate k softmax vectors at step 1.</li>
+<li>Keep the k highest scoring combinations.</li>
+<li>Repeat steps 2 and 3 till &lt;end&gt; token is generated, or a predefined max is reached</li>
+<li>At each step, we have only k-hypothesis, which is the length of beam search.</li>
+</ol>
+<p>While beam search tends to improve the quality of generated output, it has its own issues. Chiefly among them is that it tends to produce shorter sequences. Although it can be controlled by the max parameter (of step 4), it’s another hyperparameter to be reckoned with.</p>
+</div>
+<div id="pure-sampling-decoder" class="section level3">
+<h3><span class="header-section-number">16.3.2</span> Pure Sampling Decoder</h3>
+<p>Here, at each step, instead of taking the token with maximum probability like in greedy search, the token is sampled from the whole vocabulary according to the probability distribution predicted by the softmax layer.</p>
+</div>
+<div id="k-sampling-decoder" class="section level3">
+<h3><span class="header-section-number">16.3.3</span> K-sampling Decoder</h3>
+<p>It’s like pure sampling decoder, but instead of sampling from whole vocabulary, the token is sampled only from the k-highest probability tokens.</p>
+</div>
+</div>
+<div id="memory-networks" class="section level2">
+<h2><span class="header-section-number">16.4</span> Memory Networks</h2>
+<p>Memory Networks is another architecture that is quite useful in language generation tasks. The basic premise is that LSTMs/RNNs and even Transformer architecture stores all the information only in the weights of the network. When we want to generate text that should include information from a large knowledge base, this ‘storage’ of network weights is insufficient. So the network employs an external storage (the memory) that it can use during language generation.</p>
+</div>
+<div id="language-models" class="section level2">
+<h2><span class="header-section-number">16.5</span> Language Models</h2>
+<p>Language models are probably the most important ingredient of generating text. As the name implies, they model how the langauge probability distribution. More concretely, they model the conditional probability distribution P(w_t/w_{t-1}). This can then be used to generate text.</p>
+<!-- ## Hierarchical Encoder-Decoder (HRED) Model
 
+## Hierarchical Recurrence Attention Network (HRAN)
+
+## Multiresolution RNNs -->
+</div>
 </div>
             </section>
 
           </div>
         </div>
       </div>
-<a href="introduction-resources-for-nlp.html" class="navigation navigation-prev " aria-label="Previous page"><i class="fa fa-angle-left"></i></a>
-<a href="software-for-nlp-the-huggingface-transformers-module.html" class="navigation navigation-next " aria-label="Next page"><i class="fa fa-angle-right"></i></a>
+<a href="natural-language-generation.html" class="navigation navigation-prev " aria-label="Previous page"><i class="fa fa-angle-left"></i></a>
+<a href="question-answer-systems.html" class="navigation navigation-next " aria-label="Next page"><i class="fa fa-angle-right"></i></a>
     </div>
   </div>
 <script src="libs/gitbook/js/app.min.js"></script>
@@ -213,7 +282,7 @@ gitbook.start({
 "size": 2
 },
 "edit": {
-"link": "https://github.com/compstat-lmu/seminar_nlp_ss20/edit/master/03-01-resources-and-benchmarks-for-nlp.Rmd",
+"link": "https://github.com/compstat-lmu/seminar_nlp_ss20/edit/master/04-01-use-case1.Rmd",
 "text": "Edit"
 },
 "history": {
