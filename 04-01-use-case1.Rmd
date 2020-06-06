@@ -119,6 +119,8 @@ Language models are probably the most important ingredient of generating text. A
 
 # Question-Answer Systems
 
+The question-answer systems attempt to extract or generate answers from a given question and either a fixed or open ended context. The context here is the corpus from which the answer needs to be generated. For example in SQUAD dataset (\cite) the context is a given paragraph from wikipedia and the question is asked from that paragraph. In open ended contexts, the whole wikipedia (or other corpus) can be the contexts. 
+
 ## Datasets
 - msmarco
 - google natural questions
@@ -157,10 +159,11 @@ Five conceptual levels
     - Distant Supervision 
 
 ## Evaluation Metrics
+There are generally two metrics commonly used in QA systems. The exact match (EM) and F1 score. 
 
 # Dialog Systems
 
-## Datasets
+These are the systems where an agent chats with a human being either with a specific pupose (goal oriented) or it is a general open ended chat. The examples of goal oriented chats include tasks like booking an appointment or a flight ticket. Open ended chats can be talking about a general topic which may or may not include a 'personality' for the chatbot. 
 
 ## Types
 
@@ -179,5 +182,5 @@ Five conceptual levels
 - Text Generation
     - Encoder-Decoder
 
-## Evaluation Metrics
-- 
+# Conclusion
+Natural Language Generation (NLG) has huge potential to be not only an academic domain for research but to affect and improve our daily lives. In this chapter I have talked about only two of its manifestations. 
