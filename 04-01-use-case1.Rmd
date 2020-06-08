@@ -16,7 +16,7 @@ Reiter and Dale (2000) defined Natural Language Generation (NLG) as “the sub-f
 
 ## Domains of NLG Systems
 
-NLG systems have a wide variety of application areas. 
+NLG systems have a wide variety of application areas.
 
 1. Text-to-Text
     - Machine Translation
@@ -35,12 +35,12 @@ NLG systems have a wide variety of application areas.
     - Goal Oriented
     - Open ended conversations
 
-![NLG Use Cases](figures/04-01-use-case1/lg_use_cases.png)
+![NLG Use Cases](figures/04-01-use-case1/nlg_use_cases.png)
 
 ## Commercial Activity
 
-1. https://www.narrativescience.com 
-2. https://automatedinsights.com 
+1. https://www.narrativescience.com
+2. https://automatedinsights.com
 3. http://www.arria.com
 
 
@@ -59,14 +59,14 @@ The most ubiquitous architecture for NLG is the encoder-decoder architecture, an
 The architecture can be seen as conditional probability P(y/x) with 'y' being the decoder and it is conditioned on 'x' (the encoder). Hence the NLG task becomes generating text through decoder conditioned on some input, coming from the encoder.
 
 ### Encoder :
-As stated above, the purpose of this part of the network is to provide conditional information on which the decoder generates text. As such, this part can have ANY architecture. It can be a convolutional neural network for image based conditioning, or RNN/LSTM/Transformer architecture for text or audio based conditioning. But for the purpose of illustration we are using an RNN/LSTM and text as input condition. 
+As stated above, the purpose of this part of the network is to provide conditional information on which the decoder generates text. As such, this part can have ANY architecture. It can be a convolutional neural network for image based conditioning, or RNN/LSTM/Transformer architecture for text or audio based conditioning. But for the purpose of illustration we are using an RNN/LSTM and text as input condition.
 
-The thing to note here is that the richer the feature vector going from encoder to decoder, the more information decoder would have to generate better output. This was the motivation to move from single feature vector (\cite) to multiple vectors and subsequently to a transformer based architecture. 
+The thing to note here is that the richer the feature vector going from encoder to decoder, the more information decoder would have to generate better output. This was the motivation to move from single feature vector (\cite) to multiple vectors and subsequently to a transformer based architecture.
 
 ### Decoder :
 The decoder is the most distinctive part of an NLG system. Almost all decoders have the same form as shown in the figures above. The purpose is to generate text tokens (\cite) one after the other until a terminating criteria is met. This termination is usually a termination token (\<end> in the figures).
 
-During training, we are given an input (text/image/audio) and the 'gold label text' that we want the system to learn to generate for that particular input. In the given example, the input is text "How are you?" and the gold label is "I am good". The input goes through the encoder and produces a feature vector that is used as the input to decoder. The decoder than generates tokens one by one and the loss is calculated after the softmax layer from the generated token and the gold label token. Note the inclusion of an extra token '\<null>' as the first token. The last token of the gold label should produce the '\<end>' token. 
+During training, we are given an input (text/image/audio) and the 'gold label text' that we want the system to learn to generate for that particular input. In the given example, the input is text "How are you?" and the gold label is "I am good". The input goes through the encoder and produces a feature vector that is used as the input to decoder. The decoder than generates tokens one by one and the loss is calculated after the softmax layer from the generated token and the gold label token. Note the inclusion of an extra token '\<null>' as the first token. The last token of the gold label should produce the '\<end>' token.
 
 During inference, we don't have the gold label, so the output of one step is used as input to next step, as shown in the figure. Note that it matches with the setup during training. The generator stops when '\<end>' token is emitted; thus completing the inference.
 
@@ -76,7 +76,7 @@ The attention architecture is introduced in detail in section (\cite). Here I wi
 
 ![Encoder-Decoder (Inference)](figures/04-01-use-case1/encoder_decoder_attn.jpg)
 
-In other words, before generating each token, the decoder attends to all tokens in the encoder, as shown. The query is the decoder token and key/values are all encoder token. That way the decoder has much richer information to base its output on. 
+In other words, before generating each token, the decoder attends to all tokens in the encoder, as shown. The query is the decoder token and key/values are all encoder token. That way the decoder has much richer information to base its output on.
 
 ## Decoding Algorithm at Inference
 
@@ -88,13 +88,13 @@ As explained above, during inference, the tokens are generated sequentially. In 
 
 In greedy decoder we simply output the maximum probability token at each step. But if we track multiple words at each step and then output the sequence formed by highest probability combination, we get beam search. The number of tokens we keep track of is the length of beam (k). The algorithm than goes as follows:
 
-1. Select k-tokens with highest probability at step 0. 
+1. Select k-tokens with highest probability at step 0.
 2. Use these k-tokens to generate k softmax vectors at step 1.
-3. Keep the k highest scoring combinations. 
+3. Keep the k highest scoring combinations.
 4. Repeat steps 2 and 3 till \<end> token is generated, or a predefined max is reached
 5. At each step, we have only k-hypothesis, which is the length of beam search.
 
-While beam search tends to improve the quality of generated output, it has its own issues. Chiefly among them is that it tends to produce shorter sequences. Although it can be controlled by the max parameter (of step 4), it's another hyperparameter to be reckoned with. 
+While beam search tends to improve the quality of generated output, it has its own issues. Chiefly among them is that it tends to produce shorter sequences. Although it can be controlled by the max parameter (of step 4), it's another hyperparameter to be reckoned with.
 
 ### Pure Sampling Decoder
 
@@ -106,7 +106,7 @@ It's like pure sampling decoder, but instead of sampling from whole vocabulary, 
 
 ## Memory Networks
 
-Memory Networks is another architecture that is quite useful in language generation tasks. The basic premise is that LSTMs/RNNs and even Transformer architecture stores all the information only in the weights of the network. When we want to generate text that should include information from a large knowledge base, this 'storage' of network weights is insufficient. So the network employs an external storage (the memory) that it can use during language generation. 
+Memory Networks is another architecture that is quite useful in language generation tasks. The basic premise is that LSTMs/RNNs and even Transformer architecture stores all the information only in the weights of the network. When we want to generate text that should include information from a large knowledge base, this 'storage' of network weights is insufficient. So the network employs an external storage (the memory) that it can use during language generation.
 
 ## Language Models
 
@@ -120,16 +120,16 @@ Language models are probably the most important ingredient of generating text. A
 
 # Question-Answer Systems
 
-The question-answer systems attempt to extract or generate answers from a given question and either a fixed or open ended context. The context here is the corpus from which the answer needs to be generated. For example in SQUAD dataset (\cite) the context is a given paragraph from wikipedia and the question is asked from that paragraph. In open ended contexts, the whole wikipedia (or other corpus) can be the contexts. 
+The question-answer systems attempt to extract or generate answers from a given question and either a fixed or open ended context. The context here is the corpus from which the answer needs to be generated. For example in SQUAD dataset (\cite) the context is a given paragraph from wikipedia and the question is asked from that paragraph. In open ended contexts, the whole wikipedia (or other corpus) can be the contexts.
 
 ## Datasets
 - msmarco
 - google natural questions
-- multiple choice 
+- multiple choice
     - swag/trivia qa
-- conversational qa 
+- conversational qa
     - coqa, wizard of wikipedia, quac.ai
-- many others e.g. visual qa, KB qa etc. 
+- many others e.g. visual qa, KB qa etc.
 
 ## Types
 
@@ -157,14 +157,14 @@ Five conceptual levels
 
 - Open Domain QA
     - DrQA
-    - Distant Supervision 
+    - Distant Supervision
 
 ## Evaluation Metrics
-There are generally two metrics commonly used in QA systems. The exact match (EM) and F1 score. 
+There are generally two metrics commonly used in QA systems. The exact match (EM) and F1 score.
 
 # Dialog Systems
 
-These are the systems where an agent chats with a human being either with a specific pupose (goal oriented) or it is a general open ended chat. The examples of goal oriented chats include tasks like booking an appointment or a flight ticket. Open ended chats can be talking about a general topic which may or may not include a 'personality' for the chatbot. 
+These are the systems where an agent chats with a human being either with a specific pupose (goal oriented) or it is a general open ended chat. The examples of goal oriented chats include tasks like booking an appointment or a flight ticket. Open ended chats can be talking about a general topic which may or may not include a 'personality' for the chatbot.
 
 ## Types
 
@@ -184,4 +184,4 @@ These are the systems where an agent chats with a human being either with a spec
     - Encoder-Decoder
 
 # Conclusion
-Natural Language Generation (NLG) has huge potential to be not only an academic domain for research but to affect and improve our daily lives. In this chapter I have talked about only two of its manifestations. 
+Natural Language Generation (NLG) has huge potential to be not only an academic domain for research but to affect and improve our daily lives. In this chapter I have talked about only two of its manifestations.
