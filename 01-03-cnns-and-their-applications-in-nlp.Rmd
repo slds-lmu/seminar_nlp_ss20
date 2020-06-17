@@ -25,7 +25,7 @@ This section presents a brief introduction of the Convolutional neural network (
 knitr::include_graphics("figures/01-03-cnns-and-their-applications-in-nlp/basic_structure.png")
 ```
 
-As illustrated in Figure \@ref(fig:figs), a convolutional neural networks includes successively an input layer, multiple hidden layers, and an output layer, the input layer will be dissimilar according to various application. The hidden layers, which is the core block of a CNN architecture, consist of a series of **convolutional layers**, **pooling layers**, and finally export the output through the **fully-connected layer**. In the following chapters, descriptions of the critical layer of CNN and their corresponding intuitive example will be provided in detail.
+As illustrated in Figure \@ref(fig:figs), a convolutional neural networks includes successively an input layer, multiple hidden layers, and an output layer, the input layer will be dissimilar according to various application. The hidden layers, which is the core block of a CNN architecture, consist of a series of **convolutional layers**, **pooling layers**, and finally export the output through the **fully-connected layer**. In the following sub-chapters, descriptions of the critical layer of CNN and their corresponding intuitive example will be provided in detail.
 @Scherer2010EvaluationOP
 
 ### Convolutional Layer
@@ -36,7 +36,7 @@ The convolutional layer is the core building block of a CNN. In short, the input
 knitr::include_graphics("figures/01-03-cnns-and-their-applications-in-nlp/Matrix.png")
 ```
 
-The input of the Neural Networks might be assumed as a $6 \times 6$ matrix and each element of which can be presented as the integer '0','1'. As mentioned before, there is a set of learnable filters in the convolutional layer and each filter can be considered as a matrix, which is similar to a neuron in fully-connected layer. In this instance, filters of size $3 \times 3$ slide back and forth with a specific stride across the entire input image and each element of the matrix or filter serves as a parameter (weight and bias) of Neural Networks. Traditionally, these parameter are not based on the initial setting but are trained through the training data.
+The input of the Neural Networks might be assumed as a $6 \times 6$ matrix and each element of which can be presented as the integer '0','1'. As mentioned before, there is a set of learnable filters in the convolutional layer and each filter can be considered as a matrix, which is similar to a neuron in a fully-connected layer. In this instance, filters of size $3 \times 3$ slide back and forth with a specific stride across the entire input image and each element of the matrix or filter serves as a parameter (weight and bias) of Neural Networks. Traditionally, these parameter are not based on the initial setting but are trained through the training data.
 
 An activated filter of size $3 \times 3$ has an ability to detect a pattern of the same size at some spatial position in the input. The algebraic operation explicates the transformation process from the input to the feature map.
 
@@ -51,7 +51,7 @@ where $X$ is the input matrix of size $6 \times 6$ as mentioned before;
 $$ F  : = \begin{pmatrix}
 w_{11} & w_{12}  & w_{13}\\ \\
 w_{21} & w_{22}  & w_{23} \\ \\
-w_{31} & w_{32}  & X_{33}
+w_{31} & w_{32}  & w_{33}
 \end{pmatrix}$$
 where $F$ denotes one filter of size $3 \times 3$;
 $$ \beta  : = \begin{pmatrix}
@@ -62,7 +62,7 @@ $$ A_{11} = (F \times X)_{11}  : =
 \beta \cdot \begin{pmatrix}
 w_{11} & w_{12} & w_{13} & w_{21} & w_{22} & w_{23} & w_{31} & w_{32} & w_{33}\\
 \end{pmatrix}^{T}\\$$
-Therefore, the first element of the feature map $A_{11}$ can been calculated through dot product operation shown as above. Sequentially, the second element of the feature map is determined by the sliding dot product of filter and the succeeding input matrix with the same size after setting a specific value of stride, which can be considered as a moving distance. After the whole process, a feature map of size $4 \times 4$ has been generated. Generally, there is more than one filter in the convolutional layer and each filter generate a feature map with the same size. As a result, The result of this convolutional layer is multiple feature maps (also referred to as activation map) and these feature maps correspond to different filters are stacked together along the depth dimension.
+Therefore, the first element of the feature map $A_{11}$ can been calculated through dot product operation shown as above. Sequentially, the second element of the feature map is determined by the sliding dot product of filter and the succeeding input matrix with the same size after setting a specific value of stride, which can be considered as a moving distance. After the whole process, a feature map of size $4 \times 4$ has been generated. Generally, there is more than one filter in the convolutional layer and each filter generate a feature map with the same size. The result of this convolutional layer is multiple feature maps (also referred to as activation map) and these feature maps correspond to different filters are stacked together along the depth dimension.
 
 Another improved convolutional layer was proposed by (@Kalchbrenner2016NeuralMT) and this kind of convolution is named Dilated convolutionn, in order to solve the problem that the pooling operation in the pooling layer will lose a lot of information. The critical contribution of this convolution is that the receptive field of the network will not be reduced by removing the pooling operation. In other words, the units of feature maps in the deeper hidden layer can still map a larger region of the original input. As illustrated in Figure \@ref(fig:figs-dilated), although there is no pooling layer, the original input information is still increased as the layers are deeper.
 
@@ -127,7 +127,8 @@ knitr::include_graphics("figures/01-03-cnns-and-their-applications-in-nlp/Fully_
 
 ## CNN for sentence classification
 
-The explanation of CNN basic architecture provided in the first chapter is based on a general example. Many researchers constructed their own specific CNN models based on this basic architecture in recent years and achieved outsanding results in the field of NLP. Therefore, this section explores five superior CNN architecture with some technical detail and their performanc comparison will be provided in later chapter of this report.
+The explanation of CNN basic architecture provided in the first sub-
+is based on a general example. Many researchers constructed their own specific CNN models based on this basic architecture in recent years and achieved outsanding results in the field of NLP. Therefore, this section explores five superior CNN architecture with some technical detail and their performanc comparison will be provided in later sub-chapter of this report.
 
 
 ### CNN-rand/CNN-static/CNN-non-static/CNN-multichannel
@@ -194,8 +195,6 @@ $$h(y)=max (g(y \cdot d -x+c))$$
 ### Very Deep CNN
 
 ### Deep Pyramid CNN
-
-### Capsule Networks 
 
 ## Datasets and Experimental Evaluation
 
