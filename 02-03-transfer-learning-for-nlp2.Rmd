@@ -4,7 +4,7 @@
 
 *Supervisor: M. Aßenmacher*
 
-Unsupervised representation learning has been highly successful in NLP. Typically, these methods first pre-train neural networks on large-scale unlabeled text corpora and then finetune the models on downstream tasks. Here we introduce the three remarkable models, BERT, GPT-2 and XLNet. [Transformers]("https://github.com/huggingface/transformers") is an excellent github repository, where readers can find their implementations.
+Unsupervised representation learning has been highly successful in NLP. Typically, these methods first pre-train neural networks on large-scale unlabeled text corpora and then fine-tune the models on downstream tasks. Here we introduce the three remarkable models, BERT, GPT-2 and XLNet. [Transformers]("https://github.com/huggingface/transformers") is an excellent github repository, where readers can find their implementations.
 
 ## Bidirectional Encoder Representations from Transformers (BERT)
 
@@ -14,17 +14,17 @@ Unsupervised representation learning has been highly successful in NLP. Typicall
 knitr::include_graphics("figures/02-03-transfer-learning-for-nlp/autoencoding.png")
 ```
 
-
 Autoencoding(AE) have been most successful pre-training objectives and figure \@ref(fig:ch02-03-figure01) shows the modeling of it. AE based model does not perform explicit density estimation but instead aims to reconstruct the original data from corrupted input. Specifically, given a text sequence $X = (x_1,...,x_T)$, AE factorizes the log-likelihood into a partial sum $$log p(\bar{X}|\hat{X}) = \sum^T_{t=1} mask_t p(x_t|\hat{X})$$, where $mask_t$ is an indicator to show if a token is masked,@yang2019xlnet.
-The training objective is to reconstuct the masked tokens $\bar{X}$ given the sequence $\hat{X}$, AE trys to find the best model $P$ to predict the masked tokens.
+
+The training objective is to reconstruct the masked tokens $\bar{X}$ given the sequence $\hat{X}$. AE tries to find the best model $P$ to predict the masked tokens.
 
 ### Introduction of BERT
 
 BERT is published by researchers at Google AI in 2018. It is regarded as a milestone in the NLP community by proposing a bidirectional Language model based on Transformer.
 
-BERT is the notable example of AE, 15% of tokens are replaced by a special symbol [MASK], and the model is trained to reconstruct the original sequence from the masked tokens. By contrast with previous efforts that looked at a text sequence either from left to right(RNN) or combined left-to-right and right-to-left training (ELMO), the Transformer Encoder utilizes bidirectional contexts simutaneously. Therefore BERT uses the Transformer Encoder as the structure of the pre-train model and addresses the unidirectional constraints by proposing a new pre-training objective: the “masked language model”(MLM).
+BERT is the notable example of AE, 15% of tokens are replaced by a special symbol [MASK], and the model is trained to reconstruct the original sequence from the masked tokens. By contrast with previous efforts that looked at a text sequence either from left to right(RNN) or combined left-to-right and right-to-left training (ELMO), the Transformer Encoder utilizes bidirectional contexts simultaneously. Therefore BERT uses the Transformer Encoder as the structure of the pre-train model and addresses the unidirectional constraints by proposing a new pre-training objective: the “masked language model”(MLM).
 
-In conclusion, BERT uses masked language models to enable pre-trained deep bidirectional representations and after fine-tuning based the representation, BERT advances state-of-the-art performance for eleven NLP tasks. 
+In conclusion, BERT uses masked language models to enable pre-trained deep bidirectional representations and after fine-tuning based the representation, BERT advances state-of-the-art performance for eleven NLP tasks.
 
 ### Input Representation of BERT
 
@@ -49,9 +49,9 @@ knitr::include_graphics("figures/02-03-transfer-learning-for-nlp/bert_masked_tas
 ```
 
 Figure \@ref(fig:ch02-03-figure03) is the visual representation of Masked Language Model.
-As shown in the above figure, when word embeddings are fed into BERT, 15% of the words in each sequence will be replaced by a special token [MASK]. The task of MLM is to predict the original value of masked tokens. The output of MSM is the word embeddings of corresponding tokens, then feed the word embedding of [MASK] token into a simple softmax classifier and get the final prediction of [MASK] token. And the most important part is the "yellow" block, it's basically a multi-layer bidirectional Transformer encoder based on implementation described in @kaiser2017one.
+As shown in the above figure, when word embeddings are fed into BERT, 15% of the words in each sequence will be replaced by a special token [MASK]. The task of MLM is to predict the original value of masked tokens. The output of MLM is the word embeddings of corresponding tokens, then feed the word embedding of [MASK] token into a simple softmax classifier and get the final prediction of [MASK] token. And the most important part is the "yellow" block, it's basically a multi-layer bidirectional Transformer encoder based on implementation described in @kaiser2017one.
 
-* What is the Masked Language Model? 
+* What is the Masked Language Model?
   * 15% of all WordPiece tokens in each sequence will be randomly masked.
   * Input: token embedding(one sentence, begin with [CLS])
   * Output: BERT token embedding.
@@ -63,7 +63,7 @@ As shown in the above figure, when word embeddings are fed into BERT, 15% of the
   * 10% of the time: Keep the word unchanged, e.g., my dog is hairy $\Rightarrow$ my dog is hairy.
 * Why there are two other methods to replace the word?
   * Why keep 10% of masked tokens unchanged?  
-    A: In some downstream task like POSTagging, all the tokens are known, if BERT only trained the Masked sequences, then the model only use the information of context, exclude the information of the masked words. It will lose a part of the information, then weak the performance of the model.
+    A: In some downstream task like POSTagging, all the tokens are known, if BERT only trained the Masked sequences, then the model only use the information of context, exclude the information of the masked words. It will lose a part of the information, then weakens the performance of the model.
   * Why replace 10% of masked tokens with random words?  
     A: Since we keep 10% of masked token unchanged, if we do not add random noise, the model will be "lazy" in our training, the model will plagiarize current tokens, rather than learning.
 
@@ -72,6 +72,7 @@ As shown in the above figure, when word embeddings are fed into BERT, 15% of the
 ```{r ch02-03-figure04, echo=FALSE, out.width="70%", fig.cap="BERT Next-sentence Tasks  \n Alammar, Jay (2018). The Illustrated BERT, ELMo, and co. [Blog post]. Retrieved from http://jalammar.github.io/illustrated-bert/",, fig.align="center"}
 knitr::include_graphics("figures/02-03-transfer-learning-for-nlp/bert_nsp.png")
 ```
+
 Figure \@ref(fig:ch02-03-figure04) is the visual representation of Next-sentence Tasks(NST).
 Many important downstream tasks such as Question Answering (QA) and Natural Language Inference (NLI) are based on understanding the relationship between two text sentences, which is not directly captured by language modeling. So BERT proposes the NST by using the special token [CLS] as the first token of every sequence.
 
@@ -90,7 +91,7 @@ Many important downstream tasks such as Question Answering (QA) and Natural Lang
 
 ### Pre-training Procedure of BERT
 
-For the pre-training corpus, BERT use the concatenation of BooksCorpus (800M words) (Zhu et al., 2015) and English Wikipedia (2,500M words) to creat two version of BERT (L the number of layers, H the hidden size, A the number of self-attention heads):
+For the pre-training corpus, BERT uses the concatenation of BooksCorpus (800M words) (Zhu et al., 2015) and English Wikipedia (2,500M words) to create two version of BERT (L the number of layers, H the hidden size, A the number of self-attention heads):
 
 * BERT-Base: L = 12, H = 768, A = 12, Total parameters = 110M
 * BERT-Large: L = 24, H = 1024, A = 16, Total parameters = 340M
@@ -103,14 +104,13 @@ knitr::include_graphics("figures/02-03-transfer-learning-for-nlp/bert_based_mode
 
 As shown in Figure \@ref(fig:ch02-03-figure05), different types of tasks require different modifications to the model, and the modification of the model before fine-tuning is quite simple. For example, for the sequence-level classification problem (such as sentiment analysis, Task (a) in the figure), take the output representation of the first token[CLS] and feed it to a softmax to get the classification result. As for token-level classification (e.g. NER, Task (d) in the figure), take the output of the last layer transformer of all tokens and feed it to the softmax layer for classification.
 
-### Feature Extraction 
+### Feature Extraction
 
-Like other Language model, the pre-trained BERT can create contextualized word embeddings. Then the word embeddings can be used to the existing model. Readers can try out BERT through [BERT FineTuning with Cloud TPUs](https://colab.research.google.com/github/tensorflow/tpu/blob/master/tools/colab/bert_finetuning_with_cloud_tpus.ipynb).
-
+Like other Language model, the pre-trained BERT can create contextualized word embeddings. Then the word embeddings can be used as features in other models. Readers can try out BERT through [BERT FineTuning with Cloud TPUs](https://colab.research.google.com/github/tensorflow/tpu/blob/master/tools/colab/bert_finetuning_with_cloud_tpus.ipynb).
 
 ### BERT-like models
 
-The state-of-the-art performance of BERT reveals the deep bidirectional language model can significantly improve the model performance in NLP tasks, and BERT chart a new course that how a real bidirectional model should be. However, BERT has also the following weaknesses: first of all, the input to BERT contains artificial symbols like [MASK] that never occur in downstream tasks, which creates a pre-train-fine-tunning discrepancy problem. Secondly, BERT assumes the predicted tokens are independent of others given the unmasked tokens, which is oversimplified for natural language. Several models are inspired by BERT to solve these problems.
+The state-of-the-art performance of BERT reveals the deep bidirectional language model can significantly improve the model performance in NLP tasks, and BERT chart a new course that how a real bidirectional model should be. However, BERT has also the following weaknesses: first of all, the input to BERT contains artificial symbols like [MASK] that never occur in downstream tasks, which creates a pre-train-fine-tuning discrepancy problem. Secondly, BERT assumes the predicted tokens are independent of others given the unmasked tokens, which is oversimplified for natural language. Several models are inspired by BERT to solve these problems.
 
 Roberta @liu2019roberta shows hyperparameter choices have a significant impact on the final results. It improves BERT pre-training in the following aspects to get better performance:
 
@@ -147,7 +147,7 @@ Readers can experiment with GPT-2 by using [AllenAI GPT-2](https://demo.allennlp
 
 ### Input Representation of GPT-2
 
-GPT-2 creats a dataset called ["WebText"](https://skylion007.github.io/OpenWebTextCorpus/), contains the text subset of 45 million links, which all curated by humans. All results presented in papaer use a preliminary version of WebText which after de-duplication and some heuristic based cleaning contains slightly over 8 million documents for a total of 40GB of text @radford2019gpt2.
+GPT-2 uses a human-curated dataset called ["WebText"](https://skylion007.github.io/OpenWebTextCorpus/), that contains text scraped from 45 million web-links. All results presented in paper use a preliminary version of WebText which after de-duplication and some heuristic based cleaning contains slightly over 8 million documents for a total of 40GB of text @radford2019gpt2.
 
 ```{r ch02-03-figure07, echo=FALSE, out.width="70%", fig.cap="GPT-2 Input Representation  \n Alammar, Jay (2018). The Illustrated GPT-2 co. [Blog post]. Retrieved from http://jalammar.github.io/illustrated-gpt2/",, fig.align="center"}
 knitr::include_graphics("figures/02-03-transfer-learning-for-nlp/gpt_input_representation.png")
@@ -185,7 +185,7 @@ By using the specially designed WebText, GPT-2 can be used by following patterns
 ```{r  ch02-03-table01, echo=FALSE }
 gpt_size <- data.frame("Parameters"= c("117M","345M","762M","1542M"),
                         "Layers"= c(12,24,36,48),
-                        "Dimensionlality" = c(768,1024,1280,1600))
+                        "Dimensionality" = c(768,1024,1280,1600))
 
 
 knitr::kable(gpt_size,caption = "GPT-2 models size" )
@@ -206,7 +206,7 @@ After the great success of bidirectional models like BERT, GPT-2 insists on usin
 ```{r ch02-03-figure09, echo = FALSE, fig.cap="AR Language Modeling  and AE", out.width = "90%",fig.align="center"}
 knitr::include_graphics("figures/02-03-transfer-learning-for-nlp/xlnet_twomodels.png")
 ```
-XLNet is proposed by researchers at Google in 2019. Since the autoregressive language model(e.g.GPT-2) is only trained to encode a unidirectional context and not effective at modeling deep bidirectional contexts and autoencoding(e.g.BERT) suffers from the pretrain-finetune discrepancy, XLNet borrows ideas from the two types of objectives while avoiding their limitations. It is a new objective called Permutation Language Modeling. By using a permutation operation during training time, bidirectional context information can be captured and makes it a generalized order-aware autoregressive language model. Besides, XLNet introduces a two-stream self-attention to solve the problem that standard parameterization will reduce the model to bag-of-words.
+XLNet is proposed by researchers at Google in 2019. Since the autoregressive language model (e.g.GPT-2) is only trained to encode a unidirectional context and not effective at modeling deep bidirectional contexts and autoencoding (e.g.BERT) suffers from the pretrain-finetune discrepancy, XLNet borrows ideas from the two types of objectives while avoiding their limitations. It is a new objective called Permutation Language Modeling. By using a permutation operation during training time, bidirectional context information can be captured and makes it a generalized order-aware autoregressive language model. Besides, XLNet introduces a two-stream self-attention to solve the problem that standard parameterization will reduce the model to bag-of-words.
 
 Two XLNet are released, i.e. XLNet-Base and XLNet-Large, and include the similar settings of corresponding BERT. Empirically, XLNet outperforms BERT on 20 tasks and achieves state-of-the-art results on 18 tasks.
 
@@ -255,8 +255,7 @@ XLNet resolves the problem by reparameterizing with positions:
 
 $$p_{\theta}(X_{p_t}=x|x_{p<t})=\frac{e(x)^Tg_{\theta}(x_{p<t},p_t)}{\sum_{x^{'}}e(x^{'})^Tg_{\theta}(x_{p<t},p_t)}$$
 where $e(x)$ denotes the embedding of input token and $g_{\theta}(x_{p<t},p_t)$ denotes the hidden representation of $x_{p<t}$ and position $p_t$.
-
-but reparameterization with positions brings another contradiction @yang2019xlnet:  
+But reparameterization with positions brings another contradiction @yang2019xlnet:  
 (1) To predict the token $x_{p_t}$ , $g_{\theta}(x_{p<t},p_t)$ should only use the position $p_t$ and not the content $x_{p_t}$, otherwise the objective becomes trivial.  
 (2) To predict the other tokens  $x_{p_j}$ with j > t, $g_{\theta}(x_{p<t},p_t)$ should also encode the content $x_{p_t}$ to provide full contextual information.
 
@@ -271,35 +270,36 @@ knitr::include_graphics("figures/02-03-transfer-learning-for-nlp/xlnet_ts.png")
 Instead of one, two sets of hidden representation are proposed:
 
 * The content representation $h_{\theta}(x_{p \leq t})$, this representation encodes both the context and $x_{p_t}$ itself.
-* The query representation $g_{\theta}(x_{p<t},p_t)$, which only has information $x_{p<t}$ and the postion $p_t$ but not the content $x_{p_t}$.
+* The query representation $g_{\theta}(x_{p<t},p_t)$, which only has information $x_{p<t}$ and the position $p_t$ but not the content $x_{p_t}$.
 
-Figure \@ref(fig:ch02-03-figure011) is an example with the Factorization order: $3,2,4,1$: 
+Figure \@ref(fig:ch02-03-figure011) is an example with the Factorization order: $3,2,4,1$:
 
-* $h_i^{(t)}$ denote the content representation of the i-th token in the t-th layer of self-attention. It is the same as the standard self-attention. For instance, $h_1^{(1)}$ can see all the $h_i^{(0)}$ since the 1-st token is after token ${3,2,4}$.
+* $h_i^{(t)}$ denotes the content representation of the i-th token in the t-th layer of self-attention. It is the same as the standard self-attention. For instance, $h_1^{(1)}$ can see all the $h_i^{(0)}$ since the 1-st token is after token ${3,2,4}$.
 
-* $g_i^{(t)}$ denote the query representation of the i-th token on the t-th layer of self-attention.it does not have access information about the content $x_{p_t}$, otherwise trivial. 
+* $g_i^{(t)}$ denote the query representation of the i-th token on the t-th layer of self-attention. It does not have access information about the content $x_{p_t}$, other trivial.
 
 * Computationally, $h_i^{(0)}$ is the word embeddings, and $g_i^{(0)}$ is a trainable parameter initialized with a trainable vector. Only $h_i^{(t)}$ is used during fine-tuning. The last $g_i^{(t)}$ is used for optimizing the LM loss. A self-attention layer $m=1,...,M$ are schematically updated with a shared set of parameters as follows:
+
 $$
-h_{p_t}^{m} \leftarrow Attention (Q=h_{p_t}^{m-1}, KV=h^{(m-1)}_{p \leq t};\theta) 
-\text{  (content stream: use both $p_t$ and $x_{p_t}$)} 
+h_{p_t}^{m} \leftarrow Attention (Q=h_{p_t}^{m-1}, KV=h^{(m-1)}_{p \leq t};\theta)
+\text{  (content stream: use both $p_t$ and $x_{p_t}$)}
 \\
-g_{p_t}^{m}\leftarrow Attention (Q=g_{p_t}^{(m-1)}, KV=h^{(m-1)}_{p<t};\theta) 
+g_{p_t}^{m}\leftarrow Attention (Q=g_{p_t}^{(m-1)}, KV=h^{(m-1)}_{p<t};\theta)
 \text{  (query stream: use $p_t$ but cannot see }x_{p_t})
-$$ 
+$$
+
 where Q, K, V denote the query, key, and value in an attention operation @vaswani2017attention.
 More details are included in Appendix A.2 for reference @yang2019xlnet.
 
 ### Partial Prediction
 
-While the PLM has several benefits, optimization is challenging due to the permutation operator. To reduce the optimization difficulty, XLNet only predicts the last tokens in a factorization order. It sets a cutting point $c$ and split the permutation $p$ into a non-target subsequence $p_{\leq c}$ and a target subsequence $p_{>c}$. The objective is to maximize the log-likelihood of the target subsequence conditioned on the non-target subsequence, i.e., 
+While the PLM has several benefits, optimization is challenging due to the permutation operator. To reduce the optimization difficulty, XLNet only predicts the last tokens in a factorization order. It sets a cutting point $c$ and split the permutation $p$ into a non-target subsequence $p_{\leq c}$ and a target subsequence $p_{>c}$. The objective is to maximize the log-likelihood of the target subsequence conditioned on the non-target subsequence, i.e.,
 
 \begin{equation}
-\max_{\theta}   \mathbb{E}_{p\sim P_T} \left[logp_{\theta}(x_{z_{>c}|x_{z_{\leq c}}})\right] = 
+\max_{\theta}   \mathbb{E}_{p\sim P_T} \left[logp_{\theta}(x_{z_{>c}|x_{z_{\leq c}}})\right] =
 \mathbb{E}_{p\sim P_T} \left[\sum_{t=c+1}^{|z|} logp_{\theta}(x_{z_t|x_{z_{\leq t}}})\right]
 \end{equation}
-For unselected tokens, their query representations need not be computed, which saves speed and memory. XLNet incorporates Ideas from Transformer-XL and inherits two important characters of it, Segment-Level Recurrence and Relative Position Encoding, to enable the learning of long-term dependency and resolve the context fragmentation.
-
+For unselected tokens, their query representations need not be computed, which saves speed and memory. XLNet incorporates ideas from Transformer-XL and inherits two important characters of it, Segment-Level Recurrence and Relative Position Encoding, to enable the learning of long-term dependency and resolve the context fragmentation.
 
 ### XLNet Pre-training Model
 
@@ -310,10 +310,9 @@ Analogous to BERT, two versions of XLNet have been trained:
 * XLNet-Base: L = 12, H = 768, A = 12, Total parameters = 110M (on BooksCorpus and Wikipedia only)
 * XLNet-Large: L = 24, H = 1024, A = 16, Total parameters = 340M (on total datasets)
 
-
 ### Conclusion 
 
-Language modeling has been a rapidly developing research area. However, most language modelings are unidirectional but BERT @bert shows that bidirectional modeling can significantly improve model performance. So there has been a gap between language modeling and pre-training due to the lack of the capability of bidirectional context modeling. With the permutation operator, XLNet generalizes language modeling. Now the unidirectional language modelings can become bidirectional modeling with a permutation operator. Overall, XLNet is a generalized AR pretraining method that uses a permutation language modeling objective to combine the advantages of AR and AE methods.
+Language modeling has been a rapidly developing research area. However, most language modelings are unidirectional and BERT @bert shows that bidirectional modeling can significantly improve model performance. Unidrectional modelings without specific structure are hard to capture the bidirectional context. Now with the permutation operator, the unidirectional language modelings can become bidirectional modeling. XLNet has built a bridge between language modeling and bidrectional model. Overall, XLNet is a generalized AR pre-training method that uses a permutation language modeling objective to combine the advantages of AR and AE methods.
 
 ## Latest NLP models
 
@@ -321,6 +320,6 @@ Nowadays NLP has become a competition between big companies. When BERT first cam
 
 After GPT-2, researchers at Google did the same thing, they proposed a general language model called T5 @raffel2019exploring, which is trained on 750GB corpus - ["C4 (Colossal Clean Crawled Corpus)"](https://www.tensorflow.org/datasets/catalog/c4). If you read the paper, the last page of it is a table of several experience results, which may cost millions of dollars to reproduce it.  
 
-On 28th May 2020, the "Arms race" goes into another level, GPT-3 @brown2020language emerged, the new paper takes GPT to the next level by making it even bigger - GPT-3 has 175 billion parameters and is trained on a dataset that has 450 billion of tokens ["GPT-3 Dataset"](https://github.com/openai/gpt-3). GPT-3 experiments with the three different settings: zero-shot, one-shot, and Few-shot to show that scaling up language models can greatly improve performance, sometimes even reaching competitiveness with prior SOTA approaches. However, it is conservatively estimated that training GPT-3 will cost one hundred million.
+On 28th May 2020, the "Arms race" goes into another level, GPT-3 @brown2020language emerged, the new paper takes GPT to the next level by making it even bigger - GPT-3 has 175 billion parameters and is trained on a dataset that has 450 billion of tokens ["GPT-3 Dataset"](https://github.com/openai/gpt-3). GPT-3 experiments with the three different settings: zero-shot, one-shot, and Few-shot to show that scaling up language models can greatly improve performance, sometimes even reaching competitiveness with prior SOTA approaches. However, it is conservatively estimated that training GPT-3 will cost one hundred million dollars.
 
-Models like T5 and GPT-3 are very impressive, but the biggest problem at the moment is to find a way to make the current model put into use in industry. If it can't bring benefits, the AI industry can't be sustained by burning money. As for researchers, the truth is, it may not work with resources, but it is certainly not possible without resources now.
+Models like T5 and GPT-3 are very impressive, but the biggest problem at the moment is to find a way to make the current model put into use in industry. If it can't bring benefits, the AI industry can't be sustained by burning money. As for researchers, the truth is, with the resources it is also possible to fail, but it is certainly impossible to succeed without resources now.
