@@ -10,15 +10,15 @@ The second part focuses on self-attention which enabled the commonly used models
 for transfer learning that are seen today.
 
 ## Attention
-In this part of the chapter we revisit the Encoder-Decoder architecture that was introduced
-in chapter [3](01-02-rnns-and-their-applications-in-nlp). We focus on the improvments
+In this part of the chapter, we revisit the Encoder-Decoder architecture that was introduced
+in chapter [3](01-02-rnns-and-their-applications-in-nlp). We focus on the improvements
 that were made with the development of attention mechanisms on the example of neural machine translation (nmt).
 
 As seen in chapter [3](01-02-rnns-and-their-applications-in-nlp), traditional early
 encoder-decoder architecture passes the last hidden state of the encoder to the decoder.
 This leads to the problem that information is lost in long input sequences.
 Especially information found early in the sequence tends to be "forgotten" after
-the entire sequence is processed. The addition of bi-directional layers remidies
+the entire sequence is processed. The addition of bi-directional layers remedies
 this by processing the input in reversed order. The problem still persists for mid
 sections of very long input sequences. The development of attention enables the decoder to
 attend to the entire input sequence.
@@ -43,7 +43,7 @@ bi-directional encoder.
 $$
 h_i = [\overrightarrow{h_i}; \overleftarrow{h_i}], i = 1,\dots,n
 $$
-The hidden states of the decoder $s_t$ at timepoint $t$ is computed as $s_t = f(s_{t-1},y_{t-1},c_t)$.
+The hidden states of the decoder $s_t$ at time-point $t$ is computed as $s_t = f(s_{t-1},y_{t-1},c_t)$.
 The context vector $c_t$ is computed as a weighted sum of the hidden
 states $h_1,\dots, h_{T_x}$:
 
@@ -56,7 +56,7 @@ These alignment scores are computed as:
 $$
 \alpha_{t,i} = align(y_t, x_i) =\frac{exp(score(s_{t-1},h_i))}{\sum^{n}_{i'=1}exp(score(s_{t-1},h_{i'}))}
 $$
-with $s_{t-1}$ being the hidden state of the decoder at timestep $t-1$.
+with $s_{t-1}$ being the hidden state of the decoder at time-step $t-1$.
 The alignment score $\alpha_{t,i}$ models how well input $x_i$ and output $y_t$ match
 and assigns the weight to $h_i$. @bahdanau2014neural parametrize their alignment
 score with a single-hidden-layer feed-forward neural network which is jointly
@@ -66,10 +66,10 @@ is given as
 $$
 score(s_t,h_i) = v_\alpha^Ttanh(\mathbf{W}_\alpha[s_t;h_i])
 $$
-were tanh is used as non-linear activation function and $v_\alpha$ and $W_\alpha$
+were tanh is used as a non-linear activation function and $v_\alpha$ and $W_\alpha$
 are the weight matrices to be learned by the alignment model. The alignment score function
 is called "concat" in @luong2015effective and "additive attention" in @vaswani2017attention
-because of the concatenation seen above. A nice byproduct of attention is a matrix of alignment scores
+because of the concatenation seen above. A nice by-product of attention is a matrix of alignment scores
 which can be visualised to show the correlation between source and target words.
 
 ![Alignment Matrix visualised for a French to English translation. Image source: Fig 3 in @bahdanau2014neural](./figures/02-02-attention-and-self-attention-for-nlp/bahdanau-fig3.png)
@@ -97,7 +97,7 @@ Overview over models that use attention and different attentions used, segway to
 ## Self-Attention
 general intro to self-attention
 
-- intro self attention, explanaition is done in the transformers part
+- intro self attention, explanation is done in the transformers part
 
 ### Transformers
 explain transformer architecture, multi-head attention, dot-prod. attention, explain the differences in computational cost to rnns and conv. models
