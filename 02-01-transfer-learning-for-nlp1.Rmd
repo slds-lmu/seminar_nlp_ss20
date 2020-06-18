@@ -87,7 +87,7 @@ $\Theta_{x}$ are the parameters of the Softmax-layer.
 [ Add some more explanation to the formulas (maybe in combination with the graph) because it's really hard to understand this part.]
 
 ```{r ch21-figure08, echo=FALSE, out.width="90%", fig.cap="ELMo", fig.align="center"}
-knitr::include_graphics("figures/02-01-transfer-learning-for-nlp-1/ELMo.PNG")
+knitr::include_graphics("figures/02-01-transfer-learning-for-nlp-1/elmo.PNG")
 ```
 
 #### ELMo representation
@@ -159,6 +159,8 @@ t / c u t, & \text { if } t<c u t \\
 
 where $c u t_{-} f r a c$ is the increasing learning rate factor, $c u t$ the iteration where the decreasing is started, $p$ the fraction of the number of iterations that are increased or decreased, $ratio$ is the ratio the difference between the lowest and highest learning rate 
 
+[add aim of it!]
+
 3. **Classifier fine-tuning**:  In the last step, the LM is expanded with two common feed-forward layers and a softmax normalization at the end to predict a target label distribution. Again, two new techniques are submitted: 
       + **Concat pooling** 
 Concat pooling elicits "max-pooling and mean-pooling over the history of hidden states and concatenates them with the final hidden state.":[formula for concat pooling]
@@ -214,6 +216,7 @@ In the next chapter, the main idea behind transformers, self-attention, is expla
 <!-- * graphs so that they are consistent throughout the chapter and correspond with the formulas -->
 <!-- at some places explain formulas and unknown terms in more detail -->
 <!-- for each of three models mention fields of NLP where they are used and what tasks exactly they are able to solve (question answering, text generation ...) -->
+<!-- * add links -->
 
 <!-- ## Literature:  -->
 <!-- Pan, S. J., and Yang, Q. (2010). A survey on transfer learning. IEEE Transactions on Knowledge and Data Engineering, 22(10):1345–1359.  -->
