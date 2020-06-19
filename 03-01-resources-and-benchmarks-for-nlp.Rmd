@@ -16,8 +16,12 @@ For many of the benchmarking datasets in natural language processing, a leaderbo
   
 **(Macro-averaged) F1 score (F1):** Each answer and prediction is tokenized into words. For every answer to a given question, the overlap between the prediction and each answer is calculated and the maximum F1 is chosen. This score is then averaged over all of the questions. Formally speaking:
 $$
-F1 = \frac{2 \cdot \hbox{precision}\cdot\hbox{recall}}{\hbox{precision}+\hbox{recall}} \\
+F1 = \frac{2 \cdot \hbox{precision}\cdot\hbox{recall}}{\hbox{precision}+\hbox{recall}} 
+$$
+$$
 \hbox{precision} = \frac{\hbox{number of same tokens}}{\hbox{length(predicted tokens)}} \\
+$$
+$$
 \hbox{recall} = \frac{\hbox{number of same tokens}}{\hbox{length(labeled tokens)}} \\
 $$
 
