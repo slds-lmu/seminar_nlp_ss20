@@ -4,11 +4,11 @@
 
   <meta charset="utf-8" />
   <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-  <title>Chapter 5 Recurrent neural networks and their applications in NLP | Modern Approaches in Natural Language Processing</title>
+  <title>References | Modern Approaches in Natural Language Processing</title>
   <meta name="description" content="In this seminar, we are planning to review modern NLP frameworks starting with a methodology that can be seen as the beginning of modern NLP: Word Embeddings." />
   <meta name="generator" content="bookdown 0.19 and GitBook 2.6.7" />
 
-  <meta property="og:title" content="Chapter 5 Recurrent neural networks and their applications in NLP | Modern Approaches in Natural Language Processing" />
+  <meta property="og:title" content="References | Modern Approaches in Natural Language Processing" />
   <meta property="og:type" content="book" />
   
   
@@ -16,7 +16,7 @@
   
 
   <meta name="twitter:card" content="summary" />
-  <meta name="twitter:title" content="Chapter 5 Recurrent neural networks and their applications in NLP | Modern Approaches in Natural Language Processing" />
+  <meta name="twitter:title" content="References | Modern Approaches in Natural Language Processing" />
   
   <meta name="twitter:description" content="In this seminar, we are planning to review modern NLP frameworks starting with a methodology that can be seen as the beginning of modern NLP: Word Embeddings." />
   
@@ -31,8 +31,8 @@
   <meta name="apple-mobile-web-app-status-bar-style" content="black" />
   
   
-<link rel="prev" href="foundationsapplications-of-modern-nlp.html"/>
-<link rel="next" href="convolutional-neural-networks-and-their-applications-in-nlp.html"/>
+<link rel="prev" href="acknowledgements.html"/>
+
 <script src="libs/jquery/jquery.min.js"></script>
 <link href="libs/gitbook/css/style.css" rel="stylesheet" />
 <link href="libs/gitbook/css/plugin-table.css" rel="stylesheet" />
@@ -206,180 +206,136 @@
           <div class="page-inner">
 
             <section class="normal" id="section-">
-<div id="recurrent-neural-networks-and-their-applications-in-nlp" class="section level1">
-<h1><span class="header-section-number">Chapter 5</span> Recurrent neural networks and their applications in NLP</h1>
-<p><em>Author: Marianna Plesiak</em></p>
-<p><em>Supervisor: Prof. Dr. Christian Heumann</em></p>
-<div id="structure-and-training-of-simple-rnns" class="section level2">
-<h2><span class="header-section-number">5.1</span> Structure and Training of Simple RNNs</h2>
-<p>Recurrent neural networks allow to relax the condition of non-cyclical connections in the classical feedforward neural networks which were described in the previous chapter. This means, while simple multilayer perceptrons can only map from input to output vectors, RNNs allow the entire history of previous inputs to influence the network output. <span class="citation">(Graves <a href="#ref-graves2013generating">2013</a>)</span></p>
-<p>The first part of this chapter provides the structure definition of RNNs, presents the principles of their training and explains problems with backpropagation. In the second part, gated units, an improved way to calculate hidden states, are explained. The third part gives an overview of some extended versions of RNNs and their applications in NLP.</p>
-<div id="network-structure-and-forwardpropagation" class="section level3">
-<h3><span class="header-section-number">5.1.1</span> Network Structure and Forwardpropagation</h3>
-<p>The repetitive structure of RNNs can be visualised with help of an unfolded computational graph (see <a href="recurrent-neural-networks-and-their-applications-in-nlp.html#fig:01-02-unfold">5.1</a>).</p>
-<div class="figure" style="text-align: center"><span id="fig:01-02-unfold"></span>
-<img src="figures/01-02-rnns-and-their-applications-in-nlp/02_unfolded_graph.png" alt="Unfolded computatinal graph of a RNN. Source: Own figure." width="100%" />
-<p class="caption">
-FIGURE 5.1: Unfolded computatinal graph of a RNN. Source: Own figure.
-</p>
-</div>
-<p>Each node is associated with a network layer at a particular time instance. Inputs <span class="math inline">\(x^{(t)}\)</span> must be encoded as numeric vectors, for instance word embeddings or one-hot encoded vectors, see previous chapter. Reccurently connected vectors <span class="math inline">\(h\)</span> are called hidden states and represent the outputs of the hidden layer. At time <span class="math inline">\(t\)</span>, a hidden state <span class="math inline">\(h^{(t)}\)</span> combines information from the previous hidden state <span class="math inline">\(h^{(t-1)}\)</span> as well as the new input <span class="math inline">\(x^{(t)}\)</span> and passes it through to the next hidden state. Obviously, such an architecture requires the initialization of <span class="math inline">\(h^{(0)}\)</span> since there is no memory at the very beginning of the sequence processing. Given the hidden sequences, output vectors <span class="math inline">\(\hat{y}^{(t)}\)</span> are used to build the predictive distribution <span class="math inline">\(Pr(x^{(t+1)}|y^{(t)})\)</span> for the next input <span class="citation">(Graves <a href="#ref-graves2013generating">2013</a>)</span>. Since the predictions are created at each time instance <span class="math inline">\(t\)</span>, the total output has a shape [time_steps, output_features]. However in some cases this is not needed, for example in sentiment analysis the last output of the loop is sufficient because it contains the entire information about the sequence. <span class="citation">(Chollet <a href="#ref-chollet2018deep">2018</a>)</span></p>
-<p>The unfolded recurrence can be formalized as following:</p>
+<div id="references-1" class="section level1 unnumbered">
+<h1>References</h1>
 
-<p>After <span class="math inline">\(t\)</span> steps, the function <span class="math inline">\(g^{(t)}\)</span> takes into account the whole sequence <span class="math inline">\((x^{(t)},x^{(t-1)},...,x^{(2)}, x^{(1)})\)</span> and produces the hidden state <span class="math inline">\(h^{(t)}\)</span>. Because of its cyclical structure, <span class="math inline">\(g^{(t)}\)</span> can be factorized into the repeated application of a same function <span class="math inline">\(f\)</span>. This function can be considered a universal model which is shared across all time steps and is generalized for all sequence lengths. This is called parameter sharing and is illustrated in the unfolded computational graph as a reuse of the same matrices <span class="math inline">\(W_{xh}\)</span>, <span class="math inline">\(W_{hh}\)</span> and <span class="math inline">\(W_{hy}\)</span> through the entire network. <span class="citation">(Goodfellow, Bengio, and Courville <a href="#ref-goodfellow2016deep">2016</a>)</span></p>
-<p>Consider a recurrent neural network with one hidden layer that is used to predict words or characters, so the output is discrete and the model maps input sequence to output sequence of the same length. Then the forward propagation is computed by iterating the following equations:</p>
-
-<p>where the parameters and functions denote the following:</p>
-<ul>
-<li><span class="math inline">\(\mathcal{H}\)</span>: hidden layer function. Usually it is a sigmoid activation function ( <span class="citation">Sutskever, Vinyals, and Le (<a href="#ref-sutskever2014sequence">2014</a>)</span> and <span class="citation">Mikolov et al. (<a href="#ref-mikolov2010recurrent">2010</a>)</span>) or tanh or ReLu</li>
-<li><span class="math inline">\(W_{hh}\)</span>: weight matrix connecting recurrent connections between hidden states</li>
-<li><span class="math inline">\(W_{xh}\)</span>: weight matrix connecting inputs to hidden layer</li>
-<li><span class="math inline">\(W_{hy}\)</span>: weight matrix connecting hidden states to outputs (softmax if we want to predict next word or letter)</li>
-<li><span class="math inline">\(\mathcal{Y}\)</span>: output layer function. If the model is used to predict words, softmax function is usually chosen as it returns valid probabilities over the possible outputs <span class="citation">(Mikolov et al. <a href="#ref-mikolov2010recurrent">2010</a>)</span></li>
-<li><span class="math inline">\(a\)</span>, <span class="math inline">\(b\)</span>: input and output bias vectors.</li>
-</ul>
-<p><span class="citation">(Graves <a href="#ref-graves2013generating">2013</a>)</span></p>
-<p>Because inputs <span class="math inline">\(x^{(t)}\)</span> are usually encoded as one-hot-vectors, the dimension of a vector representing one word corresponds to the size of vocabulary. The size of a hidden layer must reflect the size of training data. The model training requires initialization of the initial state <span class="math inline">\(h^{(0)}\)</span> as well as the weight matrices, which are usually set to small random values <span class="citation">(Mikolov et al. <a href="#ref-mikolov2010recurrent">2010</a>)</span>. Since the network is used to compute the predictive distributions <span class="math inline">\(Pr(x^{(t+1)}|y^{(t)})\)</span> at each time instance <span class="math inline">\(t\)</span>, the network distribution is denoted as:</p>
-
-<p>and the total loss used for training is simply the sum of the losses over all time steps denoted as the negative log-likelihood of <span class="math inline">\(Pr(x)\)</span>:</p>
-
-<p><span class="citation">(Graves <a href="#ref-graves2013generating">2013</a>)</span></p>
-</div>
-<div id="backpropagation" class="section level3">
-<h3><span class="header-section-number">5.1.2</span> Backpropagation</h3>
-<p>In order to train the model, one must calculate the gradients for the three weight matrices <span class="math inline">\(W_{xh}\)</span>, <span class="math inline">\(W_{hh}\)</span> and <span class="math inline">\(W_{hy}\)</span>. The algorithm differs from a regular backpropagation because a chain rule muste be applied recursively and the gradients are summed up through the network. <span class="citation">(Boden <a href="#ref-boden2002guide">2002</a>)</span></p>
-<p>Gradients w.r.t. <span class="math inline">\(W_{hy}\)</span>:</p>
-<ul>
-<li>for a single time step <span class="math inline">\(t\)</span>:</li>
-</ul>
-
-<ul>
-<li>for the whole sequence:</li>
-</ul>
-
-<p>Gradients w.r.t. <span class="math inline">\(W_{hh}\)</span>:</p>
-<ul>
-<li>for a single time step <span class="math inline">\(t\)</span>:</li>
-</ul>
-
-<p>The last part <span class="math inline">\(h^{(t)}\)</span> also depends on <span class="math inline">\(h^{(t-1)}\)</span> and the gradient can be rewritten as:</p>
-
-<ul>
-<li>for the whole sequence:</li>
-</ul>
-
-<p>Gradient w.r.t. <span class="math inline">\(W_{xh}\)</span> is similar to <span class="math inline">\(W_{hh}\)</span>:</p>
-<ul>
-<li>for a single step:</li>
-</ul>
-
-<ul>
-<li>for the whole sequence:</li>
-</ul>
-
-<p><span class="citation">(Chen <a href="#ref-chen2016gentle">2016</a>)</span></p>
-</div>
-<div id="vanishing-and-exploding-gradients" class="section level3">
-<h3><span class="header-section-number">5.1.3</span> Vanishing and Exploding Gradients</h3>
-</div>
-</div>
-<div id="gated-rnns" class="section level2">
-<h2><span class="header-section-number">5.2</span> Gated RNNs</h2>
-<div id="lstm" class="section level3">
-<h3><span class="header-section-number">5.2.1</span> LSTM</h3>
-<p>Long Short Term Memory networks were introduced by <span class="citation">Hochreiter and Schmidhuber (<a href="#ref-hochreiter1997long">1997</a>)</span> to deal with problems of long term dependencies. Instead of a simple hidden unit that combines inputs and previous hidden states linearly and outputs the non-linear transformation to the next step, hidden units are now extended by special input, forget and output gates which help to control the flow of information. Such more complex units are called memory cells and the following equations show how a LSTM uses the gating mechanism to calculate the hidden state within a memory cell:</p>
-<p><span class="math display" id="eq:lstm-newoutput" id="eq:lstm-newcell" id="eq:lstm-candidates" id="eq:lstm-output" id="eq:lstm-input" id="eq:lstm-forget">\[\begin{align}
-f^{(t)} &amp; = sigm(W_{xf}x^{(t)}+W_{hf}h^{(t-1)}+b_{f}) \tag{5.1} \\
-i^{(t)} &amp; = sigm(W_{xi}x^{(t)}+W_{hi}h^{(t-1)}+b_{i}) \tag{5.2} \\
-o^{(t)} &amp; = sigm(W_{xo}x^{(t)}+W_{ho}h^{(t-1)}+b_{o}) \tag{5.3} \\
-g^{(t)} &amp; = tanh(W_{xc}x^{(t)}+W_{hc}h^{(t-1)}+b_{c}) \tag{5.4} \\
-c^{(t)} &amp; = f^{(t)}c^{(t-1)}+i^{(t)}g^{(t)} \tag{5.5} \\
-h^{(t)} &amp; = o^{(t)}tanh(c^{(t)}) \tag{5.6} \\
-\end{align}\]</span>
-<span class="citation">(Graves <a href="#ref-graves2013generating">2013</a>)</span></p>
-<p>First, forget gate <span class="math inline">\(f^{(t)}\)</span> decides which values of the previous output <span class="math inline">\(h^{(t-1)}\)</span> to forget. The next step is deciding which information will be stored in the internal cell state <span class="math inline">\(c^{(t)}\)</span>. This step consists of two parts: 1) multiplication of the old state <span class="math inline">\(c^{(t-1)}\)</span> by <span class="math inline">\(f^{(t)}\)</span> (forgetting information); 2) adding new candidates calculated in <span class="math inline">\(g^{(t)}\)</span> with help of its multiplication by values from the input gate <span class="math inline">\(i^{(t)}\)</span> (adding new information). The output <span class="math inline">\(h^{(t)}\)</span> is produced with help of the output gate <span class="math inline">\(o^{(t)}\)</span> and applying a <span class="math inline">\(tanh\)</span> function to the cell state in order to only output values which were chosen.(<span class="citation">Goodfellow, Bengio, and Courville (<a href="#ref-goodfellow2016deep">2016</a>)</span>, <span class="citation">Graves (<a href="#ref-graves2013generating">2013</a>)</span>)</p>
-</div>
-<div id="gru" class="section level3">
-<h3><span class="header-section-number">5.2.2</span> GRU</h3>
-<p>Invented by <span class="citation">Cho et al. (<a href="#ref-cho2014learning">2014</a>)</span>.
-Is simpler because it includes only two gates: reset and update</p>
-<p>The hidden unit is calculated as:</p>
-
-<p>Illustration LSTM vs GRU</p>
-<div class="figure" style="text-align: center"><span id="fig:01-02-lstm-gru"></span>
-<img src="figures/01-02-rnns-and-their-applications-in-nlp/03_lstm_vs_gru.PNG" alt="Structure of a hidden unit. LSTM on the right and GRU on the left. Source: Own figure inspired by http://colah.github.io/posts/2015-08-Understanding-LSTMs/" width="100%" />
-<p class="caption">
-FIGURE 5.2: Structure of a hidden unit. LSTM on the right and GRU on the left. Source: Own figure inspired by <a href="http://colah.github.io/posts/2015-08-Understanding-LSTMs/" class="uri">http://colah.github.io/posts/2015-08-Understanding-LSTMs/</a>
-</p>
-</div>
-</div>
-</div>
-<div id="extentions-of-simple-rnns" class="section level2">
-<h2><span class="header-section-number">5.3</span> Extentions of Simple RNNs</h2>
-<div id="bidirectional-rnns" class="section level3">
-<h3><span class="header-section-number">5.3.1</span> Bidirectional RNNs</h3>
-<p>One of the limitations of simple RNNs is that they can process the information only up to a present time instance. In many NLP fields however, prediction may also depend on future inputs. Bidirectional RNNs, introduced by <span class="citation">Schuster and Paliwal (<a href="#ref-schuster1997bidirectional">1997</a>)</span>, handle this issue by training on inputs in original as well as reversed order. The idea is to stack two hidden layers one on another while one of the layers is responsible for the forward information flow and another one for the backward information flow. Such a composition allows using both past and future inputs at any time instance. Since both types of hidden states do not interact, the bidirectional RNNs follow almost the same training rules as a regular RNN with small differences regarding backpropagation.</p>
-</div>
-<div id="deep-rnns" class="section level3">
-<h3><span class="header-section-number">5.3.2</span> Deep RNNs</h3>
-<p>The figure <a href="recurrent-neural-networks-and-their-applications-in-nlp.html#fig:01-02-unfold">5.1</a> shows that each layer is associated with one parameter matrix so that the model is considered shallow. This structure can be extended to a deep RNN although the depth of an RNN is not a trivial concept since its units are already expressed as a nonlinear function of multiple previous units. However, a deep RNN is defined as a network with several input, hidden, or output layers stacked on top of each other. Such a structure can be more efficient at representing complex dependencies although it also requires higher computational effort because the distances between two variables at <span class="math inline">\(t\)</span> and <span class="math inline">\(t+1\)</span> become longer. <span class="citation">(Pascanu et al. <a href="#ref-pascanu2013construct">2013</a>)</span></p>
-<p><span class="citation">Pascanu et al. (<a href="#ref-pascanu2013construct">2013</a>)</span> proposed three ways to make an RNN deeper. Extending input-to-hidden functions helps to transform the raw input, e.g. one-hot encoded vectors, into a more convenient and informative representations, e.g. word embeddings, for higher levels. A deep hidden-to-hidden composition allows for the hidden states to effectively add new information to the accumulated summaries from the previous steps. For example, the model preserves useful information from the past although new inputs vary strongly and rapidly. Finally, a deep hidden-to-output function is used to make hidden states more compact and therefore enables the model to summarize the previous inputs more efficiently.</p>
-</div>
-<div id="encoder-decoder-architecture" class="section level3">
-<h3><span class="header-section-number">5.3.3</span> Encoder-Decoder Architecture</h3>
-<p>The problem of mapping variable-length input sequences to variable-length output sequences is known as Sequence-to-Sequence or seq2seq learning in NLP. Although originally applied in machine translation tasks (<span class="citation">Sutskever, Vinyals, and Le (<a href="#ref-sutskever2014sequence">2014</a>)</span>, <span class="citation">Cho et al. (<a href="#ref-cho2014learning">2014</a>)</span>), the seq2seq approach achieved state-of-the-art results also in speech recognition <span class="citation">(Prabhavalkar et al. <a href="#ref-prabhavalkar2017comparison">2017</a>)</span> and video captioning <span class="citation">(Venugopalan et al. <a href="#ref-venugopalan2015sequence">2015</a>)</span>. According to <span class="citation">Cho et al. (<a href="#ref-cho2014learning">2014</a>)</span>, the seq2seq model consists of two parts as illustrated below:</p>
-<div class="figure" style="text-align: center"><span id="fig:01-02-enc-dec"></span>
-<img src="figures/01-02-rnns-and-their-applications-in-nlp/04_encoder_decoder.PNG" alt="Encoder-Decoder architecture. Source: Own figure." width="100%" />
-<p class="caption">
-FIGURE 5.3: Encoder-Decoder architecture. Source: Own figure.
-</p>
-</div>
-<p>The first part is the encoder, an RNN which is trained on input sequences in order to obtain a large summary vector <span class="math inline">\(c\)</span> with a fixed dimension. The second part is a decoder, another RNN which generates predictions. In contrast to a simple RNN described at the beginning of this chapter, outputs <span class="math inline">\(y^{(t)}\)</span> and decoder hidden states <span class="math inline">\(h^{(t)}\)</span> are both conditioned on the summary vector <span class="math inline">\(c\)</span> from the encoder part as well as on <span class="math inline">\(y^{(t-1)}\)</span> and are computed by:</p>
-
-
-</div>
-</div>
-</div>
-<h3>References</h3>
 <div id="refs" class="references">
-<div id="ref-boden2002guide">
+<div>
+<p>Bahdanau, Dzmitry, Kyunghyun Cho, and Yoshua Bengio. 2014. “Neural Machine Translation by Jointly Learning to Align and Translate.” <em>arXiv Preprint arXiv:1409.0473</em>.</p>
+</div>
+<div>
+<p>Bengio, Yoshua, Réjean Ducharme, Pascal Vincent, and Christian Jauvin. 2003. “A Neural Probabilistic Language Model.” <em>Journal of Machine Learning Research</em>, no. 3: 1137–55.</p>
+</div>
+<div>
 <p>Boden, Mikael. 2002. “A Guide to Recurrent Neural Networks and Backpropagation.” <em>The Dallas Project</em>.</p>
 </div>
-<div id="ref-chen2016gentle">
+<div>
+<p>Boureau, Y-Lan, Jean Ponce, and Yann LeCun. 2010. <em>A Theoretical Analysis of Feature Pooling in Visual Recognition</em>. <a href="https://www.di.ens.fr/willow/pdfs/icml2010b.pdf" class="uri">https://www.di.ens.fr/willow/pdfs/icml2010b.pdf</a>.</p>
+</div>
+<div>
 <p>Chen, Gang. 2016. “A Gentle Tutorial of Recurrent Neural Network with Error Backpropagation.” <em>arXiv Preprint arXiv:1610.02583</em>.</p>
 </div>
-<div id="ref-cho2014learning">
+<div>
 <p>Cho, Kyunghyun, Bart Van Merriënboer, Caglar Gulcehre, Dzmitry Bahdanau, Fethi Bougares, Holger Schwenk, and Yoshua Bengio. 2014. “Learning Phrase Representations Using Rnn Encoder-Decoder for Statistical Machine Translation.” <em>arXiv Preprint arXiv:1406.1078</em>.</p>
 </div>
-<div id="ref-chollet2018deep">
+<div>
 <p>Chollet, Francois. 2018. <em>Deep Learning Mit Python Und Keras: Das Praxis-Handbuch Vom Entwickler Der Keras-Bibliothek</em>. MITP-Verlags GmbH &amp; Co. KG.</p>
 </div>
-<div id="ref-goodfellow2016deep">
+<div>
+<p>Chung, Junyoung, Çaglar Gülçehre, KyungHyun Cho, and Yoshua Bengio. 2014. “Empirical Evaluation of Gated Recurrent Neural Networks on Sequence Modeling.” <em>CoRR</em> abs/1412.3555. <a href="http://arxiv.org/abs/1412.3555" class="uri">http://arxiv.org/abs/1412.3555</a>.</p>
+</div>
+<div>
+<p>Collobert, Ronan, Jason Weston, Léon Bottou, Michael Karlen, Koray Kavukcuoglu, and Pavel P. Kuksa. 2011. <em>Natural Language Processing (Almost) from Scratch</em>. <em>J. Mach. Learn. Res.</em> Vol. 12. <a href="http://www.jmlr.org/papers/volume12/collobert11a/collobert11a.pdf" class="uri">http://www.jmlr.org/papers/volume12/collobert11a/collobert11a.pdf</a>.</p>
+</div>
+<div>
+<p>Dai, Zihang, Zhilin Yang, Yiming Yang, Jaime Carbonell, Quoc V Le, and Ruslan Salakhutdinov. 2019. “Transformer-Xl: Attentive Language Models Beyond a Fixed-Length Context.” <em>arXiv Preprint arXiv:1901.02860</em>. <a href="https://arxiv.org/abs/1901.02860" class="uri">https://arxiv.org/abs/1901.02860</a>.</p>
+</div>
+<div>
+<p>Devlin, Jacob, Ming-Wei Chang, Kenton Lee, and Kristina Toutanova. 2018. “BERT: Pre-Training of Deep Bidirectional Transformers for Language Understanding.” <em>CoRR</em> abs/1810.04805. <a href="http://arxiv.org/abs/1810.04805" class="uri">http://arxiv.org/abs/1810.04805</a>.</p>
+</div>
+<div>
 <p>Goodfellow, Ian, Yoshua Bengio, and Aaron Courville. 2016. <em>Deep Learning</em>. MIT press.</p>
 </div>
-<div id="ref-graves2013generating">
+<div>
 <p>Graves, Alex. 2013. “Generating Sequences with Recurrent Neural Networks.” <em>arXiv Preprint arXiv:1308.0850</em>.</p>
 </div>
-<div id="ref-hochreiter1997long">
+<div>
+<p>Harris, Zellig S. 1954. “Distributional Structure.” <em>WORD</em> 10 (2-3): 146–62.</p>
+</div>
+<div>
 <p>Hochreiter, Sepp, and Jürgen Schmidhuber. 1997. “Long Short-Term Memory.” <em>Neural Computation</em> 9 (8). MIT Press: 1735–80.</p>
 </div>
-<div id="ref-mikolov2010recurrent">
+<div>
+<p>Kalchbrenner, Nal, Lasse Espeholt, Karen Simonyan, Aäron van den Oord, Alex Graves, and Koray Kavukcuoglu. 2016. “Neural Machine Translation in Linear Time.” <em>ArXiv</em> abs/1610.10099. <a href="https://arxiv.org/pdf/1610.10099.pdf" class="uri">https://arxiv.org/pdf/1610.10099.pdf</a>.</p>
+</div>
+<div>
+<p>Kalchbrenner, Nal, Edward Grefenstette, and Phil Blunsom. 2014. <em>A Convolutional Neural Network for Modelling Sentences</em>. <em>ArXiv</em>. Vol. abs/1404.2188. <a href="http://mirror.aclweb.org/acl2014/P14-1/pdf/P14-1062.pdf" class="uri">http://mirror.aclweb.org/acl2014/P14-1/pdf/P14-1062.pdf</a>.</p>
+</div>
+<div>
+<p>Kim, Yoon. 2014. <em>Convolutional Neural Networks for Sentence Classification</em>. <a href="https://www.aclweb.org/anthology/D14-1181.pdf" class="uri">https://www.aclweb.org/anthology/D14-1181.pdf</a>.</p>
+</div>
+<div>
+<p>Krizhevsky, Alex, Ilya Sutskever, and Geoffrey E. Hinton. 2012. <em>ImageNet Classification with Deep Convolutional Neural Networks</em>. <a href="http://www.cs.toronto.edu/~hinton/absps/imagenet.pdf" class="uri">http://www.cs.toronto.edu/~hinton/absps/imagenet.pdf</a>.</p>
+</div>
+<div>
+<p>Lan, Zhenzhong, Mingda Chen, Sebastian Goodman, Kevin Gimpel, Piyush Sharma, and Radu Soricut. 2019. “Albert: A Lite Bert for Self-Supervised Learning of Language Representations.” <em>arXiv Preprint arXiv:1909.11942</em>. <a href="https://arxiv.org/abs/1909.11942" class="uri">https://arxiv.org/abs/1909.11942</a>.</p>
+</div>
+<div>
+<p>Liu, Yinhan, Myle Ott, Naman Goyal, Jingfei Du, Mandar Joshi, Danqi Chen, Omer Levy, Mike Lewis, Luke Zettlemoyer, and Veselin Stoyanov. 2019. “Roberta: A Robustly Optimized Bert Pretraining Approach.” <em>arXiv Preprint arXiv:1907.11692</em>. <a href="https://arxiv.org/abs/1907.11692" class="uri">https://arxiv.org/abs/1907.11692</a>.</p>
+</div>
+<div>
+<p>Luong, Minh-Thang, Hieu Pham, and Christopher D Manning. 2015. “Effective Approaches to Attention-Based Neural Machine Translation.” <em>arXiv Preprint arXiv:1508.04025</em>.</p>
+</div>
+<div>
+<p>Malte, Aditya, and Pratik Ratadiya. 2019. “Evolution of Transfer Learning in Natural Language Processing.”</p>
+</div>
+<div>
+<p>Mikolov, Tomas, Ilya Sutskever, Kai Chen, Greg Corrado, and Jeffrey Dean. 2013. “Distributed Representations of Words and Phrases and Their Compositionality.” <em>Advances in Neural Information Processing Systems</em>, 3111–9.</p>
+</div>
+<div>
 <p>Mikolov, Tomáš, Martin Karafiát, Lukáš Burget, Jan Černocky, and Sanjeev Khudanpur. 2010. “Recurrent Neural Network Based Language Model.” In <em>Eleventh Annual Conference of the International Speech Communication Association</em>.</p>
 </div>
-<div id="ref-pascanu2013construct">
+<div>
 <p>Pascanu, Razvan, Caglar Gulcehre, Kyunghyun Cho, and Yoshua Bengio. 2013. “How to Construct Deep Recurrent Neural Networks.” <em>arXiv Preprint arXiv:1312.6026</em>.</p>
 </div>
-<div id="ref-prabhavalkar2017comparison">
+<div>
+<p>Pennington, Jeffrey, Richard Socher, Manning, and Christopher D. 2014. “GloVe: Global Vectors for Word Representation.” <em>Proceedings of the 2014 Conference on Empirical Methods in Natural Language Processing (EMNLP)</em>, 1532–43.</p>
+</div>
+<div>
+<p>Peters, Matthew E., Mark Neumann, Mohit Iyyer, Matt Gardner, Christopher Clark, Kenton Lee, and Luke Zettlemoyer. 2018. “Deep Contextualized Word Representations.”</p>
+</div>
+<div>
 <p>Prabhavalkar, Rohit, Kanishka Rao, Tara N Sainath, Bo Li, Leif Johnson, and Navdeep Jaitly. 2017. “A Comparison of Sequence-to-Sequence Models for Speech Recognition.” In <em>Interspeech</em>, 939–43.</p>
 </div>
-<div id="ref-schuster1997bidirectional">
+<div>
+<p>Radford, Alec, Jeffrey Wu, Rewon Child, David Luan, Dario Amodei, and Ilya Sutskever. 2019. “Language Models Are Unsupervised Multitask Learners.”</p>
+</div>
+<div>
+<p>R Core Team. 2018. <em>R: A Language and Environment for Statistical Computing</em>. Vienna, Austria: R Foundation for Statistical Computing. <a href="https://www.R-project.org/" class="uri">https://www.R-project.org/</a>.</p>
+</div>
+<div>
+<p>Scherer, Dominik, Andreas C. Müller, and Sven Behnke. 2010. “Evaluation of Pooling Operations in Convolutional Architectures for Object Recognition.” In <em>ICANN</em>. <a href="http://ais.uni-bonn.de/papers/icann2010_maxpool.pdf" class="uri">http://ais.uni-bonn.de/papers/icann2010_maxpool.pdf</a>.</p>
+</div>
+<div>
 <p>Schuster, Mike, and Kuldip K Paliwal. 1997. “Bidirectional Recurrent Neural Networks.” <em>IEEE Transactions on Signal Processing</em> 45 (11). Ieee: 2673–81.</p>
 </div>
-<div id="ref-sutskever2014sequence">
+<div>
+<p>Schwenk, Holger, Loïc Barrault, Alexis Conneau, and Yann LeCun. 2017. <em>Very Deep Convolutional Networks for Text Classification</em>.</p>
+</div>
+<div>
+<p>Sutskever, Ilya, James Martens, George E. Dahl, and Geoffrey E. Hinton. 2013. “On the Importance of Initialization and Momentum in Deep Learning.” In <em>ICML</em>.</p>
+</div>
+<div>
 <p>Sutskever, Ilya, Oriol Vinyals, and Quoc V Le. 2014. “Sequence to Sequence Learning with Neural Networks.” In <em>Advances in Neural Information Processing Systems</em>, 3104–12.</p>
 </div>
-<div id="ref-venugopalan2015sequence">
+<div>
+<p>Vaswani, Ashish, Noam Shazeer, Niki Parmar, Jakob Uszkoreit, Llion Jones, Aidan N Gomez, Łukasz Kaiser, and Illia Polosukhin. 2017. “Attention Is All You Need.” In <em>Advances in Neural Information Processing Systems</em>, 5998–6008.</p>
+</div>
+<div>
 <p>Venugopalan, Subhashini, Marcus Rohrbach, Jeffrey Donahue, Raymond Mooney, Trevor Darrell, and Kate Saenko. 2015. “Sequence to Sequence-Video to Text.” In <em>Proceedings of the Ieee International Conference on Computer Vision</em>, 4534–42.</p>
+</div>
+<div>
+<p>Visin, Francesco, Kyle Kastner, Kyunghyun Cho, Matteo Matteucci, Aaron C. Courville, and Yoshua Bengio. 2015. <em>ReNet: A Recurrent Neural Network Based Alternative to Convolutional Networks</em>. <em>ArXiv</em>. Vol. abs/1505.00393.</p>
+</div>
+<div>
+<p>Yamaguchi, Kouichi, Kenji Sakamoto, Toshio Akabane, and Yoshiji Fujimoto. 1990. <em>A Neural Network for Speaker-Independent Isolated Word Recognition</em>. <a href="https://www.isca-speech.org/archive/archive_papers/icslp_1990/i90_1077.pdf" class="uri">https://www.isca-speech.org/archive/archive_papers/icslp_1990/i90_1077.pdf</a>.</p>
+</div>
+<div>
+<p>Yang, Zhilin, Zihang Dai, Yiming Yang, Jaime Carbonell, Russ R Salakhutdinov, and Quoc V Le. 2019. “XLNet: Generalized Autoregressive Pretraining for Language Understanding.” In <em>Advances in Neural Information Processing Systems 32</em>, edited by H. Wallach, H. Larochelle, A. Beygelzimer, F. dAlché-Buc, E. Fox, and R. Garnett, 5753–63. Curran Associates, Inc. <a href="http://papers.nips.cc/paper/8812-xlnet-generalized-autoregressive-pretraining-for-language-understanding.pdf" class="uri">http://papers.nips.cc/paper/8812-xlnet-generalized-autoregressive-pretraining-for-language-understanding.pdf</a>.</p>
+</div>
+<div>
+<p>Zhang, Xiang, Junbo Jake Zhao, and Yann LeCun. 2015. <em>Character-Level Convolutional Networks for Text Classification</em>. <a href="https://papers.nips.cc/paper/5782-character-level-convolutional-networks-for-text-classification.pdf" class="uri">https://papers.nips.cc/paper/5782-character-level-convolutional-networks-for-text-classification.pdf</a>.</p>
+</div>
 </div>
 </div>
             </section>
@@ -387,8 +343,8 @@ FIGURE 5.3: Encoder-Decoder architecture. Source: Own figure.
           </div>
         </div>
       </div>
-<a href="foundationsapplications-of-modern-nlp.html" class="navigation navigation-prev " aria-label="Previous page"><i class="fa fa-angle-left"></i></a>
-<a href="convolutional-neural-networks-and-their-applications-in-nlp.html" class="navigation navigation-next " aria-label="Next page"><i class="fa fa-angle-right"></i></a>
+<a href="acknowledgements.html" class="navigation navigation-prev navigation-unique" aria-label="Previous page"><i class="fa fa-angle-left"></i></a>
+
     </div>
   </div>
 <script src="libs/gitbook/js/app.min.js"></script>
@@ -419,7 +375,7 @@ gitbook.start({
 "size": 2
 },
 "edit": {
-"link": "https://github.com/compstat-lmu/seminar_nlp_ss20/edit/master/01-02-rnns-and-their-applications-in-nlp.Rmd",
+"link": "https://github.com/compstat-lmu/seminar_nlp_ss20/edit/master/99-references.Rmd",
 "text": "Edit"
 },
 "history": {
