@@ -16,7 +16,7 @@ link-citations: yes
 
 *Supervisor: Prof. Dr. Christian Heumann*
 
-## Introduction to Basic Architecture of CNN 
+## Introduction to Basic Architecture of CNN
 
 This section presents a brief introduction of the Convolutional neural network (CNN) and its main elements, based on which it would be more effective for further exploration of the applications of Convolutional neural network in the field of NLP.
 
@@ -40,8 +40,8 @@ The input of the Neural Networks might be assumed as a $6 \times 6$ matrix and e
 
 An activated filter of size $3 \times 3$ has an ability to detect a pattern of the same size at some spatial position in the input. The algebraic operation explicates the transformation process from the input to the feature map.
 
-$$ X  : = \begin{pmatrix}                            
-X_{11} & X_{12} & \cdots & X_{16}\\ \\ 
+$$ X  : = \begin{pmatrix}
+X_{11} & X_{12} & \cdots & X_{16}\\ \\
 X_{21} & X_{22} & \cdots &X_{26} \\ \\
 \vdots & \vdots & \ddots & \vdots \\ \\
 X_{61} & X_{62} & \cdots & X_{66}
@@ -58,7 +58,7 @@ $$ \beta  : = \begin{pmatrix}
 w_{11} & w_{12} & \cdots & w_{16}\\
 \end{pmatrix}$$
 where $\beta$ is a unrolled matrix or filter;
-$$ A_{11} = (F \times X)_{11}  : = 
+$$ A_{11} = (F \times X)_{11}  : =
 \beta \cdot \begin{pmatrix}
 w_{11} & w_{12} & w_{13} & w_{21} & w_{22} & w_{23} & w_{31} & w_{32} & w_{33}\\
 \end{pmatrix}^{T}\\$$
@@ -73,11 +73,11 @@ knitr::include_graphics("figures/01-03-cnns-and-their-applications-in-nlp/Tempor
 ### ReLU layer
 A non-linear layer (or activation layer) will be the subsequent process after each convolutional layer and the purpose of which is to introduce non-linearity to the neural networks because the operations during the convolutional layer are still linear (element-wise multiplications and summations). Generally, the major reason for introducing non-linearity is that there is a certain non-linear relationship between separate neurons. However, a convolutional layer is to perform basically a linear operation, and therefore, consecutive convolution layers are essentially equivalent to a single convolution layer, which is only used to reduce the representational power of the networks. As a result, the property of non-linearity between neurons has not been reflected and it is necessary to establish an activation function between the convolutional layer to avoid such an issue.
 
-**Activation function**, which performs a non-linear transformation, plays a critical role in CNN to decide whether a neuron should be activated or ignored. Several activation functions are available after the convolutional layer, such as hyperbolic function and sigmoid function, etc., among of which ReLU is the most commonly used activation function in neural networks, especially in CNNs[@Krizhevsky2012ImageNetCW] because of its two properties: 
+**Activation function**, which performs a non-linear transformation, plays a critical role in CNN to decide whether a neuron should be activated or ignored. Several activation functions are available after the convolutional layer, such as hyperbolic function and sigmoid function, etc., among of which ReLU is the most commonly used activation function in neural networks, especially in CNNs[@Krizhevsky2012ImageNetCW] because of its two properties:
 
 * Non-linearity: ReLU is the abbreviation of Rectified Linear Unit and defined mathematically as below:
 $$ R(z)=z^{+}= max(0,z)$$
-Where z denotes the output element of the previous convolutional layer. All negative values of feature map from the previous will be replaced by setting them to zero. 
+Where z denotes the output element of the previous convolutional layer. All negative values of feature map from the previous will be replaced by setting them to zero.
 
 * Non-Saturation: Saturation arithmetic is a kind of arithmetic in which all operations are limited to a fixed range between a minimum and maximum value.
    + $f$ is non-saturating iff $(|\displaystyle{\lim_{z \to -\infty}f(z)}|=+\infty) \cup (|\displaystyle{\lim_{z \to +\infty}f(z)}|=+\infty)$
@@ -97,7 +97,7 @@ knitr::include_graphics("figures/01-03-cnns-and-their-applications-in-nlp/ReLU.p
 
 ### Pooling layer
 
-Pooling layer is a concept that can be intuitively understood. The purpose of pooling layer is to reduce progressively the spatial size of feature map, which is generated from the previous convolutional layer, and identify important features. 
+Pooling layer is a concept that can be intuitively understood. The purpose of pooling layer is to reduce progressively the spatial size of feature map, which is generated from the previous convolutional layer, and identify important features.
 There are multiple pooling operations, such as average pooling, $l_{2}-norm$ pooling, and **max pooling**, Among which max pooling is the most commonly used function(@Scherer2010EvaluationOP), and the idea of max pooling is that the exact location of a feature is less important than its rough location relative to other features (@Yamaguchi1990ANN). Simultaneously, this process helps to control overfitting to a certain extent. The following Figure \@ref(fig:figs-5) illustrates an example that constructs a basic operational structure of the max pooling.
 
 ```{r figs-5,message=FALSE, echo=FALSE, fig.cap="Basic operational structure of the max pooling layer ", fig.pos="ht",fig.align="center",out.width = '80%'}
@@ -149,7 +149,7 @@ where $b \in \mathbb{R}$ is a bias term.
 
 3. **Max-over-time pooling**: Pooling operation has been applied for respective filter to select the most important feature from each feature map $\hat{c} =max(\boldsymbol{c})$, notice that one feature $\hat{c}$ is generated by one filter, and these features will be passed to the last layer.
 
-4. **Fully connected layer**: The selected features $\boldsymbol{Z}=[\hat{c}_1,\hat{c}_2,…,\hat{c}_j]$ from the previous layer have been flattened into a single vector, in order to aggregate each of them and therefore a specific class can be assigned to it based on the entire input. 
+4. **Fully connected layer**: The selected features $\boldsymbol{Z}=[\hat{c}_1,\hat{c}_2,…,\hat{c}_j]$ from the previous layer have been flattened into a single vector, in order to aggregate each of them and therefore a specific class can be assigned to it based on the entire input.
 
 CNN is a feed forward model without cyclic connection. To be more specific, the direction of information flow in a forward model is in one direction (i.e from inputs to outputs). However, the models are trained or learned by the use of backward propagation (i.e from outputs to inputs), where the gradients are recalculated at each epoch to avoid co-adaptation.
 
@@ -159,7 +159,7 @@ In a backward propagation, a dropout mechanism is applied as follow.
 $$y=w \cdot (z \circ r)+b$$
 Where $\circ$ is the element-wise multiplication operator and $r \in \mathbb{R}^{m}$  denotes a ‘masking’ vector of Bernoulli random variables with probability $p$ of being 1. As a result, gradients are backpropagated with probability $p$ and weights $\hat{w}$ are trained by using
 $$\hat{w}=pw$$
-On the basis of the model architecture described above, four derivative CNN models are introduced by (@Kim2014ConvolutionalNN) and the major difference among them are listed below: 
+On the basis of the model architecture described above, four derivative CNN models are introduced by (@Kim2014ConvolutionalNN) and the major difference among them are listed below:
 
 * **CNN-rand**: All words are randomly initialized and then modified during training.
 * **CNN-static**: A model with pre-trained word vectors by using word2vec and kept them static.
@@ -176,7 +176,7 @@ The second model is published by (@Zhang2015CharacterlevelCN), the two major dif
 ```{r figs-8,message=FALSE, echo=FALSE, fig.cap="\\label{fig:fig_8} Model architecture of character-level CNN", fig.pos="ht",fig.align="center",out.width = '70%'}
 knitr::include_graphics("figures/01-03-cnns-and-their-applications-in-nlp/Character_level_CNN.png")
 ```
-The Figure \@ref(fig:figs-8) above shows the basic architecture of Character-level ConvNets, the corresponding explanation of the main components will be provided below:  
+The Figure \@ref(fig:figs-8) above shows the basic architecture of Character-level ConvNets, the corresponding explanation of the main components will be provided below:
 
 1. **Character quantization**: The input characters will be transformed into an encoding matrix of size $m \times l_0$ by using 1-of-$m$ encoding (or “one-hot” encoding). To be noticed that, The length of the character exceeds the determined value $l_0$ and will be ignored and the black characters as well as the characters that are not in the alphabet will be quantized as zero vectors.
 
@@ -205,4 +205,3 @@ $$h(y)=max (g(y \cdot d -x+c))$$
 ## Conclusion and Discussion
 
 
-# References
