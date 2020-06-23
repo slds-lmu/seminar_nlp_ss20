@@ -295,7 +295,7 @@ Speciesvirginica & -1.0235 & 0.3337 & -3.067 & 0.0026\\
 
 \emph{Authors: Viktoria Szabo, Marianna Plesiak, Rui Yang}
 
-\emph{Supervisor: Christian Heumann}
+\emph{Supervisor: Prof.~Dr.~Christian Heumann}
 
 \hypertarget{word-embeddings-and-neural-network-language-models}{%
 \section{Word Embeddings and Neural Network Language Models}\label{word-embeddings-and-neural-network-language-models}}
@@ -320,20 +320,20 @@ As mentioned, a lot of approaches use neural networks to learn word embeddings. 
 
 The main drawback of feedforward neural networks is that they assume a fixed length of input and output vectors which is known in advance. But for many natural language problems such as machine translation and speech recognition it is impossible to define optimal fixed dimensions a-priori. Other models that map a sequence of words to another sequence of words are needed \citep{sutskever2014sequence}. Recurrent neural networks or RNNs are a special family of neural networks which were explicitely developed for modeling sequential data like text. RNNs process a sequence of words or letters \(x^{(1)}, ..., x^{(t)}\) by going through its elements one by one and capturing information based on the previous elements. This information is stored in hidden states \(h^{(t)}\) as the network memory. Core idea is rather simple: we start with a zero vector as a hidden state (because there is no memory yet), process the current state at time \(t\) as well as the output from the previous hidden state, and give the result as an input to the next iteration \citep{goodfellow2016deep}.
 
-Basically, a simple RNN is a for-loop that reuses the values which are calculated in the previous iteration \citep{chollet2018deep}. An unfolded computational graph (figure \ref{fig:unfolded}) can display the structure of a classical RNN. The gray square on the left represents a delay of one time step and the arrows on the right express the flow of information in time \citep{goodfellow2016deep}.
+Basically, a simple RNN is a for-loop that reuses the values which are calculated in the previous iteration \citep{chollet2018deep}. An unfolded computational graph (figure \ref{fig:01-00-unfolded}) can display the structure of a classical RNN. The gray square on the left represents a delay of one time step and the arrows on the right express the flow of information in time \citep{goodfellow2016deep}.
 
 \begin{figure}
 
-{\centering \includegraphics[width=1\linewidth]{/home/travis/build/compstat-lmu/seminar_nlp_ss20/figures/01-00-deep-learning-for-nlp/01_02_unfolded_graph} 
+{\centering \includegraphics[width=1\linewidth]{figures/01-00-deep-learning-for-nlp/01_02_unfolded_graph} 
 
 }
 
-\caption{Right: Circuit diagram (left) and unfolded computational graph (right) of a simple RNN. Source: Own figure.}\label{fig:unfolded}
+\caption{Right: Circuit diagram (left) and unfolded computational graph (right) of a simple RNN. Source: Own figure.}\label{fig:01-00-unfolded}
 \end{figure}
 
 One particular reason why recurrent networks have become such a powerful technique in processing sequential data is parameter sharing. Weight matrices remain the same through the loop and they are used repeatedly, which makes RNNs extremely convenient to work with sequential data because the model size does not grow for longer inputs. Parameter sharing allows application of models to inputs of different length and enables generalization across different positions in real time \citep{goodfellow2016deep}.
 
-As each part of the output is a function of the previous parts of the output, backpropagation for the RNNs requires recursive computations of the gradient. The so-called backpropagation through time or BPTT is rather simple in theory and allows for the RNNs to access information from many previous steps \citep{boden2002guide}. In practice though, RNNs in their simple form are subject to two big problems: exploding and vanishing gradients. As we compute gradients recursively, they may become either very small or very large, which leads to a complete loss of information about long-term dependencies. To avoid these problems, gated RNNs were developed and accumulation of information about specific features over a long duration became possible. The two most popular types of gated RNNs, which are widely used in modern NLP, are Long Short-Term Memory models (LSTM) and Gated Recurrent Units (GRU) \citep{goodfellow2016deep}.
+As each part of the output is a function of the previous parts of the output, backpropagation for the RNNs requires recursive computations of the gradient. The so-called backpropagation through time or BPTT is rather simple in theory and allows for the RNNs to access information from many previous steps \citep{boden2002guide}. In practice though, RNNs in their simple form are subject to two big problems: exploding and vanishing gradients. As the gradients are computed recursively, they may become either very small or very large, which leads to a complete loss of information about long-term dependencies. To avoid these problems, gated RNNs were developed and accumulation of information about specific features over a long duration became possible. The two most popular types of gated RNNs, which are widely used in modern NLP, are Long Short-Term Memory models (LSTMs, presented by \citet{hochreiter1997long}) and Gated Recurrent Units (GRUs, presented by \citet{cho2014learning}).
 
 Over last couple of years, various extentions of RNNs were developed which resulted in their wide application in different fields of NLP. Encoder-Decoder architectures aim to map input sequences to output sequences of different length and therefore are often applied in machine translation and question answering \citep{sutskever2014sequence}. Bidirectional RNNs feed sequences in their original as well as reverse order because the prediction may depend on the future context, too \citep{schuster1997bidirectional}. Besides classical tasks as document classification and sentiment analysis, more complicated challenges such as machine translation, part-of-speech tagging or speech recognition can be solved nowadays with the help of advanced versions of RNNs.
 
@@ -558,28 +558,30 @@ The two analogy datasets present questions of the form ``a is to a∗ as b is to
 
 \emph{Author: Marianna Plesiak}
 
-\emph{Supervisor: Christian Heumann}
+\emph{Supervisor: Prof.~Dr.~Christian Heumann}
 
-\hypertarget{rnns}{%
-\section{RNNs}\label{rnns}}
+\hypertarget{structure-and-training-of-simple-rnns}{%
+\section{Structure and Training of Simple RNNs}\label{structure-and-training-of-simple-rnns}}
 
-\hypertarget{structure}{%
-\subsection{Structure}\label{structure}}
+Recurrent neural networks allow to relax the condition of non-cyclical connections in the classical feedforward neural networks which were described in the previous chapter. This means, while simple multilayer perceptrons can only map from input to output vectors, RNNs allow the entire history of previous inputs to influence the network output. \citep{graves2013generating}
 
-Recurrent neural networks allow to relax the condition of non-cyclical connections in the classical feedforward neural networks which were described in the previous chapter. This means, while simple MLP (multilayer perceptrons) can only map from input to output vectors, RNNs allow the entire history of previous inputs to influence the network output. (@ Graves 2012)
+The first part of this chapter provides the structure definition of RNNs, presents the principles of their training and explains problems with backpropagation. In the second part, gated units, an improved way to calculate hidden states, are explained. The third part gives an overview of some extended versions of RNNs and their applications in NLP.
 
-The repetitive structure of RNNs can be visualised with help of an \textbf{unfolded} computational graph(see @ figure 1).
+\hypertarget{network-structure-and-forwardpropagation}{%
+\subsection{Network Structure and Forwardpropagation}\label{network-structure-and-forwardpropagation}}
+
+The repetitive structure of RNNs can be visualised with help of an unfolded computational graph (see \ref{fig:01-02-unfold}).
 
 \begin{figure}
 
-{\centering \includegraphics[width=0.8\linewidth]{/home/travis/build/compstat-lmu/seminar_nlp_ss20/figures/01-02-rnns-and-their-applications-in-nlp/02_unfolded_graph} 
+{\centering \includegraphics[width=1\linewidth]{figures/01-02-rnns-and-their-applications-in-nlp/02_unfolded_graph} 
 
 }
 
-\caption{Unfolded computatinal graph of a RNN.}\label{fig:pressure}
+\caption{Unfolded computatinal graph of a RNN. Source: Own figure.}\label{fig:01-02-unfold}
 \end{figure}
 
-Each node is associated with a network layer at a particular time instance. Inputs \(x^{(t)}\) must be encoded as numeric vectors, for instance word embeddings or one-hot encoded vectors, see previous chapter. Reccurently connected vectors \(h\) are called hidden states and represent the outputs of the hidden layers. At time \(t\), a hidden state \(h^{(t)}\) combines information from the previous hidden state \(h^{(t-1)}\) as well as the new input \(x^{(t)}\) and passes it through to the next hidden layer. Obviously, such an architecture requires the initialization of \(h^{(0)}\) since there is no memory at the very beginning of the sequence processing. Given the hidden sequences, output vectors \(\hat{y}^{(t)}\) are used to build the predictive distribution \(Pr(x^{(t+1)}|y^{(t)})\) for the next input. Since the predictions are created at each time instance \(t\), the total output has a shape {[}time\_steps, output\_features{]}. However in some cases this is not needed, for example in sentiment analysis the last output of the loop is sufficient because it contains the entire information about the sequence. (@ Chollet) (@ Graves 2012)
+Each node is associated with a network layer at a particular time instance. Inputs \(x^{(t)}\) must be encoded as numeric vectors, for instance word embeddings or one-hot encoded vectors, see previous chapter. Reccurently connected vectors \(h\) are called hidden states and represent the outputs of the hidden layer. At time \(t\), a hidden state \(h^{(t)}\) combines information from the previous hidden state \(h^{(t-1)}\) as well as the new input \(x^{(t)}\) and passes it through to the next hidden state. Obviously, such an architecture requires the initialization of \(h^{(0)}\) since there is no memory at the very beginning of the sequence processing. Given the hidden sequences, output vectors \(\hat{y}^{(t)}\) are used to build the predictive distribution \(Pr(x^{(t+1)}|y^{(t)})\) for the next input \citep{graves2013generating}. Since the predictions are created at each time instance \(t\), the total output has a shape {[}time\_steps, output\_features{]}. However in some cases this is not needed, for example in sentiment analysis the last output of the loop is sufficient because it contains the entire information about the sequence. \citep{chollet2018deep}
 
 The unfolded recurrence can be formalized as following:
 
@@ -588,12 +590,135 @@ h^{(t)} & = g^{(t)}(x^{(t)},x^{(t-1)},...,x^{(2)}, x^{(1)}) \\
 & = f(h^{(t-1)},x^{(t)}| \theta)  \label{eq:recurrent}
 \end{align}
 
-After \(t\) steps, the function \(g^{(t)}\) takes into account the whole sequence \((x^{(t)},x^{(t-1)},...,x^{(2)}, x^{(1)})\) and produces the hidden state \(h^{(t)}\). Because of its cyclical structure, \(g^{(t)}\) can be factorized into the repeated application of a same function \(f\). This function can be considered a universal model which is shared across all time steps and is generalized for all sequence lengths. This is called parameter sharing and is illustrated in the unfolded computational graph as a reuse of the same matrices \(U\), \(W\) and \(V\) through the entire network. (@ Goodfellow book)
+After \(t\) steps, the function \(g^{(t)}\) takes into account the whole sequence \((x^{(t)},x^{(t-1)},...,x^{(2)}, x^{(1)})\) and produces the hidden state \(h^{(t)}\). Because of its cyclical structure, \(g^{(t)}\) can be factorized into the repeated application of a same function \(f\). This function can be considered a universal model which is shared across all time steps and is generalized for all sequence lengths. This is called parameter sharing and is illustrated in the unfolded computational graph as a reuse of the same matrices \(W_{xh}\), \(W_{hh}\) and \(W_{hy}\) through the entire network. \citep{goodfellow2016deep}
 
-Update equations:
+Consider a recurrent neural network with one hidden layer that is used to predict words or characters, so the output is discrete and the model maps input sequence to output sequence of the same length. Then the forward propagation is computed by iterating the following equations:
 
-\hypertarget{backpropagation-and-drawbacks}{%
-\subsection{Backpropagation and Drawbacks}\label{backpropagation-and-drawbacks}}
+\begin{align}
+h^{(t)} & = \mathcal{H}(a+W_{hh}h^{(t-1)}+W_{xh}x^{(t)}) \label{eq:input-to-hidden} \\
+y^{(t)} & = \mathcal{Y}(b+W_{hy}h^{(t)}) \label{eq:hidden-to-output} \\
+\end{align}
+
+where the parameters and functions denote the following:
+
+\begin{itemize}
+\tightlist
+\item
+  \(\mathcal{H}\): hidden layer function. Usually it is a sigmoid activation function ( \citet{sutskever2014sequence} and \citet{mikolov2010recurrent}) or tanh or ReLu
+\item
+  \(W_{hh}\): weight matrix connecting recurrent connections between hidden states
+\item
+  \(W_{xh}\): weight matrix connecting inputs to hidden layer
+\item
+  \(W_{hy}\): weight matrix connecting hidden states to outputs (softmax if we want to predict next word or letter)
+\item
+  \(\mathcal{Y}\): output layer function. If the model is used to predict words, softmax function is usually chosen as it returns valid probabilities over the possible outputs \citep{mikolov2010recurrent}
+\item
+  \(a\), \(b\): input and output bias vectors.
+\end{itemize}
+
+\citep{graves2013generating}
+
+Because inputs \(x^{(t)}\) are usually encoded as one-hot-vectors, the dimension of a vector representing one word corresponds to the size of vocabulary. The size of a hidden layer must reflect the size of training data. The model training requires initialization of the initial state \(h^{(0)}\) as well as the weight matrices, which are usually set to small random values \citep{mikolov2010recurrent}. Since the network is used to compute the predictive distributions \(Pr(x^{(t+1)}|y^{(t)})\) at each time instance \(t\), the network distribution is denoted as:
+
+\begin{align}
+Pr(x) & =\prod_{t} Pr(x^{(t+1)}|y^{(t)}) \label{eq:rnn-probability} \\
+\end{align}
+
+and the total loss used for training is simply the sum of the losses over all time steps denoted as the negative log-likelihood of \(Pr(x)\):
+
+\begin{align}
+\mathcal{L(x)} & =-\sum_{t} \log{Pr(x^{(t+1)}|y^{(t)})} \label{eq:rnn-log-loss} \\
+\end{align}
+
+\citep{graves2013generating}
+
+\hypertarget{backpropagation}{%
+\subsection{Backpropagation}\label{backpropagation}}
+
+In order to train the model, one must calculate the gradients for the three weight matrices \(W_{xh}\), \(W_{hh}\) and \(W_{hy}\). The algorithm differs from a regular backpropagation because a chain rule muste be applied recursively and the gradients are summed up through the network. \citep{boden2002guide}
+
+Gradients w.r.t. \(W_{hy}\):
+
+\begin{itemize}
+\tightlist
+\item
+  for a single time step \(t\):
+\end{itemize}
+
+\begin{align}
+\frac{\partial \mathcal{L^{(t)}}}{\partial W_{hy}} & = \frac{\partial \mathcal{L^{(t)}}}{\partial y^{(t)}} \frac{\partial y^{(t)}}{\partial W_{hy}}\label{eq:rnn-back-hy-one} \\
+\end{align}
+
+\begin{itemize}
+\tightlist
+\item
+  for the whole sequence:
+\end{itemize}
+
+\begin{align}
+\frac{\partial \mathcal{L}}{\partial W_{hy}} & = \sum_{t} \frac{\partial \mathcal{L}}{\partial y^{(t)}} \frac{\partial y^{(t)}} {\partial W_{hy}}  \label{eq:rnn-back-hy-all} \\
+\end{align}
+
+Gradients w.r.t. \(W_{hh}\):
+
+\begin{itemize}
+\tightlist
+\item
+  for a single time step \(t\):
+\end{itemize}
+
+\begin{align}
+\frac{\partial \mathcal{L^{(t)}}}{\partial W_{hh}} & = \frac{\partial \mathcal{L^{(t)}}}{\partial y^{(t)}} \frac{\partial y^{(t)}}{\partial h^{(t)}} \frac{\partial h^{(t)}}{\partial W_{hh}} \label{eq:rnn-back-hh-one}
+\end{align}
+
+The last part \(h^{(t)}\) also depends on \(h^{(t-1)}\) and the gradient can be rewritten as:
+
+\begin{align}
+\frac{\partial \mathcal{L^{(t)}}}{\partial W_{hh}}
+& = \frac{\partial \mathcal{L^{(t)}}}{\partial y^{(t)}} \frac{\partial y^{(t)}}{\partial h^{(t)}} \frac{\partial h^{(t)}}{\partial h^{(t-1)}} \frac{\partial h^{(t-1)}}{\partial W_{hh}} \\
+& = \sum_{k=0}^{t} \frac{\partial \mathcal{L^{(t)}}}{\partial y^{(t)}} \frac{\partial y^{(t)}}{\partial h^{(t)}} \frac{\partial h^{(t)}}{\partial h^{(k)}} \frac{\partial h^{(k)}}{\partial W_{hh}} \label{eq:rnn-back-hh-one-one}
+\end{align}
+
+\begin{itemize}
+\tightlist
+\item
+  for the whole sequence:
+\end{itemize}
+
+\begin{align}
+\frac{\partial \mathcal{L}}{\partial W_{hh}}
+& = \sum_{t} \sum_{k=0}^{t} \frac{\partial \mathcal{L^{(t)}}}{\partial y^{(t)}} \frac{\partial y^{(t)}}{\partial h^{(t)}} \frac{\partial h^{(t)}}{\partial h^{(k)}} \frac{\partial h^{(k)}}{\partial W_{hh}} \label{eq:rnn-back-hh-all}
+\end{align}
+
+Gradient w.r.t. \(W_{xh}\) is similar to \(W_{hh}\):
+
+\begin{itemize}
+\tightlist
+\item
+  for a single step:
+\end{itemize}
+
+\begin{align}
+\frac{\partial \mathcal{L^{(t)}}}{\partial W_{xh}}
+& = \sum_{k=0}^{t} \frac{\partial \mathcal{L^{(t)}}}{\partial y^{(t)}} \frac{\partial y^{(t)}}{\partial h^{(t)}} \frac{\partial h^{(t)}}{\partial h^{(k)}} \frac{\partial h^{(k)}}{\partial W_{xh}} \label{eq:rnn-back-xh-one}
+\end{align}
+
+\begin{itemize}
+\tightlist
+\item
+  for the whole sequence:
+\end{itemize}
+
+\begin{align}
+\frac{\partial \mathcal{L}}{\partial W_{xh}}
+& = \sum_{t} \sum_{k=0}^{t} \frac{\partial \mathcal{L^{(t)}}}{\partial y^{(t)}} \frac{\partial y^{(t)}}{\partial h^{(t)}} \frac{\partial h^{(t)}}{\partial h^{(k)}} \frac{\partial h^{(k)}}{\partial W_{xh}} \label{eq:rnn-back-xh-all}
+\end{align}
+
+\citep{chen2016gentle}
+
+\hypertarget{vanishing-and-exploding-gradients}{%
+\subsection{Vanishing and Exploding Gradients}\label{vanishing-and-exploding-gradients}}
 
 \hypertarget{gated-rnns}{%
 \section{Gated RNNs}\label{gated-rnns}}
@@ -601,17 +726,81 @@ Update equations:
 \hypertarget{lstm}{%
 \subsection{LSTM}\label{lstm}}
 
+Long Short Term Memory networks were introduced by \citet{hochreiter1997long} to deal with problems of long term dependencies. Instead of a simple hidden unit that combines inputs and previous hidden states linearly and outputs the non-linear transformation to the next step, hidden units are now extended by special input, forget and output gates which help to control the flow of information. Such more complex units are called memory cells and the following equations show how a LSTM uses the gating mechanism to calculate the hidden state within a memory cell:
+
+\begin{align}
+f^{(t)} & = sigm(W_{xf}x^{(t)}+W_{hf}h^{(t-1)}+b_{f}) \label{eq:lstm-forget} \\
+i^{(t)} & = sigm(W_{xi}x^{(t)}+W_{hi}h^{(t-1)}+b_{i}) \label{eq:lstm-input} \\
+o^{(t)} & = sigm(W_{xo}x^{(t)}+W_{ho}h^{(t-1)}+b_{o}) \label{eq:lstm-output} \\
+g^{(t)} & = tanh(W_{xc}x^{(t)}+W_{hc}h^{(t-1)}+b_{c}) \label{eq:lstm-candidates} \\
+c^{(t)} & = f^{(t)}c^{(t-1)}+i^{(t)}g^{(t)} \label{eq:lstm-newcell} \\
+h^{(t)} & = o^{(t)}tanh(c^{(t)}) \label{eq:lstm-newoutput} \\
+\end{align}
+\citep{graves2013generating}
+
+First, forget gate \(f^{(t)}\) decides which values of the previous output \(h^{(t-1)}\) to forget. The next step is deciding which information will be stored in the internal cell state \(c^{(t)}\). This step consists of two parts: 1) multiplication of the old state \(c^{(t-1)}\) by \(f^{(t)}\) (forgetting information); 2) adding new candidates calculated in \(g^{(t)}\) with help of its multiplication by values from the input gate \(i^{(t)}\) (adding new information). The output \(h^{(t)}\) is produced with help of the output gate \(o^{(t)}\) and applying a \(tanh\) function to the cell state in order to only output values which were chosen.(\citet{goodfellow2016deep}, \citet{graves2013generating})
+
 \hypertarget{gru}{%
 \subsection{GRU}\label{gru}}
 
-\hypertarget{versions}{%
-\section{Versions}\label{versions}}
+Invented by \citet{cho2014learning}.
+Is simpler because it includes only two gates: reset and update
 
-\hypertarget{bidirectional-and-deep-rnns}{%
-\subsection{Bidirectional and Deep RNNs}\label{bidirectional-and-deep-rnns}}
+The hidden unit is calculated as:
 
-\hypertarget{applications}{%
-\subsection{Applications}\label{applications}}
+\begin{align}
+r^{(t)} & = sigm(W_{xr}x^{(t)}+W_{hr}h^{(t-1)}) \label{eq:gru-reset} \\
+z^{(t)} & = sigm(W_{xz}x^{(t)}+W_{hz}h^{(t-1)}) \label{eq:gru-update} \\
+\tilde{h}^{(t)} & = tanh(W_{xh}x^{(t)}+W_{hh}(r^{(t)}h^{(t-1)})) \label{eq:gru-hidden} \\
+h^{(t)} & = z_jh_j^{(t-1)}+(1-z_j)\tilde{h}^{(t)} \label{eq:gru-hidden-output} \\
+\end{align}
+
+Illustration LSTM vs GRU
+
+\begin{figure}
+
+{\centering \includegraphics[width=1\linewidth]{figures/01-02-rnns-and-their-applications-in-nlp/03_lstm_vs_gru} 
+
+}
+
+\caption{Structure of a hidden unit. LSTM on the right and GRU on the left. Source: Own figure inspired by http://colah.github.io/posts/2015-08-Understanding-LSTMs/}\label{fig:01-02-lstm-gru}
+\end{figure}
+
+\hypertarget{extentions-of-simple-rnns}{%
+\section{Extentions of Simple RNNs}\label{extentions-of-simple-rnns}}
+
+\hypertarget{bidirectional-rnns}{%
+\subsection{Bidirectional RNNs}\label{bidirectional-rnns}}
+
+One of the limitations of simple RNNs is that they can process the information only up to a present time instance. In many NLP fields however, prediction may also depend on future inputs. Bidirectional RNNs, introduced by \citet{schuster1997bidirectional}, handle this issue by training on inputs in original as well as reversed order. The idea is to stack two hidden layers one on another while one of the layers is responsible for the forward information flow and another one for the backward information flow. Such a composition allows using both past and future inputs at any time instance. Since both types of hidden states do not interact, the bidirectional RNNs follow almost the same training rules as a regular RNN with small differences regarding backpropagation.
+
+\hypertarget{deep-rnns}{%
+\subsection{Deep RNNs}\label{deep-rnns}}
+
+The figure \ref{fig:01-02-unfold} shows that each layer is associated with one parameter matrix so that the model is considered shallow. This structure can be extended to a deep RNN although the depth of an RNN is not a trivial concept since its units are already expressed as a nonlinear function of multiple previous units. However, a deep RNN is defined as a network with several input, hidden, or output layers stacked on top of each other. Such a structure can be more efficient at representing complex dependencies although it also requires higher computational effort because the distances between two variables at \(t\) and \(t+1\) become longer. \citep{pascanu2013construct}
+
+\citet{pascanu2013construct} proposed three ways to make an RNN deeper. Extending input-to-hidden functions helps to transform the raw input, e.g.~one-hot encoded vectors, into a more convenient and informative representations, e.g.~word embeddings, for higher levels. A deep hidden-to-hidden composition allows for the hidden states to effectively add new information to the accumulated summaries from the previous steps. For example, the model preserves useful information from the past although new inputs vary strongly and rapidly. Finally, a deep hidden-to-output function is used to make hidden states more compact and therefore enables the model to summarize the previous inputs more efficiently.
+
+\hypertarget{encoder-decoder-architecture}{%
+\subsection{Encoder-Decoder Architecture}\label{encoder-decoder-architecture}}
+
+The problem of mapping variable-length input sequences to variable-length output sequences is known as Sequence-to-Sequence or seq2seq learning in NLP. Although originally applied in machine translation tasks (\citet{sutskever2014sequence}, \citet{cho2014learning}), the seq2seq approach achieved state-of-the-art results also in speech recognition \citep{prabhavalkar2017comparison} and video captioning \citep{venugopalan2015sequence}. According to \citet{cho2014learning}, the seq2seq model consists of two parts as illustrated below:
+
+\begin{figure}
+
+{\centering \includegraphics[width=1\linewidth]{figures/01-02-rnns-and-their-applications-in-nlp/04_encoder_decoder} 
+
+}
+
+\caption{Encoder-Decoder architecture. Source: Own figure.}\label{fig:01-02-enc-dec}
+\end{figure}
+
+The first part is the encoder, an RNN which is trained on input sequences in order to obtain a large summary vector \(c\) with a fixed dimension. The second part is a decoder, another RNN which generates predictions. In contrast to a simple RNN described at the beginning of this chapter, outputs \(y^{(t)}\) and decoder hidden states \(h^{(t)}\) are both conditioned on the summary vector \(c\) from the encoder part as well as on \(y^{(t-1)}\) and are computed by:
+
+\begin{align}
+h^{(t)} & = f(h^{(t-1)},y^{(t-1)},c) \label{eq:decoder-hidden} \\
+P(y^{(t)}|y^{(t-1)},...y^{(1)},c) & = \mathcal{Y}(h^{(t-1)},y^{(t-1)},c) \label{eq:decoder-output} \\
+\end{align}
 
 \hypertarget{convolutional-neural-networks-and-their-applications-in-nlp}{%
 \chapter{Convolutional neural networks and their applications in NLP}\label{convolutional-neural-networks-and-their-applications-in-nlp}}
@@ -845,8 +1034,8 @@ NLG systems have a wide variety of application areas.
 
 There are many architectures that are peculiar to an NLG system. While some are used in other domains as well, in the following sections I will explain them with a focus on language generation.
 
-\hypertarget{encoder-decoder-architecture}{%
-\section{Encoder-Decoder Architecture}\label{encoder-decoder-architecture}}
+\hypertarget{encoder-decoder-architecture-1}{%
+\section{Encoder-Decoder Architecture}\label{encoder-decoder-architecture-1}}
 
 The most ubiquitous architecture for NLG is the encoder-decoder architecture, and especially the decoder part of it. Hence I will explain it in some detail. The architecture is shown in following figures:
 
