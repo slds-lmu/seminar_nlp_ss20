@@ -285,7 +285,12 @@ As the Word2vec algorithm from \citet{Mikolov.2013c} and the GloVe algorithm fro
 The following figure \ref{fig:figintro1} illustrates a basic structure of CNN, which is composed of multiple layers. Many of these layers are described and developed with some technical detail in later chapters of this paper.
 
 \begin{figure}[h]
-\includegraphics[width=1.05\linewidth]{figures/01-00-deep-learning-for-nlp/01_03_basic_structure} \caption{Basic structure of CNN. Source: Own figure.}\label{fig:figintro1}
+
+{\centering \includegraphics[width=1.05\linewidth]{figures/01-00-deep-learning-for-nlp/01_03_basic_structure} 
+
+}
+
+\caption{Basic structure of CNN. Source: Own figure.}\label{fig:figintro1}
 \end{figure}
 
 It is obvious that neural networks consist of a group of multiple neurons (or perceptron) at each layer, which uses to simulate the structure and behavior of biological nervous systems, and each neuron can be considered as logistic regression.
@@ -332,17 +337,13 @@ The major drawback of these methods is that there is no notion of similarity bet
 To overcome these problems \textbf{word embeddings} were introduced. Word embeddings use continuous vectors to represent each word in a vocabulary. These vectors have n dimensions, usually between 100 and 500, which represent different aspects of the word. With this semantic similarity can be maintained in the representation and generalization can be achieved. Through the vectors the words are mapped to a continuous vector space (in NLP usually called semantic space), where semantically similar words occur close to each other, while more dissimilar words are far from each other. Figure \ref{fig:word-embedding1} shows a simple example to convey the idea behind this approach. In this example the words are represented by a three-dimensional vector.
 
 \begin{figure}
-\centering
-\includegraphics{figures/01-01-foundations-applications-of-modern-NLP/01-01_word_embeddings_1.png}
-\caption{\label{fig:word-embedding1}Example for word embeddings with three dimensions. Source: \ldots{}}
+\includegraphics[width=\textwidth]{figures/01-01-foundations-applications-of-modern-NLP/01-01_word_embeddings_1} \caption{Example for word embeddings with three dimensions. Source: ...}\label{fig:word-embedding1}
 \end{figure}
 
 If you want to represent higher dimensional word vectors you could use dimension reduction methods such as principal component analysis (PCA) to break down the number of dimensions into two or three and then plot the words. You can see an example of this for a few country names and their capitals in figure \ref{fig:word-embedding2}. You can see that the country names all have negative values on the x-axis and the capitals all have positive values on the x-axis. Furthermore, the countries have similar y-axis values as their corresponding capitals.
 
 \begin{figure}
-\centering
-\includegraphics{figures/01-01-foundations-applications-of-modern-NLP/01-01_word_embeddings_2.png}
-\caption{\label{fig:word-embedding2}Two-dimensional PCA projection of 1000-dimensional word vectors of countries and their capital cities. Source: Mikolov et al.~2013 (3)}
+\includegraphics[width=\textwidth]{figures/01-01-foundations-applications-of-modern-NLP/01-01_word_embeddings_2} \caption{Two-dimensional PCA projection of 1000-dimensional word vectors of countries and their capital cities. Source: Mikolov et al. 2013 (3)}\label{fig:word-embedding2}
 \end{figure}
 
 \hypertarget{methods-to-obtain-word-embeddings}{%
@@ -362,9 +363,7 @@ Generally, as said above a statistical model of language can be represented by t
 The proposed neural network architecture has an input layer with one-hot encoded word inputs, a linear projection layer for the word embeddings, a hidden layer, where most of the computation is done, followed by a softmax classifier output layer, which guarantees positive probabilities summing to 1. Funktion softmax. The output of the model is a vector whose i-th element estimates the probability P(w\_t=i\textbar{}c). You can see the model architecture in figure \ref{fig:bengio-nnlm} .
 
 \begin{figure}
-\centering
-\includegraphics{figures/01-01-foundations-applications-of-modern-NLP/01-01_bengio_nnlm.png}
-\caption{\label{fig:bengio-nnlm}Architecture for NNLM proposed by Bengion et al.~in 2003. Source: Bengio et al.~2003}
+\includegraphics[width=\textwidth]{figures/01-01-foundations-applications-of-modern-NLP/01-01_bengio_nnlm} \caption{Architecture for NNLM proposed by Bengion et al. in 2003.  Source: Bengio et al. 2003}\label{fig:bengio-nnlm}
 \end{figure}
 
 The model is trained using the \textbf{stochastic gradient descent} optimizer and \textbf{backpropagation}. The optimization function is used to identify how the weights are adjusted. During training, the minimum loss function is sought. The gradient descent optimizer tries to find the direction of the strongest descent via partial derivation. (In contrast to maximum likelihood) The learning rate defines the size of the step in this direction. For the NNLM above the gradient descent optimizer performs the following iterative update:
@@ -389,9 +388,7 @@ In the CBOW architecture the N input (context) words are each one hot-encoded ve
 The continuous Skip-gram architecture also uses a log-linear classifier with a continuous projection layer, but the input is only one ``current'' word, and the output layer consists of words within a certain range before and after the current word. Also, since the more distant words are usually less related to the current word, it weighs nearby context words more heavily than more distant context words by sampling less from those words in the training examples. You can find the model architecture on the right side of figure \ref{fig:word2vec}.
 
 \begin{figure}
-\centering
-\includegraphics{figures/01-01-foundations-applications-of-modern-NLP/01-01_word2vec.png}
-\caption{\label{fig:word2vec}Learning word embeddings with the model architecture of CBOW and Skip-Gram. Source: Mikolov et al.~2013 (3)}
+\includegraphics[width=\textwidth]{figures/01-01-foundations-applications-of-modern-NLP/01-01_word2vec} \caption{Learning word embeddings with the model architecture of CBOW and Skip-Gram.  Source: Mikolov et al. 2013 (3)}\label{fig:word2vec}
 \end{figure}
 
 Skip-gram works well with small amounts of training data and represents even words that are considered rare, whereas CBOW trains several times faster and has slightly better accuracy for frequent words.
@@ -403,7 +400,10 @@ GloVe stands for Global Vector word representation, which emphasizes the global 
 Let P\_ij = P(j\textbar{}i) = X\_ij/X\_i be the probability that word j appears in the context of word i. In figure \ref{fig:glove} you can see an example with the words ``ice'' and ``steam''. The relationship of these words can be examined by studying the ratio of their co-occurrence probabilities with other words k.
 For words like ``solid'' which are related to ice but not steam the ratio is large (\textgreater{}1), while for words like ``gas'', which is related to steam but not to ice, the ratio is small (\textless{}1). For words like ``water'' or ``fashion'', which are either related to both of the words or to none the ratios are close to 1. Therefore, we can see that the comparison of co-occurrence with a third word is more indicative for the semantic meanings and makes a better job at distinguishing relevant words (solid and gas) from irrelevant words (water and fashion) than the raw probabilities.
 
-\includegraphics{figures/01-01-foundations-applications-of-modern-NLP/01-01_glove_ratios.png}
+\begin{figure}
+\includegraphics[width=\textwidth]{figures/01-01-foundations-applications-of-modern-NLP/01-01_glove_ratios} \caption{Co-occurrence probabilities for target words ice and steam with selected context words from a 6 billion token corpus.  Source: Pennington et al. 2014}\label{fig:glove}
+\end{figure}
+
 That's why Pennington et al.~tried to find a way to incorporate the ratio P\_ik/P\_jk into computing the word embeddings. They proposed a new weighted least squares regression model with the following equation:
 
 Formel
@@ -753,7 +753,12 @@ P(y^{(t)}|y^{(t-1)},...y^{(1)},c) & = \mathcal{Y}(h^{(t-1)},y^{(t-1)},c) \label{
 This section presents a brief introduction of the Convolutional neural network (CNN) and its main elements, based on which it would be more effective for further exploration of the applications of Convolutional neural network in the field of NLP.
 
 \begin{figure}[ht]
-\includegraphics[width=1.05\linewidth]{figures/01-03-cnns-and-their-applications-in-nlp/basic_structure} \caption{Basic structure of CNN}\label{fig:figs}
+
+{\centering \includegraphics[width=1.05\linewidth]{figures/01-03-cnns-and-their-applications-in-nlp/basic_structure} 
+
+}
+
+\caption{Basic structure of CNN}\label{fig:figs}
 \end{figure}
 
 As illustrated in Figure \ref{fig:figs}, a convolutional neural networks includes successively an input layer, multiple hidden layers, and an output layer, the input layer will be dissimilar according to various application. The hidden layers, which is the core block of a CNN architecture, consist of a series of \textbf{convolutional layers}, \textbf{pooling layers}, and finally export the output through the \textbf{fully-connected layer}. In the following sub-chapters, descriptions of the critical layer of CNN and their corresponding intuitive example will be provided in detail.
