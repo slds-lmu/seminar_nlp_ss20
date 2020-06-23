@@ -5,9 +5,9 @@
 *Supervisor: Matthias Aßenmacher*
 
 Both attention and self-attention were important for the advances made in NLP.
-The first part is an overview of attention as it is a building block for self-attention.
+The first part of this chapter is an overview of attention as it is a building block for self-attention.
 The second part focuses on self-attention which enabled the commonly used models
-for transfer learning that are seen today.
+for transfer learning that are used today.
 
 ## Attention
 In this part of the chapter, we revisit the Encoder-Decoder architecture that was introduced
@@ -19,9 +19,10 @@ encoder-decoder architecture passes the last hidden state of the encoder to the 
 This leads to the problem that information is lost in long input sequences.
 Especially information found early in the sequence tends to be "forgotten" after
 the entire sequence is processed. The addition of bi-directional layers remedies
-this by processing the input in reversed order. The problem still persists for mid
-sections of very long input sequences. The development of attention enables the decoder to
-attend to the entire input sequence.
+this by processing the input in reversed order. While this helps for shorter sequences,
+the problem still persists for mid sections of very long input sequences.
+The development of attention enables the decoder to attend to the whole sequence and
+thus use the context of the entire sequence during decoding step.
 
 ### Bahdanau-Attention
 
@@ -32,6 +33,7 @@ $$c=q(\{h_1,\dots,h_T\})$$ where $h_1,\dots,h_T$ are the the hidden states of th
 $x_1,\dots, x_T$ and $q$ is a non-linear function. @sutskever2014sequence for example used
 $q(\{h_1,\dots,h_T\}) = h_T$ as their non-linear transformation which remains a popular
 choice for architecture without attention.
+
 Attention changes the context vector $c$ that a decoder uses for translation from a fixed
 length vector $c$ of a sequence of hidden states $h_1, \dots, h_T$ to a sequence
 of context vectors $c_i$. The hidden state $h_i$ has a strong focus on the *i*-th
@@ -43,13 +45,15 @@ bi-directional encoder.
 $$
 h_i = [\overrightarrow{h_i}; \overleftarrow{h_i}], i = 1,\dots,n
 $$
-The hidden states of the decoder $s_t$ at time-point $t$ is computed as $s_t = f(s_{t-1},y_{t-1},c_t)$.
+These new context vectors $c_i$ are used in the computation of the the hidden state of the decoder $s_t$.
+At time-point $t$ it is computed as $s_t = f(s_{t-1},y_{t-1},c_t)$.
 The context vector $c_t$ is computed as a weighted sum of the hidden
 states $h_1,\dots, h_{T_x}$:
 
 $$
 c_t = \sum^{T_x}_{i=1}\alpha_{t,i}h_i.
 $$
+Each hidden state $h_i$ is weigthed by a $\alpha_{t,i}$.
 The weight $\alpha_{t,i}$ of each hidden state $h_i$ is also called the alignment score.
 These alignment scores are computed as:
 
@@ -69,24 +73,86 @@ $$
 were tanh is used as a non-linear activation function and $v_\alpha$ and $W_\alpha$
 are the weight matrices to be learned by the alignment model. The alignment score function
 is called "concat" in @luong2015effective and "additive attention" in @vaswani2017attention
-because of the concatenation seen above. A nice by-product of attention is a matrix of alignment scores
+because $s_t$ and $h_i$ are concatenated just like the forward and backward hidden states seen above.
+A nice by-product of attention is a matrix of alignment scores
 which can be visualised to show the correlation between source and target words.
 
-![Alignment Matrix visualised for a French to English translation. Image source: Fig 3 in @bahdanau2014neural](./figures/02-02-attention-and-self-attention-for-nlp/bahdanau-fig3.png)
+```{r attention-plot-bahdanau, echo = FALSE, fig.align='center', fig.cap= "Alignment Matrix visualised for a French to English translation. Image source: Fig 3 in @bahdanau2014neural", out.width="100%"}
+knitr::include_graphics('./figures/02-02-attention-and-self-attention-for-nlp/bahdanau-fig3.png')
+```
 
 The attention model proposed by Bahdanau et al. is also called a soft/global attention model as it attends
 to every input in the sequence.
 
 ### Luong-Attention
 
-- intro loung
+While Bahdanau et al. were the first to use attention in neural machine translation (NMT),
+@luong2015effective were the first to explore different attention mechanisms and their impact on
+NMT. Although the architecture of the neural network proposed by Luong et al. differes,
+the overall attention mechanism is similar to Bahdanau et al..
+The main difference in the attention mechanism is in the used score function.
+Bahdanau et al. only consider
+$$
+score(s_t,h_i) = v_\alpha^Ttanh(\mathbf{W}_\alpha[s_t;h_i])
+$$
+, while Luong et al. also use a general, a location-based and a dot-product score function in their publication.
 
-- different proposed score functions
+| Score-function | Name           |
+|----------------|----------------|
+| $\text{score}(\boldsymbol{s}_t, \boldsymbol{h}_i) = \boldsymbol{s}_t^\top\mathbf{W}_a\boldsymbol{h}_i$         | General        |
+| $\alpha_{t,i} = \text{softmax}(\mathbf{W}_a \boldsymbol{s}_t)$        | Location-based |
+| $\text{score}(\boldsymbol{s}_t, \boldsymbol{h}_i) = \boldsymbol{s}_t^\top\boldsymbol{h}_i$        | Dot-product    |
 
-- differences to bahdanau
+Table : (\#tab:luong-score-functions) Different score function proposed by Luong et al.
 
-- explanation for local/hard attention and differences to global/soft attention
+Other differences are simplifications and generalisations from @bahdanau2014neural.
+As @luong2015effective don't use a bidirectional encoder, they simplify the hidden
+state of the encoder from a concatination of both forward and backward hidden states
+to only the hidden state at the top layer of both encoder and decoder.
 
+
+Most until now proposed attention models attend the entire input sequence. While
+this fixes the problem of forgetful sequential models discussed in the beginning of the chapter,
+it also has the drawback that it is expensive and can potentially be impractiacal
+during e.g. translation of entire paragraphs or documents. These problems encountered
+with global or soft attention mechanisms can be mitigated with a local or hard attention
+approach. While it was used by @xu2015show for caption generation of images with a CNN
+and by @gregor2015draw for the generation of images, the first application for NMT
+is from @luong2015effective. Other than the global attention mechanism, the local
+attention mechanism first generates an aligned position $p_t$ at timestep $t$.
+The context vector is then computed as a weighted average over only the set of
+hidden states in a window $[p_t-D,p_t+D]$ with $D$ being an emipirically selected
+parameter. This constrains the above introduced computation for the context vector
+to:
+$$
+c_t = \sum^{p_t+D}_{i=p_t-D}\alpha_{t,i}h_i.
+$$
+
+The parts outside of a sentence are ignored if the window crosses sentence
+boundaries. The computation of the context vector changes very little compared to
+the global model which can be seen in Figure \@ref(fig:attention-plots-luong).
+This is only the case if the first variant proposed by Luong et al., the **monotonic** alignment(*local-m*), is used.
+This approach sets $p_t= t$ with the assumption that both input and output sequences
+are roughly monotonically aligned.
+
+```{r attention-plots-luong, echo = FALSE, fig.align='center', fig.cap= "Global and local attention illustrated. Image source: Fig. 2 and 3 in @luong2015effective", out.width="100%"}
+knitr::include_graphics('figures/02-02-attention-and-self-attention-for-nlp/luong2015-fig2-3.png')
+```
+
+The other approach, **predictive** alignment (*local-p*), predicts the aligned position:
+$$
+p_t = S \cdot sigmoid(v_p^\top tanh(W_ph_t))
+$$
+where $W_p$ and $v_p$ are the parameters that will be trained to predict positions.
+$S$ is the length of the input sentence and as a result of the sigmoid function: $p_t \in [0,S]$.
+A Gaussian distribution centered around $p_t$ is placed by @luong2015effective to favour alignment points closer to $p_t$.
+This changes the alignment weights to:
+$$
+\alpha_{t,i} = align(y_t, x_i)exp(-\frac{(i-p_t)^2}{2\sigma^2})
+$$
+where the standard deviation is empirically set to $\sigma = \frac{D}{2}$. This
+utilization of $p_t$ to compute $\alpha_{t,i}$ allows the computation of backpropagation
+gradients for $W_p$ and $v_p$ and is thus ``differentiable almost everywhere'' @luong2015effective.
 
 ### Attention Models
 Overview over models that use attention and different attentions used, segway to self-attention
