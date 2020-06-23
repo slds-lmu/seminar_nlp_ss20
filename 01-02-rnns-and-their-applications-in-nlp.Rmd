@@ -39,17 +39,17 @@ After $t$ steps, the function $g^{(t)}$ takes into account the whole sequence $(
 Consider a recurrent neural network with one hidden layer that is used to predict words or characters, so the output is discrete and the model maps input sequence to output sequence of the same length. Then the forward propagation is computed by iterating the following equations:
 
 \begin{align}
-h^{(t)} & = \mathcal{H}(a+W_{hh}h^{(t-1)}+W_{xh}x^{(t)}) (\#eq:input-to-hidden) \\
-y^{(t)} & = \mathcal{Y}(b+W_{hy}h^{(t)}) (\#eq:hidden-to-output) 
+h^{(t)} & = \mathcal{f}(a+W_{hh}h^{(t-1)}+W_{xh}x^{(t)}) (\#eq:input-to-hidden) \\
+y^{(t)} & = \mathcal{s}(b+W_{hy}h^{(t)}) (\#eq:hidden-to-output) 
 \end{align}
 
 where the parameters and functions denote the following:
 
-* $\mathcal{H}$: activation function of the hidden layer. Usually it is a sigmoid activation function ( @sutskever2014sequence and @mikolov2010recurrent) or tanh or ReLu  
+* $\mathcal{f}$: activation function of the hidden layer. Usually it is a saturating nonlinear function such as sigmoid activation function ( @sutskever2014sequence and @mikolov2010recurrent) or tanh or ReLu  
 * $W_{hh}$: weight matrix connecting recurrent connections between hidden states    
 * $W_{xh}$: weight matrix connecting inputs to a hidden layer  
 * $W_{hy}$: weight matrix connecting hidden states to outputs (softmax if we want to predict next word or letter)  
-* $\mathcal{Y}$: output layer function. If the model is used to predict words, the softmax function is usually chosen as it returns valid probabilities over the possible outputs  [@mikolov2010recurrent]  
+* $\mathcal{s}$: output layer function. If the model is used to predict words, the softmax function is usually chosen as it returns valid probabilities over the possible outputs  [@mikolov2010recurrent]  
 * $a$, $b$: input and output bias vectors.  
 
 [@graves2013generating] 
@@ -84,7 +84,7 @@ Gradients w.r.t. $W_{hy}$:
 * for the whole sequence:  
 
 \begin{align}
-\frac{\partial \mathcal{L}}{\partial W_{hy}} & = \sum_{t} \frac{\partial \mathcal{L}}{\partial y^{(t)}} \frac{\partial y^{(t)}} {\partial W_{hy}}  (\#eq:rnn-back-hy-all) \\    
+\frac{\partial \mathcal{L}}{\partial W_{hy}} & = \sum_{t} \frac{\partial \mathcal{L^{(t)}}}{\partial y^{(t)}} \frac{\partial y^{(t)}} {\partial W_{hy}}  (\#eq:rnn-back-hy-all) \\    
 \end{align}
 
 Gradients w.r.t. $W_{hh}$:
@@ -137,16 +137,16 @@ In order to better understand the mathematical challenges of BPTT, consider equa
 \begin{align}
 \frac{\partial h^{(t)}}{\partial h^{(k)}}
 & = \prod_{t\geq\ i>k}^{} \frac{\partial h^{(i)}}{\partial h^{(i-1)}}
-= \prod_{t\geq\ i>k}^{} W_{hh}^{T}diag(\mathcal{H}^{'}(h^{(i-1)}))  (\#eq:rnn-back-vanishing) 
+= \prod_{t\geq\ i>k}^{} W_{hh}^{T}diag(\mathcal{f}^{'}(h^{(i-1)}))  (\#eq:rnn-back-vanishing) 
 \end{align}
 
-Thus, with small values in $W_{hh}$ and many matrix multiplications the norm of the gradient shrinks to zero exponentially fast with $t-k$ which results in a vanishing gradient problem and the loss of long term contributions. Exploding gradients refer to the opposite behavior when the norm of the gradient increases largely and leads to a crash of the model. @pascanu2013difficulty give an overview of dealing with the exploding and vanishing gradients. Among other solutions they mention proper initialisation of weight matrices, sampling $W_{hh}$ and $W_{xh}$ instead of learning them, rescaling or clipping the gradient's components (putting a maximum limit on it) or using L1 or L2 penalties on the recurrent weights. Even more popular models are gated RNNs which explicitly address the vanishing gradients problem.
+Thus, with small values in $W_{hh}$ and many matrix multiplications the norm of the gradient shrinks to zero exponentially fast with $t-k$ which results in a vanishing gradient problem and the loss of long term contributions. Exploding gradients refer to the opposite behavior when the norm of the gradient increases largely and leads to a crash of the model. @pascanu2013difficulty give an overview of dealing with the exploding and vanishing gradients. Among other solutions they mention proper initialisation of weight matrices, sampling $W_{hh}$ and $W_{xh}$ instead of learning them, rescaling or clipping the gradient's components (putting a maximum limit on it) or using L1 or L2 penalties on the recurrent weights. Even more popular models are gated RNNs which explicitly address the vanishing gradients problem and will be explained in the next subchapter.
 
 ## Gated RNNs
 
 ### LSTM
 
-Long Short Term Memory networks were introduced by @hochreiter1997long to deal with problems of long term dependencies. Instead of a simple hidden unit that combines inputs and previous hidden states linearly and outputs the non-linear transformation to the next step, hidden units are now extended by special input, forget and output gates which help to control the flow of information. Such more complex units are called memory cells and the following equations show how a LSTM uses the gating mechanism to calculate the hidden state within a memory cell: 
+Long Short Term Memory networks were introduced by @hochreiter1997long with the purpose to deal with problems of long term dependencies. Instead of a simple hidden unit that combines inputs and previous hidden states linearly and outputs the non-linear transformation to the next step, hidden units are now extended by special input, forget and output gates which help to control the flow of information. Such more complex units are called memory cells and the following equations show how a LSTM uses the gating mechanism to calculate the hidden state within a memory cell: 
 
 \begin{align}
 f^{(t)} & = sigm(W_{xf}x^{(t)}+W_{hf}h^{(t-1)}+b_{f}) (\#eq:lstm-forget) \\
@@ -186,34 +186,41 @@ knitr::include_graphics("figures/01-02-rnns-and-their-applications-in-nlp/03_lst
 
 ## Extensions of Simple RNNs
 
-### Bidirectional RNNs
-
-One of the limitations of simple RNNs is that they can process the information only up to a present time instance. In many NLP fields, however, the prediction may also depend on future inputs. Bidirectional RNNs, introduced by @schuster1997bidirectional, handle this issue by training on inputs in original as well as reversed order. The idea is to stack two hidden layers one on another while one of the layers is responsible for the forward information flow and another one for the backward information flow. Such a composition allows using both past and future inputs at any time instance. Since both types of hidden states do not interact, the bidirectional RNNs follow almost the same training rules as a regular RNN with small differences regarding backpropagation. 
-
 ### Deep RNNs
 
-The figure \@ref(fig:01-02-unfold) shows that each layer is associated with one parameter matrix so that the model is considered shallow. This structure can be extended to a deep RNN, although the depth of an RNN is not a trivial concept since its units are already expressed as a nonlinear function of multiple previous units. However, a deep RNN is defined as a network with several input, hidden, or output layers stacked on top of each other. Such a structure can be more efficient at representing complex dependencies although it also requires higher computational effort because the distances between two variables at $t$ and $t+1$ become longer. [@pascanu2013construct]
+#### Stacked RNNs  
 
-@pascanu2013construct proposed three ways to make an RNN deeper. Extending input-to-hidden functions helps to transform the raw input, e.g. one-hot encoded vectors, into a more convenient and informative representations, e.g. word embeddings, for higher levels. A deep hidden-to-hidden composition allows for the hidden states to effectively add new information to the accumulated summaries from the previous steps. For example, the model preserves useful information from the past although new inputs vary strongly and rapidly. Finally, a deep hidden-to-output function is used to make hidden states more compact and therefore enables the model to summarize the previous inputs more efficiently. 
+The figure \@ref(fig:01-02-unfold) shows that each layer is associated with one parameter matrix so that the model is considered shallow. This structure can be extended to a deep RNN, although the depth of an RNN is not a trivial concept since its units are already expressed as a nonlinear function of multiple previous units. In their paper @graves2013speech use a deep RNN for speech recognition where the depth is defined as stacking $N$ hidden layers on top of each other with $N>1$. In this case the hidden vectors are computed iteratively for all hidden layers $n=1$ to $N$ and for all time instances $t=1$ to $T$:
+
+\begin{align}
+h_{n}^{(t)} & = \mathcal{f}(a_{n}+W_{h_{n}h_{n}}h_{n}^{(t-1)}+W_{h_{n-1}h_{n}}h_{n-1}^{(t)}) (\#eq:deep-hidden)
+\end{align}
+
+As a hidden layer function @graves2013speech choose bidirectional LSTM. Compared to regular LSTM, BiLSTM is able to train on inputs in their original as well as reversed order. The idea is to stack two separate hidden layers one on another while one of the layers is responsible for the forward information flow and another one for the backward information flow. Especially in speech recognition one must take in consideration future context, too, because pronouncement depends both on previous and next phonemes. Thus, BiLSTMs are able to access long-time dependencies in both input directions. Finally, @graves2013speech compare different deep BiLSTM models (from 1 to 5 hidden layers) with unidirectional LSTMs and a pretrained RNN transducer (BiLSTM with 3 hidden layers pretrained to predict each phoneme given the previous ones) and show clear advantage of deep networks over shallow designs. 
+
+#### Deep Transition RNNs  
+
+@pascanu2013construct proposed another way to make an RNN deeper by introducing transitions, one or more intermediate nonlinear layers between input to hidden, hidden to output or two consecutive hidden states. They argue that extending input-to-hidden functions helps to better capture temporal structure between successive inputs. A deeper hidden-to-output function, DO-RNN, can make hidden states more compact and therefore enables the model to summarize the previous inputs more efficiently. A deep hidden-to-hidden composition, DT-RNN, allows for the hidden states to effectively add new information to the accumulated summaries from the previous steps. For example, the model preserves useful information from the past although new inputs vary strongly and rapidly. They note though, because of including deep transitions, the distances between two variables at $t$ and $t+1$ become longer and the problem of loosing long-time dependencies may occur. One can add shortcut connections to provide shorter paths for gradients, such networks are referred to as DT(S)-RNNs. If deep transitions with shortcuts are implemented both in hidden and output layers, the resulting model is called DOT(S)-RNNs. @pascanu2013construct evaluate these designs on the tasks of polyphonic music prediction and character- or word-level language modeling. Their results reveal that deep transition RNNs clearly outperform shallow RNNs in terms of perplexity and negative log-likelihood.
 
 ### Encoder-Decoder Architecture
 
-The problem of mapping variable-length input sequences to variable-length output sequences is known as Sequence-to-Sequence or seq2seq learning in NLP. Although originally applied in machine translation tasks (@sutskever2014sequence, @cho2014learning), the seq2seq approach achieved state-of-the-art results also in speech recognition [@prabhavalkar2017comparison] and video captioning [@venugopalan2015sequence]. According to @cho2014learning, the seq2seq model consists of two parts as illustrated below:
+The problem of mapping variable-length input sequences to variable-length output sequences is known as Sequence-to-Sequence or seq2seq learning in NLP. Although originally applied in machine translation tasks (@sutskever2014sequence, @cho2014learning), the seq2seq approach achieved state-of-the-art results also in speech recognition [@prabhavalkar2017comparison] and video captioning [@venugopalan2015sequence]. According to @cho2014learning, the seq2seq model is composed of two parts as illustrated below:
 
 ```{r 01-02-enc-dec, echo=FALSE, message=FALSE, fig.align="center",fig.cap="Encoder-Decoder architecture. Source: Own figure.", out.width = '100%'}
 
 knitr::include_graphics("figures/01-02-rnns-and-their-applications-in-nlp/04_encoder_decoder.PNG")
 ```
 
-The first part is the encoder, an RNN which is trained on input sequences in order to obtain a large summary vector $c$ with a fixed dimension. The second part is a decoder, another RNN which generates predictions. In contrast to a simple RNN described at the beginning of this chapter, outputs $y^{(t)}$ and decoder hidden states $h^{(t)}$ are both conditioned on the summary vector $c$ from the encoder part as well as on $y^{(t-1)}$ and are computed by:
+The first part is an encoder, an RNN which is trained on input sequences in order to obtain a large summary vector $c$ with a fixed dimension. This vector is called context and is usually a simple function of the last hidden state. @sutskever2014sequence used the final encoder hidden state as context such that $c=h_{e}^{(T)}$. The second part of the model is a decoder, another RNN which generates predictions given the context $c$ and all the previous outputs. In contrast to a simple RNN described at the beginning of this chapter, decoder hidden states $h_{d}^{(t)}$ are now conditioned on the previous outputs $y^{(t)}$, previous hidden states $h_{d}^{(t)}$ and the summary vector $c$ from the encoder part. Therefore, the conditional distribution of the one-step prediction is obtained by:
 
 \begin{align}
-h^{(t)} & = f(h^{(t-1)},y^{(t-1)},c) (\#eq:decoder-hidden) \\
-P(y^{(t)}|y^{(t-1)},...y^{(1)},c) & = \mathcal{Y}(h^{(t-1)},y^{(t-1)},c) (\#eq:decoder-output) \\
+h_{d}^{(t)} & = f(h_{d}^{(t-1)},y^{(t-1)},c) (\#eq:decoder-hidden) \\
+P(y^{(t)}|y^{(t-1)},...y^{(1)},c) & = \mathcal{s}(h_{d}^{(t)},y^{(t-1)},c) (\#eq:decoder-output) \\
 \end{align}
 
+Both parts are trained simultaneously to maximize the conditional log-likelihood $\frac{1}{N}\sum_{n=1}^{N}\log{p_{\theta}(y_{n}|x_{n})}$, where $\theta$ denotes the set of model parameters and $(y_{n},x_{n})$ is an (input sequence, output sequence) pair from the training set with size $N$ (@cho2014learning).
 
-
+@luong2015multi extended the idea of encoder-decoder architecture even further by allowing multi-task learning (MLT) for seq2seq models. MLT aims to improve performance of one task using other related tasks. In their paper, they investigate three settings: a) *one-to-many* - where the encoder is shared between different tasks such as translation and syntactic parsing, b) *many-to-one* - where the encoders learn different tasks such as translation and image captioning and the decoder is shared, c) *many-to-many* - where the model consists of multiple encoders and decoders which is the case of autoencoders, unsupervised task used to learn a representation of monolingual data. @luong2015multi consider German-to-English and English-to-German translations as the primary task and try to determine whether other tasks can improve their performance and vice versa. After training deep LSTM models with 4 layers for different task combinations, they come to the conclusion that MLT can improve the performance of seq2seq models substantially. For instance, the translation quality improves after adding a small number of parsing minibatches (one-to-many setting) or after the model have been trained to generate image captions (many-to-one setting). In turn, translation task helps to parse large data corpus much better (one-to-many setting). In contrust to these achievements, autoencoder task does not show significant improvements in translation after two unsupervised learning tasks on English and German language data.
 
 
 
