@@ -22,7 +22,7 @@ The repetitive structure of RNNs can be visualized with the help of an unfolded 
 
 ```{r 01-02-unfold, echo=FALSE, message=FALSE, fig.align="center",fig.cap="Unfolded computatinal graph of an RNN. Source: Own figure.", out.width = '100%'}
 
-knitr::include_graphics("figures/01-02-rnns-and-their-applications-in-nlp/02_unfolded_graph.PNG")
+knitr::include_graphics("figures/01-02-rnns-and-their-applications-in-nlp/02_unfolded_graph.png")
 ```
 
 Each node is associated with a network layer at a particular time instance. Inputs $x^{(t)}$ must be encoded as numeric vectors, for instance word embeddings or one-hot encoded vectors, see the previous chapter. Reccurrently connected vectors $h$ are called hidden states and represent the outputs of the hidden layer. At time $t$, a hidden state $h^{(t)}$ combines information from the previous hidden state $h^{(t-1)}$ as well as the new input $x^{(t)}$ and passes it through to the next hidden state. Obviously, such an architecture requires the initialization of $h^{(0)}$ since there is no memory at the very beginning of the sequence processing. Given the hidden sequences, output vectors $\hat{y}^{(t)}$ are used to build the predictive distribution $Pr(x^{(t+1)}|y^{(t)})$ for the next input [@graves2013generating]. Since the predictions are created at each time instance $t$, the total output has a shape $[\#\ time\_steps, \#\ output\_features]$. However, in some cases the whole history of output features is not needed. For example, in sentiment analysis the last output of the loop is sufficient because it contains the entire information about the sequence. [@chollet2018deep]
@@ -52,7 +52,7 @@ where the parameters and functions denote the following:
 * $\mathcal{s}$: output layer function. If the model is used to predict words, the softmax function is usually chosen as it returns valid probabilities over the possible outputs  [@mikolov2010recurrent]  
 * $a$, $b$: input and output bias vectors.  
 
-[@graves2013generating] 
+[@graves2013generating]
 
 Because inputs $x^{(t)}$ are usually encoded as one-hot-vectors, the dimension of a vector representing one word corresponds to the size of vocabulary. The size of a hidden layer must reflect the size of training data. The model training requires initialization of the initial state $h^{(0)}$ as well as the weight matrices, which are usually set to small random values [@mikolov2010recurrent]. Since the model is used to compute the predictive distributions $Pr(x^{(t+1)}|y^{(t)})$ at each time instance $t$, the network distribution is denoted as:
 
@@ -69,19 +69,19 @@ and the total loss $\mathcal{L(x)}$ used for training is simply the sum of the l
 [@graves2013generating]
 
 
-### Backpropagation 
+### Backpropagation
 
 In order to train the model, one must calculate the gradients for the three weight matrices $W_{xh}$, $W_{hh}$ and $W_{hy}$. The algorithm differs from a regular backpropagation because a chain rule must be applied recursively and the gradients are summed up through the network. [@boden2002guide]
 
-Gradients w.r.t. $W_{hy}$:  
+Gradients w.r.t. $W_{hy}$:
 
-* for a single time step $t$:  
+* for a single time step $t$:
 
 \begin{align}
-\frac{\partial \mathcal{L^{(t)}}}{\partial W_{hy}} & = \frac{\partial \mathcal{L^{(t)}}}{\partial y^{(t)}} \frac{\partial y^{(t)}}{\partial W_{hy}}(\#eq:rnn-back-hy-one) \\ 
+\frac{\partial \mathcal{L^{(t)}}}{\partial W_{hy}} & = \frac{\partial \mathcal{L^{(t)}}}{\partial y^{(t)}} \frac{\partial y^{(t)}}{\partial W_{hy}}(\#eq:rnn-back-hy-one) \\
 \end{align}
 
-* for the whole sequence:  
+* for the whole sequence:
 
 \begin{align}
 \frac{\partial \mathcal{L}}{\partial W_{hy}} & = \sum_{t} \frac{\partial \mathcal{L^{(t)}}}{\partial y^{(t)}} \frac{\partial y^{(t)}} {\partial W_{hy}}  (\#eq:rnn-back-hy-all) \\    
@@ -92,7 +92,7 @@ Gradients w.r.t. $W_{hh}$:
 * for a single time step $t$:
 
 \begin{align}
-\frac{\partial \mathcal{L^{(t)}}}{\partial W_{hh}} & = \frac{\partial \mathcal{L^{(t)}}}{\partial y^{(t)}} \frac{\partial y^{(t)}}{\partial h^{(t)}} \frac{\partial h^{(t)}}{\partial W_{hh}} (\#eq:rnn-back-hh-one) 
+\frac{\partial \mathcal{L^{(t)}}}{\partial W_{hh}} & = \frac{\partial \mathcal{L^{(t)}}}{\partial y^{(t)}} \frac{\partial y^{(t)}}{\partial h^{(t)}} \frac{\partial h^{(t)}}{\partial W_{hh}} (\#eq:rnn-back-hh-one)
 \end{align}
 
 The last part $h^{(t)}$ also depends on $h^{(t-1)}$ and the gradient can be rewritten as:
@@ -100,7 +100,7 @@ The last part $h^{(t)}$ also depends on $h^{(t-1)}$ and the gradient can be rewr
 \begin{align}
 \frac{\partial \mathcal{L^{(t)}}}{\partial W_{hh}}
 & = \frac{\partial \mathcal{L^{(t)}}}{\partial y^{(t)}} \frac{\partial y^{(t)}}{\partial h^{(t)}} \frac{\partial h^{(t)}}{\partial h^{(t-1)}} \frac{\partial h^{(t-1)}}{\partial W_{hh}} \\
-& = \sum_{k=0}^{t} \frac{\partial \mathcal{L^{(t)}}}{\partial y^{(t)}} \frac{\partial y^{(t)}}{\partial h^{(t)}} \frac{\partial h^{(t)}}{\partial h^{(k)}} \frac{\partial h^{(k)}}{\partial W_{hh}} (\#eq:rnn-back-hh-one-one) 
+& = \sum_{k=0}^{t} \frac{\partial \mathcal{L^{(t)}}}{\partial y^{(t)}} \frac{\partial y^{(t)}}{\partial h^{(t)}} \frac{\partial h^{(t)}}{\partial h^{(k)}} \frac{\partial h^{(k)}}{\partial W_{hh}} (\#eq:rnn-back-hh-one-one)
 \end{align}
 
 
@@ -108,7 +108,7 @@ The last part $h^{(t)}$ also depends on $h^{(t-1)}$ and the gradient can be rewr
 
 \begin{align}
 \frac{\partial \mathcal{L}}{\partial W_{hh}}
-& = \sum_{t} \sum_{k=0}^{t} \frac{\partial \mathcal{L^{(t)}}}{\partial y^{(t)}} \frac{\partial y^{(t)}}{\partial h^{(t)}} \frac{\partial h^{(t)}}{\partial h^{(k)}} \frac{\partial h^{(k)}}{\partial W_{hh}} (\#eq:rnn-back-hh-all) 
+& = \sum_{t} \sum_{k=0}^{t} \frac{\partial \mathcal{L^{(t)}}}{\partial y^{(t)}} \frac{\partial y^{(t)}}{\partial h^{(t)}} \frac{\partial h^{(t)}}{\partial h^{(k)}} \frac{\partial h^{(k)}}{\partial W_{hh}} (\#eq:rnn-back-hh-all)
 \end{align}
 
 
@@ -118,14 +118,14 @@ Gradient w.r.t. $W_{xh}$ is similar to $W_{hh}$:
 
 \begin{align}
 \frac{\partial \mathcal{L^{(t)}}}{\partial W_{xh}}
-& = \sum_{k=0}^{t} \frac{\partial \mathcal{L^{(t)}}}{\partial y^{(t)}} \frac{\partial y^{(t)}}{\partial h^{(t)}} \frac{\partial h^{(t)}}{\partial h^{(k)}} \frac{\partial h^{(k)}}{\partial W_{xh}} (\#eq:rnn-back-xh-one) 
+& = \sum_{k=0}^{t} \frac{\partial \mathcal{L^{(t)}}}{\partial y^{(t)}} \frac{\partial y^{(t)}}{\partial h^{(t)}} \frac{\partial h^{(t)}}{\partial h^{(k)}} \frac{\partial h^{(k)}}{\partial W_{xh}} (\#eq:rnn-back-xh-one)
 \end{align}
 
 * for the whole sequence:
 
 \begin{align}
 \frac{\partial \mathcal{L}}{\partial W_{xh}}
-& = \sum_{t} \sum_{k=0}^{t} \frac{\partial \mathcal{L^{(t)}}}{\partial y^{(t)}} \frac{\partial y^{(t)}}{\partial h^{(t)}} \frac{\partial h^{(t)}}{\partial h^{(k)}} \frac{\partial h^{(k)}}{\partial W_{xh}} (\#eq:rnn-back-xh-all) 
+& = \sum_{t} \sum_{k=0}^{t} \frac{\partial \mathcal{L^{(t)}}}{\partial y^{(t)}} \frac{\partial y^{(t)}}{\partial h^{(t)}} \frac{\partial h^{(t)}}{\partial h^{(k)}} \frac{\partial h^{(k)}}{\partial W_{xh}} (\#eq:rnn-back-xh-all)
 \end{align}
 
 [@chen2016gentle]
@@ -146,7 +146,7 @@ Thus, with small values in $W_{hh}$ and many matrix multiplications the norm of 
 
 ### LSTM
 
-Long Short Term Memory networks were introduced by @hochreiter1997long with the purpose to deal with problems of long term dependencies. Instead of a simple hidden unit that combines inputs and previous hidden states linearly and outputs the non-linear transformation to the next step, hidden units are now extended by special input, forget and output gates which help to control the flow of information. Such more complex units are called memory cells and the following equations show how a LSTM uses the gating mechanism to calculate the hidden state within a memory cell: 
+Long Short-Term Memory networks were introduced by @hochreiter1997long with the purpose to deal with problems of long term dependencies. Instead of a simple hidden unit that combines inputs and previous hidden states linearly and outputs the non-linear transformation to the next step, hidden units are now extended by special input, forget and output gates which help to control the flow of information. Such more complex units are called memory cells and the following equations show how a LSTM uses the gating mechanism to calculate the hidden state within a memory cell: 
 
 \begin{align}
 f^{(t)} & = sigm(W_{xf}x^{(t)}+W_{hf}h^{(t-1)}+b_{f}) (\#eq:lstm-forget) \\

@@ -24,7 +24,7 @@ There are a lot of possibilities to do that. Two simple approaches would be labe
 
 ```{r onehot-bow, fig.show ='hold', fig.align = "default", fig.cap="One-Hot Encoding on the left and Bag-of-Words on the right. Source: Own figure.", out.width = '50%'}
 
-include_graphics(c("figures/01-00-deep-learning-for-nlp/01-01_one-hot.PNG", "figures/01-00-deep-learning-for-nlp/01-01_bow.PNG"))
+include_graphics(c("figures/01-00-deep-learning-for-nlp/01-01_one-hot.png", "figures/01-00-deep-learning-for-nlp/01-01_bow.png"))
 ```
 
 The solution to this problem is word embedding. Word embeddings use dense vector representations for words. That means they map each word to a continuous vector with n dimensions. The distance in the vector space denotes semantic (dis)similarity. These word embeddings are usually learned by neural networks, either within the final model in an additional layer or in its own model. Once learned they can be reused across different tasks. Practically all NLP projects these days build upon word embeddings, since they have a lot of advantages compared to the aforementioned representations.
@@ -32,7 +32,7 @@ The basic idea behind learning word embeddings is the so called “distributiona
 As mentioned, a lot of approaches use neural networks to learn word embeddings. A simple feed-forward network with fully connected layers for learning such embeddings while predicting the next word for a given context is shown in figure \@ref(fig:nnlm). In this example the word embeddings are first learnt in a projection layer and are then used in two hidden layers to model the probability distribution over all words in the vocabulary. With this distribution one can predict the target word. This simple structure can be good enough for some tasks but it also has a lot of limitations. Therefore, recurrent and convolutional networks are used to overcome the limitations of a simple neural network.
 
 ```{r nnlm, fig.align = "default", fig.cap="Feed-forward Neural Network. Source: Own figure based on Bengio et al. 2013.", out.width = '100%'}
-include_graphics("figures/01-00-deep-learning-for-nlp/01-01_nnlm.PNG")
+include_graphics("figures/01-00-deep-learning-for-nlp/01-01_nnlm.png")
 ```
 
 
@@ -40,12 +40,12 @@ include_graphics("figures/01-00-deep-learning-for-nlp/01-01_nnlm.PNG")
 
 The main drawback of feedforward neural networks is that they assume a fixed length of input and output vectors which is known in advance. But for many natural language problems such as machine translation and speech recognition it is impossible to define optimal fixed dimensions a-priori. Other models that map a sequence of words to another sequence of words are needed [@sutskever2014sequence]. Recurrent neural networks or RNNs are a special family of neural networks which were explicitely developed for modeling sequential data like text. RNNs process a sequence of words or letters $x^{(1)}, ..., x^{(t)}$ by going through its elements one by one and capturing information based on the previous elements. This information is stored in hidden states $h^{(t)}$ as the network memory. Core idea is rather simple: we start with a zero vector as a hidden state (because there is no memory yet), process the current state at time $t$ as well as the output from the previous hidden state, and give the result as an input to the next iteration [@goodfellow2016deep].
 
-Basically, a simple RNN is a for-loop that reuses the values which are calculated in the previous iteration [@chollet2018deep]. An unfolded computational graph (figure \@ref(fig:01-00-unfolded)) can display the structure of a classical RNN. The gray square on the left represents a delay of one time step and the arrows on the right express the flow of information in time [@goodfellow2016deep]. 
+Basically, a simple RNN is a for-loop that reuses the values which are calculated in the previous iteration [@chollet2018deep]. An unfolded computational graph (figure \@ref(fig:01-00-unfolded)) can display the structure of a classical RNN. The gray square on the left represents a delay of one time step and the arrows on the right express the flow of information in time [@goodfellow2016deep].
 
 
 ```{r 01-00-unfolded, echo=FALSE, message=FALSE, fig.align="center",fig.cap="Right: Circuit diagram (left) and unfolded computational graph (right) of a simple RNN. Source: Own figure.", out.width = '100%'}
 
-include_graphics("figures/01-00-deep-learning-for-nlp/01_02_unfolded_graph.PNG")
+include_graphics("figures/01-00-deep-learning-for-nlp/01_02_unfolded_graph.png")
 ```
 
 One particular reason why recurrent networks have become such a powerful technique in processing sequential data is parameter sharing. Weight matrices remain the same through the loop and they are used repeatedly, which makes RNNs extremely convenient to work with sequential data because the model size does not grow for longer inputs. Parameter sharing allows application of models to inputs of different length and enables generalization across different positions in real time [@goodfellow2016deep].
@@ -66,13 +66,13 @@ As the Word2vec algorithm from @Mikolov.2013c and the GloVe algorithm from @Penn
 The following figure \@ref(fig:figintro1) illustrates a basic structure of CNN, which is composed of multiple layers. Many of these layers are described and developed with some technical detail in later chapters of this paper.
 
 ```{r figintro1, fig.cap="Basic structure of CNN. Source: Own figure.", fig.pos="h",out.width = '105%'}
-knitr::include_graphics("figures/01-00-deep-learning-for-nlp/01_03_basic_structure.PNG")
+knitr::include_graphics("figures/01-00-deep-learning-for-nlp/01_03_basic_structure.png")
 ```
 
 It is obvious that neural networks consist of a group of multiple neurons (or perceptron) at each layer, which uses to simulate the structure and behavior of biological nervous systems, and each neuron can be considered as logistic regression.
 
 ```{r figintro2, fig.cap="Comparison between the fully-connected and partial connected architecture. Source: Own figure.", fig.pos="h",fig.align="center",out.width = '50%'}
-include_graphics("figures/01-00-deep-learning-for-nlp/01_03_Comparison_Fully_Partial.PNG")
+include_graphics("figures/01-00-deep-learning-for-nlp/01_03_Comparison_Fully_Partial.png")
 ```
 
 The structure of CNN is different compared with traditional neural networks as illustrated in figure \@ref(fig:figintro2). In traditional neural networks structure, the connections between neurons are fully connected. To be more specific, all of the neurons in the layer $m-1$ are connected to each neuron in the layer $m$, but CNN sets up spatially-local correlation by performing a local connectivity pattern between neurons of neighboring layers, which means that the neurons in the layer $m-1$ are partially connected to the neurons in the layer $m$. In addition to this, the left picture presents a schematic diagram of fully-connected architecture. It can be seen from the figure that there are many edges between neurons in the previous layer to the next layer, and each edge has parameters. The right side is a local connection, which shows that there are relatively few edges compared with fully-connected architecture and the number of visible parameters has significantly decreased.

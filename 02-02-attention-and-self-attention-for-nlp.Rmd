@@ -1,7 +1,103 @@
 # Attention and Self-Attention for NLP
 
-*Authors: Author 1, Author 2*
+*Authors: Joshua Wagner*
 
-*Supervisor: Supervisor*
+*Supervisor: Matthias Aßenmacher*
+
+Both attention and self-attention were important for the advances made in NLP.
+The first part is an overview of attention as it is a building block for self-attention.
+The second part focuses on self-attention which enabled the commonly used models
+for transfer learning that are seen today.
+
+## Attention
+In this part of the chapter, we revisit the Encoder-Decoder architecture that was introduced
+in chapter [3](01-02-rnns-and-their-applications-in-nlp). We focus on the improvements
+that were made with the development of attention mechanisms on the example of neural machine translation (nmt).
+
+As seen in chapter [3](01-02-rnns-and-their-applications-in-nlp), traditional early
+encoder-decoder architecture passes the last hidden state of the encoder to the decoder.
+This leads to the problem that information is lost in long input sequences.
+Especially information found early in the sequence tends to be "forgotten" after
+the entire sequence is processed. The addition of bi-directional layers remedies
+this by processing the input in reversed order. The problem still persists for mid
+sections of very long input sequences. The development of attention enables the decoder to
+attend to the entire input sequence.
+
+### Bahdanau-Attention
+
+In 2015, @bahdanau2014neural proposed attention to fix the information problem that
+the before seen encoder-decoder architecture faced. Early decoders are trained to predict $y_{t'}$
+given a context vector $c$ and all earlier predicted words $\{y_t, \dots, y_{t'-1}\}$.
+$$c=q(\{h_1,\dots,h_T\})$$ where $h_1,\dots,h_T$ are the the hidden states of the encoder for the input sequence
+$x_1,\dots, x_T$ and $q$ is a non-linear function. @sutskever2014sequence for example used
+$q(\{h_1,\dots,h_T\}) = h_T$ as their non-linear transformation which remains a popular
+choice for architecture without attention.
+Attention changes the context vector $c$ that a decoder uses for translation from a fixed
+length vector $c$ of a sequence of hidden states $h_1, \dots, h_T$ to a sequence
+of context vectors $c_i$. The hidden state $h_i$ has a strong focus on the *i*-th
+word in the input sequence and its surroundings.
+Each $h_i$ is computed by a concatenation of the forward
+$\overrightarrow{h_i}$ and backward $\overleftarrow{h_i}$ hidden states of the
+bi-directional encoder.
+
+$$
+h_i = [\overrightarrow{h_i}; \overleftarrow{h_i}], i = 1,\dots,n
+$$
+The hidden states of the decoder $s_t$ at time-point $t$ is computed as $s_t = f(s_{t-1},y_{t-1},c_t)$.
+The context vector $c_t$ is computed as a weighted sum of the hidden
+states $h_1,\dots, h_{T_x}$:
+
+$$
+c_t = \sum^{T_x}_{i=1}\alpha_{t,i}h_i.
+$$
+The weight $\alpha_{t,i}$ of each hidden state $h_i$ is also called the alignment score.
+These alignment scores are computed as:
+
+$$
+\alpha_{t,i} = align(y_t, x_i) =\frac{exp(score(s_{t-1},h_i))}{\sum^{n}_{i'=1}exp(score(s_{t-1},h_{i'}))}
+$$
+with $s_{t-1}$ being the hidden state of the decoder at time-step $t-1$.
+The alignment score $\alpha_{t,i}$ models how well input $x_i$ and output $y_t$ match
+and assigns the weight to $h_i$. @bahdanau2014neural parametrize their alignment
+score with a single-hidden-layer feed-forward neural network which is jointly
+trained with the other parts of the architecture. The score function used by Bahdanau et al.
+is given as
+
+$$
+score(s_t,h_i) = v_\alpha^Ttanh(\mathbf{W}_\alpha[s_t;h_i])
+$$
+were tanh is used as a non-linear activation function and $v_\alpha$ and $W_\alpha$
+are the weight matrices to be learned by the alignment model. The alignment score function
+is called "concat" in @luong2015effective and "additive attention" in @vaswani2017attention
+because of the concatenation seen above. A nice by-product of attention is a matrix of alignment scores
+which can be visualised to show the correlation between source and target words.
+
+![Alignment Matrix visualised for a French to English translation. Image source: Fig 3 in @bahdanau2014neural](./figures/02-02-attention-and-self-attention-for-nlp/bahdanau-fig3.png)
+
+The attention model proposed by Bahdanau et al. is also called a soft/global attention model as it attends
+to every input in the sequence.
+
+### Luong-Attention
+
+- intro loung
+
+- different proposed score functions
+
+- differences to bahdanau
+
+- explanation for local/hard attention and differences to global/soft attention
 
 
+### Attention Models
+Overview over models that use attention and different attentions used, segway to self-attention
+
+- just a short overview over different attention models/score functions
+
+
+## Self-Attention
+general intro to self-attention
+
+- intro self attention, explanation is done in the transformers part
+
+### Transformers
+explain transformer architecture, multi-head attention, dot-prod. attention, explain the differences in computational cost to rnns and conv. models

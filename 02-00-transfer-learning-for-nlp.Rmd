@@ -1,7 +1,55 @@
 # Introduction: Transfer Learning for NLP
 
-*Authors: Author 1, Author 2*
+*Authors: Carolin Becker, Joshua Wagner, Bailan He*
 
-*Supervisor: Supervisor*
+*Supervisor: Matthias Aßenmacher*
 
 
+As discussed in the previous chapters, natural language processing (NLP) is a very powerful tool in the field of processing human language. In recent years, there have been many proceedings and improvements in NLP to the state-of-art models like BERT. A decisive further development in the past was the way to transfer learning, but also self-attention.
+
+In the next three chapters, various NLP models will be presented, which will be taken to a new level with the help of transfer learning in a first and a second step with self-attention and transformer-based model architectures. To understand the models in the next chapters, the idea and advantages of transfer learning are introduced. Additionally, the concept of self-attention and an overview over the most important models will be established
+
+## What is Transfer Learning?
+
+```{r ch02-figure01, echo=FALSE, out.width="70%", fig.cap="(ref:ch02-figure01)", fig.align="center"}
+knitr::include_graphics("figures/02-00-transfer-learning-for-nlp/compare-classical-transferlearning-ml.png")
+```
+(ref:ch02-figure01) Classic Machine Learning and Transfer Learning
+
+In figure \@ref(fig:ch02-figure01) the difference between classical machine learning and transfer learning is shown. 
+
+For classical machine learning a model is trained for every special task or domain.
+Transfer learning allows us to deal with the learning of a task by using the existing labeled data of some related tasks or domains. Tasks are the objective of the model. e.g. the sentiment of a sentence, whereas the domain is where data comes from. e.g. all sentences are selected from Reddit. In the example above, knowledge gained in task A for source domain A is stored and applied to the problem of interest (domain B).
+
+Generally, transfer learning has several advantages over classical machine learning: saving time for model training, mostly better performance, and not a need for a lot of training data in the target domain. 
+
+It is an especially important topic in NLP problems, as there is a lot of knowledge about many texts, but normally the training data only contains a small piece of it. A classical NLP model captures and learns a variety of linguistic phenomena, such as long-term dependencies and negation, from a large-scale corpus. This knowledge can be transferred to initialize another model to perform well on a specific NLP task, such as sentiment analysis. [@evolutiontransferlearning]
+
+## (Self-)attention
+The most common models for language modeling and machine translation were, and still are to some extent, recurrent neural networks with long short-term memory [@hochreiter1997long] or gated recurrent units [@gru]. These models commonly use an encoder and a decoder archictecture. Advanced models use attention, either based on Bahdanau's attention [@bahdanau2014neural] or Loung's attention [@luong2015effective].
+
+@vaswani2017attention introduced a new form of attention, self-attention, and with it a new class of models, the \textit{Transformers}. A Transformer still consists of the typical encoder-decoder setup but uses a novel new architecture for both. The encoder consists of 6 Layers with 2 sublayers each. The newly developed self-attention in the first sublayer allows a transformer model to process all input words at once and model the relationships between all words in a sentence. This allows transformers to model long-range dependencies in a sentence faster than RNN and CNN based models. The speed improvement and the fact that ``individual attention heads clearly learn to perform different tasks'' @vaswani2017attention lead to the eventual development of **B**idirectional **E**ncoder **R**epresentations from **T**ransformers by @bert. **BERT** and its successors are, at the time of writing, the state-of-the-art models used for transfer learning in NLP. The concepts attention and self-attention will be further discussed in the [**"Chapter 9: Attention and Self-Attention for NLP "**](#Attention-and-self-Attention-for-nlp).
+
+## Overview over important NLP models
+
+```{r ch02-figure02, echo=FALSE, out.width="70%", fig.cap="(ref:ch02-figure02)", fig.align="center"}
+knitr::include_graphics("figures/02-00-transfer-learning-for-nlp/overview-tranferlearning.png")
+```
+(ref:ch02-figure02) Overview of the most important models for transfer learning
+
+The models in figure \@ref(fig:ch02-figure02) will be presented in the next three chapters. 
+
+First, the two model architectures ELMo and ULMFit will be presented, which are mainly based on transfer learning and LSTMs, in [**Chapter 8: "Transfer Learning for NLP I"**](#Transfer-Learning-for-NLP-I): 
+
+* **ELMo** (Embeddings from Language Models) first published in @elmopaper uses a deep, bi-directional LSTM model to create word representations. This method goes beyond traditional embedding methods, as it analyses the words within the context
+
+* **ULMFiT** (Universal Language Model Fine-tuning for Text Classification) consists of three steps: first, there is a general pre-training of the LM on a general domain (like WikiText-103 dataset), second, the LM is finetuned on the target task and the last step is the multilabel classifier fine tuning where the model provides a status for every input sentence.
+
+In the [**"Chapter 10: Transfer Learning for NLP II"**](#Transfer-Learning-for-NLP-II) models like BERT, GTP2 and XLNet will be introduced as they include transfer learning in combination with self-attention: 
+
+* **BERT** (Bidirectional Encoder Representations from Transformers @bert) is published by researchers at Google AI Language group. 
+It is regarded as a milestone in the NLP community by proposing a bidirectional Language model based on Transformer. BERT uses the Transformer Encoder as the structure of the pre-train model and addresses the unidirectional constraints by proposing new pre-training objectives: the "masked language model"(MLM) and a "next sentence prediction"(NSP) task. BERT advances state-of-the-art performance for eleven NLP tasks and its improved variants **Albert** @lan2019albert and **Roberta** @liu2019roberta also reach great success.
+
+* **GPT2** (Generative Pre-Training-2, @radford2019gpt2) is proposed by researchers at OpenAI. GPT-2 is a tremendous multilayer Transformer Decoder and the largest version includes 1.543 billion parameters. Researchers create a new dataset "WebText" to train GPT-2 and it achieves state-of-the-art results on 7 out of 8 tested datasets in a zero-shot setting but still underfits "WebText".
+
+* **XLNet** is proposed by researchers at Google Brain and CMU[@yang2019xlnet]. It borrows ideas from autoregressive language modeling (e.g., Transformer-XL @dai2019transformer) and autoencoding (e.g., BERT) while avoiding their limitations. By using a permutation operation during training, bidirectional contexts can be captured and make it a generalized order-aware autoregressive language model. Empirically, XLNet outperforms BERT on 20 tasks and achieves state-of-the-art results on 18 tasks.
