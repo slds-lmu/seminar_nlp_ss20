@@ -782,8 +782,8 @@ The input of the Neural Networks might be assumed as a \(6 \times 6\) matrix and
 
 An activated filter of size \(3 \times 3\) has an ability to detect a pattern of the same size at some spatial position in the input. The algebraic operation explicates the transformation process from the input to the feature map.
 
-\[ X  : = \begin{pmatrix}                            
-X_{11} & X_{12} & \cdots & X_{16}\\ \\ 
+\[ X  : = \begin{pmatrix}
+X_{11} & X_{12} & \cdots & X_{16}\\ \\
 X_{21} & X_{22} & \cdots &X_{26} \\ \\
 \vdots & \vdots & \ddots & \vdots \\ \\
 X_{61} & X_{62} & \cdots & X_{66}
@@ -800,7 +800,7 @@ where \(F\) denotes one filter of size \(3 \times 3\);
 w_{11} & w_{12} & \cdots & w_{16}\\
 \end{pmatrix}\]
 where \(\beta\) is a unrolled matrix or filter;
-\[ A_{11} = (F \times X)_{11}  : = 
+\[ A_{11} = (F \times X)_{11}  : =
 \beta \cdot \begin{pmatrix}
 w_{11} & w_{12} & w_{13} & w_{21} & w_{22} & w_{23} & w_{31} & w_{32} & w_{33}\\
 \end{pmatrix}^{T}\\\]
@@ -1036,9 +1036,6 @@ With the help of this pooling function, it is possible to train ConvNets deeper 
 
 \hypertarget{conclusion-and-discussion}{%
 \section{Conclusion and Discussion}\label{conclusion-and-discussion}}
-
-\hypertarget{references}{%
-\chapter{References}\label{references}}
 
 \hypertarget{introduction-transfer-learning-for-nlp}{%
 \chapter{Introduction: Transfer Learning for NLP}\label{introduction-transfer-learning-for-nlp}}
