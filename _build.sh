@@ -14,6 +14,8 @@ BRANCH=$(if [ "$TRAVIS_PULL_REQUEST" = "false" ]; then echo $TRAVIS_BRANCH; else
 git config --global user.email "d-schalk@t-online.de"
 git config --global user.name "Daniel Schalk"
 
+Rscript -e "tinytex::install_tinytex()"
+
 # Compile html version of book for gh-pages
 make -B pdf
 # Compile html version of book for gh-pages
