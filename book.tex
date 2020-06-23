@@ -2040,16 +2040,217 @@ Models like T5 and GPT-3 are very impressive, but the biggest problem at the mom
 \hypertarget{introduction-resources-for-nlp}{%
 \chapter{Introduction: Resources for NLP}\label{introduction-resources-for-nlp}}
 
-\emph{Authors: Author 1, Author 2}
+\emph{Authors: Nico Hahn, Author 2}
 
-\emph{Supervisor: Supervisor}
+\emph{Supervisor: Daniel Schalk}
+
+As natural language processing has become one of the hottest topics in data science/statistics in recent years, tons of new resources have been created. As a result, NLP has become accessible to a wide range of people, making it easier to train and compare models. Competitions have emerged to determine who can develop the best model for specific tasks such as question answering.
+
+In the following chapter, we will take a look at some of these benchmark datasets to see what tasks they are used for and how performance is assessed on these datasets.
+
+In addition to that we will be talking about pre-training resources, what they are and why they are useful.
+
+Lastly, we will be introducing the huggingface transformers module.
 
 \hypertarget{resources-and-benchmarks-for-nlp}{%
 \chapter{Resources and Benchmarks for NLP}\label{resources-and-benchmarks-for-nlp}}
 
-\emph{Authors: Author 1, Author 2}
+\emph{Authors: Nico Hahn}
 
-\emph{Supervisor: Supervisor}
+\emph{Supervisor: Daniel Schalk}
+
+Frameworks such as TensorFlow or Keras allow users to train a wide range of different models for different tasks. Let us assume that two models for a simple question-answer system are trained, one with attention and one without attention. How can these models be evaluated in order to find the model better suited to the task? Quite simply, through benchmarking. This section looks at some of the most commonly used benchmarking datasets and at pre-training resources.
+
+\hypertarget{metrics}{%
+\section{Metrics}\label{metrics}}
+
+For many of the benchmarking datasets in natural language processing, a leaderboard exists in which different models are compared with each other. Depending on the task, the models are evaluated with different metrics. In this section we will introduce those used for the benchmarking datasets presented later.
+
+\textbf{Exact match (EM):} The percentage of predictions that match any one of the answers exactly.
+
+\textbf{(Macro-averaged) F1 score (F1):} Each answer and prediction is tokenized into words. For every answer to a given question, the overlap between the prediction and each answer is calculated and the maximum F1 is chosen. This score is then averaged over all of the questions. Formally speaking:
+\[
+F1 = \frac{2 \cdot \hbox{precision}\cdot\hbox{recall}}{\hbox{precision}+\hbox{recall}} 
+\]
+\[
+\hbox{precision} = \frac{\hbox{number of same tokens}}{\hbox{length(predicted tokens)}} \\
+\]
+\[
+\hbox{recall} = \frac{\hbox{number of same tokens}}{\hbox{length(labeled tokens)}} \\
+\]
+
+\textbf{Perplexity:} Perplexity is a measurement of how well a probability model predicts a sample. A low perplexity indicates the probability distribution is good at predicting the sample. In NLP, perplexity is a way of evaluating language models. A model of an unknown probability distribution \(p\), may be proposed based on a training sample that was drawn from \(p\). Given a proposed probability model \(q\), one may evaluate \(q\) by asking how well it predicts a separate test sample \(x_1, x_2, ..., x_N\) also drawn from \(p\). The perplexity of the model \(q\) is defined as
+\[ b^{-\frac{1}{N}\sum_{i=1}^N\log_bq(x_i)} \]
+where \(b\) is customarily \(2\).
+
+\textbf{BLEU:} BLEU (\textbf{B}i\textbf{l}ingual \textbf{E}valuation \textbf{U}nderstudy) is an algorithm for evaluating the quality of text which has been machine-translated from one natural language to another. Scores are calculated for individual translated segments---generally sentences---by comparing them with a set of good quality reference translations. Those scores are then averaged over the whole corpus to reach an estimate of the translation's overall quality. Intelligibility or grammatical correctness are not taken into account. \citep{papineni2002bleu}
+
+\textbf{Accuracy:} Accuracy is the ratio of number of correct predictions to the total number of input samples.
+
+\hypertarget{benchmark-datasets}{%
+\section{Benchmark Datasets}\label{benchmark-datasets}}
+
+\hypertarget{squad}{%
+\subsection{SQuAD}\label{squad}}
+
+The first Version of the \textbf{S}tanford \textbf{Qu}estion \textbf{A}nswering \textbf{D}ataset was released in 2016. The dataset was created with the aim of advancing the field of reading comprehension. Reading text and answering questions about it is a demanding task for machines and requires large data sets of high quality. Most of the datasets before the release of the first version of SQuAD were either of high quality or of large size, but not both.
+
+With the help of crowdworkers, 107.785 question-answer pairs were created for 536 Wikipedia articles. For each question, the answer is a segment of text, or span, from the corresponding reading passage.
+Pairs were collected in a two-step process. In the first step the crowdworkers were asked to generate five questions and their answers per paragraph.
+
+In the second step, each crowdworker was shown only the questions along with the paragraphs of the corresponding article and was asked to choose the shortest span in the paragraph that answered the question. As a result of this process, questions in the dev-set multiple answers.
+
+The goal of this procedure was to get a more robust evaluation and to obtain an indicator of human performance on SQuAD.
+
+One shortcoming of reading comprehension systems is that they tend to make unreliable guesses on questions to which no correct answer is possible. With this in mind, the second version of SQuAD was released in 2018. In addition to the approximately 100.000 questions from the first version, 53.775 new, unanswerable questions on the same paragraphs are contained in this dataset.
+
+The accuracy of models trained on SQuAD is evaluated using two different metrics, exact match and (Macro-averaged) F1 score, both ignoring punctuation and articles.
+
+To evaluate human performance, the second answer to each question is treated as the human prediction.\citep{rajpurkar2016squad, rajpurkar2018know}
+
+Humans achieve an \textbf{EM} score of 86.831 and a \textbf{F1} score of 89.452.
+
+Currently, the best performing model achieves an \textbf{EM} score of 90.386 and a \textbf{F1} score of 92.777.
+
+Examples of SQuAD and the leaderboard and can be viewed here:
+
+\center \url{https://rajpurkar.github.io/SQuAD-explorer/}
+
+\flushleft
+
+\hypertarget{coqa}{%
+\subsection{CoQA}\label{coqa}}
+
+CoQA is a dataset for building \textbf{Co}nversational \textbf{Q}uestion \textbf{A}nswering systems. Humans are capable of gathering information through conversations that include several interrelated questions and answers. The aim of CoQA is to enable machines to answers conversational questions.
+
+The data set is made up of 127k Q/A pairs, covering seven different domains such as Children's Stories or Reddit. Five of these domains are used for in-domain evaluation, meaning models have already seen questions from these domains, and two are used for out-of-domain evaluation., meaning models have not seen any questions from these domains. To create the Q/A pairs, two people received a text passage, with one person asking the other person questions about the text and the other person answering. Using multiple annotators has a few advantages:
+
+\begin{enumerate}
+\def\labelenumi{\arabic{enumi}.}
+\tightlist
+\item
+  A natural flow of conversation is created.
+\item
+  If one person gives an incorrect answer or a vague questions is asked, the other person can raise a flag. Thus bad annotators can easily be identified.
+\item
+  If there is a disagreement, the two annotators can discuss it via a chat window.
+\end{enumerate}
+
+Similar to SQuAD, three additional answers are collected for each question. However, since the answers influence the flow of the conversation, the next question always depends on the answer to the previous question. For this reason, two different answers to the same question can lead to two different follow-up questions. In order to avoid incoherent discussions, annotators are shown a question that they must answer first. After answering, they are shown the original answer, and they must then confirm that their answer has an identical meaning.
+
+Compared to SQuAD 2.0, there is a greater variety of question types in CoQA. While almost half of the questions in the SQuAD start with \emph{what}, less than a quarter of the questions in the CoQA begin with this token. Another major difference is that questions in CoQA are on average 5.5 words long, compared to an average length of 10.1 in SQuAD. It is also worth mentioning that about 10\% of the answers in CoQA are either yes or no, whereas there are no such answers in SQuAD.
+
+Like SQuAD, trained models are evaluated using a macro-average F1 score. Models are evaluated separately on the in-domain dataset and the out-of-domain dataset. \citep{coqa2019}
+
+Humans achieve a \textbf{F1} score of 89.4 for in-domain and a \textbf{F1} score of 87.4 for out-of-domain.
+
+Currently, the best performing model achieves a \textbf{F1} score of 91.4 for in-domain and a \textbf{F1} score of 89.2 for out-of-domain.
+
+Examples of CoQA and the leaderboard and can be viewed here:
+
+\center \url{https://stanfordnlp.github.io/coqa/}
+
+\flushleft
+
+\hypertarget{superglue}{%
+\subsection{(Super)GLUE}\label{superglue}}
+
+Most models in NLP are designed to solve a specific task, such as answering questions from a particular domain. This limits the use of models for understanding natural language. In order to process language in a way that is not limited to a specific task, genre, or dataset, models should be able to solve a variety of tasks well.
+
+The \textbf{G}eneral \textbf{L}anguage \textbf{U}nderstanding \textbf{E}valuation benchmark dataset is a collection of tools created with this in mind. It is designed to encourage and favour models that share common linguistic knowledge across tasks. These tasks include textual entailment, sentiment analysis and question answering. Some tasks come with a lot of training data, others with less. Common to all datasets is that they were not created specifically for GLUE, but are existing datasets. Models that are evaluated on GLUE only need to have the ability to process single-sentence and sentence-pair inputs and make appropriate predictions.
+This test suite contains a total of nine sentence or sentence-pair NLU tasks, built on established annotated datasets.
+The models are scored separately for each task and then a macro-average of these scores is calculated to determine a system's position on the ranking. If a task has multiple metrics, an unweighted average of these metrics is used as the score for the task when calculating the overall macro average. \citep{wang2018glue}
+The human baseline score is 87.1, while the best model score is currently 90.6.
+
+Roughly one year after the release of GLUE, models surpassed human performance. In response to this, a new benchmark, SuperGLUE, was introduced. It follows the same principles as GLUE, however the tasks included are more challenging. The two hardest tasks in GLUE remain, the rest were selected based on difficulty for current NLP approaches. \citep{wang2019superglue}
+For SuperGLUE, the human baseline score is 89.8, which is above the best model score, presently 89.3.
+
+More information about the tasks and the leaderboard for both GLUE and SuperGLUE is available here:
+
+\center \url{https://super.gluebenchmark.com/}
+
+\flushleft
+
+\hypertarget{aqua-rat}{%
+\subsection{AQuA-Rat}\label{aqua-rat}}
+
+One task that most people know from their time at school is solving algebraic word problems. For humans, this task can be easy, depending on a person's mathematical abilities, since we only have to perform a series of arithmetic operations. However, since programs can be endlessly complicated, it is a considerable challenge to induce them directly from question-answer pairs. The \textbf{A}lgebra \textbf{Qu}estion \textbf{A}nswering with \textbf{Rat}ionales dataset attempts to make this task more feasible for machines by providing not only the correct answer but also step-by-step instructions for deriving the correct answer, the so-called rationale. Models trained on AQuA-Rat must not only predict the correct answer, but also the rationale.
+
+The dataset contains over 100.000 questions, and each question has five different options as to what the correct answer is. It also contains the answer rationale and the correct option. The problems cover a wide range of topics, for instance probability theory or calculus, with a variety of difficulty levels. To create the dataset, examples of exams such as the GMAT (Graduate Management Admission Test) and GRE (General Test) were taken from the Internet. This part of the dataset is called the seed dataset.
+Besides, crowdsourcing was used to generate further questions. For this users were presented with five questions from the seed dataset and asked to select one of these questions and write a similiar question. Users were also forced to rephrase the rationales and answers to avoid paraphrasing the original questions.
+These created questions were then passed to another user for quality control.
+
+The rationales are evaluated using average sentence level perplexity and the BLEU score. If a model is unable to generate a token for perplexity computation, an unknown token is predicted. The correctness of the answers is evaluated by calculating the accuracy of the predictions.
+
+This is a relatively new dataset and as of now there is no online leaderboard for it. The authors of the original paper used an attention-based sequence to sequence model as their baseline method. The authors generated a program containing both instructions that generate output and instructions that simply generate intermediate values used by following instructions. The program uses a latent predictor network which generates an output sequence conditioned on an arbitrary number of input functions and staged back-progagation to save memory. Going into further depth about this program would be beyond this book so I'd advise to have a look at the original paper.
+The program outperformed the baseline model and achieved a perplexity of 28.5, a BLEU score of 27.2 and has and accuracy of 36.4. \citep{ling2017program}
+
+The paper and examples of the dataset can be found here:
+\center \url{https://github.com/deepmind/AQuA}
+
+\flushleft
+
+\hypertarget{snli}{%
+\subsection{SNLI}\label{snli}}
+
+Understanding entailment and contradiction is fundamental to understanding natural language, and conclusions about entailment and contradiction are a valuable testing ground for the development of semantic representations. The \textbf{S}tanford \textbf{N}atural \textbf{L}anguage \textbf{I}nference Corpus is a collection of sentence pairs that are labeled either as entailment, contradiction or semantic independence. While other datasets exist that try to tackle this specific task, they all have issues of size, quality, and indeterminacy.
+
+SNLI consists of about 570k record pairs. Again, croworkers were used to create the data set. To do this, they were shown the caption of a photo but not the photo, and they were asked to write three alternative captions: One that is definitely a true description of the photo, one that could be a true description of the photo, and one caption that is definitely a false description of the photo. By not showing the photo, the authors wanted to ensure that each pair of sentences could be reconstructed based on the available text alone.
+To measure the quality of the corpus, about 10\% of all created sentence pairs were validated. For this purpose, each crowdorker was shown five sentences and asked to mark them with one of the three labels. Each sentence was shown to a total of five crowdorkers. For each pair, a gold label was assigned if at least three of the five annotators chose the same label. Around 98\% of all sentence pairs were assigned a gold label, the rest was assigned a placeholder label.\citep{bowman2015large}
+
+Models are once again evaluated with the accuracy of the predicted label. For the SNLI corpus there is no measurement for human performance. Currently, the best performing model is a semantics-aware BERT (SemBERT) with an accuracy of 91.9.
+- Understanding entailment and contradiction
+- \url{https://nlp.stanford.edu/projects/snli/}
+
+\hypertarget{lambada}{%
+\subsection{LAMBADA}\label{lambada}}
+
+\begin{itemize}
+\tightlist
+\item
+  \textbf{LA}nguage \textbf{M}odeling \textbf{B}roadened to \textbf{A}ccount for \textbf{D}iscourse \textbf{A}spects
+\item
+  Word prediction task
+
+  \begin{itemize}
+  \tightlist
+  \item
+    Predict the last word of a sentence depending on the context
+  \end{itemize}
+\item
+  Models can't rely on local context, must be able to keep track of information in the broader discourse
+\item
+  \url{https://www.aclweb.org/anthology/P16-1144.pdf}
+\end{itemize}
+
+\hypertarget{pre-training-resources}{%
+\section{Pre-Training Resources}\label{pre-training-resources}}
+
+\begin{itemize}
+\tightlist
+\item
+  BERT/ALBERT/CamemBERT
+
+  \begin{itemize}
+  \tightlist
+  \item
+    Trained on unlabeled data over different pre-training tasks
+  \item
+    WordPiece embeddings with a 30k token vocabulary
+  \end{itemize}
+\item
+  OpenAI GPT2
+\item
+  GPT-3
+\item
+  Google 5T
+\end{itemize}
+
+\hypertarget{resources-for-resources}{%
+\section{Resources for Resources}\label{resources-for-resources}}
+
+\url{https://paperswithcode.com/area/natural-language-processing}
+\url{https://datasets.quantumstat.com/}
 
 \hypertarget{software-for-nlp-the-huggingface-transformers-module}{%
 \chapter{Software for NLP: The huggingface transformers module}\label{software-for-nlp-the-huggingface-transformers-module}}
