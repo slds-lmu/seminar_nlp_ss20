@@ -1,7 +1,13 @@
 # Introduction: Resources for NLP
 
-*Authors: Author 1, Author 2*
+*Authors: Nico Hahn, Author 2*
 
-*Supervisor: Supervisor*
+*Supervisor: Daniel Schalk*
 
-
+As natural language processing has become one of the hottest topics in data science/statistics in recent years, tons of new resources have been created. As a result, NLP has become accessible to a wide range of people, making it easier to train and compare models. Competitions have emerged to determine who can develop the best model for specific tasks such as question answering.  
+  
+In the following chapter, we will take a look at some of these benchmark datasets to see what tasks they are used for and how performance is assessed on these datasets.  
+  
+In addition to that we will be talking about pre-training resources, what they are and why they are useful.  
+  
+Lastly, we will be introducing the huggingface transformers module.
