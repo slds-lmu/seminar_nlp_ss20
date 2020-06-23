@@ -2276,19 +2276,16 @@ Models are once again evaluated with the accuracy of the predicted label. For th
 \hypertarget{introduction-2}{%
 \section{Introduction}\label{introduction-2}}
 
-Machine learning systems can be differentiated into two types : Discriminative and Generative. While discriminative systems like classification, regression, clustering are the more well known type, it's the Generative systems that hold greater promise of achieving Artificial General Intelligence. In essence, a Generative system is expected to produce images, text or audio that would be meaningful to the users. That's a much harder problem than just identifying a horse in a picture or fitting a line through a set of datapoints.
+Machine learning systems can be differentiated into two types: Discriminative and Generative. While discriminative systems like classification, regression, clustering are the more well known type, it's the Generative systems that hold greater promise of achieving Artificial General Intelligence. In essence, a Generative system is expected to produce images, text or audio that would be meaningful to the users. Generating a picture of a horse is a much harder problem than just identifying whether there is a horse in the picture.
 
-In this chapter, I will tackle this generative process in Natural Language Processing domain. Understandably, it's called Natural Language Generation (NLG).
+In this chapter, I will tackle the generative processes in NLP. Understandably, the field is called Natural Language Generation (NLG).
 
-\hypertarget{definition}{%
-\section{Definition}\label{definition}}
+\hypertarget{definition-and-taxonomy}{%
+\section{Definition and Taxonomy}\label{definition-and-taxonomy}}
 
-Reiter and Dale (2000) defined Natural Language Generation (NLG) as ``the sub-field of artificial intelligence and computational linguistics that is concerned with the construction of computer systems than can produce understandable texts in English or other human languages from some underlying non-linguistic representation of information''
+Reiter and Dale (2000) defined Natural Language Generation (NLG) as ``the sub-field of artificial intelligence and computational linguistics that is concerned with the construction of computer systems than can produce understandable texts in English or other human languages from some underlying non-linguistic representation of information''.
 
-\hypertarget{domains-of-nlg-systems}{%
-\section{Domains of NLG Systems}\label{domains-of-nlg-systems}}
-
-NLG systems have a wide variety of application areas.
+Two aspects need to be highlighted. First is generation of understandable text in a human language and second is the input to such a generation system is `non linguistic' representation of information. For our purposes, we will drop the second requirement; which means that the source can be text as well. With such a definition in mind, we can have following taxonomy of NLG systems :
 
 \begin{enumerate}
 \def\labelenumi{\arabic{enumi}.}
@@ -2299,9 +2296,9 @@ NLG systems have a wide variety of application areas.
   \begin{itemize}
   \tightlist
   \item
-    Machine Translation
+    Machine Translation : Automatically translating between various human languages
   \item
-    Text Summarization
+    Text Summarization : Summarizing a (big) text document into a shorter summary/abstract.
   \end{itemize}
 \item
   Data-to-Text
@@ -2309,9 +2306,9 @@ NLG systems have a wide variety of application areas.
   \begin{itemize}
   \tightlist
   \item
-    Image Captioning
+    Image Captioning : Describe the image in a short sentence.
   \item
-    Business Intelligence
+    Business Intelligence : Creating text summaries of data from conventional databases (e.g SQL)
   \end{itemize}
 \item
   Ideas-to-Text
@@ -2319,11 +2316,9 @@ NLG systems have a wide variety of application areas.
   \begin{itemize}
   \tightlist
   \item
-    Poetry/Song Generation
+    Poetry/Song Generation : Generating a song from a few keywords or mimicking the style of a certain artist.
   \item
-    Mimic an artist
-  \item
-    Fake News
+    Fake News : Automatically generating news items that look credible but are not.
   \end{itemize}
 \item
   Dialog Systems (Chatbots)
@@ -2331,104 +2326,90 @@ NLG systems have a wide variety of application areas.
   \begin{itemize}
   \tightlist
   \item
-    Goal Oriented
+    Goal Oriented : Chatting with a computer system (agent) with a specific purpose (e.g.~booking a flight)
   \item
-    Open ended conversations
+    Open ended conversations : When the conversation with the agent is casual chit-chat but has the components of information, emotion and human like empathy.
   \end{itemize}
 \end{enumerate}
 
 \begin{figure}
 \centering
-\includegraphics{figures/nlg_use_cases.png}
+\includegraphics{figures/04-01-use-case1/nlg_use_cases.png}
 \caption{NLG Use Cases}
 \end{figure}
 
-\hypertarget{commercial-activity}{%
-\section{Commercial Activity}\label{commercial-activity}}
+\hypertarget{common-architectures}{%
+\section{Common Architectures}\label{common-architectures}}
 
-\begin{enumerate}
-\def\labelenumi{\arabic{enumi}.}
-\tightlist
-\item
-  \url{https://www.narrativescience.com}
-\item
-  \url{https://automatedinsights.com}
-\item
-  \url{http://www.arria.com}
-\end{enumerate}
-
-\hypertarget{the-architectures}{%
-\chapter{The Architectures}\label{the-architectures}}
-
-There are many architectures that are peculiar to an NLG system. While some are used in other domains as well, in the following sections I will explain them with a focus on language generation.
+There are many architectures that are common across most of above mentioned NLG systems. While some are used in other NLP domains as well, in the following sections I will explain them with a focus on language generation.
 
 \hypertarget{encoder-decoder-architecture-1}{%
-\section{Encoder-Decoder Architecture}\label{encoder-decoder-architecture-1}}
+\subsection{Encoder-Decoder Architecture}\label{encoder-decoder-architecture-1}}
 
-The most ubiquitous architecture for NLG is the encoder-decoder architecture, and especially the decoder part of it. Hence I will explain it in some detail. The architecture is shown in following figures:
+The most ubiquitous architecture for NLG is the encoder-decoder architecture, and especially the decoder part of it. Hence I will explain it in some detail. The architecture is shown in the following figures:
 
 \begin{figure}
 \centering
-\includegraphics{figures/encoder_decoder_trg.jpg}
+\includegraphics{figures/04-01-use-case1/encoder_decoder_trg.jpg}
 \caption{Encoder-Decoder (Training)}
 \end{figure}
 
 \begin{figure}
 \centering
-\includegraphics{figures/encoder_decoder_inf.jpg}
+\includegraphics{figures/04-01-use-case1/encoder_decoder_inf.jpg}
 \caption{Encoder-Decoder (Inference)}
 \end{figure}
 
-The architecture can be seen as conditional probability P(y/x) with `y' being the decoder and it is conditioned on `x' (the encoder). Hence the NLG task becomes generating text through decoder conditioned on some input, coming from the encoder.
+The architecture can be seen as conditional probability P(y/x) with `y' being the output of the decoder and it is conditioned on `x' (the output of the encoder). Hence the NLG task becomes generating text through decoder conditioned on some input, coming from the encoder.
 
 \hypertarget{encoder}{%
-\subsection{Encoder :}\label{encoder}}
+\subsubsection{Encoder :}\label{encoder}}
 
-As stated above, the purpose of this part of the network is to provide conditional information on which the decoder generates text. As such, this part can have ANY architecture. It can be a convolutional neural network for image based conditioning, or RNN/LSTM/Transformer architecture for text or audio based conditioning. But for the purpose of illustration we are using an RNN/LSTM and text as input condition.
+As stated above, the purpose of this part of the network is to provide conditional information on which the decoder generates text. As such, this part can have \textbf{ANY} architecture that provides some form of embedding of the input. It can be a convolutional neural network to condition the generated text on some properties of an image (for example image captioning), or RNN/LSTM/Transformer architecture for text or audio based conditioning; or even a simple feed forward network to condition it on SQL database for example. For the purpose of illustration we will be using an RNN/LSTM with text as input condition (as shown in the figure).
 
-The thing to note here is that the richer the feature vector going from encoder to decoder, the more information decoder would have to generate better output. This was the motivation to move from single feature vector (\textbackslash{}cite) to multiple vectors and subsequently to a transformer based architecture.
+The thing to note here is that the richer the feature vector going from encoder to decoder, the more information decoder would have to generate better output. This was the motivation to move from single feature vector (\textbackslash{}cite) to multiple vectors (\textbackslash{}cite) and to attention based models (\textbackslash{}cite). This trend finally led to the transformer based models.
 
 \hypertarget{decoder}{%
-\subsection{Decoder :}\label{decoder}}
+\subsubsection{Decoder :}\label{decoder}}
 
-The decoder is the most distinctive part of an NLG system. Almost all decoders have the same form as shown in the figures above. The purpose is to generate text tokens (\textbackslash{}cite) one after the other until a terminating criteria is met. This termination is usually a termination token (\textless{}end\textgreater{} in the figures).
+The decoder is the most distinctive part of an NLG system. Almost all decoders have the same form as shown in the figures above. The purpose is to generate text tokens (\textbackslash{}cite) one after the other until a terminating criteria is met. This termination is usually a termination token (\textless{}end\textgreater{} in the figures) or a max length criteria.
 
-During training, we are given an input (text/image/audio) and the `gold label text' that we want the system to learn to generate for that particular input. In the given example, the input is text ``How are you?'' and the gold label is ``I am good''. The input goes through the encoder and produces a feature vector that is used as the input to decoder. The decoder than generates tokens one by one and the loss is calculated after the softmax layer from the generated token and the gold label token. Note the inclusion of an extra token `\textless{}null\textgreater{}' as the first token. The last token of the gold label should produce the `\textless{}end\textgreater{}' token.
+During training, we are given an input (text/image/audio) and the `gold label text' that we want the system to learn to generate for that particular input. In the given example, the input is the text ``How are you?'' and the gold label is ``I am good''. The input goes through the encoder and produces a feature vector that is used as the input to decoder. The decoder then generates tokens one by one and the loss is calculated after the softmax layer from the generated token and the gold label token. Note the inclusion of an extra token `\textless{}null\textgreater{}' as the first token. The last token of the gold label should produce the `\textless{}end\textgreater{}' token.
 
 During inference, we don't have the gold label, so the output of one step is used as input to next step, as shown in the figure. Note that it matches with the setup during training. The generator stops when `\textless{}end\textgreater{}' token is emitted; thus completing the inference.
 
 \hypertarget{attention-architecture}{%
-\section{Attention Architecture}\label{attention-architecture}}
+\subsection{Attention Architecture}\label{attention-architecture}}
 
 The attention architecture is introduced in detail in section (\textbackslash{}cite). Here I will briefly mention its use in NLG systems. Looking at the picture below, we can see that the attention is from decoder to encoder.
 
 \begin{figure}
 \centering
-\includegraphics{figures/encoder_decoder_attn.jpg}
-\caption{Encoder-Decoder (Inference)}
+\includegraphics{figures/04-01-use-case1/encoder_decoder_attn.jpg}
+\caption{Encoder-Decoder (Attention)}
 \end{figure}
 
 In other words, before generating each token, the decoder attends to all tokens in the encoder, as shown. The query is the decoder token and key/values are all encoder token. That way the decoder has much richer information to base its output on.
 
 \hypertarget{decoding-algorithm-at-inference}{%
-\section{Decoding Algorithm at Inference}\label{decoding-algorithm-at-inference}}
+\subsection{Decoding Algorithm at Inference}\label{decoding-algorithm-at-inference}}
 
 Now I will explain the decoding algorithms that are used to generate text from the softmax layer.
 
 As explained above, during inference, the tokens are generated sequentially. In a vanilla version of decoding, at each step of the sequence, the token with highest probability in the softmax layer is generated. This is called `greedy decoding', but it has been shown to produce suboptimal text. There are few improvements over this greedy approach.
 
 \hypertarget{beam-search}{%
-\subsection{Beam Search}\label{beam-search}}
+\subsubsection{Beam Search}\label{beam-search}}
 
-In greedy decoder we simply output the maximum probability token at each step. But if we track multiple words at each step and then output the sequence formed by highest probability combination, we get beam search. The number of tokens we keep track of is the length of beam (k). The algorithm than goes as follows:
+In greedy decoder we simply output the maximum probability token at each step. But if we track multiple words at each step and then output the sequence formed by highest probability combination, we get beam search. The number of tokens we keep track of is the length of beam (k). The algorithm then goes as follows:
 
 \begin{enumerate}
 \def\labelenumi{\arabic{enumi}.}
 \tightlist
 \item
-  Select k-tokens with highest probability at step 0.
+  Select k-tokens with highest probability at step 1.
 \item
-  Use these k-tokens to generate k softmax vectors at step 1.
+  Use these k-tokens to generate k softmax vectors at step 2.
 \item
   Keep the k highest scoring combinations.
 \item
@@ -2440,32 +2421,35 @@ In greedy decoder we simply output the maximum probability token at each step. B
 While beam search tends to improve the quality of generated output, it has its own issues. Chiefly among them is that it tends to produce shorter sequences. Although it can be controlled by the max parameter (of step 4), it's another hyperparameter to be reckoned with.
 
 \hypertarget{pure-sampling-decoder}{%
-\subsection{Pure Sampling Decoder}\label{pure-sampling-decoder}}
+\subsubsection{Pure Sampling Decoder}\label{pure-sampling-decoder}}
 
 Here, at each step, instead of taking the token with maximum probability like in greedy search, the token is sampled from the whole vocabulary according to the probability distribution predicted by the softmax layer.
 
 \hypertarget{k-sampling-decoder}{%
-\subsection{K-sampling Decoder}\label{k-sampling-decoder}}
+\subsubsection{K-sampling Decoder}\label{k-sampling-decoder}}
 
 It's like pure sampling decoder, but instead of sampling from whole vocabulary, the token is sampled only from the k-highest probability tokens.
 
 \hypertarget{memory-networks}{%
-\section{Memory Networks}\label{memory-networks}}
+\subsection{Memory Networks}\label{memory-networks}}
 
-Memory Networks is another architecture that is quite useful in language generation tasks. The basic premise is that LSTMs/RNNs and even Transformer architecture stores all the information only in the weights of the network. When we want to generate text that should include information from a large knowledge base, this `storage' of network weights is insufficient. So the network employs an external storage (the memory) that it can use during language generation.
+Memory Networks is another architecture that is potentially quite useful in language generation tasks. The basic premise is that LSTMs/RNNs and even Transformer architecture stores all the information only in the weights of the network. When we want to generate text that should include information from a large knowledge base, this `storage' of network weights is insufficient. Memory networks resolve this problem by employing an external storage (the memory) that it can use during language generation. Conceptual diagram is showing in the following figure, followed by a brief description.
+
+\includegraphics{figures/04-01-use-case1/memory_networks.jpg}
+Memory (M) in this context can be any database that can be queried by the network. Usually it is of the form of key-value pairs or a simple array of vectors embedding a corpus of knowledge (eg DBPedia/wikipedia). For any query input (x), first we get an embedding. This is then used to attend over the memory M in the usual attention mechanism. The output is the weighted sum of memory that incorporates information from complete knowledge corpus. In some cases the output can also be used to update the memory database.
 
 \hypertarget{language-models}{%
-\section{Language Models}\label{language-models}}
+\subsection{Language Models}\label{language-models}}
 
-Language models are probably the most important ingredient of generating text. As the name implies, they model how the langauge probability distribution. More concretely, they model the conditional probability distribution P(w\_t/w\_\{t-1\}). This can then be used to generate text.
+Language models are probably the most important ingredient of generating text. As the name implies, they model the probability distribution of generating words and characters. More concretely, they model the conditional probability distribution P(w\_t/w\_\{t-1\}). Thus with a given input vector coming from a source (image/database/text), this model can be used to generate words one after the other.
 
 \hypertarget{question-answer-systems}{%
-\chapter{Question-Answer Systems}\label{question-answer-systems}}
+\section{Question-Answer Systems}\label{question-answer-systems}}
 
 The question-answer systems attempt to extract or generate answers from a given question and either a fixed or open ended context. The context here is the corpus from which the answer needs to be generated. For example in SQUAD dataset (\textbackslash{}cite) the context is a given paragraph from wikipedia and the question is asked from that paragraph. In open ended contexts, the whole wikipedia (or other corpus) can be the contexts.
 
 \hypertarget{datasets-1}{%
-\section{Datasets}\label{datasets-1}}
+\subsection{Datasets}\label{datasets-1}}
 
 \begin{itemize}
 \tightlist
@@ -2494,7 +2478,7 @@ The question-answer systems attempt to extract or generate answers from a given 
 \end{itemize}
 
 \hypertarget{types}{%
-\section{Types}\label{types}}
+\subsection{Types}\label{types}}
 
 \begin{itemize}
 \tightlist
@@ -2516,7 +2500,7 @@ The question-answer systems attempt to extract or generate answers from a given 
 \end{itemize}
 
 \hypertarget{architectures}{%
-\section{Architectures}\label{architectures}}
+\subsection{Architectures}\label{architectures}}
 
 \begin{itemize}
 \tightlist
@@ -2549,17 +2533,17 @@ Five conceptual levels
 \end{itemize}
 
 \hypertarget{evaluation-metrics}{%
-\section{Evaluation Metrics}\label{evaluation-metrics}}
+\subsection{Evaluation Metrics}\label{evaluation-metrics}}
 
 There are generally two metrics commonly used in QA systems. The exact match (EM) and F1 score.
 
 \hypertarget{dialog-systems}{%
-\chapter{Dialog Systems}\label{dialog-systems}}
+\section{Dialog Systems}\label{dialog-systems}}
 
-These are the systems where an agent chats with a human being either with a specific pupose (goal oriented) or it is a general open ended chat. The examples of goal oriented chats include tasks like booking an appointment or a flight ticket. Open ended chats can be talking about a general topic which may or may not include a `personality' for the chatbot.
+These are the systems where an agent chats with a human being either with a specific purpose (goal oriented) or it is a general open ended chat. The examples of goal oriented chats include tasks like booking an appointment or a flight ticket. Open ended chats can be talking about a general topic which may or may not include a `personality' for the chatbot.
 
 \hypertarget{types-1}{%
-\section{Types}\label{types-1}}
+\subsection{Types}\label{types-1}}
 
 \begin{itemize}
 \tightlist
@@ -2576,7 +2560,7 @@ These are the systems where an agent chats with a human being either with a spec
 \end{itemize}
 
 \hypertarget{architectures-1}{%
-\section{Architectures}\label{architectures-1}}
+\subsection{Architectures}\label{architectures-1}}
 
 \begin{itemize}
 \tightlist
@@ -2609,7 +2593,7 @@ These are the systems where an agent chats with a human being either with a spec
 \end{itemize}
 
 \hypertarget{conclusion-2}{%
-\chapter{Conclusion}\label{conclusion-2}}
+\section{Conclusion}\label{conclusion-2}}
 
 Natural Language Generation (NLG) has huge potential to be not only an academic domain for research but to affect and improve our daily lives. In this chapter I have talked about only two of its manifestations.
 
