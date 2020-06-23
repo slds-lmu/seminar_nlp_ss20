@@ -1,9 +1,16 @@
+os: linux
+dist: xenial
 language: r
+install: echo "Nothing occurs at installation, only script"
 cache:
   packages: true
+  directories:
+  - manuscript/cache
 before_install:
-- sudo apt-get install libv8-dev
+  - Rscript install_packages.R
 before_script:
 - chmod +x ./_build.sh
-script: ./_build.sh
+script:
+- Rscript install_texlive.R
+- ./_build.sh
 

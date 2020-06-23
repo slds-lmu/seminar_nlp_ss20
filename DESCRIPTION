@@ -7,4 +7,7 @@ Depends:
   bookdown,
   tidyverse,
   ggpubr,
-  svglite
+  svglite,
+  here,
+  cowplot,
+  rmarkdown

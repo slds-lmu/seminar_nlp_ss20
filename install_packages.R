@@ -1,0 +1,11 @@
+install.packages(c(
+  "devtools",
+  "knitr",
+  "bookdown",
+  "tidyverse",
+  "ggpubr",
+  "svglite",
+  "here",
+  "cowplot",
+  "rmarkdown"
+))
