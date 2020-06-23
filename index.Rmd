@@ -21,6 +21,9 @@ options(
 )
 output <- knitr::opts_knit$get("rmarkdown.pandoc.to")
 is.html = !is.null(output) && output == "html"
+
+knitr::opts_chunk$set(fig.align="center")
+if (output == "latex") { knitr::opts_chunk$set(out.width="\\textwidth") }
 ```
 
 # Preface {-}
