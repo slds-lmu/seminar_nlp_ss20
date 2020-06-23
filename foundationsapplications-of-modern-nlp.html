@@ -24,7 +24,7 @@
 <meta name="author" content="" />
 
 
-<meta name="date" content="2020-06-06" />
+<meta name="date" content="2020-06-23" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
@@ -88,7 +88,22 @@
 <li class="chapter" data-level="3.2" data-path="introduction-deep-learning-for-nlp.html"><a href="introduction-deep-learning-for-nlp.html#recurrent-neural-networks"><i class="fa fa-check"></i><b>3.2</b> Recurrent Neural Networks</a></li>
 <li class="chapter" data-level="3.3" data-path="introduction-deep-learning-for-nlp.html"><a href="introduction-deep-learning-for-nlp.html#convolutional-neural-networks"><i class="fa fa-check"></i><b>3.3</b> Convolutional Neural Networks</a></li>
 </ul></li>
-<li class="chapter" data-level="4" data-path="foundationsapplications-of-modern-nlp.html"><a href="foundationsapplications-of-modern-nlp.html"><i class="fa fa-check"></i><b>4</b> Foundations/Applications of Modern NLP</a></li>
+<li class="chapter" data-level="4" data-path="foundationsapplications-of-modern-nlp.html"><a href="foundationsapplications-of-modern-nlp.html"><i class="fa fa-check"></i><b>4</b> Foundations/Applications of Modern NLP</a><ul>
+<li class="chapter" data-level="4.1" data-path="foundationsapplications-of-modern-nlp.html"><a href="foundationsapplications-of-modern-nlp.html#the-evolution-of-word-embeddings"><i class="fa fa-check"></i><b>4.1</b> The Evolution of Word Embeddings</a></li>
+<li class="chapter" data-level="4.2" data-path="foundationsapplications-of-modern-nlp.html"><a href="foundationsapplications-of-modern-nlp.html#methods-to-obtain-word-embeddings"><i class="fa fa-check"></i><b>4.2</b> Methods to Obtain Word Embeddings</a><ul>
+<li class="chapter" data-level="4.2.1" data-path="foundationsapplications-of-modern-nlp.html"><a href="foundationsapplications-of-modern-nlp.html#feedforward-neural-network-language-model-nnlm"><i class="fa fa-check"></i><b>4.2.1</b> Feedforward Neural Network Language Model (NNLM)</a></li>
+<li class="chapter" data-level="4.2.2" data-path="foundationsapplications-of-modern-nlp.html"><a href="foundationsapplications-of-modern-nlp.html#word2vec"><i class="fa fa-check"></i><b>4.2.2</b> Word2Vec</a></li>
+<li class="chapter" data-level="4.2.3" data-path="foundationsapplications-of-modern-nlp.html"><a href="foundationsapplications-of-modern-nlp.html#glove"><i class="fa fa-check"></i><b>4.2.3</b> GloVe</a></li>
+</ul></li>
+<li class="chapter" data-level="4.3" data-path="foundationsapplications-of-modern-nlp.html"><a href="foundationsapplications-of-modern-nlp.html#model-improvements"><i class="fa fa-check"></i><b>4.3</b> Model Improvements</a><ul>
+<li class="chapter" data-level="4.3.1" data-path="foundationsapplications-of-modern-nlp.html"><a href="foundationsapplications-of-modern-nlp.html#fasttext"><i class="fa fa-check"></i><b>4.3.1</b> fastText</a></li>
+<li class="chapter" data-level="4.3.2" data-path="foundationsapplications-of-modern-nlp.html"><a href="foundationsapplications-of-modern-nlp.html#word-phrases"><i class="fa fa-check"></i><b>4.3.2</b> Word Phrases</a></li>
+<li class="chapter" data-level="4.3.3" data-path="foundationsapplications-of-modern-nlp.html"><a href="foundationsapplications-of-modern-nlp.html#multiple-meanings-per-word"><i class="fa fa-check"></i><b>4.3.3</b> Multiple Meanings per Word</a></li>
+</ul></li>
+<li class="chapter" data-level="4.4" data-path="foundationsapplications-of-modern-nlp.html"><a href="foundationsapplications-of-modern-nlp.html#hyperparameter-tuning"><i class="fa fa-check"></i><b>4.4</b> Hyperparameter tuning</a></li>
+<li class="chapter" data-level="4.5" data-path="foundationsapplications-of-modern-nlp.html"><a href="foundationsapplications-of-modern-nlp.html#evaluation-methods"><i class="fa fa-check"></i><b>4.5</b> Evaluation Methods</a></li>
+<li class="chapter" data-level="4.6" data-path="foundationsapplications-of-modern-nlp.html"><a href="foundationsapplications-of-modern-nlp.html#sources-and-applications-of-word-embeddings"><i class="fa fa-check"></i><b>4.6</b> Sources and Applications of Word Embeddings</a></li>
+</ul></li>
 <li class="chapter" data-level="5" data-path="recurrent-neural-networks-and-their-applications-in-nlp.html"><a href="recurrent-neural-networks-and-their-applications-in-nlp.html"><i class="fa fa-check"></i><b>5</b> Recurrent neural networks and their applications in NLP</a><ul>
 <li class="chapter" data-level="5.1" data-path="recurrent-neural-networks-and-their-applications-in-nlp.html"><a href="recurrent-neural-networks-and-their-applications-in-nlp.html#rnns"><i class="fa fa-check"></i><b>5.1</b> RNNs</a><ul>
 <li class="chapter" data-level="5.1.1" data-path="recurrent-neural-networks-and-their-applications-in-nlp.html"><a href="recurrent-neural-networks-and-their-applications-in-nlp.html#structure"><i class="fa fa-check"></i><b>5.1.1</b> Structure</a></li>
@@ -172,9 +187,149 @@
             <section class="normal" id="section-">
 <div id="foundationsapplications-of-modern-nlp" class="section level1">
 <h1><span class="header-section-number">Chapter 4</span> Foundations/Applications of Modern NLP</h1>
-<p><em>Authors: Author 1, Author 2</em></p>
-<p><em>Supervisor: Supervisor</em></p>
+<p><em>Authors: Viktoria Szabo</em></p>
+<p><em>Supervisor: Christian Heumann</em></p>
+<p>Word embeddings can be seen as the beginning of modern natural language processing. They are widely used in every kind of NLP task. One of the advantages is that you can download and use pretrained word embeddings. With this, you can save a lot of time for training the final model. But if the task is not a standard one you probably want to train your own embeddings to get a better model performance for your specific task. In the following I will first outline the evolution from sparse representations of words to dense word embeddings. After that I will describe calculation methods for word embeddings within a neural network language model and with word2vec and GloVe. In the third part I will show how to improve the model performance regardless of the chosen model class based on hyperparameter tuning and system design choices and explain some model expansion to tackle problems of the aforementioned methods. The evaluation of word embeddings on different tasks and datasets is another topic which will be covered in the fourth part of this chapter. Last but not least I will present some resources to download pretrained word embeddings.</p>
+<div id="the-evolution-of-word-embeddings" class="section level2">
+<h2><span class="header-section-number">4.1</span> The Evolution of Word Embeddings</h2>
+<p>Since computers work with numeric representations, converting the text and sentences we want to analyze into numbers is unavoidable. One-Hot Encoding and Bag-of-Words (BOW) are two simple approaches how this could be down. These methods are usually used as input for calculating more elaborate word representations called word embeddings. Only use these approaches without calculating word embeddings if you have a small amount of distinct words in your document, the words are not meaningfully correlated and you have a lot of data to learn from.
+The <strong>One-Hot Encoding</strong> labels each word in the vocabulary with size n with an index. After that each word is represented by a vector with dimension n. Every dimension is zero except for the one corresponding to its index, which is set to 1. A sentence is represented as a matrix of shape (<span class="math inline">\(n\times n\)</span>) where N is the number of unique words in the sentence or a document. You can see an example for this representation in figure <a href="introduction-deep-learning-for-nlp.html#fig:onehot-bow">3.1</a>.
+A more elaborate approach compared to the first one is called <strong>Bag-of-Words (BOW)</strong> and belongs to the count-based approaches. This approach counts the occurrences and co-occurrences of all distinct words in a document or a text chunk. Each text chunk is then represented by a row in a matrix, where the columns are the words. You can see an example for this approach on the right side in figure <a href="introduction-deep-learning-for-nlp.html#fig:onehot-bow">3.1</a>.</p>
+<div class="figure"><span id="fig:onehot-bow-01-01"></span>
+<img src="figures/01-01-foundations-applications-of-modern-NLP/01-01_one-hot.png" alt="One-Hot Encoding on the left and Bag-of-Words on the right. Source: Own figure." width="50%" /><img src="figures/01-01-foundations-applications-of-modern-NLP/01-01_bow.png" alt="One-Hot Encoding on the left and Bag-of-Words on the right. Source: Own figure." width="50%" />
+<p class="caption">
+FIGURE 4.1: One-Hot Encoding on the left and Bag-of-Words on the right. Source: Own figure.
+</p>
+</div>
+<p>These approaches definitely have some <strong>positive points</strong> about them. First of they are very simple to construct. Furthermore, they are robust to changes and it was observed that simple models trained on huge amounts of data outperform complex systems trained on less data. Bag-of-Words is especially useful if the number of distinct words is small and the sequence of the words doesn’t play a key role.
+Nevertheless, the <strong>problems</strong> coming from these approaches usually outweigh the positive points. The most obvious one is that these approaches give you very sparse input vectors, that means large vectors with relatively few non-zero values. Many machine learning models won’t work well with high dimensional and sparse features. Neural networks in particular struggle with this type of data. And with growing vocabulary the feature size vectors also increase by the same length. So, the dimensionality of these approaches is the same as the number of different words in your text. That means you need to estimate more parameters and therefore you require exponentially more data to do well enough to build a reasonably generalizable model. This is called the curse of dimensionality. But these problems can be solved with dimensionality reduction methods such as Principal Component Analysis or feature selection models where less informative context word, such as “the” are dropped.
+The major drawback of these methods is that there is no notion of similarity between words. That means words like “cat” and “tiger” are represented as similar as “cat” and “car”. If the words “cat” and “tiger” would be represented as similar words one could use the information won from the more frequent word “cat” for sentences in which the less frequent word “tiger” appears. If the word embedding for “tiger” is similar to that of “cat” the network model can take a similar path instead of having to learn how to handle it completely anew. It’s very difficult to make predictions about things unlike you’ve ever seen before – much easier if it’s related to something you have seen.</p>
+<p>To overcome these problems <strong>word embeddings</strong> were introduced. Word embeddings use continuous vectors to represent each word in a vocabulary. These vectors have n dimensions, usually between 100 and 500, which represent different aspects of the word. With this semantic similarity can be maintained in the representation and generalization can be achieved. Through the vectors the words are mapped to a continuous vector space (in NLP usually called semantic space), where semantically similar words occur close to each other, while more dissimilar words are far from each other. Figure <a href="foundationsapplications-of-modern-nlp.html#fig:word-embedding1">4.2</a> shows a simple example to convey the idea behind this approach. In this example the words are represented by a three-dimensional vector.</p>
+<div class="figure"><span id="fig:word-embedding1"></span>
+<img src="figures/01-01-foundations-applications-of-modern-NLP/01-01_word_embeddings_1.png" alt="Example for word embeddings with three dimensions. Source: ..."  />
+<p class="caption">
+FIGURE 4.2: Example for word embeddings with three dimensions. Source: …
+</p>
+</div>
+<p>If you want to represent higher dimensional word vectors you could use dimension reduction methods such as principal component analysis (PCA) to break down the number of dimensions into two or three and then plot the words. You can see an example of this for a few country names and their capitals in figure <a href="foundationsapplications-of-modern-nlp.html#fig:word-embedding2">4.3</a>. You can see that the country names all have negative values on the x-axis and the capitals all have positive values on the x-axis. Furthermore, the countries have similar y-axis values as their corresponding capitals.</p>
+<div class="figure"><span id="fig:word-embedding2"></span>
+<img src="figures/01-01-foundations-applications-of-modern-NLP/01-01_word_embeddings_2.png" alt="Two-dimensional PCA projection of 1000-dimensional word vectors of countries and their capital cities. Source: Mikolov et al. 2013 (3)"  />
+<p class="caption">
+FIGURE 4.3: Two-dimensional PCA projection of 1000-dimensional word vectors of countries and their capital cities. Source: Mikolov et al. 2013 (3)
+</p>
+</div>
+</div>
+<div id="methods-to-obtain-word-embeddings" class="section level2">
+<h2><span class="header-section-number">4.2</span> Methods to Obtain Word Embeddings</h2>
+<p>The basic idea behind learning word embeddings is the so called “distributional hypothesis” (Harris, 1954). It states that words that occur in the same contexts tend to have similar meanings. For instance, Jupiter and Venus tend to have similar semantics since they usually appear in similar contexts, e.g., with words such as solar system, star, planet, and astronomy. That’s why machine learning and deep learning algorithms can find representations by themselves by evaluating the context in which a word occurs. Words that are used in similar contexts will be given similar representations. This is usually done as an unsupervised or self-supervised procedure, which is a big advantage and is one of the winning points when compared to other knowledge representation approaches. That means word embeddings can be thought of unsupervised feature extractors for words. However, the methods to find such similarities in the context of words vary. First finding word representations started out with the nowadays so called more traditional count-based techniques, which collected word statistics like occurrence and co-occurrence frequencies of words as seen above with BOW. But these representations are often large and need some sort of dimensionality reduction. Later when neural networks were introduced into NLP the so-called predictive techniques, mainly popularized after 2013 with the introduction of word2vec, word embeddings supplanted the traditional count-based word representations. It is also said that these models learn “dense representations” since they directly learn low-dimensional word representations, without needing to resort to the additional dimensionality reduction step. In the following I will give an introduction to the best-known predictive approaches to model word embeddings.</p>
+<div id="feedforward-neural-network-language-model-nnlm" class="section level3">
+<h3><span class="header-section-number">4.2.1</span> Feedforward Neural Network Language Model (NNLM)</h3>
+<p>Bengio et al. in 2003 were the first to propose learning word embeddings within a statistical neural network language model (NNLM). That means the model first learns a distributed representation for each word and in a second step the probability function for word sequences. The probability function is expressed as a product of conditional probabilities of the target word given the context words:</p>
+<p>Formula</p>
+<p>This function has parameters that can be iteratively tuned in order to maximize the log-likelihood of the training data. One of the main advantages of these models is that the distributed representation achieves a level of generalization that is not possible with traditional models. By training a neural network language model, one obtains not just the model itself, but also the learned word representations, which may be used for other, potentially unrelated, tasks.
+Generally, as said above a statistical model of language can be represented by the conditional probability of the target word given some context words. A good model is a function that gives high out-of-sample likelihood. Therefore, parameters are searched via the neural network which maximize the training corpus penalized log-likelihood including a regularization term.
+The proposed neural network architecture has an input layer with one-hot encoded word inputs, a linear projection layer for the word embeddings, a hidden layer, where most of the computation is done, followed by a softmax classifier output layer, which guarantees positive probabilities summing to 1. Funktion softmax. The output of the model is a vector whose i-th element estimates the probability P(w_t=i|c). You can see the model architecture in figure <a href="foundationsapplications-of-modern-nlp.html#fig:bengio-nnlm">4.4</a> .</p>
+<div class="figure"><span id="fig:bengio-nnlm"></span>
+<img src="figures/01-01-foundations-applications-of-modern-NLP/01-01_bengio_nnlm.png" alt="Architecture for NNLM proposed by Bengion et al. in 2003.  Source: Bengio et al. 2003"  />
+<p class="caption">
+FIGURE 4.4: Architecture for NNLM proposed by Bengion et al. in 2003. Source: Bengio et al. 2003
+</p>
+</div>
+<p>The model is trained using the <strong>stochastic gradient descent</strong> optimizer and <strong>backpropagation</strong>. The optimization function is used to identify how the weights are adjusted. During training, the minimum loss function is sought. The gradient descent optimizer tries to find the direction of the strongest descent via partial derivation. (In contrast to maximum likelihood) The learning rate defines the size of the step in this direction. For the NNLM above the gradient descent optimizer performs the following iterative update:</p>
+<p>Formula</p>
+<p>where e denotes the learning rate.
+The method by which weight adjustments are made during training so that they can be optimized is called backpropagation. Backpropagation essentially consists of six steps:
+1. (Random) Initialization of the weights of the network
+2. Calculation of y(x_i) for the inputs x_i
+3. Determining the cost of the inputs x_i with the loss function
+4. Calculation of the partial derivatives of the loss for each weight (gradient descent optimizer)
+5. Update the weights in the network using the partial derivatives calculated in step 4
+6. Return to step 2 and continue the procedure until the partial derivatives of the loss approach zero</p>
+</div>
+<div id="word2vec" class="section level3">
+<h3><span class="header-section-number">4.2.2</span> Word2Vec</h3>
+<p>In 2013 Mikolov et. al proposed the two word2vec algorithms for learning word embeddings which led to a huge wave in NLP popularizing word embeddings. In contrast to the NNLM model above the word2vec algorithm first learns the embeddings in a specific model and then they are used as input in the final neural language model. The two Word2Vec algorithms named Continuous Bag-of-Words (CBOW) and Continuous Skip-Gram use shallow neural networks with an input layer, a projection layer and an output layer. That means compared to the previously explained feedforward NNLM the non-linear hidden layer in between is removed.
+The general idea behind CBOW is to predict the target word based on a window of context words. The order of context words does not influence the prediction, thus the name Bag-of-Words. While Skip-Gram tries to predict the context words given a target word. This is done while adjusting the initial weights during training so that a loss function is reduced. These weights are used in the end as word embeddings.
+In the CBOW architecture the N input (context) words are each one hot-encoded vectors of size V, where V is the size of the vocabulary and N the number of future and past words. The projection layer is a standard fully connected (dense) layer with D neurons whose weights are the word embeddings and D is the number of dimensions for the word embeddings. The projection layer is shared for all words; thus, all words get projected into the same position (their vectors are averaged) in a linear manner. The output layer outputs probabilities for all words from the vocabulary and has therefore a dimensionality of V. That means the output is a probability distribution over all words in the vocabulary. A log-linear softmax classifier is used for the calculation of the probabilities, where the training criterion is to correctly classify the target word. The model architecture is shown in figure <a href="foundationsapplications-of-modern-nlp.html#fig:word2vec">4.5</a> on the left side.
+The continuous Skip-gram architecture also uses a log-linear classifier with a continuous projection layer, but the input is only one “current” word, and the output layer consists of words within a certain range before and after the current word. Also, since the more distant words are usually less related to the current word, it weighs nearby context words more heavily than more distant context words by sampling less from those words in the training examples. You can find the model architecture on the right side of figure <a href="foundationsapplications-of-modern-nlp.html#fig:word2vec">4.5</a>.</p>
+<div class="figure"><span id="fig:word2vec"></span>
+<img src="figures/01-01-foundations-applications-of-modern-NLP/01-01_word2vec.png" alt="Learning word embeddings with the model architecture of CBOW and Skip-Gram.  Source: Mikolov et al. 2013 (3)"  />
+<p class="caption">
+FIGURE 4.5: Learning word embeddings with the model architecture of CBOW and Skip-Gram. Source: Mikolov et al. 2013 (3)
+</p>
+</div>
+<p>Skip-gram works well with small amounts of training data and represents even words that are considered rare, whereas CBOW trains several times faster and has slightly better accuracy for frequent words.</p>
+</div>
+<div id="glove" class="section level3">
+<h3><span class="header-section-number">4.2.3</span> GloVe</h3>
+<p>GloVe stands for Global Vector word representation, which emphasizes the global character of this model. Unlike the previously described algorithms like word2vec GloVe not only relies on local context information but also incorporates global co-occurrence statistics. Instead of extracting the embeddings from a neural network that is designed to perform a different task like predicting neighboring words (CBOW) or predicting the focus word (Skip-Gram), the embeddings are optimized directly, so that the dot product of two word vectors equals the log of the number of times the two words will occur near each other. Formel? The model builds on the idea that you can derive semantic relationships between words from the co-occurrence matrix and that the ratio of co-occurrence probabilities of two words with a third word is more indicative of their semantic association than a direct co-occurrence probability.
+Let P_ij = P(j|i) = X_ij/X_i be the probability that word j appears in the context of word i. In figure <a href="foundationsapplications-of-modern-nlp.html#fig:glove">4.6</a> you can see an example with the words “ice” and “steam”. The relationship of these words can be examined by studying the ratio of their co-occurrence probabilities with other words k.
+For words like “solid” which are related to ice but not steam the ratio is large (&gt;1), while for words like “gas”, which is related to steam but not to ice, the ratio is small (&lt;1). For words like “water” or “fashion”, which are either related to both of the words or to none the ratios are close to 1. Therefore, we can see that the comparison of co-occurrence with a third word is more indicative for the semantic meanings and makes a better job at distinguishing relevant words (solid and gas) from irrelevant words (water and fashion) than the raw probabilities.</p>
+<div class="figure"><span id="fig:glove"></span>
+<img src="figures/01-01-foundations-applications-of-modern-NLP/01-01_glove_ratios.png" alt="Co-occurrence probabilities for target words ice and steam with selected context words from a 6 billion token corpus.  Source: Pennington et al. 2014"  />
+<p class="caption">
+FIGURE 4.6: Co-occurrence probabilities for target words ice and steam with selected context words from a 6 billion token corpus. Source: Pennington et al. 2014
+</p>
+</div>
+<p>That’s why Pennington et al. tried to find a way to incorporate the ratio P_ik/P_jk into computing the word embeddings. They proposed a new weighted least squares regression model with the following equation:</p>
+<p>Formel</p>
+<p>, where V is the size of the vocabulary, f(X_ij) is a weighting function that looks like this:</p>
+<p>Formel2</p>
+<p>GloVe does not use neural networks, but is still categorized as predictive model since it is different from conventional count-based models in that it uses stochastic gradient descent to optimize a non-convex objective.</p>
+</div>
+</div>
+<div id="model-improvements" class="section level2">
+<h2><span class="header-section-number">4.3</span> Model Improvements</h2>
+<p>In this chapter I will describe some system design choices, which will tackle some of the problems posed by the algorithms mentioned above.</p>
+<div id="fasttext" class="section level3">
+<h3><span class="header-section-number">4.3.1</span> fastText</h3>
+<p>GloVe and word2vec can’t cope with completely unseen words. To overcome this problem fastText was introduced (Bojanowski et al. 2017). fastText builds upon the previously described continuous skip-gram model. But instead of learning vectors for words directly as done by skip-gram, fastText represents each word as an n-gram of characters. So, for example, take the word, “artificial” with n=3, the fastText representation of this word is &lt;ar, art, rti, tif, ifi, fic, ici, ial, al&gt;, where the angular brackets indicate the beginning and end of the word. That means fastText learns embeddings for n-grams of words in addition for the whole word. This helps capture the meaning of shorter words and allows the embeddings to understand suffixes and prefixes. Then, in the case of an unseen word, the corresponding embedding is induced by averaging the vector representations of its constituent character n-grams. Once the word has been represented using character n-grams, a skip-gram or CBOW model is trained to learn the embeddings. That’s why fastText works well with rare words. So even if a word wasn’t seen during training, it can be broken down into n-grams to get its embeddings.</p>
+</div>
+<div id="word-phrases" class="section level3">
+<h3><span class="header-section-number">4.3.2</span> Word Phrases</h3>
+</div>
+<div id="multiple-meanings-per-word" class="section level3">
+<h3><span class="header-section-number">4.3.3</span> Multiple Meanings per Word</h3>
+</div>
+</div>
+<div id="hyperparameter-tuning" class="section level2">
+<h2><span class="header-section-number">4.4</span> Hyperparameter tuning</h2>
+<p>Once adapted across methods, hyperparameter tuning significantly improves performance in every task. In many cases, changing the setting of a single hyperparameter yields a greater increase in performance than switching to a better algorithm or training on a larger corpus. Levy et al. 2015 conducted a series of experiments where they assessed the contributions of diverse hyperparameters. They also show that when all methods are allowed to tune a similar set of hyperparameters, their performance is largely comparable. In fact, there is no consistent advantage to one algorithmic approach over another.</p>
+<p><strong>Number of dimensions for word embeddings</strong></p>
+<p>Intuitively, you probably want more dimensions the more types of input that you have. So, you would want more dimensions if you’re calculating embeddings for words, of which there are probably many tens of thousands of types in your corpus, versus if you’re calculating embeddings for parts-of-speech tags (like “noun”, “verb”, “adjective”), of which there are not that many types. The question of how many embedding dimensions is best actually turns out to be an empirical question, and the optimal number has not been worked out theoretically. The trade-off here is between accuracy and computational concerns.
+More dimensions means the potential to compute increasingly accurate representations of words. But more dimensions also means a higher demand for computational resources (processing speed, memory requirements) — this is more apparent during the training phase, but it does also affect inference speed.
+In practice, people use word embedding vectors with dimensions around 50 to 500 (you run across 300 a lot), and sometimes more for very competitive systems where you’re trying to squeeze as much performance out of the model as possible.</p>
+<p><strong>Size of context windows</strong></p>
+<p>The traditional approaches usually use a constant-sized unweighted context window. For instance, if the window size is 5, then a word five tokens apart from the target is treated the same as an adjacent word. Following the intuition that contexts closer to the target are more important, context words can be weighted according to their distance from the focus word. Both GloVe and word2vec employ such a weighting scheme.</p>
+<p><strong>Subsampling of frequent words</strong></p>
+<p>Mikolov et al 2013 also proposed for their word2vec algorithms to only use a subsample of the most frequent words. This leads to a significant speedup and improves accuracy of the representations of less frequent words. GloVe also uses this subsampling technique but with another probability of discarding.
+formula for discarding probability for Glove and Word2vec:</p>
+<p><strong>Negative sampling</strong>
+In their first paper mikilov et al. 2013 proposed hierarchical softmax, but soon they published a new method called negative sampling which is more efficient in the calculation. It does so by trying to maximize a function of the product word and context word pairs that occur in the training corpus, and minimize it for negative examples of word and context word pairs that do not necessarily occur in the training corpus. The negative examples are created by stochastically corrupting observed pairs – hence the name “negative sampling”.</p>
+</div>
+<div id="evaluation-methods" class="section level2">
+<h2><span class="header-section-number">4.5</span> Evaluation Methods</h2>
+<p><strong>Word Similarity Task</strong></p>
+<p>There are six datasets to evaluate word similarity:</p>
+<ul>
+<li>WordSim353 (Finkelstein et al., 2002) partitioned into two datasets, WordSim Similarity and WordSim Relatedness (Zesch et al., 2008; Agirre et al., 2009),</li>
+<li>Bruni et al.’s (2012) MEN dataset,</li>
+<li>Radinsky et al.’s (2011) Mechanical Turk dataset,</li>
+<li>Luong et al.’s (2013) Rare Words dataset,</li>
+<li>Hill et al.’s (2014) SimLex-999 dataset.</li>
+</ul>
+<p>All these datasets contain word pairs together with human-assigned similarity scores. The word vectors are evaluated by ranking the pairs according to their cosine similarities, and measuring the correlation (Spearman’s ρ) with the human ratings.</p>
+<p><strong>Word Analogy Task</strong></p>
+<p>The two analogy datasets present questions of the form “a is to a∗ as b is to b∗”, where b∗ is hidden, and must be guessed from the entire vocabulary.</p>
+<ul>
+<li>MSR’s analogy dataset (Mikolov et al., 2013c) contains 8000 morpho-syntactic analogy questions, such as “good is to best as smart is to smartest”.</li>
+<li>Google’s analogy dataset (Mikolov et al., 2013a) contains 19544 questions, about half of the same kind as in MSR (syntactic analogies), and another half of a more semantic nature, such as capital cities (“Paris is to France as Tokyo is to Japan”).</li>
+</ul>
+</div>
+<div id="sources-and-applications-of-word-embeddings" class="section level2">
+<h2><span class="header-section-number">4.6</span> Sources and Applications of Word Embeddings</h2>
 
+</div>
 </div>
             </section>
 
