@@ -131,7 +131,7 @@ $$
 The parts outside of a sentence are ignored if the window crosses sentence
 boundaries. The computation of the context vector changes very little compared to
 the global model which can be seen in Figure \@ref(fig:attention-plots-luong).
-This is only the case if the first variant proposed by Luong et al., the **monotonic** alignment(*local-m*), is used.
+This is only the case if the first variant proposed by Luong et al., the *monotonic* alignment(**local-m**), is used.
 This approach sets $p_t= t$ with the assumption that both input and output sequences
 are roughly monotonically aligned.
 
@@ -139,7 +139,7 @@ are roughly monotonically aligned.
 knitr::include_graphics('figures/02-02-attention-and-self-attention-for-nlp/luong2015-fig2-3.png')
 ```
 
-The other approach, **predictive** alignment (*local-p*), predicts the aligned position:
+The other approach, *predictive* alignment (**local-p**), predicts the aligned position:
 $$
 p_t = S \cdot sigmoid(v_p^\top tanh(W_ph_t))
 $$
@@ -155,15 +155,35 @@ utilization of $p_t$ to compute $\alpha_{t,i}$ allows the computation of backpro
 gradients for $W_p$ and $v_p$ and is thus ``differentiable almost everywhere'' @luong2015effective.
 
 ### Attention Models
-Overview over models that use attention and different attentions used, segway to self-attention
 
-- just a short overview over different attention models/score functions
-
+Attention was in the beginning not directly developed for RNNs or even NLP.
+Attention was first introduced in @GravesWD14 with a content-based attention mechanism
+($\text{score}(\boldsymbol{s}_t, \boldsymbol{h}_i) = \text{cosine}[\boldsymbol{s}_t, \boldsymbol{h}_i]$)
+for Neural Turing Machines. Their application for NLP related tasks were later developed by 
+@luong2015effective, @bahdanau2014neural and @xu2015show. 
+The first differentiation between global/soft and local/hard attention was by @xu2015show in the
+context of Neural Image Caption with both mechanisms being close to what was used
+by Luong et al. in the previous section. Global and local attention mechanisms are
+two categories of attention mechanism that contained all possible attention mechanisms
+before @cheng2016long. They first introduced the concept of self-attention, the third
+category of attention mechanisms.
 
 ## Self-Attention
-general intro to self-attention
 
-- intro self attention, explanation is done in the transformers part
+@cheng2016long implement self-attention with a modified LSTM unit, the Long Short-Term
+Memory-Network (LSTMN). The LSTMN replaces the memory cell with a memory network to enable
+the storage of ``contextual representation of each input token with
+a unique memory slot and the size of the memory
+grows with time until an upper bound of the memory
+span is reached'' @cheng2016long.
+Self-Attention, as the name implies, allows an input to attend to itself during as seen in Figure \@ref(fig:self-attention-cheng) e.g.
+the encoding step in an encoder-decoder architecture and is the topic of the next section
+of this chapter.
+
+```{r self-attention-cheng, echo = FALSE, fig.align='center', fig.cap= "Illustration of the self-attention mechanism. Red indicates the currently fixated word, Blue represents the memories of previous words. Shading indicates the degree of memory activation. Image source: Fig. 1 in @cheng2016long.", out.width="100%"}
+knitr::include_graphics('figures/02-02-attention-and-self-attention-for-nlp/cheng2016-fig1.png')
+```
+
 
 ### Transformers
 explain transformer architecture, multi-head attention, dot-prod. attention, explain the differences in computational cost to rnns and conv. models
