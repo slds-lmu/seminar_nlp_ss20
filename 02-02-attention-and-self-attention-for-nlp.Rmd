@@ -176,14 +176,139 @@ the storage of ``contextual representation of each input token with
 a unique memory slot and the size of the memory
 grows with time until an upper bound of the memory
 span is reached'' @cheng2016long.
-Self-Attention, as the name implies, allows an input to attend to itself during as seen in Figure \@ref(fig:self-attention-cheng) e.g.
-the encoding step in an encoder-decoder architecture and is the topic of the next section
-of this chapter.
+Self-Attention, as the name implies, allows an encoder to attend to other parts of the input during processing as seen in Figure \@ref(fig:self-attention-cheng).
+
 
 ```{r self-attention-cheng, echo = FALSE, fig.align='center', fig.cap= "Illustration of the self-attention mechanism. Red indicates the currently fixated word, Blue represents the memories of previous words. Shading indicates the degree of memory activation. Image source: Fig. 1 in @cheng2016long.", out.width="100%"}
 knitr::include_graphics('figures/02-02-attention-and-self-attention-for-nlp/cheng2016-fig1.png')
 ```
 
+While the LSTMN introduced self-attention, it retains the drawbacks that come from
+the use of a RNN. @vaswani2017attention propose the Transformer architecture which uses
+self-attention extensivly to circumvent these drawbacks.
 
-### Transformers
-explain transformer architecture, multi-head attention, dot-prod. attention, explain the differences in computational cost to rnns and conv. models
+### The Transformer
+
+RNNs were, prior to Transformers, the state-of-the-art model for machine translation, language modeling
+and other NLP tasks. But the sequential nature of a RNN precludes parallelization within
+training examples. This becomes critical at longer sequence lengths as memory constraints
+limit batching across examples. While much has been done to minimize these problems,
+they are inherent in the architecture and thus still remain. The attention mechanisms
+allow the modeling of dependencies without regard for the distance in either input
+or output sequences. Most attention mechanisms,
+as seen in the previous sections of this chapter, use recurent neural networks.
+This limits their usefullness for transfer learning because of the previously mentioned
+constraints that recurent networks have. Models like ByteNet from @kalchbrenner2016neural
+and ConvS2S from @gehring2017convolutional alleviate the problem with sequential models
+by using convolutional neural networks as basic building blocks. ConvS2S has a
+linear increase in number of operations to relate signals from two arbitrary
+input or output positions with growing distance. ByteNet has a logarithmical increase
+in number of operations needed. The Transformer architecture from @vaswani2017attention
+achieves the relation of two signals with arbitrary positions in input or output
+with a constant number of operations. It was also the first model that relied entirely
+on self-attention for the computation of representations of input or output without
+using sequence-aligned recurent networks or convolutions. 
+
+While the Transformer architecture doesn't use recurent or convolutional networks,
+it retains the popular encoder-decoder architecture.
+
+
+
+```{r encoder-transformer, echo = FALSE, fig.align='center', fig.cap= "Encoder of a Transformer, Original image: @vaswani2017attention,\\ Additions and cropping: @weng2018attention", out.width="50%"}
+knitr::include_graphics('figures/02-02-attention-and-self-attention-for-nlp/transformer-encoder.png')
+```
+
+The encoder is composed of a stack of N = 6 identical layers. Each of these layers
+has two sub-layers: A mulit-head self-attention mechanism and a position-wise fully
+connected feed-forward network. Each of the sub-layers has residual connection around
+its main component which is followed by a layer normalization. The output of each sub-layer
+is $\text{LayerNorm}(x + \text{Sublayer}(x))$ where $\text{Sublayer}(x)$ is the output of the
+function of the sublayer itself. All sub-layers and the embedding layer before the
+encoder/decoder produce outputs of $dim = d_{model} = 512$ to allow these residual connections to work.
+The position-wise feed-forward network used in the sublayer is applied to each position
+seperatly and identically. This network consists of two linear transformations with
+a ReLU activation function in between:
+$$
+FFN(x) = max(0, xW_1 + b_1)W_2 + b_2
+$$
+
+
+
+```{r decoder-transformer, echo = FALSE, fig.align='center', fig.cap= "Decoder of a Transformer, Original image: @vaswani2017attention,\\ Additions and cropping: @weng2018attention", out.width="50%"}
+knitr::include_graphics('figures/02-02-attention-and-self-attention-for-nlp/transformer-decoder.png')
+```
+
+The decoder is, as seen in Figue \@ref(fig:decoder-transformer), composed of a stack of $N = 6$ identical layers.
+It inserts, in addition to the two already known sub-layers from the encoder,
+a third sub-layer which performs multi-head attention over the output of the encoder stack.
+It uses, same as the encoder, residual connections around each of the sub-layers.
+The decoder also uses a modified, masked self-attention sub-layer ``to prevent positions
+from attending to subsequent positions'' @vaswani2017attention. This, coupled with the
+fact that the output embeddings are shifted by one positon to the right ensures that
+the predicitons for position $i$ only depend on previous known outputs.
+
+```{r transformer-full, echo = FALSE, fig.align='center', fig.cap= "The Transformer-model architecture, Image Source: Fig. 1 in @vaswani2017attention", out.width="70%"}
+knitr::include_graphics('figures/02-02-attention-and-self-attention-for-nlp/transformer-full-model.png')
+```
+
+As seen in \@ref(fig:transformer-full), the Transformer uses positional encodings
+added to the embeddings so the model can make use of the order of the sequence.
+@vaswani2017attention use the sine and cosine function of different frequencies:
+$$
+PE_{(pos,2i)} = \sin(pos/10000^{2i/d_{model}})\\
+PE_{(pos,2i+1)} = \cos(pos/10000^{2i/d_{model}})
+$$
+For further reasoning why these functions were chosen see @vaswani2017attention.
+
+#### The self-attention mechanism(s)
+
+@vaswani2017attention describe attention functions as "mapping a query and a set of key-value pairs to an output,
+where the query, keys, values, and output are all vectors. The output is computed as a weighted sum
+of the values, where the weight assigned to each value is computed by a compatibility function of the
+query with the corresponding key". The *Q*uery and the *K*ey-*V*alue pairs are used in the
+newly proposed attention mechanism that is used in Transformers.
+As seen in Figures \@ref(fig:encoder-transformer), \@ref(fig:decoder-transformer)
+and \@ref(fig:transformer-full), the Transformer uses an attention mechanism called
+``Multi-Head Attention''.
+
+```{r multi-head-attention, echo = FALSE, fig.align='center', fig.cap= "Multi-Head Attention, Image Source: Fig. 2 in @vaswani2017attention", out.width="50%"}
+knitr::include_graphics('figures/02-02-attention-and-self-attention-for-nlp/multi-head-attention.png')
+```
+
+The multi-head attention projects the queries, keys and values $h$ times instead of performing
+a single attention on $d_{model}$-dim. queries and key-value pairs. The projections
+are learned, linear and project to $d_k$, $d_k$ and $d_v$ dimensions. Next the
+new **scaled dot-product attention** is used on each of these to yield a $d_v$-dim. output.
+These values are then concatenated and projected to yield the final values as can be
+seen in \@ref(fig:multi-head-attention). This multi-dimensionalty allows the attention
+mechanism to jointly attend to different information from different representation
+at different positions. The multi-head attention can be written as:
+$$
+\text{MultiHead}(Q,K,V) = \text{Concat}(\text{head}_1,\dots, \text{head}_h)W^O\\
+\text{where } \text{head}_i = \text{Attention}(QW_i^Q, KW_i^K, VW_i^V)
+$$
+and projections are the parameter matrices $W_i^Q\in \mathbb{R}^{d_{model}\times d_k}, W_i^K\in \mathbb{R}^{d_{model}\times d_k}, W_i^V\in \mathbb{R}^{d_{model}\times d_v}\text{ and } W^O\in \mathbb{R}^{hd_{v}\times d_{model}}$.
+@vaswani2017attention use $h = 8$ and $d_k = d_v = d_{model}/h = 64$. This reduced dimensionality
+leads to a reduction in computational cost that is similar to that of a single-head attention
+with the full ininital dimensionality of $512$.
+
+The *scaled dot-product attention* is, as the name suggests, just a scaled version
+of the dot-product attention seen in previously in this chapter. 
+
+```{r scaled-dot-prod-attention, echo = FALSE, fig.align='center', fig.cap= "Scaled Dot-Product Attention, Image Source: Fig. 2 in @vaswani2017attention", out.width="50%"}
+knitr::include_graphics('figures/02-02-attention-and-self-attention-for-nlp/multi-head-attention.png')
+```
+
+The optional *Mask*-function seen in Fig. \@ref(fig:scaled-dot-prod-attention) is
+only used in the masked-multi-head attention of the decoder. The querys and
+keys are of dim. $d_k$ and the values are of dim. $d_v$. The attention
+is for practical reasons computed for a set of queries, *Q*. The keys and values
+are thus also used in matrix format, *K* and *V*. The matrix of outputs is then
+computed as:
+$$
+\text{Attention}(Q,K,V) = \text{softmax}(\frac{QK^\top}{\sqrt{d_k}})V
+$$
+where $\text{Attention}(Q,K,V)$ corresponds to an non-projected head of multi-head attention.
+
+
+explain the differences in computational cost to rnns and conv. models
