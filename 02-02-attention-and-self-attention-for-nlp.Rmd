@@ -284,7 +284,9 @@ seen in \@ref(fig:multi-head-attention). This multi-dimensionalty allows the att
 mechanism to jointly attend to different information from different representation
 at different positions. The multi-head attention can be written as:
 $$
-\text{MultiHead}(Q,K,V) = \text{Concat}(\text{head}_1,\dots, \text{head}_h)W^O\\
+\text{MultiHead}(Q,K,V) = \text{Concat}(\text{head}_1,\dots, \text{head}_h)W^O
+$$
+$$
 \text{where } \text{head}_i = \text{Attention}(QW_i^Q, KW_i^K, VW_i^V)
 $$
 and projections are the parameter matrices $W_i^Q\in \mathbb{R}^{d_{model}\times d_k}, W_i^K\in \mathbb{R}^{d_{model}\times d_k}, W_i^V\in \mathbb{R}^{d_{model}\times d_v}\text{ and } W^O\in \mathbb{R}^{hd_{v}\times d_{model}}$.
@@ -296,7 +298,7 @@ The *scaled dot-product attention* is, as the name suggests, just a scaled versi
 of the dot-product attention seen in previously in this chapter. 
 
 ```{r scaled-dot-prod-attention, echo = FALSE, fig.align='center', fig.cap= "Scaled Dot-Product Attention, Image Source: Fig. 2 in @vaswani2017attention", out.width="50%"}
-knitr::include_graphics('figures/02-02-attention-and-self-attention-for-nlp/multi-head-attention.png')
+knitr::include_graphics('figures/02-02-attention-and-self-attention-for-nlp/scaled-dot-prod-attention.png')
 ```
 
 The optional *Mask*-function seen in Fig. \@ref(fig:scaled-dot-prod-attention) is
