@@ -313,4 +313,23 @@ $$
 where $\text{Attention}(Q,K,V)$ corresponds to an non-projected head of multi-head attention.
 
 
-explain the differences in computational cost to rnns and conv. models
+The architecture of a Transformer allows for parallel encoding of every part of the
+input at the same time. This also enables the modeling of long-range dependencies regardless
+of the distance.
+
+|Layer-type | Complexity per Layer | Sequential Operations | Maximum Path Length|
+|-----------|----------------------|-----------------------|--------------------|
+| Recurrent | $O(n \cdot d^2)$ | $O(n)$ | $O(n)$ |
+| Convolutional | $O(k \cdot n \cdot d^2)$ | $O(1)$ | $O(log_k(n))$ |
+| Self-Attention | $O(n^2 \cdot d)$ | $O(1)$ | $O(1)$ |
+
+Table : (\#tab:complexity-operations-path-length) Minimum number of sequential operations and the maximum path length for long-range dependencies. $n$ is the sequence length, $k$ the kernel size and $d$ the representation dimension. Source: \cite{vaswani2017attention}, Table 1
+
+As can be seen in Table \@ref(tab:complexity-operations-path-length), the Self-Attention mechanism
+used in the Transformer architecture can model long-range dependencies in constant time
+while also only needing a constant number of operations due to extensive parrallelization.
+This, and the multiple attention heads employed in their model which learn different
+dependencies, enables models with the Transformer architecture to be used in transfer learning.
+The transfer learning models that were developed from the Transformer architecture
+enabled models which were trained on more data to gain a deeper understanding about
+language and are state-of-the-art today (June, 2020).
