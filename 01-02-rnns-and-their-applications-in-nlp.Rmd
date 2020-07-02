@@ -25,7 +25,7 @@ The repetitive structure of RNNs can be visualized with the help of an unfolded 
 knitr::include_graphics("figures/01-02-rnns-and-their-applications-in-nlp/02_unfolded_graph.png")
 ```
 
-Each node is associated with a network layer at a particular time instance. Inputs $x^{(t)}$ must be encoded as numeric vectors, for instance word embeddings or one-hot encoded vectors, see the previous chapter. Reccurrently connected vectors $h$ are called hidden states and represent the outputs of the hidden layer. At time $t$, a hidden state $h^{(t)}$ combines information from the previous hidden state $h^{(t-1)}$ as well as the new input $x^{(t)}$ and passes it through to the next hidden state. Obviously, such an architecture requires the initialization of $h^{(0)}$ since there is no memory at the very beginning of the sequence processing. Given the hidden sequences, output vectors $\hat{y}^{(t)}$ are used to build the predictive distribution $Pr(x^{(t+1)}|y^{(t)})$ for the next input [@graves2013generating]. Since the predictions are created at each time instance $t$, the total output has a shape $[\#\ time\_steps, \#\ output\_features]$. However, in some cases the whole history of output features is not needed. For example, in sentiment analysis the last output of the loop is sufficient because it contains the entire information about the sequence. [@chollet2018deep]
+Each node is associated with a network layer at a particular time instance. Inputs $x^{(t)}$ must be encoded as numeric vectors, for instance word embeddings or one-hot encoded vectors, see the previous chapter. Recurrently connected vectors $h$ are called hidden states and represent the outputs of the hidden layer. At time $t$, a hidden state $h^{(t)}$ combines information from the previous hidden state $h^{(t-1)}$ as well as the new input $x^{(t)}$ and passes it through to the next hidden state. Obviously, such an architecture requires the initialization of $h^{(0)}$ since there is no memory at the very beginning of the sequence processing. Given the hidden sequences, output vectors $\hat{y}^{(t)}$ are used to build the predictive distribution $Pr(x^{(t+1)}|y^{(t)})$ for the next input [@graves2013generating]. Since the predictions are created at each time instance $t$, the total output has a shape $[\#\ time\_steps, \#\ output\_features]$. However, in some cases the whole history of output features is not needed. For example, in sentiment analysis the last output of the loop is sufficient because it contains the entire information about the sequence. [@chollet2018deep]
 
 The unfolded recurrence can be formalized as following:
 
@@ -140,7 +140,7 @@ In order to better understand the mathematical challenges of BPTT, consider equa
 = \prod_{t\geq\ i>k}^{} W_{hh}^{T}diag(\mathcal{f}^{'}(h^{(i-1)}))  (\#eq:rnn-back-vanishing) 
 \end{align}
 
-Thus, with small values in $W_{hh}$ and many matrix multiplications the norm of the gradient shrinks to zero exponentially fast with $t-k$ which results in a vanishing gradient problem and the loss of long term contributions. Exploding gradients refer to the opposite behavior when the norm of the gradient increases largely and leads to a crash of the model. @pascanu2013difficulty give an overview of dealing with the exploding and vanishing gradients. Among other solutions they mention proper initialisation of weight matrices, sampling $W_{hh}$ and $W_{xh}$ instead of learning them, rescaling or clipping the gradient's components (putting a maximum limit on it) or using L1 or L2 penalties on the recurrent weights. Even more popular models are gated RNNs which explicitly address the vanishing gradients problem and will be explained in the next subchapter.
+Thus, with small values in $W_{hh}$ and many matrix multiplications the norm of the gradient shrinks to zero exponentially fast with $t-k$ which results in a vanishing gradient problem and the loss of long term contributions. Exploding gradients refer to the opposite behavior when the norm of the gradient increases largely and leads to a crash of the model. @pascanu2013difficulty give an overview of techniques for dealing with the exploding and vanishing gradients. Among other solutions they mention proper initialisation of weight matrices, sampling $W_{hh}$ and $W_{xh}$ instead of learning them, rescaling or clipping the gradient's components (putting a maximum limit on it) or using L1 or L2 penalties on the recurrent weights. Even more popular models are gated RNNs which explicitly address the vanishing gradients problem and will be explained in the next subchapter.
 
 ## Gated RNNs
 
@@ -181,7 +181,7 @@ Illustration LSTM vs GRU
 
 ```{r 01-02-lstm-gru, echo=FALSE, message=FALSE, fig.align="center",fig.cap="Structure of a hidden unit. LSTM on the right and GRU on the left. Source: Own figure inspired by http://colah.github.io/posts/2015-08-Understanding-LSTMs/", out.width = '100%'}
 
-knitr::include_graphics("figures/01-02-rnns-and-their-applications-in-nlp/03_lstm_vs_gru.PNG")
+knitr::include_graphics("figures/01-02-rnns-and-their-applications-in-nlp/03_lstm_vs_gru.png")
 ```
 
 ## Extensions of Simple RNNs
@@ -204,11 +204,13 @@ As a hidden layer function @graves2013speech choose bidirectional LSTM. Compared
 
 ### Encoder-Decoder Architecture
 
+#### Design and Training
+
 The problem of mapping variable-length input sequences to variable-length output sequences is known as Sequence-to-Sequence or seq2seq learning in NLP. Although originally applied in machine translation tasks (@sutskever2014sequence, @cho2014learning), the seq2seq approach achieved state-of-the-art results also in speech recognition [@prabhavalkar2017comparison] and video captioning [@venugopalan2015sequence]. According to @cho2014learning, the seq2seq model is composed of two parts as illustrated below:
 
 ```{r 01-02-enc-dec, echo=FALSE, message=FALSE, fig.align="center",fig.cap="Encoder-Decoder architecture. Source: Own figure.", out.width = '100%'}
 
-knitr::include_graphics("figures/01-02-rnns-and-their-applications-in-nlp/04_encoder_decoder.PNG")
+knitr::include_graphics("figures/01-02-rnns-and-their-applications-in-nlp/04_encoder_decoder.png")
 ```
 
 The first part is an encoder, an RNN which is trained on input sequences in order to obtain a large summary vector $c$ with a fixed dimension. This vector is called context and is usually a simple function of the last hidden state. @sutskever2014sequence used the final encoder hidden state as context such that $c=h_{e}^{(T)}$. The second part of the model is a decoder, another RNN which generates predictions given the context $c$ and all the previous outputs. In contrast to a simple RNN described at the beginning of this chapter, decoder hidden states $h_{d}^{(t)}$ are now conditioned on the previous outputs $y^{(t)}$, previous hidden states $h_{d}^{(t)}$ and the summary vector $c$ from the encoder part. Therefore, the conditional distribution of the one-step prediction is obtained by:
@@ -220,9 +222,11 @@ P(y^{(t)}|y^{(t-1)},...y^{(1)},c) & = \mathcal{s}(h_{d}^{(t)},y^{(t-1)},c) (\#eq
 
 Both parts are trained simultaneously to maximize the conditional log-likelihood $\frac{1}{N}\sum_{n=1}^{N}\log{p_{\theta}(y_{n}|x_{n})}$, where $\theta$ denotes the set of model parameters and $(y_{n},x_{n})$ is an (input sequence, output sequence) pair from the training set with size $N$ (@cho2014learning).
 
+#### Multi-task seq2seq Learning
+
 @luong2015multi extended the idea of encoder-decoder architecture even further by allowing multi-task learning (MLT) for seq2seq models. MLT aims to improve performance of one task using other related tasks. In their paper, they investigate three settings: a) *one-to-many* - where the encoder is shared between different tasks such as translation and syntactic parsing, b) *many-to-one* - where the encoders learn different tasks such as translation and image captioning and the decoder is shared, c) *many-to-many* - where the model consists of multiple encoders and decoders which is the case of autoencoders, unsupervised task used to learn a representation of monolingual data. @luong2015multi consider German-to-English and English-to-German translations as the primary task and try to determine whether other tasks can improve their performance and vice versa. After training deep LSTM models with 4 layers for different task combinations, they come to the conclusion that MLT can improve the performance of seq2seq models substantially. For instance, the translation quality improves after adding a small number of parsing minibatches (one-to-many setting) or after the model have been trained to generate image captions (many-to-one setting). In turn, translation task helps to parse large data corpus much better (one-to-many setting). In contrust to these achievements, autoencoder task does not show significant improvements in translation after two unsupervised learning tasks on English and German language data.
 
-
+## Conclusion
 
 
 
