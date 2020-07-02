@@ -22,7 +22,7 @@ The repetitive structure of RNNs can be visualized with the help of an unfolded 
 
 ```{r 01-02-unfold, echo=FALSE, message=FALSE, fig.align="center",fig.cap="Unfolded computatinal graph of an RNN. Source: Own figure.", out.width = '100%'}
 
-knitr::include_graphics("figures/01-02-rnns-and-their-applications-in-nlp/02_unfolded_graph.png")
+knitr::include_graphics("figures/01-02-rnns-and-their-applications-in-nlp/1_unfolded_graph.png")
 ```
 
 Each node is associated with a network layer at a particular time instance. Inputs $x^{(t)}$ must be encoded as numeric vectors, for instance word embeddings or one-hot encoded vectors, see the previous chapter. Recurrently connected vectors $h$ are called hidden states and represent the outputs of the hidden layer. At time $t$, a hidden state $h^{(t)}$ combines information from the previous hidden state $h^{(t-1)}$ as well as the new input $x^{(t)}$ and passes it through to the next hidden state. Obviously, such an architecture requires the initialization of $h^{(0)}$ since there is no memory at the very beginning of the sequence processing. Given the hidden sequences, output vectors $\hat{y}^{(t)}$ are used to build the predictive distribution $Pr(x^{(t+1)}|y^{(t)})$ for the next input [@graves2013generating]. Since the predictions are created at each time instance $t$, the total output has a shape $[\#\ time\_steps, \#\ output\_features]$. However, in some cases the whole history of output features is not needed. For example, in sentiment analysis the last output of the loop is sufficient because it contains the entire information about the sequence. [@chollet2018deep]
@@ -181,7 +181,7 @@ Illustration LSTM vs GRU
 
 ```{r 01-02-lstm-gru, echo=FALSE, message=FALSE, fig.align="center",fig.cap="Structure of a hidden unit. LSTM on the right and GRU on the left. Source: Own figure inspired by http://colah.github.io/posts/2015-08-Understanding-LSTMs/", out.width = '100%'}
 
-knitr::include_graphics("figures/01-02-rnns-and-their-applications-in-nlp/03_lstm_vs_gru.png")
+knitr::include_graphics("figures/01-02-rnns-and-their-applications-in-nlp/2_lstm_vs_gru.png")
 ```
 
 ## Extensions of Simple RNNs
@@ -210,7 +210,7 @@ The problem of mapping variable-length input sequences to variable-length output
 
 ```{r 01-02-enc-dec, echo=FALSE, message=FALSE, fig.align="center",fig.cap="Encoder-Decoder architecture. Source: Own figure.", out.width = '100%'}
 
-knitr::include_graphics("figures/01-02-rnns-and-their-applications-in-nlp/04_encoder_decoder.png")
+knitr::include_graphics("figures/01-02-rnns-and-their-applications-in-nlp/3_encoder_decoder.png")
 ```
 
 The first part is an encoder, an RNN which is trained on input sequences in order to obtain a large summary vector $c$ with a fixed dimension. This vector is called context and is usually a simple function of the last hidden state. @sutskever2014sequence used the final encoder hidden state as context such that $c=h_{e}^{(T)}$. The second part of the model is a decoder, another RNN which generates predictions given the context $c$ and all the previous outputs. In contrast to a simple RNN described at the beginning of this chapter, decoder hidden states $h_{d}^{(t)}$ are now conditioned on the previous outputs $y^{(t)}$, previous hidden states $h_{d}^{(t)}$ and the summary vector $c$ from the encoder part. Therefore, the conditional distribution of the one-step prediction is obtained by:
