@@ -53,7 +53,7 @@ states $h_1,\dots, h_{T_x}$:
 $$
 c_t = \sum^{T_x}_{i=1}\alpha_{t,i}h_i.
 $$
-Each hidden state $h_i$ is weigthed by a $\alpha_{t,i}$.
+Each hidden state $h_i$ is weighted by a $\alpha_{t,i}$.
 The weight $\alpha_{t,i}$ of each hidden state $h_i$ is also called the alignment score.
 These alignment scores are computed as:
 
@@ -88,7 +88,7 @@ to every input in the sequence.
 
 While Bahdanau et al. were the first to use attention in neural machine translation (NMT),
 @luong2015effective were the first to explore different attention mechanisms and their impact on
-NMT. Although the architecture of the neural network proposed by Luong et al. differes,
+NMT. Although the architecture of the neural network proposed by Luong et al. differs,
 the overall attention mechanism is similar to Bahdanau et al..
 The main difference in the attention mechanism is in the used score function.
 Bahdanau et al. only consider
@@ -103,17 +103,17 @@ $$
 | $\alpha_{t,i} = \text{softmax}(\mathbf{W}_a \boldsymbol{s}_t)$        | Location-based |
 | $\text{score}(\boldsymbol{s}_t, \boldsymbol{h}_i) = \boldsymbol{s}_t^\top\boldsymbol{h}_i$        | Dot-product    |
 
-Table : (\#tab:luong-score-functions) Different score function proposed by Luong et al.
+Table 2.2.1 : (\#tab:luong-score-functions) Different score function proposed by Luong et al.
 
 Other differences are simplifications and generalisations from @bahdanau2014neural.
 As @luong2015effective don't use a bidirectional encoder, they simplify the hidden
-state of the encoder from a concatination of both forward and backward hidden states
+state of the encoder from a concatenation of both forward and backward hidden states
 to only the hidden state at the top layer of both encoder and decoder.
 
 
 Most until now proposed attention models attend the entire input sequence. While
 this fixes the problem of forgetful sequential models discussed in the beginning of the chapter,
-it also has the drawback that it is expensive and can potentially be impractiacal
+it also has the drawback that it is expensive and can potentially be impractical
 during e.g. translation of entire paragraphs or documents. These problems encountered
 with global or soft attention mechanisms can be mitigated with a local or hard attention
 approach. While it was used by @xu2015show for caption generation of images with a CNN
@@ -121,7 +121,7 @@ and by @gregor2015draw for the generation of images, the first application for N
 is from @luong2015effective. Other than the global attention mechanism, the local
 attention mechanism first generates an aligned position $p_t$ at timestep $t$.
 The context vector is then computed as a weighted average over only the set of
-hidden states in a window $[p_t-D,p_t+D]$ with $D$ being an emipirically selected
+hidden states in a window $[p_t-D,p_t+D]$ with $D$ being an empirically selected
 parameter. This constrains the above introduced computation for the context vector
 to:
 $$
@@ -145,7 +145,7 @@ p_t = S \cdot sigmoid(v_p^\top tanh(W_ph_t))
 $$
 where $W_p$ and $v_p$ are the parameters that will be trained to predict positions.
 $S$ is the length of the input sentence and as a result of the sigmoid function: $p_t \in [0,S]$.
-A Gaussian distribution centered around $p_t$ is placed by @luong2015effective to favour alignment points closer to $p_t$.
+A Gaussian distribution centred around $p_t$ is placed by @luong2015effective to favour alignment points closer to $p_t$.
 This changes the alignment weights to:
 $$
 \alpha_{t,i} = align(y_t, x_i)exp(-\frac{(i-p_t)^2}{2\sigma^2})
@@ -322,14 +322,81 @@ of the distance.
 | Recurrent | $O(n \cdot d^2)$ | $O(n)$ | $O(n)$ |
 | Convolutional | $O(k \cdot n \cdot d^2)$ | $O(1)$ | $O(log_k(n))$ |
 | Self-Attention | $O(n^2 \cdot d)$ | $O(1)$ | $O(1)$ |
+| Self-Attention(restricted) | $O(r \cdot n \cdot d)$ | $O(1)$ | $O(n / r)$ |
+Table 2.2.2 : (\#tab:complexity-operations-path-length) Minimum number of sequential operations and the maximum path length for long-range dependencies. $n$ is the sequence length, $k$ the kernel size, $d$ the representation dimension and $r$ the size of the neighborhood in restricted self-attention. Source: @vaswani2017attention, Table 1
 
-Table : (\#tab:complexity-operations-path-length) Minimum number of sequential operations and the maximum path length for long-range dependencies. $n$ is the sequence length, $k$ the kernel size and $d$ the representation dimension. Source: \cite{vaswani2017attention}, Table 1
-
-As can be seen in Table \@ref(tab:complexity-operations-path-length), the Self-Attention mechanism
-used in the Transformer architecture can model long-range dependencies in constant time
-while also only needing a constant number of operations due to extensive parrallelization.
-This, and the multiple attention heads employed in their model which learn different
-dependencies, enables models with the Transformer architecture to be used in transfer learning.
+The Transformer architecture, as a minimum, only needs a constant number of sequential operations regardless of
+input length $n$ due to extensive parallelization as can be seen in Table \@ref(tab:complexity-operations-path-length).
+The Maximum Path Length between long-range dependencies is also constant while the RNN
+again needs a linear amount of steps due to its sequential input reading.
+The fast modeling of long-range dependencies and the multiple attention heads which learn different
+dependencies makes Transformers a favourable choice for Transfer Learning.
 The transfer learning models that were developed from the Transformer architecture
 enabled models which were trained on more data to gain a deeper understanding about
-language and are state-of-the-art today (June, 2020).
+language and are state-of-the-art today (June, 2020). 
+
+### (Some) Transformers are RNNs
+
+The Transformer architecture is very good at modeling long-range dependencies in language.
+The Transformer architecture has a drawback to this advantage over RNNs/CNNs, the high computational cost
+due to its quadratic complexity per layer scaling with input length $n$ as seen in Table  \@ref(tab:complexity-operations-path-length).
+This quadratic complexity comes from the self-attention mechanism $\text{Attention}(Q,K,V) = \text{softmax}(\frac{QK^\top}{\sqrt{d_k}})V$.
+The used softmax needs to calculate the attention score between the currently processed input $x_i$ and every
+other input $x_j$ for each $j \in {1, \dots ,n}$ and $i \in {1, \dots ,n}$. This limits the length of the
+context that Transformers can process and increases the time they need for training in practical uses.
+The computational costs are especially severe in very long autoregressive tasks.
+
+In the last few years some new variations of the vanilla transformer, as described above, were published
+which tried to lower the computational cost.
+Some of these variations of the Transformer architecture managed to decrease the complexity
+from quadratic to $O(N\sqrt{N})$ (@child2019generating) or even to $O(N\log N)$ (@kitaev2020reformer).
+
+A newer version from @katharopoulos2020transformers uses a linear attention mechanism for
+autoregressive tasks. The vanilla Transformer uses, as described above, the softmax to
+calculate the attention between values. This can also be seen as a similarity function.
+$V_i' = \frac{\sum_{j=1}^N \text{sim}(Q_i, K_j)V_j}{\sum_{j=1}^N\text{sim}(Q_i, K_j)}$ is equal to
+the row-wise calculation of $\text{Attention}(Q,K,V) = V' = \text{softmax}(\frac{QK^\top}{\sqrt{d_k}})V$
+if $\text{sim}(q,k)=\exp(\frac{q^\top k}{\sqrt{d_k}})$. While we can use the exponentiated
+dot-product to generate the vanilla scaled-dot-product attention, we can use any non-negative
+function, including kernels, as similarity function to generate a new attention mechanism @katharopoulos2020transformers.
+Given the feature representation $\phi(x)$ of such a kernel, the previous row-wise calculation
+can be rewriten as $V_i' = \frac{\phi(Q_i)^\top \sum_{j=1}^N\phi(K_j)V_j^\top}{\phi(Q_i)^\top \sum_{j=1}^N\phi(K_j)}$.
+Or in vectorized form: $\phi(Q)(\phi(K)^\top V)$ where the feature map $\phi(\cdot)$ is applied row-wise to the matrices.
+This new formulation shows that the computation with a feature map allows for linear time and memory scaling $O(N)$
+because $\sum_{j=1}^N\phi(K_j)V_j^\top$ and $\sum_{j=1}^N\phi(K_j)$ can be both computed once and resused for every
+row of the query @katharopoulos2020transformers. 
+No finite dimensional feature map of the exponential function exists, which makes a linearization of the
+softmax attention impossible. This forces the use of a polynomial kernel which has been shown to work equally well with
+the exponential kernel @tsai2019transformer. This results in a computational cost of
+$O(ND^2M)$ which is favourable if $N > D^2$. @katharopoulos2020transformers suggest $\phi(x) = \text{elu}(x) + 1$ for $N < D^2$.
+
+For autoregressive tasks we want an attention mechanism that can't look ahead of its position.
+@vaswani2017attention introduced masked-self-attention for their decoder, which is adapted for linearized attention.
+The addition of masking changes the previous formulation to $V_i' = \frac{\sum_{j=1}^i \text{sim}(Q_i, K_j)V_j}{\sum_{j=1}^i\text{sim}(Q_i, K_j)}$.
+With the linearization through kernels we get $V_i' = \frac{\phi(Q_i)^\top \sum_{j=1}^i\phi(K_j)V_j^\top}{\phi(Q_i)^\top \sum_{j=1}^i\phi(K_j)}$.
+
+$S_i = \sum_{j=1}^i\phi(K_j)V_j^\top$ and $Z_i = \sum_{j=1}^i\phi(K_j)$ can be used to simplify the formula to
+$$
+V_i' = \frac{\phi(Q_i)^\top Si}{\phi(Q_i)^\top Z_i}
+$$
+where  $S_i$ and $Z_i$ can be computed from $S_{i-1}$ and $Z_{i-1}$ which allows the linearized attention
+with masking to scale linearly with respect to the sequence length. The derivation of
+the numerator as cumulitve sums allows for the computation in linear time and constant memory,
+which leads to computational complexity of $O(NCM)$ and memory $O(N \max{(C,d_k)})$ where $C$ is the dimensionalty of
+the feature map @katharopoulos2020transformers.
+
+Given the previous formalization of feature maps to replace the softmax we can rewrite the
+layers of a Transformers as a RNN. This RNN has two hidden states, the attention state $s$ and the
+normalizer state $z$ with subscripts denoting the timestep in recurrence.
+With $s_0 = 0$ and $z_0 = 0$ we can define $s_i$ as $s_i s_{i-1} + \phi(x_iW_K)(x_iW_V)^\top$ and
+$z_i$ as $z_i = z_{i-1} + \phi(x_iW_K)$ with $x_i$ as the $i$-th input for the layer.
+The $i$-th output $y_i$ can then be written as $y_i = f_l(\frac{\phi(x_iW_Q)^\top s_i}{\phi(x_iW_Q)^\top z_i} + x_i)$
+where $f_l$ is the function given by the feed-forward network of a Transformer layer.
+
+This shows that we can rewrite the Transformer layers into RNN layers, for all similarity functions
+that can be represented with $\phi$. 
+
+
+
+
+- Add links and examples for Bahdanau and Luong attention mechanisms
