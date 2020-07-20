@@ -18,13 +18,11 @@ For many of the benchmarking datasets in natural language processing, a leaderbo
   
 
 $$
-F1 = \frac{2 \cdot \hbox{precision}\cdot\hbox{recall}}{\hbox{precision}+\hbox{recall}} 
-$$
-$$
-\hbox{precision} = \frac{\hbox{number of same tokens}}{\hbox{length(predicted tokens)}} \\
-$$
-$$
-\hbox{recall} = \frac{\hbox{number of same tokens}}{\hbox{length(labeled tokens)}} \\
+\begin{aligned}
+F1 &= \frac{2 \cdot \hbox{precision}\cdot\hbox{recall}}{\hbox{precision}+\hbox{recall}} \\
+\hbox{precision} &= \frac{\hbox{number of same tokens}}{\hbox{length(predicted tokens)}} \\
+\hbox{recall} &= \frac{\hbox{number of same tokens}}{\hbox{length(labeled tokens)}} 
+\end{aligned}
 $$
 
 **Perplexity:** Perplexity is a measurement of how well a probability model predicts a sample. A low perplexity indicates the probability distribution is good at predicting the sample. In NLP, perplexity is a way of evaluating language models. A model of an unknown probability distribution $p$, may be proposed based on a training sample that was drawn from $p$. Given a proposed probability model $q$, one may evaluate $q$ by asking how well it predicts a separate test sample $x_1, x_2, ..., x_N$ also drawn from $p$. The perplexity of the model $q$ is defined as
@@ -34,6 +32,8 @@ where $b$ is customarily $2$.
 **BLEU:** BLEU (**B**i**l**ingual **E**valuation **U**nderstudy) is an algorithm for evaluating the quality of text which has been machine-translated from one natural language to another. Scores are calculated for individual translated segments—generally sentences—by comparing them with a set of good quality reference translations. Those scores are then averaged over the whole corpus to reach an estimate of the translation's overall quality. Intelligibility or grammatical correctness are not taken into account. [@papineni2002bleu]
 
 **Accuracy:** Accuracy is the ratio of number of correct predictions to the total number of input samples.
+
+**Matthews correlation coefficient**:
 
 
 ## Benchmark Datasets
@@ -91,7 +91,33 @@ Examples of CoQA and the leaderboard and can be viewed here:
 Most models in NLP are designed to solve a specific task, such as answering questions from a particular domain. This limits the use of models for understanding natural language. In order to process language in a way that is not limited to a specific task, genre, or dataset, models should be able to solve a variety of tasks well.
   
 The **G**eneral **L**anguage **U**nderstanding **E**valuation benchmark dataset is a collection of tools created with this in mind. It is designed to encourage and favour models that share common linguistic knowledge across tasks. These tasks include textual entailment, sentiment analysis and question answering. Some tasks come with a lot of training data, others with less. Common to all datasets is that they were not created specifically for GLUE, but are existing datasets. Models that are evaluated on GLUE only need to have the ability to process single-sentence and sentence-pair inputs and make appropriate predictions.
-This test suite contains a total of nine sentence or sentence-pair NLU tasks, built on established annotated datasets.
+This test suite contains a total of nine sentence or sentence-pair NLU tasks, built on established annotated datasets. There are three distinct types of tasks in GLUE: Single-Sentence Tasks, Similarity and Paraphrase Tasks and Inference Tasks.
+  
+**Single-Sentence Tasks**:
+  
+The first single-sentence task is CoLA, the **Co**rpus of **L**inguistic **A**cceptability, which consists of English acceptability judgements derived from books and journal articles on lingusitic theory. Each datapoint consists of a sequence of words and an annotation as to whether this sequence is a grammatical English sentence. Matthews correlation coefficient is used as the evaluation metric.
+  
+The **S**tanford **S**entiment **T**reebank task consists of sentences from movie reviews and the corresponding sentiment (positive/negative). Accuracy is used for evaluation.
+
+**Similarity and Paraphrase Tasks**
+  
+The **M**icrosoft **R**esearch **P**araphrase **C**orpus consists of pairs of sentences and the goal is to predict whether two sentences are semantically equivalent. For evaluation, F1 score and accuracy is used.
+  
+**Q**uora **Q**uestion **P**airs is similiar to MRP in that the aim is to predict whether two questions are semantically equivalent and F1 and accuracy is used for evaluation.
+  
+The **S**emantic **T**extual **S**imilarity **B**enchmark consists of sentence pairs human-annotated with a similarity score from 1 to 5. The goal is to predict these scores. Pearson and Spearman correlation coefficients are used for evaluation.
+  
+**Inference Tasks**:
+  
+The **M**ulti-Genre **N**atural **L**anguage **I**nference Corpus is a collection of sentence pairs with textual entailment annotations. Based on a premise sentence and a hypothesis sentence, the aim is to predict whether the premise entails the hypothesis, contradicts the hypothesis, or neither of the two. Models are evaluated using accuracy.
+  
+**R**ecognizing **T**extual **E**ntailment is akin to MNLI, only this time with a two-class split.
+  
+The Wingorad Schema Challenge is a reading comprehension task in which a system must read a sentence containing a pronoun and pick the speaker of that pronoun from a list of choices. To transform this task into a classification problem, pairs of sentences are constructed by replacing the ambiguous pronoun with any possible referent. The task is to predict if the sentence with the pronoun substituted is entailed by the original sentence. Evaluation is done using accuracy.
+  
+The last task in GLUE is based on the first version of SQuAD. The task is converted into a sentence pair classification task by pairing each question and each sentence in the respective context, with the aim of determining whether or not a sentence contains the answer to the question. The task is evaluated on accuracy.
+
+
 The models are scored separately for each task and then a macro-average of these scores is calculated to determine a system's position on the ranking. If a task has multiple metrics, an unweighted average of these metrics is used as the score for the task when calculating the overall macro average. [@wang2018glue]
 The human baseline score is 87.1, while the best model score is currently 90.6.
   
@@ -122,15 +148,15 @@ The paper and examples of the dataset can be found here:
 \flushleft
 
 
-### SNLI
-Understanding entailment and contradiction is fundamental to understanding natural language, and conclusions about entailment and contradiction are a valuable testing ground for the development of semantic representations. The **S**tanford **N**atural **L**anguage **I**nference Corpus is a collection of sentence pairs that are labeled either as entailment, contradiction or semantic independence. While other datasets exist that try to tackle this specific task, they all have issues of size, quality, and indeterminacy.
-  
-SNLI consists of about 570k record pairs. Again, croworkers were used to create the data set. To do this, they were shown the caption of a photo but not the photo, and they were asked to write three alternative captions: One that is definitely a true description of the photo, one that could be a true description of the photo, and one caption that is definitely a false description of the photo. By not showing the photo, the authors wanted to ensure that each pair of sentences could be reconstructed based on the available text alone.
-To measure the quality of the corpus, about 10% of all created sentence pairs were validated. For this purpose, each crowdorker was shown five sentences and asked to mark them with one of the three labels. Each sentence was shown to a total of five crowdorkers. For each pair, a gold label was assigned if at least three of the five annotators chose the same label. Around 98% of all sentence pairs were assigned a gold label, the rest was assigned a placeholder label.[@bowman2015large]
-  
-Models are once again evaluated with the accuracy of the predicted label. For the SNLI corpus there is no measurement for human performance. Currently, the best performing model is a semantics-aware BERT (SemBERT) with an accuracy of 91.9. 
-- Understanding entailment and contradiction
-- https://nlp.stanford.edu/projects/snli/
+<!-- ### SNLI -->
+<!-- Understanding entailment and contradiction is fundamental to understanding natural language, and conclusions about entailment and contradiction are a valuable testing ground for the development of semantic representations. The **S**tanford **N**atural **L**anguage **I**nference Corpus is a collection of sentence pairs that are labeled either as entailment, contradiction or semantic independence. While other datasets exist that try to tackle this specific task, they all have issues of size, quality, and indeterminacy. -->
+
+<!-- SNLI consists of about 570k record pairs. Again, croworkers were used to create the data set. To do this, they were shown the caption of a photo but not the photo, and they were asked to write three alternative captions: One that is definitely a true description of the photo, one that could be a true description of the photo, and one caption that is definitely a false description of the photo. By not showing the photo, the authors wanted to ensure that each pair of sentences could be reconstructed based on the available text alone. -->
+<!-- To measure the quality of the corpus, about 10% of all created sentence pairs were validated. For this purpose, each crowdorker was shown five sentences and asked to mark them with one of the three labels. Each sentence was shown to a total of five crowdorkers. For each pair, a gold label was assigned if at least three of the five annotators chose the same label. Around 98% of all sentence pairs were assigned a gold label, the rest was assigned a placeholder label.[@bowman2015large] -->
+
+<!-- Models are once again evaluated with the accuracy of the predicted label. For the SNLI corpus there is no measurement for human performance. Currently, the best performing model is a semantics-aware BERT (SemBERT) with an accuracy of 91.9.  -->
+<!-- - Understanding entailment and contradiction -->
+<!-- - https://nlp.stanford.edu/projects/snli/ -->
 
 ### LAMBADA 
 - **LA**nguage **M**odeling **B**roadened to **A**ccount for **D**iscourse **A**spects
