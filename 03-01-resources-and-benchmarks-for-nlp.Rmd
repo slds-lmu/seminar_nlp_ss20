@@ -32,9 +32,13 @@ where $b$ is customarily $2$.
 **BLEU:** BLEU (**B**i**l**ingual **E**valuation **U**nderstudy) is an algorithm for evaluating the quality of text which has been machine-translated from one natural language to another. Scores are calculated for individual translated segments—generally sentences—by comparing them with a set of good quality reference translations. Those scores are then averaged over the whole corpus to reach an estimate of the translation's overall quality. Intelligibility or grammatical correctness are not taken into account. [@papineni2002bleu]
 
 **Accuracy:** Accuracy is the ratio of number of correct predictions to the total number of input samples.
+  
+$$\hbox{Accuracy}=\frac{\hbox{TP}+\hbox{TN}}{\hbox{TP}+\hbox{TN}+\hbox{FP}+\hbox{FN}}$$
 
-**Matthews correlation coefficient**:
-
+**Matthews correlation coefficient**: The MCC is used as a measure of quality of binary classifications. It takes true and false positives and negatives into account and is regarded as a balanced measure which can be used even if the classes are imbalanced. The MCC can be calculated directly from the confusion matrix using the following formula:
+  
+$$\hbox{MCC}=\frac{\hbox{TP}\cdot\hbox{TN}-\hbox{FP}\cdot\hbox{FN}}{\sqrt{(\hbox{TP}+\hbox{FP})(\hbox{TP}+\hbox{FN})(\hbox{TN}+\hbox{FP})(\hbox{TN}+\hbox{FN})}} $$
+[@boughorbel2017optimal]
 
 ## Benchmark Datasets
 ### SQuAD
@@ -113,15 +117,31 @@ The **M**ulti-Genre **N**atural **L**anguage **I**nference Corpus is a collectio
   
 **R**ecognizing **T**extual **E**ntailment is akin to MNLI, only this time with a two-class split.
   
-The Wingorad Schema Challenge is a reading comprehension task in which a system must read a sentence containing a pronoun and pick the speaker of that pronoun from a list of choices. To transform this task into a classification problem, pairs of sentences are constructed by replacing the ambiguous pronoun with any possible referent. The task is to predict if the sentence with the pronoun substituted is entailed by the original sentence. Evaluation is done using accuracy.
+The Winograd Schema Challenge is a reading comprehension task in which a system must read a sentence containing a pronoun and pick the speaker of that pronoun from a list of choices. To transform this task into a classification problem, pairs of sentences are constructed by replacing the ambiguous pronoun with any possible referent. The task is to predict if the sentence with the pronoun substituted is entailed by the original sentence. Evaluation is done using accuracy.
   
 The last task in GLUE is based on the first version of SQuAD. The task is converted into a sentence pair classification task by pairing each question and each sentence in the respective context, with the aim of determining whether or not a sentence contains the answer to the question. The task is evaluated on accuracy.
 
 
 The models are scored separately for each task and then a macro-average of these scores is calculated to determine a system's position on the ranking. If a task has multiple metrics, an unweighted average of these metrics is used as the score for the task when calculating the overall macro average. [@wang2018glue]
+  
 The human baseline score is 87.1, while the best model score is currently 90.6.
   
-Roughly one year after the release of GLUE, models surpassed human performance. In response to this, a new benchmark, SuperGLUE, was introduced. It follows the same principles as GLUE, however the tasks included are more challenging. The two hardest tasks in GLUE remain, the rest were selected based on difficulty for current NLP approaches. [@wang2019superglue]
+Roughly one year after the release of GLUE, models surpassed human performance. In response to this, a new benchmark, SuperGLUE, was introduced. It follows the same principles as GLUE, however the tasks included are more challenging. The two hardest tasks in GLUE, Recognizing Textual Entailment and the Winograd Schema Challenge, remain, the rest were selected based on difficulty for current NLP approaches. There are a total of eight different tasks in this benchmark.
+  
+**Bool**ean **Q**uestions consists of a text passage together with a corresponding yes/no question. Models are evaluated using accuracy.
+  
+**C**ommitment **B**ank is a three-class textual entailment task. Accuracy and F1 is used for evaluation, where for multi-class F1 the unweighted average of the F1 per class is calculated.
+  
+**C**hoice **o**f **P**lausible **A**nswers is a causal reasoning task in which a model is given a premise sentence, a question and two possible answers. It must then decide which answer is the correct one. Accuracy is used for the evaluation.
+  
+**Multi**-Sentence **R**eading **C**omprehension is a QA task where each example consists of a paragraph, a question and a list of answers. Models must predict which answers are correct. Evaluation metrics are F1 over all answer choices and the exact match of the answer set of each question.
+
+**Re**ading **Co**mprehension with **Co**mmonsense **R**easoning **D**ataset is a multiple choice QA task. Each data point consists of a paragraph, a fill-in-the-gap sentence in which an entity is masked, and a list of possible entities to choose from. The entities can be expressed using several different surface forms, all of which are considered correct. Models are evaluated using max (over all mentions) token-level F1 and exact match.
+  
+**W**ords **i**n **C**ontext is a word sense disambiguation task in which a model is given two sentences and a polysemous word. Models must decide whether the word is used with the same meaning in both sentences. Accuracy is used for evaluation.
+  
+[@wang2019superglue]
+  
 For SuperGLUE, the human baseline score is 89.8, which is above the best model score, presently 89.3.
 
 More information about the tasks and the leaderboard for both GLUE and SuperGLUE is available here:
