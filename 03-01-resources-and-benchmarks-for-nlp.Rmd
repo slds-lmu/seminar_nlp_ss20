@@ -56,7 +56,7 @@ One shortcoming of reading comprehension systems is that they tend to make unrel
 
 The accuracy of models trained on SQuAD is evaluated using two different metrics, exact match and (Macro-averaged) F1 score, both ignoring punctuation and articles.  
   
-To evaluate human performance, the second answer to each question is treated as the human prediction.[@rajpurkar2016squad; @rajpurkar2018know]  
+To evaluate human performance, the second answer to each question is treated as the human prediction. [@rajpurkar2016squad; @rajpurkar2018know]  
   
 Humans achieve an **EM** score of 86.831 and a **F1** score of 89.452.  
   
@@ -168,22 +168,109 @@ The paper and examples of the dataset can be found here:
 \flushleft
 
 
-<!-- ### SNLI -->
-<!-- Understanding entailment and contradiction is fundamental to understanding natural language, and conclusions about entailment and contradiction are a valuable testing ground for the development of semantic representations. The **S**tanford **N**atural **L**anguage **I**nference Corpus is a collection of sentence pairs that are labeled either as entailment, contradiction or semantic independence. While other datasets exist that try to tackle this specific task, they all have issues of size, quality, and indeterminacy. -->
+### SNLI
+When it comes to understanding natural language, the understanding of entailment and contradiction is essential. The characterization and use of these relationships in computational systems is called natural language inference and is fundamental for tasks such as commonsense reasoning and information retrieval. The **S**tanford **N**atural **L**anguage **I**nference Corpus is a collection of sentence pairs that are labeled either as entailment, contradiction or semantic independence.
+While there are other datasets that try to accomplish this particular task, they all have problems of size, quality and vagueness.
 
-<!-- SNLI consists of about 570k record pairs. Again, croworkers were used to create the data set. To do this, they were shown the caption of a photo but not the photo, and they were asked to write three alternative captions: One that is definitely a true description of the photo, one that could be a true description of the photo, and one caption that is definitely a false description of the photo. By not showing the photo, the authors wanted to ensure that each pair of sentences could be reconstructed based on the available text alone. -->
-<!-- To measure the quality of the corpus, about 10% of all created sentence pairs were validated. For this purpose, each crowdorker was shown five sentences and asked to mark them with one of the three labels. Each sentence was shown to a total of five crowdorkers. For each pair, a gold label was assigned if at least three of the five annotators chose the same label. Around 98% of all sentence pairs were assigned a gold label, the rest was assigned a placeholder label.[@bowman2015large] -->
+SNLI consists of about 570k record pairs. Again, crowdworkers were used to construct the dataset. For this purpose they were shown the caption of a photo but not the photo itself, and asked to write three alternative captions: One that is definitely a true description of the photo, one that could be a true description of the photo, and one caption that is definitely a false description of the photo. By not showing the photo, the authors wanted to ensure that each pair of sentences could be reconstructed based on the available text alone.
+To quantify the quality of the corpus, about 10% of all created sentence pairs were validated. For this purpose, each crowdworker was shown five pairs of sentences and asked to mark them with one of the three labels. Each set was shown to a total of five crowdworkers. For each pair, a gold label was awarded if at least three of the five annotators chose the same label. About 98% of all sentence pairs received a gold label, the rest were given a placeholder label. [@bowman2015large]
 
-<!-- Models are once again evaluated with the accuracy of the predicted label. For the SNLI corpus there is no measurement for human performance. Currently, the best performing model is a semantics-aware BERT (SemBERT) with an accuracy of 91.9.  -->
-<!-- - Understanding entailment and contradiction -->
-<!-- - https://nlp.stanford.edu/projects/snli/ -->
+The models are evaluated again with the accuracy of the predicted label. There is no measurement of human performance for the SNLI corpus. At present, the most accurate model is a semantics-aware BERT (SemBERT) with an accuracy of 91.9.
+The paper and examples of the dataset can be found here:
+\center https://nlp.stanford.edu/projects/snli/
+  
+\flushleft
 
-<!-- ### LAMBADA  -->
-<!-- - **LA**nguage **M**odeling **B**roadened to **A**ccount for **D**iscourse **A**spects -->
-<!-- - Word prediction task -->
-<!--   - Predict the last word of a sentence depending on the context -->
-<!-- - Models can't rely on local context, must be able to keep track of information in the broader discourse -->
-<!-- - https://www.aclweb.org/anthology/P16-1144.pdf -->
+### Overview
+Below is a brief overview of all of the datasets discussed in this chapter, including some other interesting datasets. If you would like to learn more about one of the datasets, click on the name of the respective dataset to view the original paper.
+```{r table2, echo=FALSE, message=FALSE, warnings=FALSE, results='asis'}
+dt_url <- c(
+  "https://arxiv.org/pdf/1806.03822.pdf",
+  "https://arxiv.org/pdf/1808.07042.pdf",
+  "https://openreview.net/pdf?id=rJ4km2R5t7",
+  "https://w4ngatang.github.io/static/papers/superglue.pdf",
+  "https://arxiv.org/pdf/1705.04146.pdf",
+  "https://nlp.stanford.edu/pubs/snli_paper.pdf",
+  "http://www.roman-klinger.de/publications/ling2016.pdf",
+  "https://arxiv.org/pdf/1609.07843.pdf",
+  "https://nlp.stanford.edu/pubs/luong-manning-iwslt15.pdf",
+  "",
+  "https://arxiv.org/pdf/1804.05053.pdf"
+)
+
+datasets <- data.frame(
+  name = c(
+    "SQuAD 2.0",
+    "CoQA",
+    "GLUE",
+    "SuperGLUE",
+    "AQuA-Rat",
+    "SNLI",
+    "Irony Sarcasm Analysis Corpus",
+    "WikiText-103 & 2",
+    "WMT 14 English-German",
+    "",
+    "VOiCES"
+    ),
+  task = c(
+    "Question Answering, Reading Comprehension",
+    "Question Answering, Reading Comprehension",
+    "General Language Understanding",
+    "General Language Understanding",
+    "Question Answering, Reading Comprehension, Mathematical Reasoning",
+    "Natural Language Inference",
+    "Classification, Sentiment Analysis",
+    "Language Modeling",
+    "Language Translation",
+    "",
+    "Speech Recognition"
+    ),
+  size = c(
+    "150,000",
+    "127,000",
+    "---",
+    "---",
+    "100,000",
+    "570,000",
+    "33,000",
+    "100M+",
+    "4.5M",
+    "",
+    "3,900"
+    ),
+  description = c(
+    "Paragraphs w questions and answers",
+    "Answering interconnected questions",
+    "Nine different NLU tasks",
+    "Eight different NLU tasks",
+    "Solving algebraic word problems",
+    "Understanding entailment and contradiction",
+    "Ironic, sarcastic, regular and figurative tweets",
+    "Word and character level tokens from Wikipedia",
+    "Sentence pairs for translation",
+    "",
+    "Voices in complex environmental settings. 15h material"
+    )
+)
+
+datasets$name <-  paste0("[", datasets$name, "](", dt_url, ")")
+# just for me
+a <- kable(datasets, "markdown")
+```
+|Name                                                                                   |Task                                                              |Size                        |Description                                                      |
+|:--------------------------------------------------------------------------------------|:-----------------------------------------------------------------|:---------------------------|:----------------------------------------------------------------|
+|[SQuAD 2.0](https://arxiv.org/pdf/1806.03822.pdf)                                      |Question Answering, Reading Comprehension                         |150,000                     |Paragraphs w questions and answers                               |
+|[CoQA](https://arxiv.org/pdf/1808.07042.pdf)                                           |Question Answering, Reading Comprehension                         |127,000                     |Answering interconnected questions                               |
+|[GLUE](https://openreview.net/pdf?id=rJ4km2R5t7)                                       |General Language Understanding                                    |---                         |Nine different NLU tasks                                         |
+|[SuperGLUE](https://w4ngatang.github.io/static/papers/superglue.pdf)                   |General Language Understanding                                    |---                         |Eight different NLU tasks                                        |
+|[AQuA-Rat](https://arxiv.org/pdf/1705.04146.pdf)                                       |Question Answering, Reading Comprehension, Mathematical Reasoning |100,000                     |Solving algebraic word problems                                  |
+|[SNLI](https://nlp.stanford.edu/pubs/snli_paper.pdf)                                   |Natural Language Inference                                        |570,000                     |Understanding entailment and contradiction                       |
+|[Irony Sarcasm Analysis Corpus](http://www.roman-klinger.de/publications/ling2016.pdf) |Classification, Sentiment Analysis                                |33,000                      |Ironic, sarcastic, regular and figurative tweets                 |
+|[WikiText-103 & 2](https://arxiv.org/pdf/1609.07843.pdf)                               |Language Modelling                                                |100M+                       |Word and character level tokens from Wikipedia                   |
+|[WMT 14 English-German](https://nlp.stanford.edu/pubs/luong-manning-iwslt15.pdf)       |Language Translation                                              |4.5M                        |Sentence pairs for translation                                   |
+|                                                                                       |                                                                  |                            |                                                                 |
+|[VOiCES](https://arxiv.org/pdf/1804.05053.pdf)                                         |Speech Recognition                                                |3,900                       |Voices in complex environmental settings. 15h material           |
+
 
 ## Pre-Training Resources
 In the last chapters we've already heard quite a bit about pre-trained models like BERT or GPT-3. But exactly on what data are they trained on? Let's find out.
@@ -214,7 +301,7 @@ $$\hbox{np.random.pareto}(\alpha) > 1 - \hbox{document\_score}.$$ A value of 9 w
   
 The datasets used to train GPT-3 are shown in the table below.
 
-```{r}
+```{r, echo=FALSE}
 cc <- data.frame(
   Dataset = c("Common Crawl (filtered)", "WebText2", "Books1", "Books2", "Wikipedia"),
   Quantity = c("410 billion", "19 billion", "12 billion", "55 billion", "3 billion"),
@@ -246,6 +333,7 @@ If you are interest in further NLP tasks or dataset, there are two websites wort
 Papers With Code highlights trending Machine Learning research and the code to implement it. Their mission is to create a free and open resource with ML papers, code and evaluation tables. Anyone can contribute by downloading data, training their own model and comparing their model to others.
   
 To see the newest trends in NLP, check out the link below.
+  
 \center https://paperswithcode.com/area/natural-language-processing
   
 \flushleft
