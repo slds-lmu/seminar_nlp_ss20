@@ -182,7 +182,7 @@ The paper and examples of the dataset can be found here:
 \flushleft
 
 ### Overview
-Below is a brief overview of all of the datasets discussed in this chapter, including some other interesting datasets. If you would like to learn more about one of the datasets, click on the name of the respective dataset to view the original paper.
+Below is a brief overview of all of the datasets discussed in this chapter, including some other interesting datasets. If you would like to learn more about one of the datasets, for each dataset the corresponding paper is linked.
 ```{r table2, echo=FALSE, message=FALSE, warnings=FALSE, results='asis'}
 dt_url <- c(
   "https://arxiv.org/pdf/1806.03822.pdf",
