@@ -68,7 +68,7 @@ As you see in figure \@ref(fig:ch21-sequentialinductivetl), first, the model is 
 
 In the first step, all models are **pretrained** on an extensive source data set, which is, in the best case, very close to the target task [@peterrudersmith2019]. The pre-trained language models in this chapter are uni-directional models that predict the next word (figure \@ref(fig:ch21-lm)).
 
-```{r ch21-lm, echo=FALSE, out.width="80%", fig.cap="(ref:ch21-figure7)", fig.align="center"}
+```{r ch21-lm, echo=FALSE, out.width="80%", fig.cap="Unidirectional language model", fig.align="center"}
 knitr::include_graphics("figures/02-01-transfer-learning-for-nlp-1/pretrained-lm-new.PNG")
 ```
 
