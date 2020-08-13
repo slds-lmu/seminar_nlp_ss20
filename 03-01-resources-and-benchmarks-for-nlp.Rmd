@@ -14,7 +14,7 @@ For many of the benchmarking datasets in natural language processing, a leaderbo
   
 **Exact match (EM):** The percentage of predictions that match any one of the answers exactly.
   
-**(Macro-averaged) F1 score (F1):** Each answer and prediction is tokenized into words. For every answer to a given question, the overlap between the prediction and each answer is calculated and the maximum F1 is chosen. This score is then averaged over all of the questions. Formally speaking:
+**(Macro-averaged) F1 score (F1):** Each answer and prediction is tokenized into words. For every answer to a given question, the overlap between the prediction and each answer is calculated and the maximum F1 is chosen. This score is then averaged over all the questions. Formally speaking:
   
 
 $$
@@ -27,7 +27,7 @@ $$
 
 **Perplexity:** Perplexity is a measurement of how well a probability model predicts a sample. A low perplexity indicates the probability distribution is good at predicting the sample. In NLP, perplexity is a way of evaluating language models. A model of an unknown probability distribution $p$, may be proposed based on a training sample that was drawn from $p$. Given a proposed probability model $q$, one may evaluate $q$ by asking how well it predicts a separate test sample $x_1, x_2, ..., x_N$ also drawn from $p$. The perplexity of the model $q$ is defined as
 $$ b^{-\frac{1}{N}\sum_{i=1}^N\log_bq(x_i)} $$
-where $b$ is customarily $2$.
+where $b$ is customarily $2$. [@martinc2019supervised]
 
 **BLEU:** BLEU (**B**i**l**ingual **E**valuation **U**nderstudy) is an algorithm for evaluating the quality of text which has been machine-translated from one natural language to another. Scores are calculated for individual translated segments—generally sentences—by comparing them with a set of good quality reference translations. Those scores are then averaged over the whole corpus to reach an estimate of the translation's overall quality. Intelligibility or grammatical correctness are not taken into account. [@papineni2002bleu]
 
@@ -272,7 +272,7 @@ a <- kable(datasets, "markdown")
 |[VOiCES](https://arxiv.org/pdf/1804.05053.pdf)                                         |Speech Recognition                                                |3,900                       |Voices in complex environmental settings. 15h material           |
 
 
-## Pre-Training Resources
+## Pre-Trained Models
 In the last chapters we've already heard quite a bit about pre-trained models like BERT or GPT-3. But exactly on what data are they trained on? Let's find out.
 
 ### BERT
