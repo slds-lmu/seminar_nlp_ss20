@@ -26,7 +26,6 @@ knitr::include_graphics("figures/01-03-cnns-and-their-applications-in-nlp/basic_
 ```
 
 As illustrated in Figure \@ref(fig:figs), a convolutional neural network includes successively an input layer, multiple hidden layers, and an output layer, the input layer will be dissimilar according to various application. The hidden layers, which are the core block of a CNN architecture, consist of a series of **convolutional layers**, **pooling layers**, and finally export the output through the **fully-connected layer**. In the following sub-chapters, descriptions of the critical layer of CNN and their corresponding intuitive example will be provided in detail.
-@Scherer2010EvaluationOP
 
 ### Convolutional Layer
 
@@ -131,7 +130,6 @@ knitr::include_graphics("figures/01-03-cnns-and-their-applications-in-nlp/Fully_
 ## CNN for sentence classification
 
 The explanation of CNN's basic architecture provided in the first sub-chapters is based on a general example. Many researchers constructed their own specific CNN models based on this basic architecture in recent years and achieved outstanding results in the field of NLP. Therefore, this section explores four superior CNN architecture with some technical detail and their performance comparison will be provided in later sub-chapters of this report.
-
 
 ### CNN-rand/CNN-static/CNN-non-static/CNN-multichannel
 
