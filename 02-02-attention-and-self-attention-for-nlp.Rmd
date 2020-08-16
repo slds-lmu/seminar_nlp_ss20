@@ -15,6 +15,7 @@ developments made with Self-Attention and the most common transfer learning arch
 (ref:cheng2016long) [@cheng2016long]
 (ref:vaswani2017attention) [@vaswani2017attention]
 (ref:weng2018attention) [@weng2018attention]
+(ref:alammar2018transformer) [@alammar2018transformer]
 (ref:luong-att) $\overline{h}_s$
 
 ## Attention
@@ -22,7 +23,7 @@ In this part of the chapter, we revisit the Encoder-Decoder architecture that wa
 in chapter [3](01-02-rnns-and-their-applications-in-nlp). We focus on the improvements
 that were made with the development of attention mechanisms on the example of neural machine translation (NMT).
 
-As seen in chapter 3, early
+As seen in chapter 3, vanilla
 Encoder-Decoder architecture passes only the last hidden state from the encoder to the decoder.
 This leads to the problem that information has to be compressed into a fixed length
 vector and information can be lost in this compression.
@@ -36,13 +37,13 @@ thus use the context of the entire sequence during the decoding step.
 ### Bahdanau-Attention
 
 In 2014, @bahdanau2014neural proposed attention to fix the information problem that
-the early encoder-decoder architecture faced. Decoders without attention are trained to predict $y_{t'}$
-given a fixed length context vector $c$ and all earlier predicted words $\{y_t, \dots, y_{t'-1}\}$.
+the early encoder-decoder architecture faced. Decoders without attention are trained to predict $y_{t}$
+given a fixed length context vector $c$ and all earlier predicted words $\{y_t, \dots, y_{t-1}\}$.
 The fixed length context vector is computed with
 $$c=q(\{h_1,\dots,h_T\})$$ where $h_1,\dots,h_T$ are the the hidden states of the encoder for the input sequence
 $x_1,\dots, x_T$ and $q$ is a non-linear function. @sutskever2014sequence for example used
 $c = q(\{h_1,\dots,h_T\}) = h_T$ as their non-linear transformation which remains a popular
-choice for architecture without attention. It is also commonly used for the initialisation of the decoder hidden states.
+choice for architectures without attention. It is also commonly used for the initialisation of the decoder hidden states.
 
 Attention changes the context vector $c$ that a decoder uses for translation from a fixed
 length vector $c$ of a sequence of hidden states $h_1, \dots, h_T$ to a sequence
@@ -80,12 +81,13 @@ is given as
 $$
 score(s_t,h_i) = v_\alpha^Ttanh(\mathbf{W}_\alpha[s_t;h_i])
 $$
-were tanh is used as a non-linear activation function and $v_\alpha$ and $W_\alpha$
+were *tanh* is used as a non-linear activation function and $v_\alpha$ and $W_\alpha$
 are the weight matrices to be learned by the alignment model. The alignment score function
 is called "concat" in @luong2015effective and "additive attention" in @vaswani2017attention
 because $s_t$ and $h_i$ are concatenated just like the forward and backward hidden states seen above.
-The attention model proposed by Bahdanau et al. is also called a soft/global attention model as it attends
-to every input in the sequence.
+The attention model proposed by Bahdanau et al. is also called a global attention model as it attends
+to every input in the sequence. Another name for Bahdanaus attention model is soft attention
+because the attention is spread thinnly/weakly/softly over the input and does not have an inherent hard focus on specific inputs.
 A nice by-product of attention mechanisms is the matrix of alignment scores
 which can be visualised to show the correlation between source and target words as seen in \@ref(fig:attention-plot-bahdanau).
 
@@ -280,7 +282,9 @@ The decoder is, as seen in Figure \@ref(fig:decoder-transformer), composed of a 
 knitr::include_graphics('figures/02-02-attention-and-self-attention-for-nlp/transformer-decoder.png')
 ```
 It inserts, in addition to the two already known sub-layers from the encoder,
-a third sub-layer which performs multi-head attention over the output of the encoder stack.
+a third sub-layer which also performs multi-head attention.
+This third sub-layer uses the encoder output as two of its three input values, which will be described in the next part of the chapter,
+for the multi-head attention. This sub-layer is in its function very close to the before seen attention mechanisms between encoders and decoders.
 It uses, same as the encoder, residual connections around each of the sub-layers.
 The decoder also uses a modified, masked self-attention sub-layer ``to prevent positions
 from attending to subsequent positions'' @vaswani2017attention. This, coupled with the
@@ -308,8 +312,21 @@ For further reasoning why these functions were chosen see @vaswani2017attention.
 @vaswani2017attention describe attention functions as "mapping a query and a set of key-value pairs to an output,
 where the query, keys, values, and output are all vectors. The output is computed as a weighted sum
 of the values, where the weight assigned to each value is computed by a compatibility function of the
-query with the corresponding key". The *Q*uery and the *K*ey-*V*alue pairs are used in the
+query with the corresponding key". 
+The *Q*uery and the *K*ey-*V*alue pairs are used in the
 newly proposed attention mechanism that is used in Transformers.
+These inputs for the attention mechanisms are obtained through multiplication of the
+general input to the encoder/decoder with different weight matrices as can be seen in figure \@ref(fig:self-attention-inputs).
+
+```{r self-attention-inputs, echo = FALSE, fig.align='center', fig.cap= "Input transformation used in a Transformer, $Q = \text{Query}$, $K = \text{Key}$, $V = \text{Value}$. Image Source: (ref:alammar2018transformer)", out.width="50%"}
+knitr::include_graphics('figures/02-02-attention-and-self-attention-for-nlp/self-attention-matrix-calculation.png')
+```
+
+These different transformations of the input are what enables the input to attend to itself.
+This in turn allows the model to learn about context.
+E.g. **bank** can mean very different things depending on the context which can be recognized by the self-attention mechanisms.
+
+
 As seen in Figures \@ref(fig:encoder-transformer), \@ref(fig:decoder-transformer)
 and \@ref(fig:transformer-full), the Transformer uses an attention mechanism called
 ``Multi-Head Attention''.
@@ -356,7 +373,7 @@ $$
 \text{Attention}(Q,K,V) = \text{softmax}(\frac{QK^\top}{\sqrt{d_k}})V
 $$
 where $\text{Attention}(Q,K,V)$ corresponds to an non-projected head of multi-head attention.
-These attention mechaisms allow Transformers to learn different and distant dependencies in langauge
+These attention mechanisms allow Transformers to learn different and distant dependencies in langauge
 and are thus a good candidate for transfer learning.
 
 #### Complexity for different attention models
@@ -415,9 +432,9 @@ function, including kernels, as similarity function to generate a new attention 
 Given the feature representation $\phi(x)$ of such a kernel, the previous row-wise calculation
 can be rewritten as $V_i' = \frac{\phi(Q_i)^\top \sum_{j=1}^N\phi(K_j)V_j^\top}{\phi(Q_i)^\top \sum_{j=1}^N\phi(K_j)}$.
 Or in vectorized form: $\phi(Q)(\phi(K)^\top V)$ where the feature map $\phi(\cdot)$ is applied row-wise to the matrices.
-This new formulation shows that the computation with a feature map allows for linear time and memory scaling $O(N)$
+This new formulation shows that the computation with a feature map allows for linear time and memory scaling $O(n)$
 because $\sum_{j=1}^N\phi(K_j)V_j^\top$ and $\sum_{j=1}^N\phi(K_j)$ can be both computed once and reused for every
-row of the query @katharopoulos2020transformers. 
+row of the query (@katharopoulos2020transformers). 
 No finite dimensional feature map of the exponential function exists, which makes a linearisation of the
 softmax attention impossible. This forces the use of a polynomial kernel which has been shown to work equally well with
 the exponential kernel @tsai2019transformer. This results in a computational cost of
@@ -428,10 +445,12 @@ For autoregressive tasks we want an attention mechanism that can't look ahead of
 The addition of masking changes the previous formulation to $V_i' = \frac{\sum_{j=1}^i \text{sim}(Q_i, K_j)V_j}{\sum_{j=1}^i\text{sim}(Q_i, K_j)}$.
 With the linearisation through kernels we get $V_i' = \frac{\phi(Q_i)^\top \sum_{j=1}^i\phi(K_j)V_j^\top}{\phi(Q_i)^\top \sum_{j=1}^i\phi(K_j)}$.
 
-$S_i = \sum_{j=1}^i\phi(K_j)V_j^\top$ and $Z_i = \sum_{j=1}^i\phi(K_j)$ can be used to simplify the formula to
+$S_i = \sum_{j=1}^i\phi(K_j)V_j^\top$ and $Z_i = \sum_{j=1}^i\phi(K_j)$ can be used to simplify the formula to:
+
 $$
 V_i' = \frac{\phi(Q_i)^\top Si}{\phi(Q_i)^\top Z_i}
 $$
+
 where  $S_i$ and $Z_i$ can be computed from $S_{i-1}$ and $Z_{i-1}$ which allows the linearised attention
 with masking to scale linearly with respect to the sequence length. The derivation of
 the numerator as cumulative sums allows for the computation in linear time and constant memory,
