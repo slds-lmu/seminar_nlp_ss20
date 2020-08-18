@@ -16,6 +16,7 @@ developments made with Self-Attention and the most common transfer learning arch
 (ref:vaswani2017attention) [@vaswani2017attention]
 (ref:weng2018attention) [@weng2018attention]
 (ref:alammar2018transformer) [@alammar2018transformer]
+(ref:query-key) $Q = \text{Query}$, $K = \text{Key}$, $V = \text{Value}$
 (ref:luong-att) $\overline{h}_s$
 
 ## Attention
@@ -318,7 +319,7 @@ newly proposed attention mechanism that is used in Transformers.
 These inputs for the attention mechanisms are obtained through multiplication of the
 general input to the encoder/decoder with different weight matrices as can be seen in figure \@ref(fig:self-attention-inputs).
 
-```{r self-attention-inputs, echo = FALSE, fig.align='center', fig.cap= "Input transformation used in a Transformer, $Q = \text{Query}$, $K = \text{Key}$, $V = \text{Value}$. Image Source: (ref:alammar2018transformer)", out.width="50%"}
+```{r self-attention-inputs, echo = FALSE, fig.align='center', fig.cap= "Input transformation used in a Transformer, (ref:query-key). Image Source: (ref:alammar2018transformer)", out.width="50%"}
 knitr::include_graphics('figures/02-02-attention-and-self-attention-for-nlp/self-attention-matrix-calculation.png')
 ```
 
