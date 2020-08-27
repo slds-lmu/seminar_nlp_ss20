@@ -36,13 +36,15 @@ if (output == "latex") { knitr::opts_chunk$set(out.width="\\textwidth") }
 
 In the last few years, there have been several breakthroughs concerning the methodologies used in Natural Language Processing (NLP). These breakthroughs originate from both new modeling frameworks as well as from improvements in the availability of computational and lexical resources.
 
-In this seminar, we are planning to review these frameworks starting with a methodology that can be seen as the beginning of modern NLP: Word Embeddings.
+In this seminar booklet, we are reviewing these frameworks starting with a methodology that can be seen as the beginning of modern NLP: _Word Embeddings_.
 
-We will further discuss the integration of embeddings into end-to-end trainable approaches, namely convolutional and recurrent neural networks. As Attention-based models and transfer learning approaches are the foundation of most of the recent state-of-the-art models, we will cover these two topics extensively in the second part of our seminar.
+We will further discuss the integration of embeddings into end-to-end trainable approaches, namely convolutional and recurrent neural networks. 
 
-We will furthermore talk about software implementations of these methods and benchmark tasks/data sets for evaluating state-of-the-art models.
+The second chapter of this booklet is going to cover the impact of Attention-based models, since they are the foundation of most of the recent state-of-the-art architectures. Consequently, we will also spend a large part of this chapter on the use of transfer learning approaches in modern NLP.
 
-This book is the outcome of the seminar "Modern Approaches in Natural Language Processing" which took place in summer 2020 at the Department of Statistics, LMU Munich.
+To cap it all of, the last chapter will be abour pre-training resources and benchmark tasks/data sets for evaluating state-of-the-art models followed by an illustrative use case on Natural Language Generation.
+
+This book is the outcome of the seminar "Modern Approaches in Natural Language Processing" which took place in the summer term 2020 at the Department of Statistics, LMU Munich.
 
 ![Creative Commons License](figures/by-nc-sa.png)
 
@@ -53,27 +55,20 @@ This book is licensed under the [Creative Commons Attribution-NonCommercial-Shar
 
 # Foreword {-}
 
-*Author: Christoph Molnar*
+*Author: Matthias Aßenmacher*
 
 <!-- An experiment -->
-This book is the result of an experiment in university teaching.
-Each semester, students of the Statistics Master can choose from a selection of seminar topics.
-Usually, every student in the seminar chooses a scientific paper, gives a talk about the paper and summarizes it in the form of a seminar paper.
-The supervisors help the students, they listen to the talks, read the seminar papers, grade the work and then ... hide the seminar papers away in (digital) drawers.
-This seemed wasteful to us, given the huge amount of effort the students usually invest in seminars.
-An idea was born:
-Why not create a book with a website as the outcome of the seminar?
-Something that will last at least a few years after the end of the semester.
-In the summer term 2020, some Statistics Master students signed up for our seminar entitled "Limitations of Interpretable Machine Learning".
-When they came to the kick-off meeting, they had no idea that they would write a book by the end of the semester.
+This book is the result of an experiment in university teaching. We were inspired by a group of other PhD Students around Christoph Molnar, who conducted another [seminar on Interpretable Machine Learning](https://compstat-lmu.github.io/iml_methods_limitations/) in this format.
+Instead of letting every student work on a seminar paper, which more or less isolated from the other students, we wanted to foster collaboration between the students and enable them to produce a tangible outout (that isn't written to spend the rest of its time in (digital) drawers).
+In the summer term 2020, some Statistics & Data Science Master students signed up for our seminar entitled "Modern Approaches in Natural Language Processing" and had (before kick-off meeting) no idea what they had signed up for: Having written an entire book by the end of the semester.
 
 We were bound by the examination rules for conducting the seminar, but otherwise we could deviate from the traditional format.
 We deviated in several ways:
 
-1. Each student project is part of a book, and not an isolated seminar paper.
-1. We gave challenges to the students, instead of papers. The challenge was to investigate a specific limitation of interpretable machine learning methods.
+1. Each student project is a chapter of this booklet, linked contentwise to other chapers since there's partly a large overlap between the topics.
+1. We gave challenges to the students, instead of papers. The challenge was to investigate a specific impactful recent model or method from the field of NLP.
 1. We designed the work to live beyond the seminar.
-1. We emphasized collaboration. Students wrote some chapters in teams and reviewed each others texts.
+1. We emphasized collaboration. Students wrote the introduction to chapters in teams and reviewed each others individual texts.
 
 <!-- Our experience -->
 <!---
