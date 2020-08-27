@@ -124,7 +124,7 @@
 
 \title{Modern Approaches in Natural Language Processing}
 \author{}
-\date{\vspace{-2.5em}2020-06-23}
+\date{\vspace{-2.5em}2020-08-27}
 
 \begin{document}
 \maketitle
@@ -153,13 +153,15 @@
 
 In the last few years, there have been several breakthroughs concerning the methodologies used in Natural Language Processing (NLP). These breakthroughs originate from both new modeling frameworks as well as from improvements in the availability of computational and lexical resources.
 
-In this seminar, we are planning to review these frameworks starting with a methodology that can be seen as the beginning of modern NLP: Word Embeddings.
+In this seminar booklet, we are reviewing these frameworks starting with a methodology that can be seen as the beginning of modern NLP: \emph{Word Embeddings}.
 
-We will further discuss the integration of embeddings into end-to-end trainable approaches, namely convolutional and recurrent neural networks. As Attention-based models and transfer learning approaches are the foundation of most of the recent state-of-the-art models, we will cover these two topics extensively in the second part of our seminar.
+We will further discuss the integration of embeddings into end-to-end trainable approaches, namely convolutional and recurrent neural networks.
 
-We will furthermore talk about software implementations of these methods and benchmark tasks/data sets for evaluating state-of-the-art models.
+The second chapter of this booklet is going to cover the impact of Attention-based models, since they are the foundation of most of the recent state-of-the-art architectures. Consequently, we will also spend a large part of this chapter on the use of transfer learning approaches in modern NLP.
 
-This book is the outcome of the seminar ``Modern Approaches in Natural Language Processing'' which took place in summer 2020 at the Department of Statistics, LMU Munich.
+To cap it all of, the last chapter will be abour pre-training resources and benchmark tasks/data sets for evaluating state-of-the-art models followed by an illustrative use case on Natural Language Generation.
+
+This book is the outcome of the seminar ``Modern Approaches in Natural Language Processing'' which took place in the summer term 2020 at the Department of Statistics, LMU Munich.
 
 \begin{figure}
 \centering
@@ -175,18 +177,11 @@ This book is licensed under the \href{http://creativecommons.org/licenses/by-nc-
 \chapter*{Foreword}\label{foreword}}
 
 
-\emph{Author: Christoph Molnar}
+\emph{Author: Matthias Aßenmacher}
 
-This book is the result of an experiment in university teaching.
-Each semester, students of the Statistics Master can choose from a selection of seminar topics.
-Usually, every student in the seminar chooses a scientific paper, gives a talk about the paper and summarizes it in the form of a seminar paper.
-The supervisors help the students, they listen to the talks, read the seminar papers, grade the work and then \ldots{} hide the seminar papers away in (digital) drawers.
-This seemed wasteful to us, given the huge amount of effort the students usually invest in seminars.
-An idea was born:
-Why not create a book with a website as the outcome of the seminar?
-Something that will last at least a few years after the end of the semester.
-In the summer term 2020, some Statistics Master students signed up for our seminar entitled ``Limitations of Interpretable Machine Learning''.
-When they came to the kick-off meeting, they had no idea that they would write a book by the end of the semester.
+This book is the result of an experiment in university teaching. We were inspired by a group of other PhD Students around Christoph Molnar, who conducted another \href{https://compstat-lmu.github.io/iml_methods_limitations/}{seminar on Interpretable Machine Learning} in this format.
+Instead of letting every student work on a seminar paper, which more or less isolated from the other students, we wanted to foster collaboration between the students and enable them to produce a tangible outout (that isn't written to spend the rest of its time in (digital) drawers).
+In the summer term 2020, some Statistics \& Data Science Master students signed up for our seminar entitled ``Modern Approaches in Natural Language Processing'' and had (before kick-off meeting) no idea what they had signed up for: Having written an entire book by the end of the semester.
 
 We were bound by the examination rules for conducting the seminar, but otherwise we could deviate from the traditional format.
 We deviated in several ways:
@@ -195,13 +190,13 @@ We deviated in several ways:
 \def\labelenumi{\arabic{enumi}.}
 \tightlist
 \item
-  Each student project is part of a book, and not an isolated seminar paper.
+  Each student project is a chapter of this booklet, linked contentwise to other chapers since there's partly a large overlap between the topics.
 \item
-  We gave challenges to the students, instead of papers. The challenge was to investigate a specific limitation of interpretable machine learning methods.
+  We gave challenges to the students, instead of papers. The challenge was to investigate a specific impactful recent model or method from the field of NLP.
 \item
   We designed the work to live beyond the seminar.
 \item
-  We emphasized collaboration. Students wrote some chapters in teams and reviewed each others texts.
+  We emphasized collaboration. Students wrote the introduction to chapters in teams and reviewed each others individual texts.
 \end{enumerate}
 
 \hypertarget{technical-setup}{%
@@ -218,9 +213,9 @@ For details, head over to the \href{link/to/repo}{book's repository}.
 \hypertarget{introduction}{%
 \chapter{Introduction}\label{introduction}}
 
-\emph{Author: }
+\emph{Author: Xiao-Yin To}
 
-\emph{Supervisor: }
+\emph{Supervisor: Matthias Aßenmacher/Daniel Schalk}
 
 \hypertarget{intro-about-the-seminar-topic}{%
 \section{Intro About the Seminar Topic}\label{intro-about-the-seminar-topic}}
@@ -1122,8 +1117,8 @@ In the \protect\hyperlink{Transfer-Learning-for-NLP-II}{\textbf{``Chapter 10: Tr
 
 \emph{Supervisor: Matthias Aßenmacher}
 
-\hypertarget{introduction-1}{%
-\section{Introduction}\label{introduction-1}}
+\hypertarget{introduction}{%
+\section{Introduction}\label{introduction}}
 
 As mentioned in the introduction, the field of natural language processing (NLP) has seen rapid advancements due to the growing usage of transfer learning.
 A first enhancement began in 2018, where the transfer learning improved several fields in NLP, as the model layers have not to be trained from scratch. Word2Vec, which was explained earlier ({[}chapter??{]}), is one example of transfer learning.
@@ -1516,8 +1511,8 @@ Overview over models that use attention and different attentions used, segway to
   just a short overview over different attention models/score functions
 \end{itemize}
 
-\hypertarget{self-attention-1}{%
-\section{Self-Attention}\label{self-attention-1}}
+\hypertarget{self-attention}{%
+\section{Self-Attention}\label{self-attention}}
 
 general intro to self-attention
 
@@ -2261,8 +2256,8 @@ Models are once again evaluated with the accuracy of the predicted label. For th
 
 \emph{Supervisor: Supervisor}
 
-\hypertarget{use-bases-for-nlp}{%
-\chapter{Use-Bases for NLP}\label{use-bases-for-nlp}}
+\hypertarget{use-cases-for-nlp}{%
+\chapter{Use-Cases for NLP}\label{use-cases-for-nlp}}
 
 \emph{Authors: Author 1, Author 2}
 
@@ -2275,8 +2270,8 @@ Models are once again evaluated with the accuracy of the predicted label. For th
 
 \emph{Supervisor: Matthias Aßenmacher}
 
-\hypertarget{introduction-2}{%
-\section{Introduction}\label{introduction-2}}
+\hypertarget{introduction}{%
+\section{Introduction}\label{introduction}}
 
 Machine learning systems can be differentiated into two types: Discriminative and Generative. While discriminative systems like classification, regression, clustering are the more well known type, it's the Generative systems that hold greater promise of achieving Artificial General Intelligence. In essence, a Generative system is expected to produce images, text or audio that would be meaningful to the users. Generating a picture of a horse is a much harder problem than just identifying whether there is a horse in the picture.
 
@@ -2345,8 +2340,8 @@ Two aspects need to be highlighted. First is generation of understandable text i
 
 There are many architectures that are common across most of above mentioned NLG systems. While some are used in other NLP domains as well, in the following sections I will explain them with a focus on language generation.
 
-\hypertarget{encoder-decoder-architecture-1}{%
-\subsection{Encoder-Decoder Architecture}\label{encoder-decoder-architecture-1}}
+\hypertarget{encoder-decoder-architecture}{%
+\subsection{Encoder-Decoder Architecture}\label{encoder-decoder-architecture}}
 
 The most ubiquitous architecture for NLG is the encoder-decoder architecture, and especially the decoder part of it. Hence I will explain it in some detail. The architecture is shown in the following figures:
 
@@ -2450,8 +2445,8 @@ Language models are probably the most important ingredient of generating text. A
 
 The question-answer systems attempt to extract or generate answers from a given question and either a fixed or open ended context. The context here is the corpus from which the answer needs to be generated. For example in SQUAD dataset (\textbackslash{}cite) the context is a given paragraph from wikipedia and the question is asked from that paragraph. In open ended contexts, the whole wikipedia (or other corpus) can be the contexts.
 
-\hypertarget{datasets-1}{%
-\subsection{Datasets}\label{datasets-1}}
+\hypertarget{datasets}{%
+\subsection{Datasets}\label{datasets}}
 
 \begin{itemize}
 \tightlist
@@ -2594,17 +2589,10 @@ These are the systems where an agent chats with a human being either with a spec
   \end{itemize}
 \end{itemize}
 
-\hypertarget{conclusion-2}{%
-\section{Conclusion}\label{conclusion-2}}
+\hypertarget{conclusion}{%
+\section{Conclusion}\label{conclusion}}
 
 Natural Language Generation (NLG) has huge potential to be not only an academic domain for research but to affect and improve our daily lives. In this chapter I have talked about only two of its manifestations.
-
-\hypertarget{use-case-ii}{%
-\chapter{Use-Case II}\label{use-case-ii}}
-
-\emph{Authors: Author 1, Author 2}
-
-\emph{Supervisor: Supervisor}
 
 \hypertarget{acknowledgements}{%
 \chapter{Acknowledgements}\label{acknowledgements}}
