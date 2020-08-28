@@ -28,11 +28,11 @@ if (output == "latex") { knitr::opts_chunk$set(out.width="\\textwidth") }
 
 # Preface {-}
 
-<!---
+
 ```{r cover, cache=FALSE, out.width="500", fig.align="center", echo=FALSE, eval = is.html}
-# knitr::include_graphics('images/cover.png')
+knitr::include_graphics('figures/cover.png')
 ```
--->
+
 
 In the last few years, there have been several breakthroughs concerning the methodologies used in Natural Language Processing (NLP). These breakthroughs originate from both new modeling frameworks as well as from improvements in the availability of computational and lexical resources.
 
@@ -91,6 +91,6 @@ The simulations, data examples and visualizations were created with R [@rlang].
 To combine R-code and Markdown, we used rmarkdown.
 The book was compiled with the bookdown package.
 We collaborated using git and github.
-For details, head over to the [book's repository](link/to/repo).
+For details, head over to the [book's repository](https://github.com/compstat-lmu/seminar_nlp_ss20).
 
 
