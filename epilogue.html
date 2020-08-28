@@ -227,7 +227,11 @@
 </ul></li>
 <li class="chapter" data-level="13.6" data-path="transfer-learning-for-nlp-ii.html"><a href="transfer-learning-for-nlp-ii.html#conclusion"><i class="fa fa-check"></i><b>13.6</b> Conclusion</a></li>
 </ul></li>
-<li class="chapter" data-level="14" data-path="epilogue.html"><a href="epilogue.html"><i class="fa fa-check"></i><b>14</b> Epilogue</a></li>
+<li class="chapter" data-level="14" data-path="epilogue.html"><a href="epilogue.html"><i class="fa fa-check"></i><b>14</b> Epilogue</a><ul>
+<li class="chapter" data-level="14.1" data-path="epilogue.html"><a href="epilogue.html#new-influentioal-architectures"><i class="fa fa-check"></i><b>14.1</b> New influentioal architectures</a></li>
+<li class="chapter" data-level="14.2" data-path="epilogue.html"><a href="epilogue.html#improvements-of-the-selfattention-mechanism"><i class="fa fa-check"></i><b>14.2</b> Improvements of the SelfAttention mechanism</a></li>
+<li class="chapter" data-level="14.3" data-path="epilogue.html"><a href="epilogue.html#evaluation-and-interpretability"><i class="fa fa-check"></i><b>14.3</b> Evaluation and Interpretability</a></li>
+</ul></li>
 <li class="chapter" data-level="15" data-path="acknowledgements.html"><a href="acknowledgements.html"><i class="fa fa-check"></i><b>15</b> Acknowledgements</a></li>
 <li class="chapter" data-level="" data-path="references.html"><a href="references.html"><i class="fa fa-check"></i>References</a></li>
 <li class="divider"></li>
@@ -253,7 +257,64 @@
 <div id="epilogue" class="section level1">
 <h1><span class="header-section-number">Chapter 14</span> Epilogue</h1>
 <p><em>Author: Matthias Aßenmacher</em></p>
+<p>Since this project was realized in a limited time frame and accounted for about one third
+of the ECTS points which should be achieved during one semester, it is obvious that this
+booklet cannot provide exhaustive coverage of the vast research field of <em>Natural Language Processing</em>.</p>
+<p>Furthermore this area of research is moving very rapidly at the moment, which means that
+certain architectures, improvements or ideas had net yet even been published when we sat down
+and came up with the chapter topics in February 2020. Thus, this epilogue tries to put the content
+of this booklet into context and relate it to what is currently happening. Thereby we will focus on
+mainly three aspects:</p>
+<ul>
+<li>New influential (or even state-of-the-art) architectures</li>
+<li>Improvements and work on the Attention-mechanism and Transformers</li>
+<li>Work on proper evaluation and interpretability</li>
+</ul>
+<div id="new-influentioal-architectures" class="section level2">
+<h2><span class="header-section-number">14.1</span> New influentioal architectures</h2>
+<p>In <a href="./transfer-learning-for-nlp-i.html"><strong>Chapter 7: “Transfer Learning for NLP I”</strong></a> and <a href="./transfer-learning-for-nlp-ii.html"><strong>Chapter 9: “Transfer Learning for NLP I”</strong></a> some of the most important models for <em>sequential transfer learning</em> have been presented. We chose to narrow ourselves down to this type of models, since we considered them to be most important to begin with, in order to unterstand the overall concept. Nevertheless, other influential architectures shall also be addressed:</p>
+<ul>
+<li>An architecture with a relatively interesting pre-training objective the interested reader might want to have a look at, is <a href="https://openreview.net/pdf?id=r1xMH1BtvB"><strong>ELECTRA</strong></a> (<span class="citation">Clark et al. (<a href="#ref-Clark2020ELECTRA">2020</a>)</span>).</li>
+<li><a href="https://arxiv.org/pdf/1910.10683.pdf"><strong>Google’s T5</strong></a> (<span class="citation">Raffel et al. (<a href="#ref-raffel2019exploring">2019</a>)</span>) (already briefly mentioned in <a href="./transfer-learning-for-nlp-ii.html">Chapter 9</a>) does not fit into the category of sequential tansfer learning but rather belongs to <em>multi-task learning</em> models (cf. Fig. 7.1) in <a href="./transfer-learning-for-nlp-i.html">Chapter 7</a>)) since it is trained on multiple tasks at once. This is possible due to transformation of the entire input <em>and</em> output to strings, which essentially converts every tasks to as seq-to-seq task.</li>
+<li>In May 2020 the <a href="https://arxiv.org/pdf/2005.14165.pdf"><strong>OpenAI GPT-3</strong></a> (<span class="citation">Brown et al. (<a href="#ref-brown2020language">2020</a>)</span>) shook the NLP community and triggered <em>a lot</em> of subsequent research. This model puts, as already mentioned in <a href="./transfer-learning-for-nlp-ii.html">Chapter 9</a>, is by far bigger then every previous model and put a special focus on <em>few-shot learning</em>-</li>
+</ul>
+</div>
+<div id="improvements-of-the-selfattention-mechanism" class="section level2">
+<h2><span class="header-section-number">14.2</span> Improvements of the SelfAttention mechanism</h2>
+<p>Recently, there has been a lot effort put in improving the Self-Attention, mostly by reducing its computational cost
+and this enabling models to process longer sequences. One interesting article has already been discussed at the end of <a href="./attention-and-self-attention-for-nlp.html">Chapter 8</a>, while another interesting piece of work has been published recently by <span class="citation">Wang et al. (<a href="#ref-wang2020linformer">2020</a>)</span>: The so-called <a href="https://arxiv.org/pdf/2006.04768.pdf">Linformer</a></p>
+</div>
+<div id="evaluation-and-interpretability" class="section level2">
+<h2><span class="header-section-number">14.3</span> Evaluation and Interpretability</h2>
+<p>While “traditional” Benchmark (collections) have been discussed in <a href="./resources-and-benchmarks-for-nlp.html">Chapter 11</a>, there is a lot of ongoing research about proper evaluation and interpretability of NLP models. Here are just two examples of impressive work, which was published very recently:</p>
+<ul>
+<li><span class="citation">Ribeiro et al. (<a href="#ref-ribeiro-etal-2020-beyond">2020</a>)</span> won the best paper award at ACL 2020 for their article <a href="https://www.aclweb.org/anthology/2020.acl-main.442.pdf">Beyond Accuracy: Behavioral Testing of NLP Models with CheckList</a></li>
+<li>Google launched a <a href="https://github.com/pair-code/lit">Language Interpretability Tool</a> together with an accompanying <a href="https://arxiv.org/pdf/2008.05122.pdf">research article</a> (<span class="citation">Tenney et al. (<a href="#ref-tenney2020language">2020</a>)</span>)</li>
+</ul>
+<p>We hope that this little outlook can adequately round off this nice piece of academic work created by extremely motivated students and we hope that you enjoyed reading.</p>
 
+</div>
+</div>
+<h3>References</h3>
+<div id="refs" class="references">
+<div id="ref-brown2020language">
+<p>Brown, Tom B., Benjamin Mann, Nick Ryder, Melanie Subbiah, Jared Kaplan, Prafulla Dhariwal, Arvind Neelakantan, et al. 2020. “Language Models Are Few-Shot Learners.”</p>
+</div>
+<div id="ref-Clark2020ELECTRA">
+<p>Clark, Kevin, Minh-Thang Luong, Quoc V. Le, and Christopher D. Manning. 2020. “ELECTRA: Pre-Training Text Encoders as Discriminators Rather Than Generators.” In <em>International Conference on Learning Representations</em>. <a href="https://openreview.net/forum?id=r1xMH1BtvB" class="uri">https://openreview.net/forum?id=r1xMH1BtvB</a>.</p>
+</div>
+<div id="ref-raffel2019exploring">
+<p>Raffel, Colin, Noam Shazeer, Adam Roberts, Katherine Lee, Sharan Narang, Michael Matena, Yanqi Zhou, Wei Li, and Peter J Liu. 2019. “Exploring the Limits of Transfer Learning with a Unified Text-to-Text Transformer.” <em>arXiv Preprint arXiv:1910.10683</em>. <a href="https://arxiv.org/abs/1909.11942" class="uri">https://arxiv.org/abs/1909.11942</a>.</p>
+</div>
+<div id="ref-ribeiro-etal-2020-beyond">
+<p>Ribeiro, Marco Tulio, Tongshuang Wu, Carlos Guestrin, and Sameer Singh. 2020. “Beyond Accuracy: Behavioral Testing of NLP Models with CheckList.” In <em>Proceedings of the 58th Annual Meeting of the Association for Computational Linguistics</em>, 4902–12. Online: Association for Computational Linguistics. <a href="https://doi.org/10.18653/v1/2020.acl-main.442" class="uri">https://doi.org/10.18653/v1/2020.acl-main.442</a>.</p>
+</div>
+<div id="ref-tenney2020language">
+<p>Tenney, Ian, James Wexler, Jasmijn Bastings, Tolga Bolukbasi, Andy Coenen, Sebastian Gehrmann, Ellen Jiang, et al. 2020. “The Language Interpretability Tool: Extensible, Interactive Visualizations and Analysis for Nlp Models.” <em>arXiv Preprint arXiv:2008.05122</em>.</p>
+</div>
+<div id="ref-wang2020linformer">
+<p>Wang, Sinong, Belinda Li, Madian Khabsa, Han Fang, and Hao Ma. 2020. “Linformer: Self-Attention with Linear Complexity.” <em>arXiv Preprint arXiv:2006.04768</em>.</p>
+</div>
 </div>
             </section>
 

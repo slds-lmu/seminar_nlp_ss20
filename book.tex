@@ -208,7 +208,7 @@ The simulations, data examples and visualizations were created with R \citep{rla
 To combine R-code and Markdown, we used rmarkdown.
 The book was compiled with the bookdown package.
 We collaborated using git and github.
-For details, head over to the \href{link/to/repo}{book's repository}.
+For details, head over to the \href{https://github.com/compstat-lmu/seminar_nlp_ss20}{book's repository}.
 
 \hypertarget{introduction}{%
 \chapter{Introduction}\label{introduction}}
@@ -2606,6 +2606,62 @@ Natural Language Generation (NLG) has huge potential to be not only an academic 
 \chapter{Epilogue}\label{epilogue}}
 
 \emph{Author: Matthias Aßenmacher}
+
+Since this project was realized in a limited time frame and accounted for about one third
+of the ECTS points which should be achieved during one semester, it is obvious that this
+booklet cannot provide exhaustive coverage of the vast research field of \emph{Natural Language Processing}.
+
+Furthermore this area of research is moving very rapidly at the moment, which means that
+certain architectures, improvements or ideas had net yet even been published when we sat down
+and came up with the chapter topics in February 2020. Thus, this epilogue tries to put the content
+of this booklet into context and relate it to what is currently happening. Thereby we will focus on
+mainly three aspects:
+
+\begin{itemize}
+\tightlist
+\item
+  New influential (or even state-of-the-art) architectures
+\item
+  Improvements and work on the Attention-mechanism and Transformers
+\item
+  Work on proper evaluation and interpretability
+\end{itemize}
+
+\hypertarget{new-influentioal-architectures}{%
+\section{New influentioal architectures}\label{new-influentioal-architectures}}
+
+In \href{./transfer-learning-for-nlp-i.html}{\textbf{Chapter 7: ``Transfer Learning for NLP I''}} and \href{./transfer-learning-for-nlp-ii.html}{\textbf{Chapter 9: ``Transfer Learning for NLP I''}} some of the most important models for \emph{sequential transfer learning} have been presented. We chose to narrow ourselves down to this type of models, since we considered them to be most important to begin with, in order to unterstand the overall concept. Nevertheless, other influential architectures shall also be addressed:
+
+\begin{itemize}
+\tightlist
+\item
+  An architecture with a relatively interesting pre-training objective the interested reader might want to have a look at, is \href{https://openreview.net/pdf?id=r1xMH1BtvB}{\textbf{ELECTRA}} (\citet{Clark2020ELECTRA}).
+\item
+  \href{https://arxiv.org/pdf/1910.10683.pdf}{\textbf{Google's T5}} (\citet{raffel2019exploring}) (already briefly mentioned in \href{./transfer-learning-for-nlp-ii.html}{Chapter 9}) does not fit into the category of sequential tansfer learning but rather belongs to \emph{multi-task learning} models (cf.~Fig. 7.1) in \href{./transfer-learning-for-nlp-i.html}{Chapter 7})) since it is trained on multiple tasks at once. This is possible due to transformation of the entire input \emph{and} output to strings, which essentially converts every tasks to as seq-to-seq task.
+\item
+  In May 2020 the \href{https://arxiv.org/pdf/2005.14165.pdf}{\textbf{OpenAI GPT-3}} (\citet{brown2020language}) shook the NLP community and triggered \emph{a lot} of subsequent research. This model puts, as already mentioned in \href{./transfer-learning-for-nlp-ii.html}{Chapter 9}, is by far bigger then every previous model and put a special focus on \emph{few-shot learning}-
+\end{itemize}
+
+\hypertarget{improvements-of-the-selfattention-mechanism}{%
+\section{Improvements of the SelfAttention mechanism}\label{improvements-of-the-selfattention-mechanism}}
+
+Recently, there has been a lot effort put in improving the Self-Attention, mostly by reducing its computational cost
+and this enabling models to process longer sequences. One interesting article has already been discussed at the end of \href{./attention-and-self-attention-for-nlp.html}{Chapter 8}, while another interesting piece of work has been published recently by \citet{wang2020linformer}: The so-called \href{https://arxiv.org/pdf/2006.04768.pdf}{Linformer}
+
+\hypertarget{evaluation-and-interpretability}{%
+\section{Evaluation and Interpretability}\label{evaluation-and-interpretability}}
+
+While ``traditional'' Benchmark (collections) have been discussed in \href{./resources-and-benchmarks-for-nlp.html}{Chapter 11}, there is a lot of ongoing research about proper evaluation and interpretability of NLP models. Here are just two examples of impressive work, which was published very recently:
+
+\begin{itemize}
+\tightlist
+\item
+  \citet{ribeiro-etal-2020-beyond} won the best paper award at ACL 2020 for their article \href{https://www.aclweb.org/anthology/2020.acl-main.442.pdf}{Beyond Accuracy: Behavioral Testing of NLP Models with CheckList}
+\item
+  Google launched a \href{https://github.com/pair-code/lit}{Language Interpretability Tool} together with an accompanying \href{https://arxiv.org/pdf/2008.05122.pdf}{research article} (\citet{tenney2020language})
+\end{itemize}
+
+We hope that this little outlook can adequately round off this nice piece of academic work created by extremely motivated students and we hope that you enjoyed reading.
 
 \hypertarget{acknowledgements}{%
 \chapter{Acknowledgements}\label{acknowledgements}}
