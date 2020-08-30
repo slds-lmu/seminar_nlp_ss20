@@ -21,8 +21,10 @@ developments made with Self-Attention and the most common transfer learning arch
 
 ## Attention
 In this part of the chapter, we revisit the Encoder-Decoder architecture that was introduced
-in chapter [3](01-02-rnns-and-their-applications-in-nlp). We focus on the improvements
+in [chapter 3](./recurrent-neural-networks-and-their-applications-in-nlp.html). We focus on the improvements
 that were made with the development of attention mechanisms on the example of neural machine translation (NMT).
+
+
 
 As seen in chapter 3, vanilla
 Encoder-Decoder architecture passes only the last hidden state from the encoder to the decoder.
@@ -88,7 +90,7 @@ is called "concat" in @luong2015effective and "additive attention" in @vaswani20
 because $s_t$ and $h_i$ are concatenated just like the forward and backward hidden states seen above.
 The attention model proposed by Bahdanau et al. is also called a global attention model as it attends
 to every input in the sequence. Another name for Bahdanaus attention model is soft attention
-because the attention is spread thinnly/weakly/softly over the input and does not have an inherent hard focus on specific inputs.
+because the attention is spread thinly/weakly/softly over the input and does not have an inherent hard focus on specific inputs.
 A nice by-product of attention mechanisms is the matrix of alignment scores
 which can be visualised to show the correlation between source and target words as seen in \@ref(fig:attention-plot-bahdanau).
 
@@ -188,7 +190,7 @@ $$
 
 Luong et al. compute their context vector with the current decoder hidden state $s_t$ and modify the decoder output with the
 context vector before it is processed by the last softmax layer. This allows for easier implementation of different
-score functions for the same attention mechanism. Implementations of both vary e.g. [this version](https://github.com/spro/practical-pytorch/blob/master/seq2seq-translation/seq2seq-translation.ipynb) of Bahdanau attention in Pytorch concatenates the context back in after the GRU while [this version](https://www.tensorflow.org/tutorials/text/nmt_with_attention) for an NMT model with Bahdanau attention does not. Readers that are trying to avoid a headache can build upon [this version](https://www.tensorflow.org/addons/tutorials/networks_seq2seq_nmt#defining_nmt_model) from Tensorflow which uses the **AttentionWrapper** function which handels the specifics of the implementation.
+score functions for the same attention mechanism. Implementations of both vary e.g. [this version](https://github.com/spro/practical-pytorch/blob/master/seq2seq-translation/seq2seq-translation.ipynb) of Bahdanau attention in Pytorch concatenates the context back in after the GRU while [this version](https://www.tensorflow.org/tutorials/text/nmt_with_attention) for an NMT model with Bahdanau attention does not. Readers that are trying to avoid a headache can build upon [this version](https://www.tensorflow.org/addons/tutorials/networks_seq2seq_nmt#defining_nmt_model) from Tensorflow which uses the **AttentionWrapper** function which handles the specifics of the implementation.
 
 An illustration of a reduced version of the two different attention
 concepts can be found in Figure \@ref(fig:attention-mechanisms).
@@ -374,7 +376,7 @@ $$
 \text{Attention}(Q,K,V) = \text{softmax}(\frac{QK^\top}{\sqrt{d_k}})V
 $$
 where $\text{Attention}(Q,K,V)$ corresponds to an non-projected head of multi-head attention.
-These attention mechanisms allow Transformers to learn different and distant dependencies in langauge
+These attention mechanisms allow Transformers to learn different and distant dependencies in language
 and are thus a good candidate for transfer learning.
 
 #### Complexity for different attention models
@@ -394,7 +396,7 @@ The transfer learning models that were developed from the Transformer architectu
 enabled models which were trained on more data to gain a deeper understanding about
 language and are state-of-the-art today (June, 2020). 
 
-They are also a popular research topic as they are quadraticlly scaling, with regard to input length, complexity per layer
+They are also a popular research topic as they are quadratically scaling, with regard to input length, complexity per layer
 inhibits their use for very long sequences and makes them time consuming to train.
 This quadratic complexity comes from the self-attention mechanism $\text{Attention}(Q,K,V) = \text{softmax}(\frac{QK^\top}{\sqrt{d_k}})V$.
 The used softmax needs to calculate the attention score between the currently processed input $x_i$ and every
