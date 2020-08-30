@@ -11,13 +11,21 @@ for transfer learning that are used today. The final part of the chapter discuss
 developments made with Self-Attention and the most common transfer learning architecture today, the Transformer.
 
 (ref:luong2015effectife) [@luong2015effective]
+
 (ref:bahdanau2014neural) [@bahdanau2014neural]
+
 (ref:cheng2016long) [@cheng2016long]
+
 (ref:vaswani2017attention) [@vaswani2017attention]
+
 (ref:weng2018attention) [@weng2018attention]
+
 (ref:alammar2018transformer) [@alammar2018transformer]
+
 (ref:query-key) $Q = \text{Query}$, $K = \text{Key}$, $V = \text{Value}$
+
 (ref:luong-att) $\overline{h}_s$
+
 
 ## Attention
 In this part of the chapter, we revisit the Encoder-Decoder architecture that was introduced
