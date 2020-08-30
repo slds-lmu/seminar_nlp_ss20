@@ -4,7 +4,7 @@
 
 *Supervisor: Matthias Aßenmacher*
 
-The field of natural language processing (NLP) has seen rapid advancements in recent years. Primarily due to the growing usage of transfer learning where the model has not to be trained from scratch for every task and domain. 
+The field of natural language processing (NLP) has seen rapid advancements in recent years. Primarily due to the growing usage of transfer learning where the model does not have to be trained from scratch for every task and domain. 
 
 The first "wave" of transfer learning where the trained models **ELMo** (Embeddings from Language Models), **ULMFiT** (Universal Language Model Fine-tuning for Text Classification), and **GPT** (Generative Pre-Training) were published. 
 
@@ -40,13 +40,13 @@ Lastly, essential facts are **summarized**, and the **following chapters are mot
 
 ## Sequential inductive transfer learning
 
-To get a better understanding of the models introduced in this chapter, the taxonomy is introduced. Especially, equential inductive transfer learning will be explained further.  
+To get a better understanding of the models introduced in this chapter, the taxonomy is introduced. Especially, sequential inductive transfer learning will be explained further.  
 
 ### Types of transfer learning
 
 @panandyoung2010 divided **transfer learning** in different types (figure \@ref(fig:ch21-typesoftransferlearning)).
 
-```{r ch21-typesoftransferlearning, echo=FALSE, out.width="75%", fig.cap="Four types of transfer learning (source: based on @Ruder2019)", fig.align="center"}
+```{r ch21-typesoftransferlearning, echo=FALSE, out.width="75%", fig.cap="Four types of transfer learning (source: based on (ref:Ruder2019))", fig.align="center"}
 knitr::include_graphics("figures/02-01-transfer-learning-for-nlp-1/types-of-transfer-learning.png")
 ```
 
@@ -60,35 +60,35 @@ Inductive sequential transfer learning has led to the most significant improveme
 
 Sequential inductive transfer learning mainly consists of two steps: the pre-training and adoption.
 
-```{r ch21-sequentialinductivetl, echo=FALSE, fig.width = 5, fig.cap="Steps in sequential inductive transfer learning (source: based on @ruder2019transfer)", fig.align="center"}
+```{r ch21-sequentialinductivetl, echo=FALSE, fig.width = 5, fig.cap="Steps in sequential inductive transfer learning (source: based on (ref:ruder2019transfer))", fig.align="center"}
 knitr::include_graphics("figures/02-01-transfer-learning-for-nlp-1/sequential-transfer-learning-new.PNG")
 ```
 
 As you see in figure \@ref(fig:ch21-sequentialinductivetl), first, the model is pretrained with the source task and second the model is adapted to the target task. This adopted model can be used by the user for the designated task. [@ruder2019transfer] 
 
-In the first step, all models are **pretrained** on an extensive source data set, which is, in the best case, very close to the target task [@peterrudersmith2019]. The pre-trained language models in this chapter are uni-directional models that predict the next word (figure \@ref(fig:ch21-lm)).
+In the first step, all models are **pretrained** on an extensive source data set, which is, in the best case, very close to the target task [@peterrudersmith2019]. The pre-trained language models in this chapter are uni-directional models that predict the next word during pretraining (figure \@ref(fig:ch21-lm)).
 
 ```{r ch21-lm, echo=FALSE, out.width="80%", fig.cap="Unidirectional language model", fig.align="center"}
 knitr::include_graphics("figures/02-01-transfer-learning-for-nlp-1/pretrained-lm-new.PNG")
 ```
 
-In a second step, follows the **adoption** on the target task. Here, the main distinction is, if the pre-trained model architecture is kept (**embedding** or **feature extraction**) or the pre-trained model is adjusted to the target task (**fine-tuning**). [@peterrudersmith2019]
+In a second step, follows the **adoption** on the target task. Here, the main distinction is, if the pre-trained model weights are kept (**embedding** or **feature extraction**) or the pre-trained weights are adjusted to the target task (**fine-tuning**). [@peterrudersmith2019]
 
 In **feature extraction**, single parts, which can be sentences or characters, are extracted to a fixed-length matrix with the dimensions $\mathbb{R}^{n} \times k$ where $k$ is the fixed-length. This matrix represents the context of every word given of every other word. So in the adoption phase, the weights in the LM do not change, and just the top layer of the model is used. The adopted model learns a linear combination of the top layer. [@peterrudersmith2019]
 
-On the other side, **fine-tuning** trains the weights of the pretrained model on a specific task, which makes it much more flexible and needs no specific adjustment. The disadvantage of this method is that the general knowledge and relationship between words can get lost in the adjustment phase. The term for that is the "catastrophic forgetting" (McCloskey & Cohen, 1989; French, 1999). Techniques for preventing this are freezing, learning rates, and regularization which will be mainly explained in the [ULMFiT chapter](#ulmfit).
+On the other side, **fine-tuning** adjusts the weights of the pretrained model on a specific task, which makes it much more flexible and needs no specific adjustment. The disadvantage of this method is that the general knowledge and relationship between words can get lost in the adjustment phase. The term for that is the "catastrophic forgetting" (McCloskey & Cohen, 1989; French, 1999). Techniques for preventing this are freezing, learning rates, and regularization which will be mainly explained in the [ULMFiT chapter](#ulmfit).
 
 <!-- [explaining freezing learning rates and regularization  xxxxxxx] -->
 
 ## Models
 
-In the following sections, the models **ELMo** [@peter2018], **ULMFiT**  [@howardruder2018], and **GPT** [@radford2018] are presented, which have shaped the "first wave" of transfer learning before transformers like BERT have been developed and have become popular. All models have been presented in 2018 and are inductive sequential transfer learning. 
+In the following sections, the models **ELMo** [@peter2018], **ULMFiT**  [@howardruder2018], and **GPT** [@radford2018] are presented, which have shaped the "first wave" of transfer learning before bidirectional transformers like BERT have been developed and have become popular. All models have been presented in 2018 and are inductive sequential transfer learning models. 
 
 ### ELMo - The "new age" of embeddings
 
 In 2018, @peter2018 from AllenNLP introduced **Embeddings from Language Models** (ELMo), which most significant advance compared to previous models like word2vec and Glove ([**Chapter 3**](#foundationsapplications-of-modern-nlp)) is that ELMo can handle the different meanings of a word in different contexts (**polysemy**). 
 
-For instance, is the meaning of the word "mouse" in the context of computers, a device with which you can control the cursor of your PC. Instead, in the context of nature, it often means the small animal. Until ELMo, this could not be captured by an NLP model. For this purpose, ELMo can model the semantical and the synthetical characteristics of a word (like word2vec) but also the varying meanings in different contexts. 
+For instance, the meaning of the word "mouse" in the context of computers is a device with which you can control the cursor of your PC. Instead, in the context of nature, it often means the small animal. Until ELMo, this could not be captured by an NLP model. For this purpose, ELMo can model the semantical and the synthetical characteristics of a word (like word2vec) but also the varying meanings in different contexts. 
 
 In the context of sequential transfer learning, ELMo can be divided in the steps of pretraining and adoption:
 
@@ -97,13 +97,13 @@ knitr::include_graphics("figures/02-01-transfer-learning-for-nlp-1/sequential-tr
 ```
 
 ELMo is pretrained on the 1 Billion Word Benchmark, which is a standard dataset for language modeling from Google. The model architecture of Elmo is a shallowly bidirectional Language model, which will be explained in the further sections. 
-Afterwards, the pre-trained model is frozen. That means that all learning rates are set to 0, and an additional layer is added. In the adoption phase, a task-specific representation of the internal representation of the pre-trained model is learned.
+Afterwards, the pretrained model is frozen. That means that all learning rates are set to 0, and an additional layer is added. In the adoption phase, a linear combination of the internal states is learned. This representation is different for every task.
 
 #### Pretraining: Bidirectional language model (biLM)
 
 ELMo is based on a two-layer bidirectional LSTM which is the shallow concatenation of independently trained left-to-right and right-to-left multi-layer LSTMs. Bidirectional is, in this case, misleading, as the two steps happen independently from each other:
 
-```{r ch21-elmo-pretrained1, echo=FALSE, out.width="90%", fig.cap="Bidirectional LSTM as pretrained model (source: based on @peter2018 and @lstmpicture", fig.align="center"}
+```{r ch21-elmo-pretrained1, echo=FALSE, out.width="90%", fig.cap="Bidirectional LSTM as pretrained model (source: based on (ref:peter2018) and (ref:lstmpicture)", fig.align="center"}
 knitr::include_graphics("figures/02-01-transfer-learning-for-nlp-1/elmo-pretrained-bilm.png")
 ```
 
@@ -118,7 +118,7 @@ $$
 p\left(t_{1}, t_{2}, \ldots, t_{N}\right)=\prod_{k=1}^{N} p\left(t_{k} | t_{1}, t_{2}, \ldots, t_{k-1}\right)
 \end{aligned}
 $$
-The backward LM can be defined accordingly to the forward LM. It takes not the previous tokens, but the upcoming tokens into account to calculate the joint distributions of the tokens. 
+The backward LM can be defined accordingly to the forward LM. It does not take the previous tokens, but the upcoming tokens, into account to calculate the joint distributions of the tokens. 
 
 $$
 \begin{aligned}
@@ -172,9 +172,9 @@ where $\gamma$ is the optimization parameter which allows to scale the model, $s
 
 #### ELMo: Summary and further links
 
-To summarize, ELMO: We have a bidirectional language model, which is a two-layer bidirectional LSTM. ELMo is trained with the 1 Billion word data set and then adopted with feature extraction, which is a linear combination of the internal states. 
+To summarize, ELMO: We have a bidirectional language model, which is a two-layer bidirectional LSTM. ELMo is pretrained on the 1 Billion word data set and then adopted with feature extraction, which is a linear combination of the internal states. 
 
-In this way, ELMo can create unique, character-based, and deep word representations. They are unique for every task they are adopted to. This is a considerable enhancement compared to the previous models, which did not take the context of the word into account. 
+In this way, ELMo can create unique, character-based, and deep word representations. They are unique for every task they are adopted to. This is a considerable enhancement compared to the previous embedding models, which did not take the context of the word into account ([**Chapter 3**](#foundationsapplications-of-modern-nlp)))
 
 One interesting fact is that these representations save semantic - context-dependent features - information more in the higher layer and syntactic information more in the lower layers. That is also why the weighting in every task is different. 
 
@@ -189,7 +189,7 @@ ELMo is suitable for every NLP task, and by adding ELMo due to @peter2018's pape
 
 ### ULMFiT - cutting-edge model using LSTMs {#ulmfit}
 
-In the same year (2018)@howardruder2018 proposed **Universal language model fine-tuning (ULMFiT)**, which exceeded many of the cutting-edge models in text classification, as it decreased the error by 18-24% in most of the datasets. 
+In the same year @howardruder2018 proposed **Universal language model fine-tuning (ULMFiT)**, which exceeded many of the cutting-edge models in text classification, as it decreased the error by 18-24% on most of the datasets. 
 
 In the context of sequential transfer learning, ULMFiT can be divided in the steps of pretraining and adoption:
 
@@ -203,7 +203,7 @@ ULMFiT is based on an AWD-LSTM (ASGD Weight-Dropped LSTM) combined with fine-tun
 ULMFiT follows three steps to achieve these notable transfer learning results:
 
 1. Language Model pretraining
-2. Language MOdel fine-tuning (Adoption I)
+2. Language Model fine-tuning (Adoption I)
 3. Classifier fine-tuning (Adoption II)
 
 #### Pretraining: AWD-LSTM 
@@ -356,7 +356,7 @@ Despite some similarities, GPT has three significant differences to ELMo and ULM
  
   * ELMo is based on word embeddings, whereas GPT is based on fine-tuning like ULMFiT. 
   
-  * GPT uses a different model architecture. Instead of the multi-layer LSTM, GPT is a multi-layer decoder. A model architecture will be explained in the upcoming chapters, as it is a significant step towards the state-of-the-art NLP models. 
+  * GPT uses a different model architecture. Instead of the multi-layer LSTM, GPT is a multi-layer transformer decoder. A model architecture will be explained in the upcoming chapters, as it is a significant step towards the state-of-the-art NLP models. 
   
   * In contrast to ELMo, that works character-wise, GPT uses tokens (subwords) from the words.
   
@@ -388,7 +388,7 @@ The **main advances** of these models are
 
 Besides, many features of these models show high **potential for improvements**: 
 
-* All models are **not genuinely bi-directional**, as ULMFiT and GPT are one-directional, and ELMo is a concatenation of a right-to-left and left-to-right LSTM. Bidirectional models can even have more precise word representations, as the human language understanding is bidirectional.
+* All models are **not genuinely bi-directional**, as ULMFiT and GPT are uni-directional, and ELMo is a concatenation of a right-to-left and left-to-right LSTM. Bidirectional models can even have more precise word representations, as the human language understanding is bidirectional.
 * ELMo uses character-based **model input**, and **ULMFit** uses word-based **model input**. **GPT** and following transformer-based models use **tokenized** words (subwords), which is take advantage of both other model inputs.
 <!-- * ULMFiT and GPT use **fine-tuning**, which needs no further adjustments for every target task.  -->
 * ULMFiT and ELMo are **based on LSTMs**, whereas the transformer-based model architecture of GPT has many advantages like parallelization and subsequent performance improvements.
