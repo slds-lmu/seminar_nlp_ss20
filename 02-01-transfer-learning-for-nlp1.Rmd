@@ -79,7 +79,7 @@ In the following sections, the models **ELMo** [@peter2018], **ULMFiT**  [@howar
 
 ### ELMo - The "new age" of embeddings
 
-In 2018, @peter2018 from AllenNLP introduced **Embeddings from Language Models** (ELMo), which most significant advance compared to previous models like word2vec and Glove ([**Chapter 3**](#foundationsapplications-of-modern-nlp)) is that ELMo can handle the different meanings of a word in different contexts (**polysemy**). 
+In 2018, @peter2018 from AllenNLP introduced **Embeddings from Language Models** (ELMo), which most significant advance compared to previous models like word2vec and Glove ([**chapter 3**](#foundationsapplications-of-modern-nlp)) is that ELMo can handle the different meanings of a word in different contexts (**polysemy**). 
 
 For instance, the meaning of the word “mouse” in the context of computers is a device with which you can control your PC's cursor. Instead, in the context of nature, it often means a small animal. Until ELMo, this could not be captured by an NLP model. For this purpose, ELMo can model the semantical and the synthetical characteristics of a word (like word2vec) and the varying meanings in different contexts. 
 
@@ -175,7 +175,7 @@ where $\gamma$ is the optimization parameter which allows scaling the model, $s_
 
 To summarize, ELMo is a shallowly bidirectional language model, which is a two-layer LSTM. It is pretrained on the 1 Billion word data set and then adopted with feature extraction, a linear combination of the internal states. 
 
-In this way, ELMo can create unique, character-based, and deep word representations. This unique representations are adopted to every task. This is a considerable enhancement compared to the previous embedding models, which did not take the context of the word into account ([**Chapter 3**](#foundationsapplications-of-modern-nlp)))
+In this way, ELMo can create unique, character-based, and deep word representations. This unique representations are adopted to every task. This is a considerable enhancement compared to the previous embedding models, which did not take the context of the word into account ([**chapter 3**](#foundationsapplications-of-modern-nlp)))
 
 One interesting fact is that these representations save semantic - context-dependent features - information more in the higher layer and syntactic information more in the lower layers. That is also why the weighting in every task is different. 
 
@@ -208,7 +208,7 @@ ULMFiT follows three steps to achieve these notable transfer learning results:
 3. Classifier fine-tuning (Adoption II)
 
 #### Pretraining: AWD-LSTM 
-As language models with many parameters tend to overfit, @merity2017 introduced the **AWD-LSTM**, a highly effective version of the Long Short Term Memory  (LSTM, [**Chapter 4**](#recurrent-neural-networks-and-their-applications-in-nlp)). The Dropconnect Algorithm and the Non-monotonically Triggered ASGD (NT-ASGD) are two main improvements of this model architecture.
+As language models with many parameters tend to overfit, @merity2017 introduced the **AWD-LSTM**, a highly effective version of the Long Short Term Memory  (LSTM, [**chapter 4**](#recurrent-neural-networks-and-their-applications-in-nlp)). The Dropconnect Algorithm and the Non-monotonically Triggered ASGD (NT-ASGD) are two main improvements of this model architecture.
 
 As in figure \@ref(fig:ch21-drop), the **Dropconnect Algorithm** [@wan2013] regularizes the LSTM and prevents overfitting by setting the activation of units randomly to zero with a predetermined probability of $p$.  So, only a subset of the units from the previous layer is passed to every unit. However, by using this method also long-term dependencies go lost. That is why the algorithm drops weights and not the activations in the end with the probability of $1-p$. As the weights are set to zero, the drop connect algorithm reduces the information loss while reducing overfitting.
 
@@ -377,7 +377,7 @@ knitr::include_graphics("figures/02-01-transfer-learning-for-nlp-1/gpt.PNG")
 
 As shown in figure \@ref(fig:ch21-figuregpt), GPT is a uni-directional transformer-decoder-only with 12 layers with masked self-attention.
 
-As the basic idea of transformers is discussed in the following chapters, further explanations of the functionality of the transformer model architectures will follow ([**Chapter 8**](#attention-and-self-attention-for-nlp) and [**Chapter 9**](#transfer-learning-for-nlp-ii))
+As the basic idea of transformers is discussed in the following chapters, further explanations of the functionality of the transformer model architectures will follow ([**chapter 8**](#attention-and-self-attention-for-nlp) and [**chapter 9**](#transfer-learning-for-nlp-ii))
 
 #### GPT: Summary
 
