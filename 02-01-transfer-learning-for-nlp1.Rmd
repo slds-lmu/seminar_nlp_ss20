@@ -13,7 +13,6 @@ These models improved the performance and introduced ideas like contextual embed
 
 ## Outline 
 
-
 First, the **taxonomy of transfer learning** and **inductive sequential transfer learning** are introduced. As most modern NLP models are **inductive sequential transfer learning**, it will give a framework for the following models. The difference between embeddings and fine-tuning will be elucidated.
 
 Second, the models are introduced in detail within the framework of the two steps of inductive sequential transfer learning: 
@@ -35,7 +34,7 @@ To get a better understanding of the models introduced in this chapter, the taxo
 
 @panandyoung2010 divided **transfer learning** into different types (figure \@ref(fig:ch21-typesoftransferlearning)).
 
-(ref:caption-types) Four types of transfer learning (source: based on [@Ruder2019]).
+(ref:caption-types) Four types of transfer learning. Source: based on [@Ruder2019]).
 
 ```{r ch21-typesoftransferlearning, echo=FALSE, out.width="75%", fig.cap="(ref:caption-types)", fig.align="center"}
 knitr::include_graphics("figures/02-01-transfer-learning-for-nlp-1/types-of-transfer-learning.png")
@@ -52,7 +51,7 @@ Inductive sequential transfer learning has led to the most significant improveme
 Sequential inductive transfer learning mainly consists of two steps: pretraining and adoption.
 
 
-(ref:caption-sequentialinductivetl) Steps in sequential inductive transfer learning (source: based on @ruder2019transfer).
+(ref:caption-sequentialinductivetl) Steps in sequential inductive transfer learning. Source: based on @ruder2019transfer.
 
 ```{r ch21-sequentialinductivetl, echo=FALSE, fig.width = 5, fig.cap="(ref:caption-sequentialinductivetl)", fig.align="center"}
 knitr::include_graphics("figures/02-01-transfer-learning-for-nlp-1/sequential-transfer-learning-new.PNG")
@@ -370,7 +369,7 @@ Despite some similarities, GPT has three significant differences to ELMo and ULM
   
   * GPT is trained on a huge number of data (especially the subsequent models like GPT-2 or GPT-3)
   
-(ref:caption-figuregpt) GPT (source: based on @radford2018).
+(ref:caption-figuregpt) GPT. Source: based on @radford2018.
 
 ```{r ch21-figuregpt, echo=FALSE, out.width="80%", fig.cap="(ref:caption-figuregpt)", fig.align="center"}
 knitr::include_graphics("figures/02-01-transfer-learning-for-nlp-1/gpt.PNG")
