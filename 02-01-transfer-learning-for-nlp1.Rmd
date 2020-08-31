@@ -6,7 +6,7 @@
 
 The field of natural language processing (NLP) has seen rapid advancements in recent years. Primarily due to the growing usage of transfer learning where the model does not have to be trained from scratch for every task and domain. 
 
-The first "wave" of transfer learning where the trained models **ELMo** (Embeddings from Language Models), **ULMFiT** (Universal Language Model Fine-tuning for Text Classification), and **GPT** (Generative Pre-Training) were published. 
+The first "wave" of transfer learning where the trained models **ELMo** (Embeddings from Language Models), **ULMFiT** (Universal Language Model Fine-tuning for Text Classification), and **GPT** (Generative Pretraining) were published. 
 
 These models improved the performance and introduced ideas like contextual embeddings, fine-tuning, and transformers in the field of natural language processing. 
 
@@ -65,7 +65,7 @@ In the first step, all models are **pretrained** on an extensive source data set
 knitr::include_graphics("figures/02-01-transfer-learning-for-nlp-1/pretrained-lm-new.PNG")
 ```
 
-In second step, follows the **adoption** on the target task. Here, the main distinction is that the pre-trained model weights are kept (**embedding** or **feature extraction**) or the pre-trained weights are adjusted to the target task (**fine-tuning**) [@peterrudersmith2019].
+In second step, follows the **adoption** on the target task. Here, the main distinction is that the pretrained model weights are kept (**embedding** or **feature extraction**) or the pretrained weights are adjusted to the target task (**fine-tuning**) [@peterrudersmith2019].
 
 In **feature extraction**, single parts, which can be sentences or characters, are extracted to a fixed-length matrix with the dimensions $\mathbb{R}^{n} \times k$ where $k$ is the fixed-length. This matrix represents the context of every word given of every other word. So in the adoption phase, the weights in the LM do not change, and just the top layer of the model is used. The adopted model learns a linear combination of the top layer [@peterrudersmith2019].
 
@@ -349,7 +349,7 @@ Due to the paper, ULMFiT could decrease the error by incredible 18-24% in text c
 
 ### GPT - First step towards transformers
 
-@radford2018 from Open AI  published **Generative Pre-Training** (GPT).
+@radford2018 from Open AI  published **Generative Pretraining** (GPT).
 
 In the context of inductive sequential transfer learning the training steps of GPT can be divided in:
 
@@ -401,7 +401,7 @@ Besides, many features of these models show high **potential for improvements**:
 * ELMo uses a character-based **model input**, and **ULMFit** uses a word-based **model input**. **GPT** and following transformer-based models use **tokenized** words (subwords), taking advantage of both other model inputs.
 <!-- * ULMFiT and GPT use **fine-tuning**, which needs no further adjustments for every target task.  -->
 * ULMFiT and ELMo are **based on LSTMs**, whereas the transformer-based model architecture of GPT has many advantages like parallelization and subsequent performance improvements.
-* Starting with 12 layers in GPT, the models get deeper and use more parameters and data for the pre-training. 
+* Starting with 12 layers in GPT, the models get deeper and use more parameters and data for the pretraining. 
 
 In the next chapter, the main idea behind transformers, self-attention, is explained. More popular state-of-art models based on the idea like BERT are presented in [**chapter 9**](#transfer-learning-for-nlp-ii).
 
