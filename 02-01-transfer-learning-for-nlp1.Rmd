@@ -79,17 +79,17 @@ In the following sections, the models **ELMo** [@peter2018], **ULMFiT**  [@howar
 
 ### ELMo - The "new age" of embeddings
 
-In 2018, @peter2018 from AllenNLP introduced **Embeddings from Language Models** (ELMo), which most significant advance compared to previous models like word2vec and Glove ([**chapter 3**](#foundationsapplications-of-modern-nlp)) is that ELMo can handle the different meanings of a word in different contexts (**polysemy**). 
+In 2018, @peter2018 from AllenNLP introduced **Embeddings from Language Models** (ELMo). Its most significant advance compared to previous models like word2vec and Glove ([**chapter 3**](#foundationsapplications-of-modern-nlp)) is that ELMo can handle the different meanings of a word in different contexts (**polysemy**). 
 
-For instance, the meaning of the word “mouse” in the context of computers is a device with which you can control your PC's cursor. Instead, in the context of nature, it often means a small animal. Until ELMo, this could not be captured by an NLP model. For this purpose, ELMo can model the semantical and the synthetical characteristics of a word (like word2vec) and the varying meanings in different contexts. 
+One good example for polysemy is the word "mouse". In an technical context it means the computer mouse and other contexts it could mean the rodent. Previous models can just capture the semantical and syntactical characteristics of the word, ELMo can also capture the varying meaning of the word in the different contexts (here: computer mouse or rodent). 
 
-In the context of sequential transfer learning, ELMo can be divided into the steps of pretraining and adoption:
+ELMo can be divided into the steps of pretraining and adoption:
 
 ```{r ch21-figure08, echo=FALSE, out.width="60%", fig.cap="Feature extraction in ELMo.", fig.align="center"}
 knitr::include_graphics("figures/02-01-transfer-learning-for-nlp-1/sequential-transfer-learning-elmo.PNG")
 ```
 
-ELMo is pretrained on the 1 Billion Word Benchmark, a standard dataset for language modeling from Google. Elmo's model architecture is a shallowly bidirectional Language model, which will be explained in the other sections. 
+It is pretrained on the 1 Billion Word Benchmark, a standard dataset for language modeling from Google. Elmo's model architecture is a shallowly bidirectional Language model, which will be explained in the other sections. 
 Afterward, the pretrained model is frozen. That means that all learning rates are set to 0, and an additional layer is added. In the adoption phase, a linear combination of the internal states is learned. This representation is different for every task.
 
 #### Pretraining: Bidirectional language model (biLM)
