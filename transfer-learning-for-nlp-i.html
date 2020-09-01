@@ -135,15 +135,17 @@
 <li class="chapter" data-level="6.3" data-path="introduction-transfer-learning-for-nlp.html"><a href="introduction-transfer-learning-for-nlp.html#overview-over-important-nlp-models"><i class="fa fa-check"></i><b>6.3</b> Overview over important NLP models</a></li>
 </ul></li>
 <li class="chapter" data-level="7" data-path="transfer-learning-for-nlp-i.html"><a href="transfer-learning-for-nlp-i.html"><i class="fa fa-check"></i><b>7</b> Transfer Learning for NLP I</a><ul>
-<li class="chapter" data-level="7.1" data-path="introduction.html"><a href="introduction.html#introduction"><i class="fa fa-check"></i><b>7.1</b> Introduction</a></li>
-<li class="chapter" data-level="7.2" data-path="transfer-learning-for-nlp-i.html"><a href="transfer-learning-for-nlp-i.html#transfer-learning-in-nlp"><i class="fa fa-check"></i><b>7.2</b> Transfer Learning in NLP</a></li>
-<li class="chapter" data-level="7.3" data-path="transfer-learning-for-nlp-i.html"><a href="transfer-learning-for-nlp-i.html#steps-in-sequential-inductive-transfer-learning"><i class="fa fa-check"></i><b>7.3</b> Steps in sequential inductive transfer learning</a></li>
-<li class="chapter" data-level="7.4" data-path="transfer-learning-for-nlp-i.html"><a href="transfer-learning-for-nlp-i.html#most-popular-models"><i class="fa fa-check"></i><b>7.4</b> Most popular models</a><ul>
-<li class="chapter" data-level="7.4.1" data-path="transfer-learning-for-nlp-i.html"><a href="transfer-learning-for-nlp-i.html#elmo---the-new-age-of-embeddings"><i class="fa fa-check"></i><b>7.4.1</b> ELMo - The “new age” of embeddings</a></li>
-<li class="chapter" data-level="7.4.2" data-path="transfer-learning-for-nlp-i.html"><a href="transfer-learning-for-nlp-i.html#ulmfit---cutting-edge-model-using-lstms"><i class="fa fa-check"></i><b>7.4.2</b> ULMFiT - cutting-edge model using LSTMs</a></li>
-<li class="chapter" data-level="7.4.3" data-path="transfer-learning-for-nlp-i.html"><a href="transfer-learning-for-nlp-i.html#gpt---first-step-towards-transformers"><i class="fa fa-check"></i><b>7.4.3</b> GPT - First step towards transformers</a></li>
+<li class="chapter" data-level="7.1" data-path="transfer-learning-for-nlp-i.html"><a href="transfer-learning-for-nlp-i.html#outline"><i class="fa fa-check"></i><b>7.1</b> Outline</a></li>
+<li class="chapter" data-level="7.2" data-path="transfer-learning-for-nlp-i.html"><a href="transfer-learning-for-nlp-i.html#sequential-inductive-transfer-learning"><i class="fa fa-check"></i><b>7.2</b> Sequential inductive transfer learning</a><ul>
+<li class="chapter" data-level="7.2.1" data-path="transfer-learning-for-nlp-i.html"><a href="transfer-learning-for-nlp-i.html#types-of-transfer-learning"><i class="fa fa-check"></i><b>7.2.1</b> Types of transfer learning</a></li>
+<li class="chapter" data-level="7.2.2" data-path="transfer-learning-for-nlp-i.html"><a href="transfer-learning-for-nlp-i.html#feature-extraction-vs.fine-tuning"><i class="fa fa-check"></i><b>7.2.2</b> Feature Extraction vs. Fine-tuning</a></li>
 </ul></li>
-<li class="chapter" data-level="7.5" data-path="transfer-learning-for-nlp-i.html"><a href="transfer-learning-for-nlp-i.html#summary"><i class="fa fa-check"></i><b>7.5</b> Summary</a></li>
+<li class="chapter" data-level="7.3" data-path="transfer-learning-for-nlp-i.html"><a href="transfer-learning-for-nlp-i.html#models"><i class="fa fa-check"></i><b>7.3</b> Models</a><ul>
+<li class="chapter" data-level="7.3.1" data-path="transfer-learning-for-nlp-i.html"><a href="transfer-learning-for-nlp-i.html#elmo---the-new-age-of-embeddings"><i class="fa fa-check"></i><b>7.3.1</b> ELMo - The “new age” of embeddings</a></li>
+<li class="chapter" data-level="7.3.2" data-path="transfer-learning-for-nlp-i.html"><a href="transfer-learning-for-nlp-i.html#ulmfit"><i class="fa fa-check"></i><b>7.3.2</b> ULMFiT - cutting-edge model using LSTMs</a></li>
+<li class="chapter" data-level="7.3.3" data-path="transfer-learning-for-nlp-i.html"><a href="transfer-learning-for-nlp-i.html#gpt---first-step-towards-transformers"><i class="fa fa-check"></i><b>7.3.3</b> GPT - First step towards transformers</a></li>
+</ul></li>
+<li class="chapter" data-level="7.4" data-path="transfer-learning-for-nlp-i.html"><a href="transfer-learning-for-nlp-i.html#summary"><i class="fa fa-check"></i><b>7.4</b> Summary</a></li>
 </ul></li>
 <li class="chapter" data-level="8" data-path="attention-and-self-attention-for-nlp.html"><a href="attention-and-self-attention-for-nlp.html"><i class="fa fa-check"></i><b>8</b> Attention and Self-Attention for NLP</a><ul>
 <li class="chapter" data-level="8.1" data-path="attention-and-self-attention-for-nlp.html"><a href="attention-and-self-attention-for-nlp.html#attention"><i class="fa fa-check"></i><b>8.1</b> Attention</a><ul>
@@ -258,139 +260,211 @@
 <h1><span class="header-section-number">Chapter 7</span> Transfer Learning for NLP I</h1>
 <p><em>Author: Carolin Becker</em></p>
 <p><em>Supervisor: Matthias Aßenmacher</em></p>
-<div id="introduction" class="section level2">
-<h2><span class="header-section-number">7.1</span> Introduction</h2>
-<p>As mentioned in the introduction, the field of natural language processing (NLP) has seen rapid advancements due to the growing usage of transfer learning.
-A first enhancement began in 2018, where the transfer learning improved several fields in NLP, as the model layers have not to be trained from scratch. Word2Vec, which was explained earlier ([chapter??]), is one example of transfer learning.</p>
-<p>Scientific papers and research introduced many ideas like contextual word embeddings or fine-tuning. In the language modelling these changes led to a better performance in terms of errors and time.</p>
-<!-- %### Language Model [Wird das schon bei word2vec erklärt?] -->
-<!-- %As [Malte et al. (2019)] wrote, the main improvements were succeeded in the field of the language models. The task of a language model (LM) is to predict which word will follow if the model has the previous words.  -->
+<p>Natural language processing (NLP) has seen rapid advancements in recent years, mainly due to the growing transfer learning usage.
+One significant advantage of transfer learning is that not every model needs to be trained from scratch.</p>
+<p>In the first “wave” of transfer learning, <strong>ELMo</strong> (Embeddings from Language Models), <strong>ULMFiT</strong> (Universal Language Model Fine-tuning for Text Classification), and <strong>GPT</strong> (Generative Pretraining) were published.</p>
+<p>These models enhanced the performance and introduced ideas like contextual embeddings, fine-tuning, and transformers in natural language processing.</p>
+<div id="outline" class="section level2">
+<h2><span class="header-section-number">7.1</span> Outline</h2>
+<p>First, the <strong>taxonomy of transfer learning</strong> and <strong>inductive sequential transfer learning</strong> are introduced. Inductive sequential transfer learning will give a framework for the following models and the difference between embeddings and fine-tuning will be elucidated.</p>
+<p>Second, the models are introduced in detail within the framework of the two steps of inductive sequential transfer learning:</p>
+<ul>
+<li><p>The Allen Institute introduced with <strong>ELMo</strong> a state-of-the-art model that can distinguish between the same word’s varying meaning in different contexts (<strong>contextual word embedding</strong>).</p></li>
+<li><p>Howard and Ruder introduced <strong>ULMFiT</strong>, an adaption of <strong>fine-tuning</strong> in NLP.</p></li>
+<li><p>Open AI published <strong>GPT</strong>, the first <strong>transformer model</strong>, which is an urge for the upcoming chapters. This model architecture is mainly used in the most recent developments.</p></li>
+</ul>
+<p>Lastly, essential facts are <strong>summarized</strong>, and the <strong>following chapters are motivated</strong>.</p>
 </div>
-<div id="transfer-learning-in-nlp" class="section level2">
-<h2><span class="header-section-number">7.2</span> Transfer Learning in NLP</h2>
-<p>[Different types of transfer learning]</p>
-<p>[Mostly, we deal with sequential inductive transfer learning.]</p>
-</div>
-<div id="steps-in-sequential-inductive-transfer-learning" class="section level2">
-<h2><span class="header-section-number">7.3</span> Steps in sequential inductive transfer learning</h2>
-<p>[Pan and Young (2010)] divided <strong>transfer learning</strong> in different subfields: if the tasks are the same (<em>transductive learning</em>) or if the target and source task shares the same domain (<em>inductive transfer learning</em>). In the following, the focus will be on <em>sequential transfer learning</em> where tasks are learned sequentially, whereas, in multi-task learning, the tasks are learned simultaneously.</p>
-<div class="figure" style="text-align: center"><span id="fig:ch21-figure01"></span>
-<img src="figures/02-01-transfer-learning-for-nlp-1/sequential-transfer-learning.PNG" alt="(ref:ch21-figure1)" width="80%" />
+<div id="sequential-inductive-transfer-learning" class="section level2">
+<h2><span class="header-section-number">7.2</span> Sequential inductive transfer learning</h2>
+<p>To better understand the models introduced in this chapter, the taxonomy of transfer learning is introduced. Primarily, sequential inductive transfer learning will be explained further.</p>
+<div id="types-of-transfer-learning" class="section level3">
+<h3><span class="header-section-number">7.2.1</span> Types of transfer learning</h3>
+<p><span class="citation">Pan and Yang (<a href="#ref-panandyoung2010">2010</a>)</span> divided <strong>transfer learning</strong> into different types (figure <a href="transfer-learning-for-nlp-i.html#fig:ch21-typesoftransferlearning">7.1</a>).</p>
+
+<div class="figure" style="text-align: center"><span id="fig:ch21-typesoftransferlearning"></span>
+<img src="figures/02-01-transfer-learning-for-nlp-1/types-of-transfer-learning.png" alt="Four types of transfer learning. Source: based on (Ruder 2019))." width="75%" />
 <p class="caption">
-FIGURE 7.1: (ref:ch21-figure1)
+FIGURE 7.1: Four types of transfer learning. Source: based on <span class="citation">(Ruder <a href="#ref-Ruder2019">2019</a>)</span>).
 </p>
 </div>
-<p>In the first step, all models are <strong>pre-trained</strong> on an extensive source data set, which is, in the best case, very close to the target task ([Peter et al., 2019]). The pre-trained language models in this chapter are uni-directional models that predict the next word.</p>
-<div class="figure" style="text-align: center"><span id="fig:ch21-figure07"></span>
-<img src="figures/02-01-transfer-learning-for-nlp-1/pretrained-lm.PNG" alt="(ref:ch21-figure7)" width="80%" />
+<p>On the one hand, in <strong>transductive transfer learning</strong>, the source and target task are the same. There is another distinction between <strong>domain adoption</strong> (data from different domains) and <strong>cross-lingual-learning</strong> (data from different languages) <span class="citation">(Ruder <a href="#ref-Ruder2019">2019</a>)</span>.</p>
+<p>On the other hand, there is <strong>inductive transfer learning</strong>, where the source and the target task is different. Inductive transfer learning can be divided into multi-task transfer learning and sequential transfer learning. In <strong>multi-task</strong> transfer learning, several tasks are learned simultaneously, and common knowledge is shared between the tasks. In <strong>sequential transfer learning</strong>, the source data’s general knowledge is transferred to only one task <span class="citation">(Ruder <a href="#ref-Ruder2019">2019</a>)</span>.</p>
+<p>Inductive sequential transfer learning has led to the most significant improvements in the past. The following models in this chapter can be explained in the framework of inductive sequential transfer learning.</p>
+</div>
+<div id="feature-extraction-vs.fine-tuning" class="section level3">
+<h3><span class="header-section-number">7.2.2</span> Feature Extraction vs. Fine-tuning</h3>
+<p>Sequential inductive transfer learning mainly consists of two steps: pretraining and adoption.</p>
+
+<div class="figure" style="text-align: center"><span id="fig:ch21-sequentialinductivetl"></span>
+<img src="figures/02-01-transfer-learning-for-nlp-1/sequential-transfer-learning-new.PNG" alt="Steps in sequential inductive transfer learning. Source: based on Ruder et al. (2019)."  />
 <p class="caption">
-FIGURE 7.2: (ref:ch21-figure7)
+FIGURE 7.2: Steps in sequential inductive transfer learning. Source: based on <span class="citation">Ruder et al. (<a href="#ref-ruder2019transfer">2019</a>)</span>.
 </p>
 </div>
-<p>In a second step, follows the <strong>adoption</strong> on the target task. Here, the main distinction is, if the pre-trained model architecture is kept (<strong>embedding</strong> or <strong>feature extraction</strong>) or the pre-trained model is adjusted to the target task (<strong>fine-tuning</strong>). [SOURCE??]</p>
-<p>In <strong>Embeddings</strong>, single parts, which can be sentences or characters, are extracted to a fixed-length matrix with the dimensions <span class="math inline">\(\mathbb{R}^{n} \times k\)</span> where <span class="math inline">\(k\)</span> is the fixed-length. This matrix represents the context of every word given of every other word. So in the adoption phase, the weights in the LM do not change, and just the top layer of the model is used. The adopted model learns a linear combination of the top layer.</p>
-<p>On the other side, <strong>fine-tuning</strong> trains the weights of the pre-trained model on a specific task, which makes it much more flexible and needs no specific adjustment. The disadvantage of this method is that the general knowledge and relationship between words can get lost in the adjustment phase. The term for that is the “catastrophic forgetting” (McCloskey &amp; Cohen, 1989; French, 1999). Techniques for preventing this are freezing, learning rates, and regularization.</p>
-<p>[explaining freezing learning rates and regularization xxxxxxx]</p>
+<p>As in figure <a href="transfer-learning-for-nlp-i.html#fig:ch21-sequentialinductivetl">7.2</a>, the model is first pretrained with the source task, and second, the model is adapted to the target task. The user can use this adopted model for the designated task <span class="citation">(Ruder et al. <a href="#ref-ruder2019transfer">2019</a>)</span>.</p>
+<p>In the first step, all models are <strong>pretrained</strong> on an extensive source data set, which is, in the best case, very close to the target task <span class="citation">(Peters, Ruder, and Smith <a href="#ref-peterrudersmith2019">2019</a>)</span>. This chapter’s pretrained language models are uni-directional models that (only) predict the next word during pretraining (figure <a href="transfer-learning-for-nlp-i.html#fig:ch21-lm">7.3</a>).</p>
+<div class="figure" style="text-align: center"><span id="fig:ch21-lm"></span>
+<img src="figures/02-01-transfer-learning-for-nlp-1/pretrained-lm-new.PNG" alt="Unidirectional language model" width="80%" />
+<p class="caption">
+FIGURE 7.3: Unidirectional language model
+</p>
 </div>
-<div id="most-popular-models" class="section level2">
-<h2><span class="header-section-number">7.4</span> Most popular models</h2>
-<p>In the following sections, the models <strong>ELMo</strong>, <strong>ULMFiT</strong>, and <strong>GPT</strong> are presented, which shaped the “first wave” of transfer learning before transformers like BERT developed and became popular.</p>
+<p>In second step follows the <strong>adoption</strong> on the target task. Here, the main distinction is if the pretrained model weights are kept (<strong>embedding</strong> or <strong>feature extraction</strong>) or adjusted to the target task (<strong>fine-tuning</strong>) <span class="citation">(Peters, Ruder, and Smith <a href="#ref-peterrudersmith2019">2019</a>)</span>.</p>
+<p>In <strong>feature extraction</strong>, single parts (sentences or characters) are extracted to a fixed-length matrix with the dimensions <span class="math inline">\(\mathbb{R}^{n} \times k\)</span> where <span class="math inline">\(k\)</span> is the fixed-length. This matrix represents the context of every word given of every other word. In the adoption phase, the LM’s weights do not change, and just the top layer of the model is used. The adopted model learns a linear combination of the top layer <span class="citation">(Peters, Ruder, and Smith <a href="#ref-peterrudersmith2019">2019</a>)</span>.</p>
+<p>On the other hand, <strong>fine-tuning</strong> adjusts the pretrained model’s weights on a specific task. This is much more flexible, as no particular adjustments are needed. The method’s disadvantage is that the general knowledge and relationship between words can get lost in the adjustment phase. This is called “catastrophic forgetting” <span class="citation">(McCloskey and Cohen <a href="#ref-mccloskey1989">1989</a>; French <a href="#ref-french1999">1999</a>)</span>. Techniques for preventing catastrophic forgetting are freezing learning rates and regularization, mainly explained in the <a href="transfer-learning-for-nlp-i.html#ulmfit">ULMFiT section</a>.</p>
+<p>Fine-tuning and feature extraction are the most extreme versions of adoption.</p>
+</div>
+</div>
+<div id="models" class="section level2">
+<h2><span class="header-section-number">7.3</span> Models</h2>
+<p>In the following sections, the models <strong>ELMo</strong> <span class="citation">(Peters et al. <a href="#ref-peter2018">2018</a>)</span>, <strong>ULMFiT</strong> <span class="citation">(Howard and Ruder <a href="#ref-howardruder2018">2018</a>)</span>, and <strong>GPT</strong> <span class="citation">(Radford et al. <a href="#ref-radford2018">2018</a>)</span> are presented, which have shaped the “first wave” of transfer learning before bidirectional transformers like BERT have been developed and have become popular. All models have been presented in 2018 and are inductive sequential transfer learning models.</p>
 <div id="elmo---the-new-age-of-embeddings" class="section level3">
-<h3><span class="header-section-number">7.4.1</span> ELMo - The “new age” of embeddings</h3>
-<!-- [ xxxx I'm missing a little bit some information of why ELMo is a transfer learning model. From its description it looks like it's just a bidirectional deep LSTM-Model. Maybe explain in a few sentences where transfer learning actually occurs.] -->
-<p>In 2018, [Peter et al. 2018] from AllenNLP introduced <strong>Embeddings from Language Models</strong> (ELMo), which most significant advance compared to previous models like word2vec and Glove (chapter??) is that ELMo can handle the different meanings of a word in a context (polysemy). For instance, is the meaning of the word “mouse” in the context of computers, a device with which you can control the cursor of your PC. Instead, in the context of animals, it means this small animal living in gardens. Until ELMo, this could not be captured by an NLP model, but with ELMo, the different meaning of the words is taken. For this purpose, ELMo can model the semantical and the synthetical characteristics of a word (like word2vec) but also the varying meanings in different contexts.</p>
-<p>In contrast to previous word embeddings word, the representations of ELMo are functions of the whole input sentence. These representations are calculated on top of a biLMs (bidirectional language model) with two-layer character convolutions (1) and are a linear combination of the internal network states (2). [+ clearer why trnasfer learning]
-<!-- [xxxxx talk with Marinana what she has in her chapter] --></p>
-<div id="bidirectional-language-model-bilm" class="section level4">
-<h4><span class="header-section-number">7.4.1.1</span> Bidirectional language model (biLM)</h4>
-<p>ELMo is based on the shallow concatenation of independently trained left-to-right and right-to-left multi-layer LSTMs. Bidirectional is, in this case, misleading, as the two steps occur independently from each other.
-A forward language model calculates the probability of a sequential token (word or character) <span class="math inline">\(t_{k}\)</span> at the position <span class="math inline">\(k\)</span> with the provided history <span class="math inline">\(t_{1}, \ldots, t_{k-1}\)</span> with:</p>
+<h3><span class="header-section-number">7.3.1</span> ELMo - The “new age” of embeddings</h3>
+<p>In 2018, <span class="citation">Peters et al. (<a href="#ref-peter2018">2018</a>)</span> from AllenNLP introduced <strong>Embeddings from Language Models</strong> (ELMo). Its most significant advance compared to previous models like word2vec and Glove (<a href="foundationsapplications-of-modern-nlp.html#foundationsapplications-of-modern-nlp"><strong>chapter 3</strong></a>), is that ELMo can handle the different meanings of a word in different contexts (<strong>polysemy</strong>).</p>
+<p>One good example of polysemy is the word “mouse.” In a technical context, it means the computer mouse, and in other contexts, it could mean a rodent. Previous models can just capture the semantical and syntactical characteristics of the word. ELMo can also capture the varying meaning of the word in different contexts (here: computer mouse or rodent).</p>
+<p>ELMo can be divided into the steps pretraining and adoption:</p>
+<div class="figure" style="text-align: center"><span id="fig:ch21-figure08"></span>
+<img src="figures/02-01-transfer-learning-for-nlp-1/sequential-transfer-learning-elmo.PNG" alt="Feature extraction in ELMo." width="60%" />
+<p class="caption">
+FIGURE 7.4: Feature extraction in ELMo.
+</p>
+</div>
+<p>It is pretrained on the 1 Billion Word Benchmark, a standard dataset for language modeling from Google. ELMo’s model architecture is a shallowly bidirectional language model. The meaning of “shallowly bidirectional” will be explained in the following section.
+Afterward, the pretrained model is frozen. That means that all learning rates are set to 0. In the adoption phase, a linear combination of the internal states is learned in an additional layer. This representation is different for every task.</p>
+<div id="pretraining-bidirectional-language-model-bilm" class="section level4">
+<h4><span class="header-section-number">7.3.1.1</span> Pretraining: Bidirectional language model (biLM)</h4>
+<p>ELMo is based on a two-layer bidirectional LSTM, the shallow concatenation of independently trained left-to-right and right-to-left multi-layer LSTMs. Bidirectional is, in this case, misleading, as the two steps happen independently from each other:</p>
+
+<div class="figure" style="text-align: center"><span id="fig:ch21-elmo-pretrained1"></span>
+<img src="figures/02-01-transfer-learning-for-nlp-1/elmo-pretrained-bilm.png" alt="Bidirectional LSTM as a pretrained model. Source: based on Peters et al. (2018) and (“Understanding Lstm Networks” 2015)." width="90%" />
+<p class="caption">
+FIGURE 7.5: Bidirectional LSTM as a pretrained model. Source: based on <span class="citation">Peters et al. (<a href="#ref-peter2018">2018</a>)</span> and <span class="citation">(“Understanding Lstm Networks” <a href="#ref-lstmpicture">2015</a>)</span>.
+</p>
+</div>
+<p>As shown in figure <a href="transfer-learning-for-nlp-i.html#fig:ch21-elmo-pretrained1">7.5</a>, <span class="math inline">\(N\)</span> tokens are taken into a one-layer bidirectional LSTM. Every token <span class="math inline">\(t_k\)</span> has a context-independent character-based representation called <span class="math inline">\(x_k^{LM}\)</span>. Following, the first token would be <span class="math inline">\(x_1^{LM}\)</span>, and the last one would be <span class="math inline">\(x_N^{LM}\)</span>. By either token embedding or a CNN over characters, these representations are computed. These are the first representations of the words in the model.</p>
+<p>Additionally, there are per layer and token two additional representations; one from the forward language model and one from the backward language model.</p>
+<p>A forward language model calculates the probability of a sequential token <span class="math inline">\(t_{k}\)</span> at the position <span class="math inline">\(k\)</span> with the provided history (previous tokens) <span class="math inline">\(t_{1}, \ldots, t_{k-1}\)</span> with:</p>
 <p><span class="math display">\[
 \begin{aligned}
 p\left(t_{1}, t_{2}, \ldots, t_{N}\right)=\prod_{k=1}^{N} p\left(t_{k} | t_{1}, t_{2}, \ldots, t_{k-1}\right)
 \end{aligned}
 \]</span>
-<!-- [xxxxxxx check notation in the picture!!] --></p>
-<p>The backward LM can be defined accordingly to the forward LM:</p>
+The backward language can be defined accordingly to the forward language model. It does not take the previous tokens, but the upcoming tokens, into account to calculate the joint distributions of the tokens.</p>
 <p><span class="math display">\[
 \begin{aligned}
 p\left(t_{1}, t_{2}, \ldots, t_{N}\right)=\prod_{k=1}^{N} p\left(t_{k} | t_{k+1}, t_{k+2}, \ldots, t_{N}\right)
 \end{aligned}
 \]</span></p>
-<p>In both directions, a context-independent token representation <span class="math inline">\(\mathbf{x}_{k}^{L M}\)</span> by either token embedding or a CNN over characters is computed and passed through a forward/backward LSTM. Additionally, at each position <span class="math inline">\(k\)</span> every LSTM layer <span class="math inline">\(j\)</span> outputs a context-dependent representation <span class="math inline">\(\overrightarrow{\mathbf{h}}_{k, j}^{L M}\)</span> (or <span class="math inline">\(\overleftarrow{\mathbf{h}}_{k, j}^{L M}\)</span> in the backward direction).</p>
-<p>In the forward direction, a next token <span class="math inline">\(t_{k+1}\)</span> can predict the top layer <span class="math inline">\(\overrightarrow{\mathbf{h}}_{k, L}^{L M}\)</span> with a Softmax layer. In the biLM the direction are combined and optimized with a log likelihood:</p>
+<p>These context-dependent representation are notated as <span class="math inline">\(\overrightarrow{\mathbf{h}}_{k, j}^{L M}\)</span> in the forward direction and as <span class="math inline">\(\overleftarrow{\mathbf{h}}_{k, j}^{L M}\)</span> in the backward direction.</p>
+<p><span class="citation">Peters et al. (<a href="#ref-peter2018">2018</a>)</span> have chosen a bidirectional LSTM with two layers, shown in figure <a href="transfer-learning-for-nlp-i.html#fig:ch21-elmo-pretrained2">7.6</a>. As with every layer, two additional context-dependent representations are added. This two-layer bidirectional model has five representations per token (<span class="math inline">\(2L+1 = 5\)</span>).</p>
+
+<div class="figure" style="text-align: center"><span id="fig:ch21-elmo-pretrained2"></span>
+<img src="figures/02-01-transfer-learning-for-nlp-1/elmo-pretrained-bilm-2.png" alt="Bidirectional LSTM as a pretrained model. Source: based on Peters et al. (2018)." width="90%" />
+<p class="caption">
+FIGURE 7.6: Bidirectional LSTM as a pretrained model. Source: based on <span class="citation">Peters et al. (<a href="#ref-peter2018">2018</a>)</span>.
+</p>
+</div>
+<p>In the forward direction, a next token <span class="math inline">\(t_{k+1}\)</span> can predict the top layer <span class="math inline">\(\overrightarrow{\mathbf{h}}_{k, L}^{L M}\)</span> with a Softmax layer. In the biLM the directions are combined and optimized with a log likelihood:</p>
 <p><span class="math display">\[\begin{array}{l}
 \sum_{k=1}^{N}\left(\log p\left(t_{k} | t_{1}, \ldots, t_{k-1} ; \Theta_{x}, \vec{\Theta}_{L S T M}, \Theta_{s}\right)\right. \\
 \quad+\log p\left(t_{k} | t_{k+1}, \ldots, t_{N} ; \Theta_{x}, \overleftarrow{\Theta}_{L S T M}, \Theta_{s}\right)
 \end{array}\]</span></p>
 <p>where <span class="math inline">\(\Theta_{s}\)</span> are the parameters for the token representations and
 <span class="math inline">\(\Theta_{x}\)</span> are the parameters of the Softmax-layer.</p>
-<!-- [add more info] -->
-<p>[ Add some more explanation to the formulas (maybe in combination with the graph) because it’s really hard to understand this part.]</p>
-<div class="figure" style="text-align: center"><span id="fig:ch21-figure08"></span>
-<img src="figures/02-01-transfer-learning-for-nlp-1/elmo.PNG" alt="ELMo" width="90%" />
-<p class="caption">
-FIGURE 7.3: ELMo
-</p>
-</div>
-</div>
-<div id="elmo-representation" class="section level4">
-<h4><span class="header-section-number">7.4.1.2</span> ELMo representation</h4>
-<p>The ELMo specific task is formulated by</p>
-<p><span class="math display">\[\mathbf{E} \mathbf{L} \mathbf{M} \mathbf{o}_{k}^{t a s k}=E\left(R_{k} ; \Theta^{t a s k}\right)=\gamma^{t a s k} \sum_{j=0}^{L} s_{j}^{t a s k} \mathbf{h}_{k, j}^{L M},\]</span></p>
-<p>where <span class="math inline">\(\gamma\)</span> is the optimization parameter which allows to scale the model, <span class="math inline">\(s_{j}^{t a s k}\)</span> are “softmax-normalized weights” and <span class="math inline">\(R_{k}\)</span> is the representation of the tokens <span class="math inline">\(k\)</span>:</p>
+<p>This model architecture is trained with the extensive 1B Word data set to calculate representations. For every single token <span class="math inline">\(R_k\)</span> is calculated, which is a set of representations <span class="math inline">\(R_k\)</span> for every token <span class="math inline">\(t_{k}\)</span>: all forward and backward context-dependent representations and also the character-based token representation <span class="math inline">\(x_k\)</span>:</p>
 <p><span class="math display">\[\begin{aligned}
 R_{k} &amp;=\left\{\mathbf{x}_{k}^{L M}, \overrightarrow{\mathbf{h}}_{k, j}^{L M}, \overleftarrow{\mathbf{h}}_{k, j}^{L M} | j=1, \ldots, L\right\} \\
 &amp;=\left\{\mathbf{h}_{k, j}^{L M} | j=0, \ldots, L\right\}
 \end{aligned}.\]</span></p>
-<p>For every task (question answering, sentiment analysis, etc.) the ELMo representation needs a task-specific calculation [Further explanation…]</p>
+<p>This pretrained model, including the representation for every token, is here available for download: <a href="https://allennlp.org/elmo" class="uri">https://allennlp.org/elmo</a>.</p>
 </div>
-</div>
-<div id="ulmfit---cutting-edge-model-using-lstms" class="section level3">
-<h3><span class="header-section-number">7.4.2</span> ULMFiT - cutting-edge model using LSTMs</h3>
-<p>Also, 2018, [Howard and Ruder (2018)] proposed <strong>Universal language model fine-tuning (ULMFiT)</strong>, which exceeded many of the cutting-edge models in text classification, as it decreased the error by 18-24% in most of the datasets.
-ULMFiT is based on an AWD-LSTM (ASGD Weight-Dropped LSTM) combined with novel techniques like “discriminative fine-tuning,” “slanted triangular learning rates,” and “gradual unfreezing of layers.” Hence, it can fine-tune a generalized language model to a specific language model for multiple tasks.</p>
-<div id="awd-lstm" class="section level4">
-<h4><span class="header-section-number">7.4.2.1</span> AWD-LSTM</h4>
-<p>As language models with many parameters tend to overfit, [Merity ()] introduced the <strong>AWD-LSTM</strong>, a highly effective version of the Long Short Term Memory (LSTM, [chapter ???]). The Dropconnect Algorithm and the Non-monotonically Triggered ASGD (NT-ASGD) are two main improvements of this model architecture.</p>
-<p>As in figure [??] The <strong>Dropconnect Algorithm</strong> (Wan 2013) regularizes the LSTM and prevents overfitting by setting the activation of units randomly to zero with a predetermined probability of <span class="math inline">\(p\)</span>. So, only a subset of the units from the previous layer is passed to every unit. However, by using this method also long-term dependencies go lost. That is why the algorithm drops weights and not the activations in the end with the probability of <span class="math inline">\(1-p\)</span>. As the weights are set to zero, the drop connect algorithm reduces the information loss, while it reduces overfitting. [correct confunfusion with dropout/dropconnect]</p>
-<!-- [Very nice graph  but the explanation is a little confusing. First you say that the Dropconnect Algorithm sets activations to zero. But in the third sentence you say that the algorithm drops weights and not the activations. You probably mean that the DropOut algorithm sets activations to zero while the DropConnect sets weights to zero, don't you (that's at least what the graph shows) xxxxxx] -->
-<div class="figure" style="text-align: center"><span id="fig:ch21-figure02"></span>
-<img src="figures/02-01-transfer-learning-for-nlp-1/dropconnect_algorithm.PNG" alt="Dropconnect Algorithm" width="90%" />
+<div id="adoption-extracting-elmo-representation" class="section level4">
+<h4><span class="header-section-number">7.3.1.2</span> Adoption: Extracting ELMo representation</h4>
+<p>After the biLM is pretrained, the model can be adapted to the target task. ELMo adopts the target by <strong>feature extraction</strong>; the pretrained model is frozen (all learning rates are set to 0), and the task-specific ELMo representations are calculated.</p>
+
+<div class="figure" style="text-align: center"><span id="fig:ch21-elmoadoption"></span>
+<img src="figures/02-01-transfer-learning-for-nlp-1/elmo-adatption.png" alt="Bidirectional LSTM as a pretrained model. Source: based on Peters et al. (2018) and (“Understanding Lstm Networks” 2015)." width="90%" />
 <p class="caption">
-FIGURE 7.4: Dropconnect Algorithm
+FIGURE 7.7: Bidirectional LSTM as a pretrained model. Source: based on <span class="citation">Peters et al. (<a href="#ref-peter2018">2018</a>)</span> and <span class="citation">(“Understanding Lstm Networks” <a href="#ref-lstmpicture">2015</a>)</span>.
 </p>
 </div>
-<p>To improve the optimization in the AWD-LSTM further, [Merity ()] introduced the <strong>Non-monotonically Triggered Average SGD</strong> (or NT-ASGD), which is a new variant of Average Stochastic Gradient Descent (ASDG). The Average Stochastic gradient descent takes a gradient descent step, as the gradient descent algorithm. However, it also takes the weight of the previous iterations into account and returns the average. On the contrary, the NT-ASGD only takes the averaged previous iterations into account, if the validation metric does not improve for several steps. Subsequently, The SGD turns into an ASGD if there is no improvement for n steps.</p>
-<p>[formula for ASGD]</p>
-<p>In addition to the enhancements above the AWD-LSTM, the authors of the paper propose several other regularization and data efficiency methods: Variable Length Backpropaation Sequences (BPTT), Variational Dropout, Embedding Dropout, Reduction in Embedding Size, Activation Regularization, Temporal Activation Regularization. For further information, the paper is a great way to start. [Mehr hier???]</p>
+<p>With the target data, <span class="math inline">\(s_j^{task}\)</span> is trained, which are soft-max-normalized weights for every layer. <span class="math inline">\(\gamma_{task}\)</span> is a task-specific parameter that scales the entire ELMo vector.
+After training these parameters, ELMo has a task-specific representation for every token <span class="math inline">\(t_k\)</span>, a linear combination of the internal representations.</p>
+<p>The ELMo specific task is formulated by</p>
+<p><span class="math display">\[\mathbf{E} \mathbf{L} \mathbf{M} \mathbf{o}_{k}^{t a s k}=E\left(R_{k} ; \Theta^{t a s k}\right)=\gamma^{t a s k} \sum_{j=0}^{L} s_{j}^{t a s k} \mathbf{h}_{k, j}^{L M},\]</span></p>
+<p>where <span class="math inline">\(\gamma\)</span> is the optimization parameter which allows scaling the model, <span class="math inline">\(s_{j}^{t a s k}\)</span> are “softmax-normalized weights,” and <span class="math inline">\(R_{k}\)</span> is the representation of the tokens <span class="math inline">\(t_k\)</span>. For every task (e.g., question answering, sentiment analysis), the ELMo representation needs a task-specific calculation.</p>
 </div>
-<div id="the-three-steps-of-ulmfit" class="section level4">
-<h4><span class="header-section-number">7.4.2.2</span> The three steps of ULMFiT</h4>
-<div class="figure" style="text-align: center"><span id="fig:ch21-figure03"></span>
-<img src="figures/02-01-transfer-learning-for-nlp-1/ulmfit-overview.png" alt="Three steps of ULMFiT" width="100%" />
-<p class="caption">
-FIGURE 7.5: Three steps of ULMFiT
-</p>
-</div>
-<p>ULMFiT follows three steps to achieve these notable transfer learning results:</p>
-<ol style="list-style-type: decimal">
-<li><p><strong>LM pre-training</strong>: The AWD-LSTM (language model) is trained on general-domain data like the Wikipedia data set.</p></li>
-<li><strong>LM fine-tuning</strong>: The model is fine-tuned on the tasks’ dataset. For this purposed [Howard and Ruder(2018)] proposed two training techniques to stabilize the fine-tuning process:
+<div id="elmo-summary-and-further-links" class="section level4">
+<h4><span class="header-section-number">7.3.1.3</span> ELMo: Summary and further links</h4>
+<p>To summarize, ELMo is a shallowly bidirectional language model, which is a two-layer LSTM. It is pretrained on the 1 Billion word data set and then adopted with feature extraction, a linear combination of the internal states.</p>
+<p>In this way, ELMo can create unique, character-based, and deep word representations. The unique representations are adopted to every task. This is a considerable enhancement compared to the previous embedding models, which did not take the context of the words into account (<a href="foundationsapplications-of-modern-nlp.html#foundationsapplications-of-modern-nlp"><strong>chapter 3</strong></a>).</p>
+<p>According to the ELMo paper authors, ELMo saves semantic - context-dependent features - information more in the higher layer and syntactic information more in the lower layers. That is also why the weighting in every task should be different.</p>
+<p>ELMo is suitable for every NLP task, and by adding ELMo due to <span class="citation">Peters et al. (<a href="#ref-peter2018">2018</a>)</span>’s paper, a relative error reduction of 6-20% can be achieved.</p>
+<p><strong>Interesting Links</strong></p>
 <ul>
-<li><strong>Discriminative fine-tuning</strong>
-Considering distinctive layers of LM capture distinct types of information, ULMFiT proposed to tune each layer with different learning rates.</li>
-<li><strong>Slanted triangular learning rates</strong> (STLR)
-STLR is a particular learning rate scheduling that first linearly increases the learning rate, and then gradually declines after a cut. That leads to an abrupt increase and a more extensive decay like in figure ??:</li>
-</ul></li>
-</ol>
-<div class="figure" style="text-align: center"><span id="fig:ch21-figure06"></span>
-<img src="figures/02-01-transfer-learning-for-nlp-1/ulmfit-stlr.png" alt="Slanted triangular learning rates" width="60%" />
+<li>Exploring contextual meanings with ELMo <a href="https://towardsdatascience.com/elmo-contextual-language-embedding-335de2268604" class="uri">https://towardsdatascience.com/elmo-contextual-language-embedding-335de2268604</a></li>
+<li>How to implement text classification with ELMo <a href="https://www.analyticsvidhya.com/blog/2019/03/learn-to-use-elmo-to-extract-features-from-text/" class="uri">https://www.analyticsvidhya.com/blog/2019/03/learn-to-use-elmo-to-extract-features-from-text/</a></li>
+<li>Illustrations of ELMo <a href="http://jalammar.github.io/illustrated-bert/" class="uri">http://jalammar.github.io/illustrated-bert/</a></li>
+</ul>
+</div>
+</div>
+<div id="ulmfit" class="section level3">
+<h3><span class="header-section-number">7.3.2</span> ULMFiT - cutting-edge model using LSTMs</h3>
+<p>In the same year, <span class="citation">Howard and Ruder (<a href="#ref-howardruder2018">2018</a>)</span> proposed <strong>Universal language model fine-tuning (ULMFiT)</strong>, which exceeded many of the cutting-edge models in text classification. It decreased the error by 18-24% on most of the datasets.</p>
+<p>Also, ULMFiT can be divided into the steps of pretraining and adoption:</p>
+<div class="figure" style="text-align: center"><span id="fig:ch21-tl-ulmfit"></span>
+<img src="figures/02-01-transfer-learning-for-nlp-1/sequential-transfer-learning-ulmfit.PNG" alt="Fine-Tuning in ULMFiT." width="60%" />
 <p class="caption">
-FIGURE 7.6: Slanted triangular learning rates
+FIGURE 7.8: Fine-Tuning in ULMFiT.
 </p>
 </div>
-<p>The learning rates <span class="math inline">\(\eta_{t}\)</span> are calculated by the number of iterations <span class="math inline">\(T\)</span>: </p>
+<p>ULMFiT is based on an AWD-LSTM (ASGD Weight-Dropped LSTM) combined with fine-tuning in the adoption where novel techniques like “discriminative fine-tuning,” “slanted triangular learning rates,” and “gradual unfreezing of layers.” were introduced. Hence, it can fine-tune a generalized language model to a specific language model for a target task.</p>
+<p>ULMFiT follows three steps to achieve its notable transfer learning results:</p>
+<ol style="list-style-type: decimal">
+<li>Language Model pretraining</li>
+<li>Language Model fine-tuning (Adoption I)</li>
+<li>Classifier fine-tuning (Adoption II)</li>
+</ol>
+<div id="pretraining-awd-lstm" class="section level4">
+<h4><span class="header-section-number">7.3.2.1</span> Pretraining: AWD-LSTM</h4>
+<p>As language models with many parameters tend to overfit, <span class="citation">Merity, Shirish Keskar, and Socher (<a href="#ref-merity2017">2017</a>)</span> introduced the <strong>AWD-LSTM</strong>, a highly effective version of the Long Short Term Memory (LSTM, <a href="recurrent-neural-networks-and-their-applications-in-nlp.html#recurrent-neural-networks-and-their-applications-in-nlp"><strong>chapter 4</strong></a>). The Dropconnect Algorithm and the Non-monotonically Triggered ASGD (NT-ASGD) are two main improvements of this model architecture.</p>
+<p>As in figure <a href="transfer-learning-for-nlp-i.html#fig:ch21-drop">7.9</a>, the <strong>Dropconnect Algorithm</strong> <span class="citation">(Wan et al. <a href="#ref-wan2013">2013</a>)</span> regularizes the LSTM and prevents overfitting by setting the activation of units randomly to zero with a predetermined probability of <span class="math inline">\(p\)</span>. By this, only a subset of the units from the previous layer is passed to every unit. However, by using this method also long-term dependencies can go lost. That is why the algorithm drops weights and not the activations in the end with the probability of <span class="math inline">\(1-p\)</span>. As the weights are set to zero, the drop connect algorithm reduces the information loss while reducing overfitting.</p>
+<div class="figure" style="text-align: center"><span id="fig:ch21-drop"></span>
+<img src="figures/02-01-transfer-learning-for-nlp-1/ulmfit-dropconnect.png" alt="Dropconnect Algorithm." width="50%" />
+<p class="caption">
+FIGURE 7.9: Dropconnect Algorithm.
+</p>
+</div>
+<p>To improve the optimization in the AWD-LSTM further, <span class="citation">Merity, Shirish Keskar, and Socher (<a href="#ref-merity2017">2017</a>)</span> introduced the <strong>Non-monotonically Triggered Average SGD</strong> (or NT-ASGD), which is a new variant of Average Stochastic Gradient Descent (ASDG).</p>
+<p>The Average Stochastic gradient descent takes a gradient descent step like a standard gradient descent algorithm. However, it also takes the weight of the previous iterations into account and returns the average. On the contrary, the NT-ASGD only takes the averaged previous iterations into account if the validation metric does not improve for a fixed amount of steps. Subsequently, the SGD turns into an ASGD if there is no improvement for <span class="math inline">\(n\)</span> steps.</p>
+<p>Additionally, several other regularization and data efficiency methods are proposed in the paper:</p>
+<ul>
+<li>Variable Length Backpropaation Sequences (BPTT),</li>
+<li>Variational Dropout,</li>
+<li>Embedding Dropout,</li>
+<li>Reduction in Embedding Size,</li>
+<li>Activation Regularization, and</li>
+<li>Temporal Activation Regularization.</li>
+</ul>
+<p>For further information, the paper of <span class="citation">Merity, Shirish Keskar, and Socher (<a href="#ref-merity2017">2017</a>)</span> is a great way to start.</p>
+<p>The AWD-LSTM (language model) is trained on general-domain data like the Wikipedia data set. This trained model can be downloaded here: <a href="https://docs.fast.ai/text.html" class="uri">https://docs.fast.ai/text.html</a>.</p>
+</div>
+<div id="adoption-i-lm-fine-tuning" class="section level4">
+<h4><span class="header-section-number">7.3.2.2</span> Adoption I: LM fine-tuning</h4>
+
+<div class="figure" style="text-align: center"><span id="fig:ch21-figure03"></span>
+<img src="figures/02-01-transfer-learning-for-nlp-1/ulmfit-overview-new.png" alt="Three steps of ULMFiT. Source: based on Howard and Ruder (2018)." width="100%" />
+<p class="caption">
+FIGURE 7.10: Three steps of ULMFiT. Source: based on <span class="citation">Howard and Ruder (<a href="#ref-howardruder2018">2018</a>)</span>.
+</p>
+</div>
+<p>The model is fine-tuned on the tasks’ dataset. For this purposed <span class="citation">Howard and Ruder (<a href="#ref-howardruder2018">2018</a>)</span> proposed two training techniques to stabilize the fine-tuning process:</p>
+<p><strong>Discriminative fine-tuning</strong> uses that distinctive layers of the LM capture distinct types of information. It is proposed to tune each layer with different learning rates. The higher the layer, the higher the learning rate:</p>
+<p><img src="book_files/figure-html/unnamed-chunk-2-1.svg" width="65%" style="display: block; margin: auto;" /></p>
+<p>On the other side, <strong>slanted triangular learning rates</strong> (STLR) are particular learning rate scheduling that first linearly increases the learning rate, and then gradually declines after a cut. That leads to an abrupt increase and a more extensive decay:</p>
+<p><img src="book_files/figure-html/stlr-1.svg" width="65%" style="display: block; margin: auto;" /></p>
+<p>The learning rates <span class="math inline">\(\eta_{t}\)</span> are calculated with the number of iterations <span class="math inline">\(T\)</span>: </p>
 <p><span class="math display">\[\begin{aligned}
 c u t &amp;=\left\lfloor T \cdot c u t_{-} f r a c\right\rfloor \\
 p &amp;=\left\{\begin{array}{ll}
@@ -400,81 +474,126 @@ t / c u t, &amp; \text { if } t&lt;c u t \\
 \eta_{t} &amp;=\eta_{\max } \cdot \frac{1+p \cdot(r a t i o-1)}{\text {ratio}}, 
 \end{aligned}\]</span></p>
 <p>where <span class="math inline">\(c u t_{-} f r a c\)</span> is the increasing learning rate factor, <span class="math inline">\(c u t\)</span> the iteration where the decreasing is started, <span class="math inline">\(p\)</span> the fraction of the number of iterations that are increased or decreased, <span class="math inline">\(ratio\)</span> is the ratio the difference between the lowest and highest learning rate</p>
-<p>[add aim of it!]</p>
-<ol start="3" style="list-style-type: decimal">
-<li><strong>Classifier fine-tuning</strong>: In the last step, the LM is expanded with two common feed-forward layers and a softmax normalization at the end to predict a target label distribution. Again, two new techniques are submitted:
+<p>By these two changes in the learning rates depending on the iteration and the layer, information in the higher layers can learn more specific knowledge and lower layers to keep general language knowledge.</p>
+</div>
+<div id="adoption-ii-classifier-fine-tuning" class="section level4">
+<h4><span class="header-section-number">7.3.2.3</span> Adoption II: Classifier fine-tuning</h4>
+<p>In the last step, the language model is expanded with two common feed-forward layers and a softmax normalization at the end to predict a target label distribution. Again, two new techniques are added:</p>
 <ul>
-<li><strong>Concat pooling</strong>
-Concat pooling elicits “max-pooling and mean-pooling over the history of hidden states and concatenates them with the final hidden state.”:[formula for concat pooling]</li>
-<li><strong>Gradual unfreezing</strong>
-A common problem of retraining the model is losing information about the general data (Wikipedia), which is called “catastrophic forgetting.” Hence, gradual unfreezing the model will be trained step by step, starting from the last layer. So first, all layers are “frozen” except the last layer (not tuned). In every step, one additional layer is “unfrozen.”</li>
-</ul></li>
-</ol>
+<li><p><strong>Concat pooling</strong>:
+As in text classification, single words are essential, concat pooling save the mean and the max representations. By that, theses signal words do not get lost. For example, good or bad are perfect indicators of sentiment. If the fine-tuning loses them, they are still saved in the GPU with concat pooling.</p></li>
+<li><p><strong>Gradual unfreezing</strong>:
+A common problem of retraining the model is losing information about the general data (the Wikipedia dataset): <strong>“catastrophic forgetting.”</strong> Hence, with gradual unfreezing, the model will be trained step by step, starting from the last layer. So first, all layers are “frozen” except the last layer. In every step, one additional layer is “unfrozen.” By that, the specific knowledge which is in the higher layers is adapted more to the target task than the first layer, which contains the most general knowledge according to the authors of the ULMFiT paper.</p></li>
+</ul>
+<p>With these improvements, the model is trained to sentiment texts on a particular target task.</p>
+</div>
+<div id="ulmfit-summary-and-further-links" class="section level4">
+<h4><span class="header-section-number">7.3.2.4</span> ULMFiT: Summary and further links</h4>
+<p>To sum up, ULMFiT is pretrained with the Wikitext-103 dataset on a highly efficient version of an LSTM. Then it is fine-tuned in two steps on the target task with the target data.
+ULMFiT achieved, in this way, a well-working form of fine-tuning in NLP. Here the last layer contains the most specific knowledge, and the first layer the most general knowledge. To contain this, the regularization methods explained are used.
+Although the paper is called ULMFIT for text classification, the pretrained model can also be used for any other task. Maybe the fine-tuning methods must be adapted.
+Due to the paper, ULMFiT could decrease the error by incredible 18-24% in text classification.</p>
+<p><strong>Interesting Links</strong></p>
+<ul>
+<li><p>Tutorial on how to use ULMFiT for Text Classification <a href="https://www.analyticsvidhya.com/blog/2018/11/tutorial-text-classification-ulmfit-fastai-library/" class="uri">https://www.analyticsvidhya.com/blog/2018/11/tutorial-text-classification-ulmfit-fastai-library/</a> or <a href="https://medium.com/technonerds/using-fastais-ulmfit-to-make-a-state-of-the-art-multi-label-text-classifier-bf54e2943e83" class="uri">https://medium.com/technonerds/using-fastais-ulmfit-to-make-a-state-of-the-art-multi-label-text-classifier-bf54e2943e83</a></p></li>
+<li><p>Another students’ seminar website about ULMFiT <a href="https://humboldt-wi.github.io/blog/research/information_systems_1819/group4_ulmfit/" class="uri">https://humboldt-wi.github.io/blog/research/information_systems_1819/group4_ulmfit/</a></p></li>
+</ul>
 </div>
 </div>
 <div id="gpt---first-step-towards-transformers" class="section level3">
-<h3><span class="header-section-number">7.4.3</span> GPT - First step towards transformers</h3>
-<p>[ Radford-et-al(2018)] from Open AI published <strong>Generative Pre-Training</strong> (GPT). GPT’s idea is very similar to ELMo, as it expands the unsupervised LM to a much larger scale, as it uses pre-trained models and transfer learning.</p>
-<p>Despite the similarity, GPT has three significant differences to ELMo:</p>
-<pre><code>* ELMo is based on word embeddings, whereas GPT is based on fine-tuning like ULMFiT. 
-
-* GPT uses a different model architecture. Instead of the multi-layer LSTM, GPT is a multi-layer decoder. A model architecture will be explained in the upcoming chapters, as it is a significant step towards the state-of-the-art NLP models. 
-
-* In contrast to ELMo, that works character-wise, GPT uses tokens (subwords) from the words.</code></pre>
-<div class="figure" style="text-align: center"><span id="fig:ch21-figuregpt"></span>
-<img src="figures/02-01-transfer-learning-for-nlp-1/gpt.PNG" alt="GPT" width="80%" />
+<h3><span class="header-section-number">7.3.3</span> GPT - First step towards transformers</h3>
+<p><span class="citation">Radford et al. (<a href="#ref-radford2018">2018</a>)</span> from Open AI published <strong>Generative Pretraining</strong> (GPT).</p>
+<p>In the context of inductive sequential transfer learning, the training steps of GPT can be divided in:</p>
+<div class="figure" style="text-align: center"><span id="fig:ch21-tl-gpt"></span>
+<img src="figures/02-01-transfer-learning-for-nlp-1/sequential-transfer-learning-gpt.PNG" alt="Fine-tuning in GPT." width="60%" />
 <p class="caption">
-FIGURE 7.7: GPT
+FIGURE 7.11: Fine-tuning in GPT.
 </p>
 </div>
-<p>As shown in figure <a href="transfer-learning-for-nlp-i.html#fig:ch21-figuregpt">7.7</a> GPT is a uni-directional transformer-decoder with 12 layers which have two sublayers connected by a feed-forward network:
-First, the model is pre-trained by thousand books from Google books. Then, the parameters of the model are adopted on the specific task.</p>
-<p>As the basic idea of transformers is discussed in the following chapters, further explanations of the functionality of the transformer model architectures will follow.</p>
+<p>GPT is trained on the Book-corpus data set, which is a dataset of 7,000 unpublished books. The underlying model architecture is a so-called transformer. This model is then fine-tuned on the target data.</p>
+<p>Despite some similarities, GPT has significant differences to ELMo and ULMFiT:</p>
+<ul>
+<li><p>ELMo is based on word embeddings, whereas GPT is based on fine-tuning like ULMFiT.</p></li>
+<li><p>GPT uses a different model architecture. Instead of the multi-layer LSTM, GPT is a multi-layer transformer decoder. This model architecture will be explained in the upcoming chapters, as it is a significant step towards the state-of-the-art NLP models.</p></li>
+<li><p>In contrast to ELMo, that works character-wise, GPT uses tokens (subwords) from the words.</p></li>
+<li><p>GPT is trained on a large number of data (especially the subsequent models like GPT-2 or GPT-3)</p></li>
+</ul>
+
+<div class="figure" style="text-align: center"><span id="fig:ch21-figuregpt"></span>
+<img src="figures/02-01-transfer-learning-for-nlp-1/gpt.PNG" alt="Basic model of GPT. Source: based on Radford et al. (2018)." width="80%" />
+<p class="caption">
+FIGURE 7.12: Basic model of GPT. Source: based on <span class="citation">Radford et al. (<a href="#ref-radford2018">2018</a>)</span>.
+</p>
+</div>
+<p>As shown in figure <a href="transfer-learning-for-nlp-i.html#fig:ch21-figuregpt">7.12</a>, GPT is a uni-directional transformer-decoder-only with 12 layers with masked self-attention.</p>
+<p>As the basic idea of transformers is discussed in the following chapters, further explanations of the functionality of the transformer model architectures will follow (<a href="attention-and-self-attention-for-nlp.html#attention-and-self-attention-for-nlp"><strong>chapter 8</strong></a> and <a href="transfer-learning-for-nlp-ii.html#transfer-learning-for-nlp-ii"><strong>chapter 9</strong></a>)</p>
+<div id="gpt-summary" class="section level4">
+<h4><span class="header-section-number">7.3.3.1</span> GPT: Summary</h4>
+<p>To sum up, GPT is a multi-layer transformer-decoder with task-aware input transformations
+GPT is trained on the Book-Corpus data set, where the input is tokenized as a sub-word.
+Like the other models, GPT is unidirectional and suitable for any NLP task.
+This new architecture leads to improvements in many fields like 8.9% in commonsense reading, 5.7% in question answering, and 1.5% in textual entailment.</p>
+</div>
 </div>
 </div>
 <div id="summary" class="section level2">
-<h2><span class="header-section-number">7.5</span> Summary</h2>
+<h2><span class="header-section-number">7.4</span> Summary</h2>
 <p>In 2018, a new generation of NLP models had been published, as transfer learning mainly pushed further enhancements from computer vision.
 The <strong>main advances</strong> of these models are</p>
 <ul>
 <li>due to the use of <strong>transfer learning</strong> the training for the target task needs less time and less target specific data,</li>
 <li><strong>ELMo</strong> adds the contextualization to word embeddings,</li>
-<li><strong>ULMFiT</strong> introduces many ideas like fine-tuning, which undoubtedly lowered the error rate notable, and</li>
-<li><strong>GPT</strong> uses first the transformer model architecture, which cutting-edge NLP models use.</li>
+<li><strong>ULMFiT</strong> introduces many ideas like fine-tuning, which lowered the error rate notable, and</li>
+<li><strong>GPT</strong> first uses the transformer model architecture, which cutting-edge NLP models use.</li>
 </ul>
 <p>Besides, many features of these models show high <strong>potential for improvements</strong>:</p>
 <ul>
-<li>All models are <strong>not genuinely bi-directional</strong>, as ULMFiT and GPT are one-directional, and ELMo is a concatenation of a right-to-left and left-to-right LSTM. Bidirectional models can even have more precise word representations, as the human language understanding is bidirectional.</li>
-<li>ELMo uses character-based <strong>model input</strong>, and <strong>ULMFit</strong> uses word-based <strong>model input</strong>. <strong>GPT</strong> and following transformer-based models use <strong>tokenized</strong> words (subwords), which is take advantage of both other model inputs.
-<!-- * ULMFiT and GPT use **fine-tuning**, which needs no further adjustments for every target task.  --></li>
+<li>All models are <strong>not genuinely bi-directional</strong>, as ULMFiT and GPT are uni-directional, and ELMo is a concatenation of a right-to-left and left-to-right LSTM. As the human language understanding is bidirectional, bidirectional models represent the language more precisely.</li>
+<li>ELMo uses a character-based <strong>model input</strong>, and <strong>ULMFit</strong> uses a word-based <strong>model input</strong>. <strong>GPT</strong> and following transformer-based models use <strong>tokenized</strong> words (subwords), taking advantage of both other model inputs.</li>
 <li>ULMFiT and ELMo are <strong>based on LSTMs</strong>, whereas the transformer-based model architecture of GPT has many advantages like parallelization and subsequent performance improvements.</li>
+<li>Starting with 12 layers in GPT, the models get deeper and use more parameters and data for the pretraining.</li>
 </ul>
-<p>In the next chapter, the main idea behind transformers, self-attention, is explained. More popular state-of-art models based on the idea like BERT are presented in chapter 10 [??].</p>
-<!-- ## what is missing -->
-<!-- * inserting the literature correctly with Bibtex -->
-<!-- * language and typos  -->
-<!-- * exchange most of the pictures -->
-<!-- * groß und kleinschreibung von fachbegriffen  -->
-<!-- * fett drucken von ichtigen wörtern?? -->
-<!-- * graphs so that they are consistent throughout the chapter and correspond with the formulas -->
-<!-- at some places explain formulas and unknown terms in more detail -->
-<!-- for each of three models mention fields of NLP where they are used and what tasks exactly they are able to solve (question answering, text generation ...) -->
-<!-- * add links -->
-<!-- ## Literature:  -->
-<!-- Pan, S. J., and Yang, Q. (2010). A survey on transfer learning. IEEE Transactions on Knowledge and Data Engineering, 22(10):1345–1359.  -->
-<!-- Evolution of Transfer Learning in Natural Language Processing -->
-<!-- Aditya Malte, Pratik Ratadiya  (2019) -->
-<!-- https://arxiv.org/pdf/1910.07370.pdf -->
-<!-- Stephen Merity, Nitish Shirish Keskar, Richard Socher," Regularizing and Optimizing LSTM Language Models," arXiv:1708.02182 [cs.CL]  -->
-<!-- Wan et al. 2013 "Regularization of Neural Networks using DropConnect" http://proceedings.mlr.press/v28/wan13.html -->
-<!-- 2018-peters-et-al_ELMo.pdf -->
-<!-- Aus <https://moodle.lmu.de/pluginfile.php/450729/mod_folder/content/0/2018-peters-et-al_ELMo.pdf?forcedownload=1>  -->
-<!-- 2018-Howard-ruder_ulmfit.pdf -->
-<!-- Aus <https://moodle.lmu.de/pluginfile.php/450729/mod_folder/content/0/2018-howard-ruder_ulmfit.pdf?forcedownload=1>  -->
-<!-- 2018-Radford-et-al_openAIgpt.pdf Aus <https://moodle.lmu.de/pluginfile.php/450729/mod_folder/content/0/2018-radford-et-al_openAIgpt.pdf?forcedownload=1>  -->
-<!-- Peter et al. 2019 https://arxiv.org/abs/1903.05987 -->
-<!-- (McCloskey & Cohen, 1989; French, 1999 -->
+<p>In the next chapter, the main idea behind transformers, self-attention, is explained. More popular state-of-art models are presented in <a href="transfer-learning-for-nlp-ii.html#transfer-learning-for-nlp-ii"><strong>chapter 9</strong></a>.</p>
 
+</div>
+</div>
+<h3>References</h3>
+<div id="refs" class="references">
+<div id="ref-french1999">
+<p>French, Robert M. 1999. “Catastrophic Forgetting in Connectionist Networks.” <em>Trends in Cognitive Sciences</em> 3 (4). Elsevier: 128–35.</p>
+</div>
+<div id="ref-howardruder2018">
+<p>Howard, Jeremy, and Sebastian Ruder. 2018. “Universal Language Model Fine-tuning for Text Classification.” <em>arXiv E-Prints</em>, January, arXiv:1801.06146.</p>
+</div>
+<div id="ref-mccloskey1989">
+<p>McCloskey, Michael, and Neal J Cohen. 1989. “Catastrophic Interference in Connectionist Networks: The Sequential Learning Problem.” In <em>Psychology of Learning and Motivation</em>, 24:109–65. Elsevier.</p>
+</div>
+<div id="ref-merity2017">
+<p>Merity, Stephen, Nitish Shirish Keskar, and Richard Socher. 2017. “Regularizing and Optimizing LSTM Language Models.” <em>arXiv E-Prints</em>, August, arXiv:1708.02182.</p>
+</div>
+<div id="ref-panandyoung2010">
+<p>Pan, S. J., and Q. Yang. 2010. “A Survey on Transfer Learning.” <em>IEEE Transactions on Knowledge and Data Engineering</em> 22 (10): 1345–59.</p>
+</div>
+<div id="ref-peter2018">
+<p>Peters, Matthew E., Mark Neumann, Mohit Iyyer, Matt Gardner, Christopher Clark, Kenton Lee, and Luke Zettlemoyer. 2018. “Deep contextualized word representations.” <em>arXiv E-Prints</em>, February, arXiv:1802.05365.</p>
+</div>
+<div id="ref-peterrudersmith2019">
+<p>Peters, Matthew E., Sebastian Ruder, and Noah A. Smith. 2019. “To Tune or Not to Tune? Adapting Pretrained Representations to Diverse Tasks.” <em>arXiv E-Prints</em>, March, arXiv:1903.05987.</p>
+</div>
+<div id="ref-radford2018">
+<p>Radford, Alec, Karthik Narasimhan, Tim Salimans, and Ilya Sutskever. 2018. “Improving Language Understanding by Generative Pre-Training.”</p>
+</div>
+<div id="ref-Ruder2019">
+<p>Ruder, Sebastian. 2019. “Neural Transfer Learning for Natural Language Processing.” PhD thesis, National University of Ireland, Galway.</p>
+</div>
+<div id="ref-ruder2019transfer">
+<p>Ruder, Sebastian, Matthew E Peters, Swabha Swayamdipta, and Thomas Wolf. 2019. “Transfer Learning in Natural Language Processing.” In <em>Proceedings of the 2019 Conference of the North American Chapter of the Association for Computational Linguistics: Tutorials</em>, 15–18.</p>
+</div>
+<div id="ref-lstmpicture">
+<p>“Understanding Lstm Networks.” 2015. <em>Understanding LSTM Networks – Colah’s Blog</em>. <a href="https://colah.github.io/posts/2015-08-Understanding-LSTMs/" class="uri">https://colah.github.io/posts/2015-08-Understanding-LSTMs/</a>.</p>
+</div>
+<div id="ref-wan2013">
+<p>Wan, Li, Matthew Zeiler, Sixin Zhang, Yann Le Cun, and Rob Fergus. 2013. “Regularization of Neural Networks Using Dropconnect.” In <em>Proceedings of the 30th International Conference on Machine Learning</em>, edited by Sanjoy Dasgupta and David McAllester, 28:1058–66. Proceedings of Machine Learning Research 3. Atlanta, Georgia, USA: PMLR. <a href="http://proceedings.mlr.press/v28/wan13.html" class="uri">http://proceedings.mlr.press/v28/wan13.html</a>.</p>
 </div>
 </div>
             </section>
