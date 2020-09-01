@@ -24,7 +24,7 @@ In [**Chapter 7: "Transfer Learning for NLP I"**](./transfer-learning-for-nlp-i.
 - [**Google's T5**](https://arxiv.org/pdf/1910.10683.pdf) (@raffel2019exploring) (already briefly mentioned in [Chapter 9](./transfer-learning-for-nlp-ii.html)) does not fit into the category of sequential tansfer learning but rather belongs to _multi-task learning_ models (cf. Fig. 7.1) in [Chapter 7](./transfer-learning-for-nlp-i.html))) since it is trained on multiple tasks at once. This is possible due to transformation of the entire input _and_ output to strings, which essentially converts every tasks to as seq-to-seq task.
 - In May 2020 the [**OpenAI GPT-3**](https://arxiv.org/pdf/2005.14165.pdf) (@brown2020language) shook the NLP community and triggered _a lot_ of subsequent research. This model puts, as already mentioned in [Chapter 9](./transfer-learning-for-nlp-ii.html), is by far bigger then every previous model and put a special focus on _few-shot learning_-
 
-## Improvements of the SelfAttention mechanism
+## Improvements of the Self-Attention mechanism
 
 Recently, there has been a lot effort put in improving the Self-Attention, mostly by reducing its computational cost
 and this enabling models to process longer sequences. One interesting article has already been discussed at the end of [Chapter 8](./attention-and-self-attention-for-nlp.html), while another interesting piece of work has been published recently by @wang2020linformer: The so-called [Linformer](https://arxiv.org/pdf/2006.04768.pdf)
