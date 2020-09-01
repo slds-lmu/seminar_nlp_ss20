@@ -2939,11 +2939,10 @@ In this chapter, I will tackle the generative processes in NLP. Understandably, 
 
 Reiter and Dale (2000) defined Natural Language Generation (NLG) as ``the sub-field of artificial intelligence and computational linguistics that is concerned with the construction of computer systems than can produce understandable texts in English or other human languages from some underlying non-linguistic representation of information''.
 
-Two aspects need to be highlighted. First is generation of understandable text in a human language and second is the input to such a generation system is `non linguistic' representation of information. For our purposes, we will drop the second requirement; which means that the source can be text as well. With such a definition in mind, we can have following taxonomy of NLG systems :
+Two aspects need to be highlighted. First is generation of \emph{understandable} text in a human language and second is the input to such a generation system is \emph{non-linguistic} representation of information. For our purposes, we will drop the second requirement; which means that the source can be text as well. With such a definition in mind, we can have following taxonomy of NLG systems :
 
 \begin{enumerate}
 \def\labelenumi{\arabic{enumi}.}
-\tightlist
 \item
   Text-to-Text
 
@@ -2961,6 +2960,8 @@ Two aspects need to be highlighted. First is generation of understandable text i
   \tightlist
   \item
     Image Captioning : Describe the image in a short sentence.
+  \item
+    Video Captioning : Generate captions that change with the video scenes.
   \item
     Business Intelligence : Creating text summaries of data from conventional databases (e.g SQL)
   \end{itemize}
@@ -2995,12 +2996,14 @@ Two aspects need to be highlighted. First is generation of understandable text i
 \hypertarget{common-architectures}{%
 \section{Common Architectures}\label{common-architectures}}
 
-There are many architectures that are common across most of above mentioned NLG systems. While some are used in other NLP domains as well, in the following sections I will explain them with a focus on language generation.
+There are many architectures that are common across NLG systems. While some are used in other NLP domains as well, in the following sections I will explain them with a focus on language generation.
 
 \hypertarget{encoder-decoder-architecture}{%
 \subsection{Encoder-Decoder Architecture}\label{encoder-decoder-architecture}}
 
-The most ubiquitous architecture for NLG is the encoder-decoder architecture, and especially the decoder part of it. Hence I will explain it in some detail. The architecture is shown in the following figures:
+The most ubiquitous architecture for NLG is the encoder-decoder architecture, and especially the decoder part of it. Hence I will explain it in some detail. The architecture is shown in the subsequent figures.
+
+The architecture can be seen as modeling conditional probability \(P(y/x)\) with \(y\) being the output of the decoder and it is conditioned on \(x\) (the output of the encoder). Hence the NLG task becomes generating text through decoder conditioned on some input, coming from the encoder.
 
 \begin{figure}
 \centering
@@ -3008,25 +3011,23 @@ The most ubiquitous architecture for NLG is the encoder-decoder architecture, an
 \caption{Encoder-Decoder (Training)}
 \end{figure}
 
+\hypertarget{encoder}{%
+\subsubsection{Encoder :}\label{encoder}}
+
+As stated above, the purpose of this part of the network is to provide conditional information on which the decoder generates text. As such, this part can have \textbf{ANY} architecture that provides some form of embedding of the input. It can be a convolutional neural network to condition the generated text on some properties of an image (for example image captioning), or RNN/LSTM/Transformer architecture for text or audio based conditioning; or even a simple feed forward network to condition it on relational database for example. For the purpose of illustration we will be using an RNN/LSTM with text as input condition (as shown in the figure).
+
+The thing to note here is that the richer the feature vector going from encoder to decoder, the more information decoder would have to generate output. This was the motivation to move from single feature vector to multiple vectors and to attention based models. This trend finally led to the transformer based models.
+
 \begin{figure}
 \centering
 \includegraphics{figures/04-01-use-case1/encoder_decoder_inf.jpg}
 \caption{Encoder-Decoder (Inference)}
 \end{figure}
 
-The architecture can be seen as conditional probability P(y/x) with `y' being the output of the decoder and it is conditioned on `x' (the output of the encoder). Hence the NLG task becomes generating text through decoder conditioned on some input, coming from the encoder.
-
-\hypertarget{encoder}{%
-\subsubsection{Encoder :}\label{encoder}}
-
-As stated above, the purpose of this part of the network is to provide conditional information on which the decoder generates text. As such, this part can have \textbf{ANY} architecture that provides some form of embedding of the input. It can be a convolutional neural network to condition the generated text on some properties of an image (for example image captioning), or RNN/LSTM/Transformer architecture for text or audio based conditioning; or even a simple feed forward network to condition it on SQL database for example. For the purpose of illustration we will be using an RNN/LSTM with text as input condition (as shown in the figure).
-
-The thing to note here is that the richer the feature vector going from encoder to decoder, the more information decoder would have to generate better output. This was the motivation to move from single feature vector (\textbackslash{}cite) to multiple vectors (\textbackslash{}cite) and to attention based models (\textbackslash{}cite). This trend finally led to the transformer based models.
-
 \hypertarget{decoder}{%
 \subsubsection{Decoder :}\label{decoder}}
 
-The decoder is the most distinctive part of an NLG system. Almost all decoders have the same form as shown in the figures above. The purpose is to generate text tokens (\textbackslash{}cite) one after the other until a terminating criteria is met. This termination is usually a termination token (\textless{}end\textgreater{} in the figures) or a max length criteria.
+The decoder is the most distinctive part of an NLG system. Almost all decoders have the same form as shown in the figures above. The purpose is to generate text tokens one after the other until a terminating criteria is met. This termination is usually a termination token (\textless{}end\textgreater{} in the figures) or a max length criteria.
 
 During training, we are given an input (text/image/audio) and the `gold label text' that we want the system to learn to generate for that particular input. In the given example, the input is the text ``How are you?'' and the gold label is ``I am good''. The input goes through the encoder and produces a feature vector that is used as the input to decoder. The decoder then generates tokens one by one and the loss is calculated after the softmax layer from the generated token and the gold label token. Note the inclusion of an extra token `\textless{}null\textgreater{}' as the first token. The last token of the gold label should produce the `\textless{}end\textgreater{}' token.
 
@@ -3035,7 +3036,7 @@ During inference, we don't have the gold label, so the output of one step is use
 \hypertarget{attention-architecture}{%
 \subsection{Attention Architecture}\label{attention-architecture}}
 
-The attention architecture is introduced in detail in section (\textbackslash{}cite). Here I will briefly mention its use in NLG systems. Looking at the picture below, we can see that the attention is from decoder to encoder.
+The attention architecture is introduced in detail in \href{./02-02-attention-and-self-attention-for-nlp.html}{Chapter 9}. Here I will briefly mention its use in NLG systems. Looking at the picture below, we can see that the attention is from decoder to encoder.
 
 \begin{figure}
 \centering
@@ -3043,7 +3044,7 @@ The attention architecture is introduced in detail in section (\textbackslash{}c
 \caption{Encoder-Decoder (Attention)}
 \end{figure}
 
-In other words, before generating each token, the decoder attends to all tokens in the encoder, as shown. The query is the decoder token and key/values are all encoder token. That way the decoder has much richer information to base its output on.
+In other words, before generating each token, the decoder attends to all tokens in the encoder. The query is the decoder token and key/values are all encoder token. That way the decoder has much richer information to base its output on.
 
 \hypertarget{decoding-algorithm-at-inference}{%
 \subsection{Decoding Algorithm at Inference}\label{decoding-algorithm-at-inference}}
@@ -3089,115 +3090,26 @@ It's like pure sampling decoder, but instead of sampling from whole vocabulary, 
 
 Memory Networks is another architecture that is potentially quite useful in language generation tasks. The basic premise is that LSTMs/RNNs and even Transformer architecture stores all the information only in the weights of the network. When we want to generate text that should include information from a large knowledge base, this `storage' of network weights is insufficient. Memory networks resolve this problem by employing an external storage (the memory) that it can use during language generation. Conceptual diagram is showing in the following figure, followed by a brief description.
 
+\begin{figure}
+\centering
 \includegraphics{figures/04-01-use-case1/memory_networks.jpg}
-Memory (M) in this context can be any database that can be queried by the network. Usually it is of the form of key-value pairs or a simple array of vectors embedding a corpus of knowledge (eg DBPedia/wikipedia). For any query input (x), first we get an embedding. This is then used to attend over the memory M in the usual attention mechanism. The output is the weighted sum of memory that incorporates information from complete knowledge corpus. In some cases the output can also be used to update the memory database.
+\caption{Encoder-Decoder (Attention)}
+\end{figure}
+
+Memory (M) in this context can be any database that can be queried by the network. Usually it is of the form of key-value pairs or a simple array of vectors embedding a corpus of knowledge (eg DBPedia/wikipedia). For any query input (x), first we get an embedding. This is then used to attend over the memory M in the usual attention mechanism (\href{./02-02-attention-and-self-attention-for-nlp.html}{Chapter 9}). The output is the weighted sum of memory that incorporates information from complete knowledge corpus. In some cases the output can also be used to update the memory database.
 
 \hypertarget{language-models}{%
 \subsection{Language Models}\label{language-models}}
 
 Language models are probably the most important ingredient of generating text. As the name implies, they model the probability distribution of generating words and characters. More concretely, they model the conditional probability distribution P(w\_t/w\_\{t-1\}). Thus with a given input vector coming from a source (image/database/text), this model can be used to generate words one after the other.
 
-\hypertarget{question-answer-systems}{%
-\section{Question-Answer Systems}\label{question-answer-systems}}
-
-The question-answer systems attempt to extract or generate answers from a given question and either a fixed or open ended context. The context here is the corpus from which the answer needs to be generated. For example in SQUAD dataset (\textbackslash{}cite) the context is a given paragraph from wikipedia and the question is asked from that paragraph. In open ended contexts, the whole wikipedia (or other corpus) can be the contexts.
-
-\hypertarget{datasets}{%
-\subsection{Datasets}\label{datasets}}
-
-\begin{itemize}
-\tightlist
-\item
-  msmarco
-\item
-  google natural questions
-\item
-  multiple choice
-
-  \begin{itemize}
-  \tightlist
-  \item
-    swag/trivia qa
-  \end{itemize}
-\item
-  conversational qa
-
-  \begin{itemize}
-  \tightlist
-  \item
-    coqa, wizard of wikipedia, quac.ai
-  \end{itemize}
-\item
-  many others e.g.~visual qa, KB qa etc.
-\end{itemize}
-
-\hypertarget{types}{%
-\subsection{Types}\label{types}}
-
-\begin{itemize}
-\tightlist
-\item
-  Question Answer Systems
-
-  \begin{itemize}
-  \tightlist
-  \item
-    Structured knowledge source
-    The sources can be e.g.~Freebase, Wikidata, DBpedia or RDBMS systems
-  \item
-    Unstructured knowledge soure
-    Free text e.g.~Wikipedia
-  \item
-    FAQs
-    Extract answers for similar questions to the given in a corpus of question-answer pairs.
-  \end{itemize}
-\end{itemize}
-
-\hypertarget{architectures}{%
-\subsection{Architectures}\label{architectures}}
-
-\begin{itemize}
-\tightlist
-\item
-  Context
-\item
-  Question
-\end{itemize}
-
-Five conceptual levels
-- Token level features (embeddings)
-- Context and question encoder
-- Attention from context to question or vice versa
-- Modeling layer
-- Output layer
-
-\begin{itemize}
-\item
-  Pointer Networks
-\item
-  Open Domain QA
-
-  \begin{itemize}
-  \tightlist
-  \item
-    DrQA
-  \item
-    Distant Supervision
-  \end{itemize}
-\end{itemize}
-
-\hypertarget{evaluation-metrics}{%
-\subsection{Evaluation Metrics}\label{evaluation-metrics}}
-
-There are generally two metrics commonly used in QA systems. The exact match (EM) and F1 score.
-
 \hypertarget{dialog-systems}{%
 \section{Dialog Systems}\label{dialog-systems}}
 
 These are the systems where an agent chats with a human being either with a specific purpose (goal oriented) or it is a general open ended chat. The examples of goal oriented chats include tasks like booking an appointment or a flight ticket. Open ended chats can be talking about a general topic which may or may not include a `personality' for the chatbot.
 
-\hypertarget{types-1}{%
-\subsection{Types}\label{types-1}}
+\hypertarget{types}{%
+\subsection{Types}\label{types}}
 
 \begin{itemize}
 \tightlist
@@ -3213,43 +3125,147 @@ These are the systems where an agent chats with a human being either with a spec
   \end{itemize}
 \end{itemize}
 
-\hypertarget{architectures-1}{%
-\subsection{Architectures}\label{architectures-1}}
+\hypertarget{architectures}{%
+\subsection{Architectures}\label{architectures}}
+
+Chatbots are complex software systems involving many modules and components that interact with each other asynchronously and in an event-driven fashion. An example architecture is shown in the following figure. This is an example of a goal-oriented chatbot which helps the use make a flight reservation. Following could be an example sequence of steps
+
+\begin{enumerate}
+\def\labelenumi{\arabic{enumi}.}
+\item
+  The first step is to decode the text coming from a user. The two types of decoders that are usually required are an `intent classifier' and a `Named Entity Recognizer (NER)'. The intent classifier tries to determine the intent of the command coming from the user. So for the given example the command is `Book a flight to Berlin on Tuesday', the correct classification would be `book-flight'.
+\item
+  This intent is then fed to a `State Space' module that keeps a list of entities that are required for each intent. For `book-flight' intent, it would need entities like destination, date of flight, time of flight, airline/cost preferences etc. The NER in step 1 tries to extract these entities from the command. In our example, it could extract the destination and date of travel.
+\item
+  The conversation state manager keeps track of which entities have been resolved and which are outstanding. For both resolved and outstanding entities it refers to `Action Space' module that generates API calls to external databases for requested parameters. It also refers to a `Natural Language Understanding (NLU) model' to extract the information it needs to resolve the entities.
+\item
+  The `Action Space' module calls various airline APIs and databases for associated tasks like determine available flights, prices and timings etc. Based on this information it refers back to the user to ask for unresolved entities.
+\item
+  The cycle continues till the system has all the required information to carry out the task.
+\end{enumerate}
+
+A chatbot touches upon all areas of NLP and NLG; for example in the above case, it would need QnA ability, text generation, summarization, information retrieval and classification, to name a few.
+
+\begin{figure}
+\centering
+\includegraphics{figures/04-01-use-case1/chatbot_arch.jpg}
+\caption{Chatbot Architecture}
+\end{figure}
+
+\begin{figure}
+\centering
+\includegraphics{figures/04-01-use-case1/caption_example.jpg}
+\caption{Image Captioning Examples}
+\end{figure}
+
+\hypertarget{image-captioning-system}{%
+\section{Image Captioning System}\label{image-captioning-system}}
+
+As the name suggests, these systems attempt to capture the caption of a given image as shown in the following figure. The input to the system is an image which is reduced to a feature vector using an appropriate architecture. Usually convolution based pretrained architectures are employed at this stege. The feature vector is then fed to a decoder network that produces the caption of the image. (See figure 2).
+
+\begin{figure}
+\centering
+\includegraphics{figures/04-01-use-case1/caption_concept.jpg}
+\caption{Image Captioning Concept}
+\end{figure}
+
+\hypertarget{experiments}{%
+\subsection{Experiments}\label{experiments}}
+
+For this seminar, I implemented a network for this task. For the encoder part, I used a pretrained Resnet backbone with a trainable fully connected layer appended after that. This gave me a feature vector for an image. For decoder part, I used three different kind of decoder architectures.
 
 \begin{itemize}
 \tightlist
 \item
-  Information Retrieval
-
-  \begin{itemize}
-  \tightlist
-  \item
-    Inbuilt in the model weights
-  \item
-    External Source
-
-    \begin{itemize}
-    \tightlist
-    \item
-      Memory Networks
-    \item
-      API calls (?)
-    \end{itemize}
-  \end{itemize}
+  Simple LSTM Layer
 \item
-  Text Generation
-
-  \begin{itemize}
-  \tightlist
-  \item
-    Encoder-Decoder
-  \end{itemize}
+  BERT decoder
+\item
+  GPT-2 decoder
 \end{itemize}
+
+However, these decoders expect a multi-token input feature embedding on which attention can be implemented. But I have only one feature vector, so it cannot be used as-is in the decoder network. Therefore I came up with a different architecture in which this feature vector is added to the word and position embeddings of each output token (as shown in figure 3).
+
+\begin{figure}
+\centering
+\includegraphics{figures/04-01-use-case1/caption_arch.jpg}
+\caption{Image Captioning Architecture}
+\end{figure}
+
+\hypertarget{implementation}{%
+\subsection{Implementation}\label{implementation}}
+
+The network was implemented in PyTorch, using the Pytorch-Lightning and Nepture.AI frameworks for experimentation. I used MS-COCO dataset (2017) which had image captioning task. The encoder and LSTM decoder code is appended below for reference, while the BERT and GPT2 decoders were used from the HuggingFace library.
+
+\begin{verbatim}
+class EncoderCNN(nn.Module):
+    def __init__(self, embed_size):
+        """Load the pretrained ResNet-152 and replace top fc layer."""
+        super(EncoderCNN, self).__init__()
+        resnet = models.resnet152(pretrained=True)
+        modules = list(resnet.children())[:-1]      # delete the last fc layer.
+        self.resnet = nn.Sequential(*modules)
+        self.linear = nn.Linear(resnet.fc.in_features, embed_size)
+        self.bn = nn.BatchNorm1d(embed_size, momentum=0.01)
+        
+    def forward(self, images):
+        """Extract feature vectors from input images."""
+        with torch.no_grad():
+            features = self.resnet(images)
+        features = features.reshape(features.size(0), -1)
+        features = self.bn(self.linear(features))
+        return features
+\end{verbatim}
+
+\begin{verbatim}
+class DecoderRNN(nn.Module):
+    def __init__(self, embed_size, hidden_size, vocab_size, num_layers, max_seq_length=20):
+        """Set the hyper-parameters and build the layers."""
+        super(DecoderRNN, self).__init__()
+        self.embed = nn.Embedding(vocab_size, embed_size)
+        self.lstm = nn.LSTM(embed_size, hidden_size, num_layers, batch_first=True)
+        self.linear = nn.Linear(hidden_size, vocab_size)
+        self.max_seg_length = max_seq_length
+        
+    def forward(self, features, captions, lengths):
+        """Decode image feature vectors and generates captions."""
+        embeddings = self.embed(captions)
+        embeddings = torch.cat((features.unsqueeze(1), embeddings), 1)
+        packed = pack_padded_sequence(embeddings, lengths, batch_first=True) 
+        hiddens, _ = self.lstm(packed)
+        outputs = self.linear(hiddens[0])
+        return outputs
+    
+    def sample(self, features, states=None):
+        """Generate captions for given image features using greedy search."""
+        sampled_ids = []
+        inputs = features.unsqueeze(1)
+        for i in range(self.max_seg_length):
+            hiddens, states = self.lstm(inputs, states) # hiddens: (batch_size, 1, hidden_size)
+            outputs = self.linear(hiddens.squeeze(1))   # outputs:  (batch_size, vocab_size)
+            _, predicted = outputs.max(1)               # predicted: (batch_size)
+            sampled_ids.append(predicted)
+            inputs = self.embed(predicted)              # inputs: (batch_size, embed_size)
+            inputs = inputs.unsqueeze(1)                # inputs: (batch_size, 1, embed_size)
+        sampled_ids = torch.stack(sampled_ids, 1)   # sampled_ids: (batch_size, max_seq_length)
+        return sampled_ids
+\end{verbatim}
+
+\hypertarget{results}{%
+\subsection{Results}\label{results}}
+
+For evaluation, I used perplexity on a held out validation set. The results for the three architectures are shown in the following figure. It can be seen that BERT outperforms LSTM with a lower perplexity and GPT2 outperforms both LSTM and BERT model.
+
+\begin{figure}
+\centering
+\includegraphics{figures/04-01-use-case1/caption_results.jpg}
+\caption{Image Captioning Results}
+\end{figure}
 
 \hypertarget{conclusion}{%
 \section{Conclusion}\label{conclusion}}
 
-Natural Language Generation (NLG) has huge potential to be not only an academic domain for research but to affect and improve our daily lives. In this chapter I have talked about only two of its manifestations.
+In humanity's search for Artificial General Intelligence (AGI), natural language plays a crucial part. It is not only one of the fundamental ways to communicate with other beings, it also gives deep insight to how intelligent beings understand the world around them. And as I stated in the introduction, the best way to understand something is to be able to create/generate it. Hence natural language generation will continue to play an important part in AGI. In this chapter I have talked about only few of its manifestations; but there is a lot of scope to work in this domain.
 
 \hypertarget{epilogue}{%
 \chapter{Epilogue}\label{epilogue}}
