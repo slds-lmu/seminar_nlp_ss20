@@ -1826,56 +1826,79 @@ In the next chapter, the main idea behind transformers, self-attention, is expla
 
 \emph{Supervisor: Matthias Aßenmacher}
 
-Both attention and self-attention were important for the advances made in NLP.
-The first part is an overview of attention as it is a building block for self-attention.
+Attention and Self-Attention models were some of the most influential developments in NLP.
+The first part of this chapter is an overview of attention and different attention mechanisms.
 The second part focuses on self-attention which enabled the commonly used models
-for transfer learning that are seen today.
+for transfer learning that are used today. The final part of the chapter discusses the
+developments made with Self-Attention and the most common transfer learning architecture today, the Transformer.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 \hypertarget{attention}{%
 \section{Attention}\label{attention}}
 
 In this part of the chapter, we revisit the Encoder-Decoder architecture that was introduced
-in chapter \href{01-02-rnns-and-their-applications-in-nlp}{3}. We focus on the improvements
-that were made with the development of attention mechanisms on the example of neural machine translation (nmt).
+in \href{./recurrent-neural-networks-and-their-applications-in-nlp.html}{chapter 3}. We focus on the improvements
+that were made with the development of attention mechanisms on the example of neural machine translation (NMT).
 
-As seen in chapter \href{01-02-rnns-and-their-applications-in-nlp}{3}, traditional early
-encoder-decoder architecture passes the last hidden state of the encoder to the decoder.
-This leads to the problem that information is lost in long input sequences.
+As seen in chapter 3, vanilla
+Encoder-Decoder architecture passes only the last hidden state from the encoder to the decoder.
+This leads to the problem that information has to be compressed into a fixed length
+vector and information can be lost in this compression.
 Especially information found early in the sequence tends to be ``forgotten'' after
 the entire sequence is processed. The addition of bi-directional layers remedies
-this by processing the input in reversed order. The problem still persists for mid
-sections of very long input sequences. The development of attention enables the decoder to
-attend to the entire input sequence.
+this by processing the input in reversed order. While this helps for shorter sequences,
+the problem still persists for long input sequences.
+The development of attention enables the decoder to attend to the whole sequence and
+thus use the context of the entire sequence during the decoding step.
 
 \hypertarget{bahdanau-attention}{%
 \subsection{Bahdanau-Attention}\label{bahdanau-attention}}
 
-In 2015, \citet{bahdanau2014neural} proposed attention to fix the information problem that
-the before seen encoder-decoder architecture faced. Early decoders are trained to predict \(y_{t'}\)
-given a context vector \(c\) and all earlier predicted words \(\{y_t, \dots, y_{t'-1}\}\).
+In 2014, \citet{bahdanau2014neural} proposed attention to fix the information problem that
+the early encoder-decoder architecture faced. Decoders without attention are trained to predict \(y_{t}\)
+given a fixed length context vector \(c\) and all earlier predicted words \(\{y_t, \dots, y_{t-1}\}\).
+The fixed length context vector is computed with
 \[c=q(\{h_1,\dots,h_T\})\] where \(h_1,\dots,h_T\) are the the hidden states of the encoder for the input sequence
 \(x_1,\dots, x_T\) and \(q\) is a non-linear function. \citet{sutskever2014sequence} for example used
-\(q(\{h_1,\dots,h_T\}) = h_T\) as their non-linear transformation which remains a popular
-choice for architecture without attention.
+\(c = q(\{h_1,\dots,h_T\}) = h_T\) as their non-linear transformation which remains a popular
+choice for architectures without attention. It is also commonly used for the initialisation of the decoder hidden states.
+
 Attention changes the context vector \(c\) that a decoder uses for translation from a fixed
 length vector \(c\) of a sequence of hidden states \(h_1, \dots, h_T\) to a sequence
 of context vectors \(c_i\). The hidden state \(h_i\) has a strong focus on the \emph{i}-th
 word in the input sequence and its surroundings.
-Each \(h_i\) is computed by a concatenation of the forward
-\(\overrightarrow{h_i}\) and backward \(\overleftarrow{h_i}\) hidden states of the
-bi-directional encoder.
+If a bi-directional encoder is used, each \(h_i\) is computed by a concatenation of the forward
+\(\overrightarrow{h_i}\) and backward \(\overleftarrow{h_i}\) hidden states:
 
 \[
 h_i = [\overrightarrow{h_i}; \overleftarrow{h_i}], i = 1,\dots,n
 \]
-The hidden states of the decoder \(s_t\) at time-point \(t\) is computed as \(s_t = f(s_{t-1},y_{t-1},c_t)\).
+These new variable context vectors \(c_i\) are used for the computation of the decoder hidden state \(s_t\).
+At time-point \(t\) it is computed as \(s_t = f(s_{t-1},y_{t-1},c_t)\) where \(f\) is the function resulting from
+the use of a LSTM- or GRU-cell.
 The context vector \(c_t\) is computed as a weighted sum of the hidden
 states \(h_1,\dots, h_{T_x}\):
 
 \[
 c_t = \sum^{T_x}_{i=1}\alpha_{t,i}h_i.
 \]
-The weight \(\alpha_{t,i}\) of each hidden state \(h_i\) is also called the alignment score.
+Each hidden state \(h_i\) is weighted by a \(\alpha_{t,i}\).
+The weight \(\alpha_{t,i}\) for each hidden state \(h_i\) is also called the alignment score.
 These alignment scores are computed as:
 
 \[
@@ -1891,61 +1914,466 @@ al.~is given as
 \[
 score(s_t,h_i) = v_\alpha^Ttanh(\mathbf{W}_\alpha[s_t;h_i])
 \]
-were tanh is used as a non-linear activation function and \(v_\alpha\) and \(W_\alpha\)
+were \emph{tanh} is used as a non-linear activation function and \(v_\alpha\) and \(W_\alpha\)
 are the weight matrices to be learned by the alignment model. The alignment score function
 is called ``concat'' in \citet{luong2015effective} and ``additive attention'' in \citet{vaswani2017attention}
-because of the concatenation seen above. A nice by-product of attention is a matrix of alignment scores
-which can be visualised to show the correlation between source and target words.
+because \(s_t\) and \(h_i\) are concatenated just like the forward and backward hidden states seen above.
+The attention model proposed by Bahdanau et al.~is also called a global attention model as it attends
+to every input in the sequence. Another name for Bahdanaus attention model is soft attention
+because the attention is spread thinly/weakly/softly over the input and does not have an inherent hard focus on specific inputs.
+A nice by-product of attention mechanisms is the matrix of alignment scores
+which can be visualised to show the correlation between source and target words as seen in \ref{fig:attention-plot-bahdanau}.
 
 \begin{figure}
-\centering
-\includegraphics{./figures/02-02-attention-and-self-attention-for-nlp/bahdanau-fig3.png}
-\caption{Alignment Matrix visualised for a French to English translation. Image source: Fig 3 in \citet{bahdanau2014neural}}
-\end{figure}
 
-The attention model proposed by Bahdanau et al.~is also called a soft/global attention model as it attends
-to every input in the sequence.
+{\centering \includegraphics[width=\textwidth,height=0.3\textheight]{./figures/02-02-attention-and-self-attention-for-nlp/bahdanau-fig3} 
+
+}
+
+\caption{Alignment Matrix visualised for a French to English translation. White squares indicate high aligment weights between input and output. Image source: Fig 3 in \citep{bahdanau2014neural}}\label{fig:attention-plot-bahdanau}
+\end{figure}
 
 \hypertarget{luong-attention}{%
 \subsection{Luong-Attention}\label{luong-attention}}
 
-\begin{itemize}
-\item
-  intro loung
-\item
-  different proposed score functions
-\item
-  differences to bahdanau
-\item
-  explanation for local/hard attention and differences to global/soft attention
-\end{itemize}
+While \citet{bahdanau2014neural} were the first to use attention in neural machine translation,
+\citet{luong2015effective} were the first to explore different attention mechanisms and their impact on
+NMT. Luong et al.~also generalise the attention mechanism for the decoder which enables
+a quick switch between different attention functions.
+Bahdanau et al.~only consider
+
+\[
+score(s_t,h_i) = v_\alpha^Ttanh(\mathbf{W}_\alpha[s_t;h_i]),
+\]
+while Luong et al.~additionally introduce a general, a location-based and a dot-product score function for the global attention mechanism as described in table \ref{tab:luong-score-functions}.
+
+\begin{longtable}[]{@{}ll@{}}
+\toprule
+\begin{minipage}[b]{0.47\columnwidth}\raggedright
+Score-function\strut
+\end{minipage} & \begin{minipage}[b]{0.47\columnwidth}\raggedright
+Name\strut
+\end{minipage}\tabularnewline
+\midrule
+\endhead
+\begin{minipage}[t]{0.47\columnwidth}\raggedright
+\(\text{score}(\boldsymbol{s}_t, \boldsymbol{h}_i) = \boldsymbol{s}_t^\top\mathbf{W}_a\boldsymbol{h}_i\)\strut
+\end{minipage} & \begin{minipage}[t]{0.47\columnwidth}\raggedright
+General\strut
+\end{minipage}\tabularnewline
+\begin{minipage}[t]{0.47\columnwidth}\raggedright
+\(\alpha_{t,i} = \text{softmax}(\mathbf{W}_a \boldsymbol{s}_t)\)\strut
+\end{minipage} & \begin{minipage}[t]{0.47\columnwidth}\raggedright
+Location-based\strut
+\end{minipage}\tabularnewline
+\begin{minipage}[t]{0.47\columnwidth}\raggedright
+\(\text{score}(\boldsymbol{s}_t, \boldsymbol{h}_i) = \boldsymbol{s}_t^\top\boldsymbol{h}_i\)\strut
+\end{minipage} & \begin{minipage}[t]{0.47\columnwidth}\raggedright
+Dot-product\strut
+\end{minipage}\tabularnewline
+\bottomrule
+\end{longtable}
+
+Table \ref{tab:luong-score-functions}: \label{tab:luong-score-functions} Different score function proposed by Luong et al.
+
+As \citet{luong2015effective} don't use a bidirectional encoder, they simplify the hidden
+state of the encoder from a concatenation of both forward and backward hidden states
+to only the hidden state at the top layer of both encoder and decoder.
+
+The attention mechanisms seen above attend to the entire input sequence. While
+this fixes the problem of forgetful sequential models discussed in the beginning of the chapter,
+it also has the drawback that it is expensive and can potentially be impractical
+for long sequences e.g.~the translation of entire paragraphs or documents. These problems encountered
+with global or soft attention mechanisms can be mitigated with a local or hard attention
+approach. While it was used by \citet{xu2015show} for caption generation of images with a CNN
+and by \citet{gregor2015draw} for the generation of images, the first application and differentiable version for NMT
+is from \citet{luong2015effective}.
+
+Different from the global attention mechanism, the local
+attention mechanism at timestep \(t\) first generates an aligned position \(p_t\).
+The context vector is then computed as a weighted average over only the set of
+hidden states in a window \([p_t-D,p_t+D]\) with \(D\) being an empirically selected
+parameter. This constrains the above introduced computation for the context vector
+to:
+
+\[
+c_t = \sum^{p_t+D}_{i=p_t-D}\alpha_{t,i}h_i.
+\]
+
+The parts outside of a sentence are ignored if the window crosses sentence
+boundaries. The computation of the context vector changes compared to
+the global model which can be seen in Figure \ref{fig:attention-plots-luong}.
+
+\begin{figure}
+
+{\centering \includegraphics[width=1\linewidth]{figures/02-02-attention-and-self-attention-for-nlp/luong2015-fig2-3} 
+
+}
+
+\caption{Global and local attention illustrated. Encoder in blue, Decoder in red. \(\overline{h}_s\) and $h_t$ in the image correspond to $h_t$ and $s_t$ in the previous text. Additional computations and differences to previous described architecture is found in the next sub-chapter. Image source: Fig. 2 and 3 in \citep{luong2015effective}}\label{fig:attention-plots-luong}
+\end{figure}
+
+Luong et al.~introduce two different concepts for the computation of the alignment position \(p_t\).
+
+The first is the \emph{monotonic} alignment(\textbf{local-m}).
+This approach sets \(p_t= t\) with the assumption that both input and output sequences
+are roughly monotonically aligned.
+
+The other approach, \emph{predictive} alignment (\textbf{local-p}), predicts the aligned position with:
+\[
+p_t = S \cdot sigmoid(v_p^\top tanh(W_ph_t))
+\]
+where \(W_p\) and \(v_p\) are the parameters that are trained to predict the position.
+\(S\) is the length of the input sentence which leads, with the additional sigmoid function, to \(p_t \in [0,S]\).
+A Gaussian distribution centred around \(p_t\) is placed by \citet{luong2015effective} to favour alignment points closer to \(p_t\).
+This changes the alignment weights to:
+\[
+\alpha_{t,i} = align(y_t, x_i)exp(-\frac{(i-p_t)^2}{2\sigma^2})
+\]
+where the standard deviation is empirically set to \(\sigma = \frac{D}{2}\). This
+utilization of \(p_t\) to compute \(\alpha_{t,i}\) allows the computation of backpropagation
+gradients for \(W_p\) and \(v_p\) and is thus ``differentiable almost everywhere'' \citet{luong2015effective} while being less computationally expensive than global attention.
+
+\hypertarget{computational-difference-between-luong--and-bahdanau-attention}{%
+\subsection{Computational Difference between Luong- and Bahdanau-Attention}\label{computational-difference-between-luong--and-bahdanau-attention}}
+
+As previously mentioned, Luong et al.~not only introduced different score functions in addition to Bahdanau et al.'s
+concatenation/additive score function, they also generalized the computation for the context vector \(c_t\).
+In Bahdanau's version the attention mechanism computes the variable length context vector first which is then used as input for the decoder.
+This necessitates the use of the last decoder hidden state \(s_{t-1}\) as input for the computation of the context vector \(c_t\):
+
+\[
+\alpha_{t,i} = align(y_t, x_i) =\frac{exp(score(s_{t-1},h_i))}{\sum^{n}_{i'=1}exp(score(s_{t-1},h_{i'}))}
+\]
+
+Luong et al.~compute their context vector with the current decoder hidden state \(s_t\) and modify the decoder output with the
+context vector before it is processed by the last softmax layer. This allows for easier implementation of different
+score functions for the same attention mechanism. Implementations of both vary e.g. \href{https://github.com/spro/practical-pytorch/blob/master/seq2seq-translation/seq2seq-translation.ipynb}{this version} of Bahdanau attention in Pytorch concatenates the context back in after the GRU while \href{https://www.tensorflow.org/tutorials/text/nmt_with_attention}{this version} for an NMT model with Bahdanau attention does not. Readers that are trying to avoid a headache can build upon \href{https://www.tensorflow.org/addons/tutorials/networks_seq2seq_nmt\#defining_nmt_model}{this version} from Tensorflow which uses the \textbf{AttentionWrapper} function which handles the specifics of the implementation.
+
+An illustration of a reduced version of the two different attention
+concepts can be found in Figure \ref{fig:attention-mechanisms}.
+
+\begin{figure}
+
+{\centering \includegraphics[width=1\linewidth]{figures/02-02-attention-and-self-attention-for-nlp/bahdanau-luong-illustrated} 
+
+}
+
+\caption{Bahdanau and Luong attention mechanisms illustrated. The attention layer is bounded in the red box. Orange denotes inputs, outputs and weights. Blue boxes are layers. Green boxes denote operations e.g. softmax or concatenation([x;y]).}\label{fig:attention-mechanisms}
+\end{figure}
 
 \hypertarget{attention-models}{%
 \subsection{Attention Models}\label{attention-models}}
 
-Overview over models that use attention and different attentions used, segway to self-attention
-
-\begin{itemize}
-\tightlist
-\item
-  just a short overview over different attention models/score functions
-\end{itemize}
+Attention was in the beginning not directly developed for RNNs or even NLP.
+Attention was first introduced in \citet{GravesWD14} with a content-based attention mechanism
+(\(\text{score}(\boldsymbol{s}_t, \boldsymbol{h}_i) = \text{cosine}[\boldsymbol{s}_t, \boldsymbol{h}_i]\))
+for Neural Turing Machines. Their application for NLP related tasks were later developed by
+\citet{luong2015effective}, \citet{bahdanau2014neural} and \citet{xu2015show}.
+\citet{xu2015show} were the first publication to differentiate between soft/global and hard/local attention mechanisms and did this in the
+context of Neural Image Caption with both mechanisms being close to what was used
+by Luong et al.~in the previous section. \citet{cheng2016long} were the first to introduce the concept of self-attention, the third big
+category of attention mechanisms.
 
 \hypertarget{self-attention}{%
 \section{Self-Attention}\label{self-attention}}
 
-general intro to self-attention
+\citet{cheng2016long} implement self-attention with a modified LSTM unit, the Long Short-Term
+Memory-Network (LSTMN). The LSTMN replaces the memory cell with a memory network to enable
+the storage of ``contextual representation of each input token with
+a unique memory slot and the size of the memory
+grows with time until an upper bound of the memory
+span is reached'' \citet{cheng2016long}.
+Self-Attention, as the name implies, allows an encoder to attend to other parts of the input during processing as seen in Figure \ref{fig:self-attention-cheng}.
 
-\begin{itemize}
-\tightlist
-\item
-  intro self attention, explanation is done in the transformers part
-\end{itemize}
+\begin{figure}
 
-\hypertarget{transformers}{%
-\subsection{Transformers}\label{transformers}}
+{\centering \includegraphics[width=1\linewidth]{figures/02-02-attention-and-self-attention-for-nlp/cheng2016-fig1} 
 
-explain transformer architecture, multi-head attention, dot-prod. attention, explain the differences in computational cost to rnns and conv. models
+}
+
+\caption{Illustration of the self-attention mechanism. Red indicates the currently fixated word, Blue represents the memories of previous words. Shading indicates the degree of memory activation. Image source: Fig. 1 in \citep{cheng2016long}.}\label{fig:self-attention-cheng}
+\end{figure}
+
+While the LSTMN introduced self-attention, it retains the drawbacks that come from
+the use of a RNN which are discussed at the end of the Transformer section. \citet{vaswani2017attention} propose the Transformer architecture which uses
+self-attention extensively to circumvent these drawbacks.
+
+\hypertarget{the-transformer}{%
+\subsection{The Transformer}\label{the-transformer}}
+
+RNNs were, prior to Transformers, the state-of-the-art model for machine translation, language modelling
+and other NLP tasks. But the sequential nature of a RNN precludes parallelization within
+training examples. This becomes critical at longer sequence lengths as memory constraints
+limit batching across examples. While much has been done to minimize these problems,
+they are inherent in the architecture and thus still remain. An attention mechanism
+allows the modelling of dependencies without regard for the distance in either input
+or output sequences. Most attention mechanisms,
+as seen in the previous sections of this chapter, use recurrent neural networks.
+This limits their usefulness for transfer learning because of the previously mentioned
+constraints that recurrent networks have. Models like ByteNet from \citet{kalchbrenner2016neural}
+and ConvS2S from \citet{gehring2017convolutional} alleviate the problem with sequential models
+by using convolutional neural networks as basic building blocks. ConvS2S has a
+linear increase in number of operations to relate signals from two arbitrary
+input or output positions with growing distance. ByteNet has a logarithmical increase
+in number of operations needed. The Transformer architecture from \citet{vaswani2017attention}
+achieves the relation of two signals with arbitrary positions in input or output
+with a constant number of operations. It was also the first model that relied entirely
+on self-attention for the computation of representations of input or output without
+using sequence-aligned recurrent networks or convolutions.
+
+While the Transformer architecture doesn't use recurrent or convolutional networks,
+it retains the popular encoder-decoder architecture.
+
+\begin{figure}
+
+{\centering \includegraphics[width=0.6\linewidth]{figures/02-02-attention-and-self-attention-for-nlp/transformer-encoder} 
+
+}
+
+\caption{Single layer of the Encoder of a Transformer with two distinct sub-layers each with residual connections and a LayerNorm. Original image: \citep{vaswani2017attention},\ Additions and cropping: \citep{weng2018attention}}\label{fig:encoder-transformer}
+\end{figure}
+
+The encoder is composed of a stack of N = 6 identical layers. Each of these layers
+has two sub-layers: A multi-head self-attention mechanism and a position-wise fully
+connected feed-forward network. The sub-layers have a residual connection around
+the main components which is followed by a layer normalization. The output of each sub-layer
+is \(\text{LayerNorm}(x + \text{Sublayer}(x))\) where \(\text{Sublayer}(x)\) is the output of the
+function of the sublayer itself. All sub-layers and the embedding layer before the
+encoder/decoder produce outputs of \(dim = d_{model} = 512\) to allow these residual connections to work.
+The position-wise feed-forward network used in the sublayer is applied to each position
+separately and identically. This network consists of two linear transformations with
+a ReLU activation function in between:
+
+\[
+FFN(x) = max(0, xW_1 + b_1)W_2 + b_2
+\]
+
+The decoder is, as seen in Figure \ref{fig:decoder-transformer}, composed of a stack of \(N = 6\) identical layers.
+
+\begin{figure}
+
+{\centering \includegraphics[width=0.5\linewidth]{figures/02-02-attention-and-self-attention-for-nlp/transformer-decoder} 
+
+}
+
+\caption{Decoder of a Transformer, Original image: \citep{vaswani2017attention},\ Additions and cropping: \citep{weng2018attention}}\label{fig:decoder-transformer}
+\end{figure}
+
+It inserts, in addition to the two already known sub-layers from the encoder,
+a third sub-layer which also performs multi-head attention.
+This third sub-layer uses the encoder output as two of its three input values, which will be described in the next part of the chapter,
+for the multi-head attention. This sub-layer is in its function very close to the before seen attention mechanisms between encoders and decoders.
+It uses, same as the encoder, residual connections around each of the sub-layers.
+The decoder also uses a modified, masked self-attention sub-layer ``to prevent positions
+from attending to subsequent positions'' \citet{vaswani2017attention}. This, coupled with the
+fact that the output embeddings are shifted by one position to the right ensures that
+the predictions for position \(i\) only depend on previous known outputs.
+
+\begin{figure}
+
+{\centering \includegraphics[width=\textwidth,height=0.5\textheight]{figures/02-02-attention-and-self-attention-for-nlp/transformer-full-model} 
+
+}
+
+\caption{The Transformer-model architecture, Image Source: Fig. 1 in \citep{vaswani2017attention}}\label{fig:transformer-full}
+\end{figure}
+
+As seen in \ref{fig:transformer-full}, the Transformer uses positional encodings
+added to the embeddings so the model can make use of the order of the sequence.
+\citet{vaswani2017attention} use the sine and cosine function of different frequencies:
+
+\[
+PE_{(pos,2i)} = \sin(pos/10000^{2i/d_{model}})
+\]
+\[
+PE_{(pos,2i+1)} = \cos(pos/10000^{2i/d_{model}})
+\]
+For further reasoning why these functions were chosen see \citet{vaswani2017attention}.
+
+\hypertarget{the-self-attention-mechanisms}{%
+\subsubsection{The self-attention mechanism(s)}\label{the-self-attention-mechanisms}}
+
+\citet{vaswani2017attention} describe attention functions as ``mapping a query and a set of key-value pairs to an output,
+where the query, keys, values, and output are all vectors. The output is computed as a weighted sum
+of the values, where the weight assigned to each value is computed by a compatibility function of the
+query with the corresponding key''.
+The \emph{Q}uery and the \emph{K}ey-\emph{V}alue pairs are used in the
+newly proposed attention mechanism that is used in Transformers.
+These inputs for the attention mechanisms are obtained through multiplication of the
+general input to the encoder/decoder with different weight matrices as can be seen in figure \ref{fig:self-attention-inputs}.
+
+\begin{figure}
+
+{\centering \includegraphics[width=0.5\linewidth]{figures/02-02-attention-and-self-attention-for-nlp/self-attention-matrix-calculation} 
+
+}
+
+\caption{Input transformation used in a Transformer, \(Q = \text{Query}\), \(K = \text{Key}\), \(V = \text{Value}\). Image Source: \citep{alammar2018transformer}}\label{fig:self-attention-inputs}
+\end{figure}
+
+These different transformations of the input are what enables the input to attend to itself.
+This in turn allows the model to learn about context.
+E.g. \textbf{bank} can mean very different things depending on the context which can be recognized by the self-attention mechanisms.
+
+As seen in Figures \ref{fig:encoder-transformer}, \ref{fig:decoder-transformer}
+and \ref{fig:transformer-full}, the Transformer uses an attention mechanism called
+``Multi-Head Attention''.
+
+\begin{figure}
+
+{\centering \includegraphics[width=0.5\linewidth]{figures/02-02-attention-and-self-attention-for-nlp/multi-head-attention} 
+
+}
+
+\caption{Multi-Head Attention, Image Source: Fig. 2 in \citep{vaswani2017attention}}\label{fig:multi-head-attention}
+\end{figure}
+
+The multi-head attention projects the queries, keys and values \(h\) times instead of performing
+a single attention on \(d_{model}\)-dim. queries and key-value pairs. The projections
+are learned, linear and project to \(d_k\), \(d_k\) and \(d_v\) dimensions. Next the
+new \textbf{scaled dot-product attention} is used on each of these to yield a \(d_v\)-dim. output.
+These values are then concatenated and projected to yield the final values as can be
+seen in \ref{fig:multi-head-attention}. This multi-dimensionality allows the attention
+mechanism to jointly attend to different information from different representation
+at different positions. The multi-head attention can be written as:
+
+\[
+\text{MultiHead}(Q,K,V) = \text{Concat}(\text{head}_1,\dots, \text{head}_h)W^O
+\]
+
+\[
+\text{where } \text{head}_i = \text{Attention}(QW_i^Q, KW_i^K, VW_i^V)
+\]
+and projections are the parameter matrices \(W_i^Q\in \mathbb{R}^{d_{model}\times d_k}, W_i^K\in \mathbb{R}^{d_{model}\times d_k}, W_i^V\in \mathbb{R}^{d_{model}\times d_v}\text{ and } W^O\in \mathbb{R}^{hd_{v}\times d_{model}}\).
+\citet{vaswani2017attention} use \(h = 8\) and \(d_k = d_v = d_{model}/h = 64\). This reduced dimensionality
+leads to a reduction in computational cost that is similar to that of a single scaled-dot-product attention head
+with the full initial dimensionality of \(512\).
+
+The \emph{scaled dot-product attention} is, as the name suggests, just a scaled version
+of the dot-product attention seen previously in this chapter.
+
+\begin{figure}
+
+{\centering \includegraphics[width=0.5\linewidth]{figures/02-02-attention-and-self-attention-for-nlp/scaled-dot-prod-attention} 
+
+}
+
+\caption{Scaled Dot-Product Attention, Image Source: Fig. 2 in \citep{vaswani2017attention}}\label{fig:scaled-dot-prod-attention}
+\end{figure}
+
+The optional \emph{Mask}-function seen in Fig. \ref{fig:scaled-dot-prod-attention} is
+only used in the masked-multi-head attention of the decoder. The querys and
+keys are of dim. \(d_k\) and the values are of dim. \(d_v\). The attention
+is for practical reasons computed for a set of queries, \emph{Q}. The keys and values
+are thus also used in matrix format, \emph{K} and \emph{V}. The matrix of outputs is then
+computed as:
+
+\[
+\text{Attention}(Q,K,V) = \text{softmax}(\frac{QK^\top}{\sqrt{d_k}})V
+\]
+where \(\text{Attention}(Q,K,V)\) corresponds to an non-projected head of multi-head attention.
+These attention mechanisms allow Transformers to learn different and distant dependencies in language
+and are thus a good candidate for transfer learning.
+
+\hypertarget{complexity-for-different-attention-models}{%
+\subsubsection{Complexity for different attention models}\label{complexity-for-different-attention-models}}
+
+The architecture of a Transformer allows for parallel encoding of every part of the
+input at the same time. This also enables the modelling of long-range dependencies regardless
+of the distance.
+The Transformer architecture, as a minimum, only needs a constant number of sequential operations regardless of
+input length \(n\) due to extensive parallelization as can be seen in Table \ref{tab:complexity-operations}.
+A RNN based model in comparison needs a linearly scaling number of sequential operations due to its architecture.
+The Maximum Path Length between long-range dependencies for a transformer is \(O(1)\) while the RNN
+again has \(O(n)\) due to its sequential input reading.
+
+The fast modelling of long-range dependencies and the multiple attention heads which learn different
+dependencies makes Transformers a favourable choice for Transfer Learning.
+The transfer learning models that were developed from the Transformer architecture
+enabled models which were trained on more data to gain a deeper understanding about
+language and are state-of-the-art today (June, 2020).
+
+They are also a popular research topic as they are quadratically scaling, with regard to input length, complexity per layer
+inhibits their use for very long sequences and makes them time consuming to train.
+This quadratic complexity comes from the self-attention mechanism \(\text{Attention}(Q,K,V) = \text{softmax}(\frac{QK^\top}{\sqrt{d_k}})V\).
+The used softmax needs to calculate the attention score between the currently processed input \(x_i\) and every
+other input \(x_j\) for each \(j \in {1, \dots ,n}\) and \(i \in {1, \dots ,n}\). This limits the length of the
+context that Transformers can process and increases the time they need for training in practical uses.
+The computational costs are especially severe in very long tasks.
+
+In the last few years new variations of the vanilla transformer, as described previously in the chapter, were published
+which lower the computational cost (e.g. \citet{shen2018efficient} and \citet{choromanski2020masked}).
+Some of these variations of the Transformer architecture managed to decrease the complexity
+from quadratic to \(O(N\sqrt{N})\) (\citet{child2019generating}), \(O(N\log N)\) (\citet{kitaev2020reformer}) or \(O(n)\) (\citet{wang2020linformer}) as seen in Table \ref{tab:complexity-operations}.
+
+\begin{longtable}[]{@{}lll@{}}
+\toprule
+Layer-type & Complexity per Layer & Sequential Operations\tabularnewline
+\midrule
+\endhead
+Recurrent & \(O(n \cdot d^2)\) & \(O(n)\)\tabularnewline
+Convolutional & \(O(k \cdot n \cdot d^2)\) & \(O(1)\)\tabularnewline
+Transfomer & \(O(n^2 \cdot d)\) & \(O(1)\)\tabularnewline
+Sparse Transfomer & \(O(n\sqrt{n})\) & \(O(1)\)\tabularnewline
+Reformer & \(O(n \log (n))\) & \(O(\log (n))\)\tabularnewline
+Linformer & \(O(n)\) & \(O(1)\)\tabularnewline
+Linear Transformer & \(O(n)\) & \(O(1)\)\tabularnewline
+\bottomrule
+\end{longtable}
+
+Table \ref{tab:complexity-operations} : \label{tab:complexity-operations} Complexity per layer and the number of sequential operations. Sparse Transformers are from \citet{child2019generating}, Reformer from \citet{kitaev2020reformer}, Linformer from \citet{wang2020linformer} and Linear Transformers from \citet{katharopoulos2020transformers}. \(n\) is the sequence length, \(k\) the kernel size, \(d\) the representation dimension and \(r\) the size of the neighbourhood in restricted self-attention. Source: \citet{vaswani2017attention} (Table 1) and \citet{wang2020linformer} (Table 1)
+
+\hypertarget{transformers-as-rnns}{%
+\subsection{Transformers as RNNs}\label{transformers-as-rnns}}
+
+A version from \citet{katharopoulos2020transformers} uses a linear attention mechanism for
+autoregressive tasks. The vanilla Transformer uses, as described above, the softmax to
+calculate the attention between values. This can also be seen as a similarity function.
+\(V_i' = \frac{\sum_{j=1}^N \text{sim}(Q_i, K_j)V_j}{\sum_{j=1}^N\text{sim}(Q_i, K_j)}\) is equal to
+the row-wise calculation of \(\text{Attention}(Q,K,V) = V' = \text{softmax}(\frac{QK^\top}{\sqrt{d_k}})V\)
+if \(\text{sim}(q,k)=\exp(\frac{q^\top k}{\sqrt{d_k}})\). While we can use the exponentiated
+dot-product to generate the vanilla scaled-dot-product attention, we can use any non-negative
+function, including kernels, as similarity function to generate a new attention mechanism \citet{katharopoulos2020transformers}.
+Given the feature representation \(\phi(x)\) of such a kernel, the previous row-wise calculation
+can be rewritten as \(V_i' = \frac{\phi(Q_i)^\top \sum_{j=1}^N\phi(K_j)V_j^\top}{\phi(Q_i)^\top \sum_{j=1}^N\phi(K_j)}\).
+Or in vectorized form: \(\phi(Q)(\phi(K)^\top V)\) where the feature map \(\phi(\cdot)\) is applied row-wise to the matrices.
+This new formulation shows that the computation with a feature map allows for linear time and memory scaling \(O(n)\)
+because \(\sum_{j=1}^N\phi(K_j)V_j^\top\) and \(\sum_{j=1}^N\phi(K_j)\) can be both computed once and reused for every
+row of the query (\citet{katharopoulos2020transformers}).
+No finite dimensional feature map of the exponential function exists, which makes a linearisation of the
+softmax attention impossible. This forces the use of a polynomial kernel which has been shown to work equally well with
+the exponential kernel \citet{tsai2019transformer}. This results in a computational cost of
+\(O(ND^2M)\) which is favourable if \(N > D^2\). \citet{katharopoulos2020transformers} suggest \(\phi(x) = \text{elu}(x) + 1\) for \(N < D^2\).
+
+For autoregressive tasks we want an attention mechanism that can't look ahead of its position.
+\citet{vaswani2017attention} introduced masked-self-attention for their decoder, which is adapted for linearised attention.
+The addition of masking changes the previous formulation to \(V_i' = \frac{\sum_{j=1}^i \text{sim}(Q_i, K_j)V_j}{\sum_{j=1}^i\text{sim}(Q_i, K_j)}\).
+With the linearisation through kernels we get \(V_i' = \frac{\phi(Q_i)^\top \sum_{j=1}^i\phi(K_j)V_j^\top}{\phi(Q_i)^\top \sum_{j=1}^i\phi(K_j)}\).
+
+\(S_i = \sum_{j=1}^i\phi(K_j)V_j^\top\) and \(Z_i = \sum_{j=1}^i\phi(K_j)\) can be used to simplify the formula to:
+
+\[
+V_i' = \frac{\phi(Q_i)^\top Si}{\phi(Q_i)^\top Z_i}
+\]
+
+where \(S_i\) and \(Z_i\) can be computed from \(S_{i-1}\) and \(Z_{i-1}\) which allows the linearised attention
+with masking to scale linearly with respect to the sequence length. The derivation of
+the numerator as cumulative sums allows for the computation in linear time and constant memory,
+which leads to computational complexity of \(O(NCM)\) and memory \(O(N \max{(C,d_k)})\) where \(C\) is the dimensionality of
+the feature map \citet{katharopoulos2020transformers}.
+
+Given the previous formalization of feature maps to replace the softmax we can rewrite the
+layers of a Transformers as a RNN. This RNN has two hidden states, the attention state \(s\) and the
+normalizer state \(z\) with subscripts denoting the timestep in recurrence.
+With \(s_0 = 0\) and \(z_0 = 0\) we can define \(s_i\) as \(s_i s_{i-1} + \phi(x_iW_K)(x_iW_V)^\top\) and
+\(z_i\) as \(z_i = z_{i-1} + \phi(x_iW_K)\) with \(x_i\) as the \(i\)-th input for the layer.
+The \(i\)-th output \(y_i\) can then be written as \(y_i = f_l(\frac{\phi(x_iW_Q)^\top s_i}{\phi(x_iW_Q)^\top z_i} + x_i)\)
+where \(f_l\) is the function given by the feed-forward network of a Transformer layer.
+
+This shows that the Transformer layers can be rewritten into RNN layers, for all similarity functions
+that can be represented with \(\phi\) (\citet{katharopoulos2020transformers}), which are the first models
+that used attention for NLP tasks.
 
 \hypertarget{transfer-learning-for-nlp-ii}{%
 \chapter{Transfer Learning for NLP II}\label{transfer-learning-for-nlp-ii}}
@@ -1954,7 +2382,7 @@ explain transformer architecture, multi-head attention, dot-prod. attention, exp
 
 \emph{Supervisor: M. Aßenmacher}
 
-Unsupervised representation learning has been highly successful in NLP. Typically, these methods first pre-train neural networks on large-scale unlabeled text corpora and then fine-tune the models on downstream tasks. Here we introduce the three remarkable models, BERT, GPT-2 and XLNet. \href{\%22https://github.com/huggingface/transformers\%22}{Transformers} is an excellent github repository, where readers can find their implementations.
+Unsupervised representation learning has been highly successful in NLP. Typically, these methods first pre-train neural networks on large-scale unlabeled text corpora and then fine-tune the models on downstream tasks. Here we introduce the three remarkable models, BERT, GPT-2, and XLNet. \href{\%22https://github.com/huggingface/transformers\%22}{Transformers} is an excellent Github repository, where readers can find their implementations.
 
 \hypertarget{bidirectional-encoder-representations-from-transformers-bert}{%
 \section{Bidirectional Encoder Representations from Transformers (BERT)}\label{bidirectional-encoder-representations-from-transformers-bert}}
@@ -1973,21 +2401,21 @@ Unsupervised representation learning has been highly successful in NLP. Typicall
 
 Autoencoding(AE) have been most successful pre-training objectives and figure \ref{fig:ch02-03-figure01} shows the modeling of it. AE based model does not perform explicit density estimation but instead aims to reconstruct the original data from corrupted input. Specifically, given a text sequence \(X = (x_1,...,x_T)\), AE factorizes the log-likelihood into a partial sum \[log p(\bar{X}|\hat{X}) = \sum^T_{t=1} mask_t p(x_t|\hat{X})\], where \(mask_t\) is an indicator to show if a token is masked,\citet{yang2019xlnet}.
 
-The training objective is to reconstruct the masked tokens \(\bar{X}\) given the sequence \(\hat{X}\). AE tries to find the best model \(P\) to predict the masked tokens.
+The training objective is to reconstruct the masked tokens \(\bar{X}\) given the sequence \(\hat{X}\). AE tries to find the best model \(P\) to predict the masked tokens. The BERT introduced next is one of the most important AE models.
 
 \hypertarget{introduction-of-bert}{%
 \subsection{Introduction of BERT}\label{introduction-of-bert}}
 
 BERT is published by researchers at Google AI in 2018. It is regarded as a milestone in the NLP community by proposing a bidirectional Language model based on Transformer.
 
-BERT is the notable example of AE, 15\% of tokens are replaced by a special symbol {[}MASK{]}, and the model is trained to reconstruct the original sequence from the masked tokens. By contrast with previous efforts that looked at a text sequence either from left to right(RNN) or combined left-to-right and right-to-left training (ELMO), the Transformer Encoder utilizes bidirectional contexts simultaneously. Therefore BERT uses the Transformer Encoder as the structure of the pre-train model and addresses the unidirectional constraints by proposing a new pre-training objective: the ``masked language model''(MLM).
+BERT is a notable example of AE and it uses the structure of the AE model just mentioned, which means that some tokens in the training data will be masked. In BERT 15\% of tokens are replaced by a special symbol {[}MASK{]}, and the model is trained to reconstruct the original sequence from the masked tokens. By contrast with previous efforts that looked at a text sequence either from left to right(RNN \protect\hyperlink{Recurrentux5cux2520neuralux5cux2520networksux5cux2520andux5cux2520theirux5cux2520applicationsux5cux2520inux5cux2520NLP}{\textbf{chapter 5}}) or combined left-to-right and right-to-left training (ELMO \protect\hyperlink{Transfer-Learning-for-NLP-i}{\textbf{chapter 8}}), the Transformer Encoder (\protect\hyperlink{ux5cux2520Attentionux5cux2520andux5cux2520Self-Attentionux5cux2520forux5cux2520NLP}{\textbf{chapter 9}}) utilizes bidirectional contexts simultaneously. Therefore BERT uses the Transformer Encoder as the structure of the pre-train model and addresses the unidirectional constraints by proposing new pre-training objectives: the Masked Language Model(MLM) and Next-sentence Prediction(NSP).
 
-In conclusion, BERT uses masked language models to enable pre-trained deep bidirectional representations and after fine-tuning based the representation, BERT advances state-of-the-art performance for eleven NLP tasks.
+The special pre-training structure of BERT enables it to pre-train deep bidirectional representations and after fine-tuning based the representations, BERT advances state-of-the-art performance for eleven NLP tasks. Its unique structural ideas and excellent model performance make BERT the most important NLP model at present.
 
 \hypertarget{input-representation-of-bert}{%
 \subsection{Input Representation of BERT}\label{input-representation-of-bert}}
 
-The input representation is able to unambiguously represent both a single text sentence or a pair of text sentences in one token sequence. For a given token, its input representation is constructed by summing the corresponding token, segment and position embeddings, \citet{bert}.
+For NLP models, the input representation of the sequence is the basis of excellent model performance, many scholars have conducted in-depth research on methods to obtain word embeddings for a long time \protect\hyperlink{Foundationsux2fApplicationsux5cux2520ofux5cux2520Modernux5cux2520NLP}{\textbf{chapter 4}}. As for BERT, due to the model structure, the input representations need to be able to unambiguously represent both a single text sentence or a pair of text sentences in one token sequence. For a given token, its input representation is constructed by summing the corresponding token, segment, and position embeddings, \citet{bert}.
 
 \begin{figure}
 
@@ -1998,16 +2426,20 @@ The input representation is able to unambiguously represent both a single text s
 \caption{BERT input representation}\label{fig:ch02-03-figure02}
 \end{figure}
 
-Figure \ref{fig:ch02-03-figure02} is the visual representation of input representation. The specifics are:
+Figure \ref{fig:ch02-03-figure02} is the visual representation of input representations of BERT tokens. The specifics are:
 
 \begin{itemize}
 \item
-  Use WordPiece embeddings \citet{wu2016google} with a 30,000 token vocabulary and split word pieces denoted with \#\#. e.g.,{[}playing = play and \#\#ing {]}
+  As for Token Embeddings (yellow block): Use WordPiece embeddings \citet{wu2016google} with a 30,000 token vocabulary and split word pieces denoted with \#\#. e.g.{[} playing = play and \#\#ing {]} and the first token of every sequence is always the special classification embedding {[}CLS{]}. For non-classification tasks, this vector is ignored. Sentence pairs are packed together into a single sequence and are separated with a special token {[}SEP{]}.
 \item
-  The first token of every sequence is always the special classification embedding {[}CLS{]}. For non-classification tasks, this vector is ignored.
+  As for Segment Embeddings (green block): For the input is a sequence with two sentences, different learned sentence embedding{[}e.g., A and B{]} will be added to every token of each sentence. For single-sentence inputs, we only use the sentence A embeddings.
 \item
-  Sentence pairs are packed together into a single sequence and are separated with a special token {[}SEP{]}. Second, different learned sentence embedding{[}e.g.,A and B{]} will be added to every token of each sentence.For single-sentence inputs we only use the sentence A embeddings.
+  As for Position Embeddings (grey block): For languages, the order of each word in a sentence is quite important, so the position of each token will be marked as Position embeddings.
+\item
+  BERT limits the length of the entire sequence to no more than 512 tokens. Whether it is a one-sentence sequence or a sentence-pairs sequence, sequences exceeding 512 will be divided at intervals of 512 tokens. In practice, considering computational efficiency, BERT mostly divides the sequence with a length of 128 tokens.
 \end{itemize}
+
+Finally, BERT adds these three types of embeddings to get the final input representation. And BERT will use the input representation obtained above to pre-train the model, below we respectively introduce how BERT uses MLM and NSP for pre-training.
 
 \hypertarget{masked-language-model}{%
 \subsection{Masked Language Model}\label{masked-language-model}}
@@ -2022,8 +2454,12 @@ Figure \ref{fig:ch02-03-figure02} is the visual representation of input represen
  Alammar, Jay (2018). The Illustrated BERT, ELMo, and co. [Blog post]. Retrieved from http://jalammar.github.io/illustrated-bert/}\label{fig:ch02-03-figure03}
 \end{figure}
 
-Figure \ref{fig:ch02-03-figure03} is the visual representation of Masked Language Model.
-As shown in the above figure, when word embeddings are fed into BERT, 15\% of the words in each sequence will be replaced by a special token {[}MASK{]}. The task of MLM is to predict the original value of masked tokens. The output of MLM is the word embeddings of corresponding tokens, then feed the word embedding of {[}MASK{]} token into a simple softmax classifier and get the final prediction of {[}MASK{]} token. And the most important part is the ``yellow'' block, it's basically a multi-layer bidirectional Transformer encoder based on implementation described in \citet{kaiser2017one}.
+Masked Language Model is the most important model structure of BERT and it mainly combines the ideas of Transformer Encoder and masked tokens.
+
+Figure \ref{fig:ch02-03-figure03} is the visual representation of the Masked Language Model.
+As shown in the figure, when word embeddings are fed into BERT, 15\% of the tokens in each sequence will be replaced by a special token {[}MASK{]}. Here, token {[}improvisation{]} is replaced with {[}MASK{]}. The output of MLM is the word embeddings of corresponding tokens, then feed the word embedding of {[}MASK{]} token into a simple softmax classifier and get the final prediction of {[}MASK{]} token. The task of MLM is to predict the original value of masked tokens, we hope that the result obtained by the softmax classifier is close to the true value. And the most important part is the ``yellow'' block, it's basically a multi-layer bidirectional Transformer Encoder based on implementation described in \citet{kaiser2017one}.
+
+Here I summarize the main points of MLM in the form of question and answer as follows:
 
 \begin{itemize}
 \tightlist
@@ -2035,12 +2471,11 @@ As shown in the above figure, when word embeddings are fed into BERT, 15\% of th
   \item
     15\% of all WordPiece tokens in each sequence will be randomly masked.
   \item
-    Input: token embedding(one sentence, begin with {[}CLS{]})
+    Input: token embedding(one sequence, begin with {[}CLS{]})
   \item
     Output: BERT token embedding.
   \item
-    Using softmax(a simple linear classifier) to predict the masked token. (using token {[}CLS{]} to do classification task.)
-    (words match each other may have the same BERT embedding)
+    Using softmax classifier to predict the masked token. (words match each other may have the same BERT embedding)
   \end{itemize}
 \item
   How to mask?
@@ -2061,15 +2496,15 @@ As shown in the above figure, when word embeddings are fed into BERT, 15\% of th
   \tightlist
   \item
     Why keep 10\% of masked tokens unchanged?\\
-    A: In some downstream task like POSTagging, all the tokens are known, if BERT only trained the Masked sequences, then the model only use the information of context, exclude the information of the masked words. It will lose a part of the information, then weakens the performance of the model.
+    In some downstream tasks like POSTagging, all the tokens are known, if BERT only trained the Masked sequences, then the model only uses the information of context, exclude the information of the masked words. It will lose a part of the information, then weakens the performance of the model.
   \item
-    Why replace 10\% of masked tokens with random words?\\
-    A: Since we keep 10\% of masked token unchanged, if we do not add random noise, the model will be ``lazy'' in our training, the model will plagiarize current tokens, rather than learning.
+    Why replace 10\% of the masked tokens with random words?\\
+    Since we keep 10\% of the masked token unchanged, if we do not add random noise, the model will be ``lazy'' in our training, the model will plagiarize current tokens, rather than learning.
   \end{itemize}
 \end{itemize}
 
-\hypertarget{next-sentence-tasks}{%
-\subsection{Next-sentence Tasks}\label{next-sentence-tasks}}
+\hypertarget{next-sentence-prediction}{%
+\subsection{Next-sentence Prediction}\label{next-sentence-prediction}}
 
 \begin{figure}
 
@@ -2081,28 +2516,30 @@ As shown in the above figure, when word embeddings are fed into BERT, 15\% of th
  Alammar, Jay (2018). The Illustrated BERT, ELMo, and co. [Blog post]. Retrieved from http://jalammar.github.io/illustrated-bert/}\label{fig:ch02-03-figure04}
 \end{figure}
 
-Figure \ref{fig:ch02-03-figure04} is the visual representation of Next-sentence Tasks(NST).
-Many important downstream tasks such as Question Answering (QA) and Natural Language Inference (NLI) are based on understanding the relationship between two text sentences, which is not directly captured by language modeling. So BERT proposes the NST by using the special token {[}CLS{]} as the first token of every sequence.
+Figure \ref{fig:ch02-03-figure04} is the visual representation of Next-sentence Prediction(NSP).
+Many important downstream tasks such as Question Answering (QA) and Natural Language Inference (NLI) are based on understanding the relationship between two text sentences, which is not directly captured by language modeling. So BERT proposes the NSP by using the special token {[}CLS{]} as the first token of every sequence. The pre-training structure of NSP and MLM are the same, and NSP and MLM are trained together. NSP using token {[}CLS{]} to get the result. For example, token {[}CLS{]} will get a binary classification prediction through the softmax classifier, which represents whether the model believes that the sentiment of the two sentences in the input sequence is the same.
+
+Here I also use the question and answer format to summarize the main points of NSP:
 
 \begin{itemize}
 \tightlist
 \item
-  What is Next-sentence Tasks?
+  What is Next-sentence Prediction?
 
   \begin{itemize}
   \tightlist
   \item
-    Input: token embedding (two sentence, begin with {[}CLS{]}, each sentence ends with {[}SEP{]})
+    Input: token embedding (two sentences, begin with {[}CLS{]}, each sentence ends with {[}SEP{]})
   \item
     Output: BERT token embedding.
   \item
-    Using softmax (a simple linear classifier) to explain the relationship between two sentences.
+    Using a softmax classifier to explain the relationship between two sentences.
   \item
-    Using {[}CLS{]} token to pre-train a binary classification tasks.
+    Using {[}CLS{]} token to pre-train classification tasks.
   \item
-    Sentences can be trivially generated from monolingual corpus.
+    Sentences can be trivially generated from a monolingual corpus.
   \item
-    Choose sentences A and B for each example, 50\% of B is actual next sentence that follows A, and 50\% of B is a random sentence from the corpus.
+    Choose sentences A and B for each example, 50\% of B is the actual next sentence that follows A, and 50\% of B is a random sentence from the corpus.
   \end{itemize}
 \item
   For example:
@@ -2114,14 +2551,14 @@ Many important downstream tasks such as Question Answering (QA) and Natural Lang
     Label = IsNext.
   \item
     Input = {[}CLS{]} the man {[}MASK{]} to the store {[}SEP{]} penguin {[}MASK{]} are flight \#\#less birds {[}SEP{]}.\\
-    Label = NotNext
+    Label = NotNext.
   \end{itemize}
 \end{itemize}
 
 \hypertarget{pre-training-procedure-of-bert}{%
 \subsection{Pre-training Procedure of BERT}\label{pre-training-procedure-of-bert}}
 
-For the pre-training corpus, BERT uses the concatenation of BooksCorpus (800M words) (Zhu et al., 2015) and English Wikipedia (2,500M words) to create two version of BERT (L the number of layers, H the hidden size, A the number of self-attention heads):
+For the pre-training corpus, BERT uses the concatenation of BooksCorpus (800M words) (Zhu et al., 2015) and English Wikipedia (2,500M words) to create two versions of BERT (L stands for the number of layers, H stands for the hidden size, A stands for the number of self-attention heads):
 
 \begin{itemize}
 \tightlist
@@ -2143,17 +2580,35 @@ For the pre-training corpus, BERT uses the concatenation of BooksCorpus (800M wo
 \caption{BERT Task Specific Models}\label{fig:ch02-03-figure05}
 \end{figure}
 
-As shown in Figure \ref{fig:ch02-03-figure05}, different types of tasks require different modifications to the model, and the modification of the model before fine-tuning is quite simple. For example, for the sequence-level classification problem (such as sentiment analysis, Task (a) in the figure), take the output representation of the first token{[}CLS{]} and feed it to a softmax to get the classification result. As for token-level classification (e.g.~NER, Task (d) in the figure), take the output of the last layer transformer of all tokens and feed it to the softmax layer for classification.
+For the BERT model obtained by pre-training, different types of tasks require different modifications to the model, and the modification of the model before fine-tuning is quite simple. As shown in Figure \ref{fig:ch02-03-figure05}:
+
+As for the sequence-level classification problem, such as sentiment analysis, task (a) and (b) in the figure, BERT takes the output representation of the first token{[}CLS{]} then feeds it to a softmax classifier to get the classification prediction and uses this prediction as model output for fine-tuning.
+
+As for the Question Answering Task (e.g.Reading comprehension, task(c)), BERT needs to find the correct answer in the latter sentence to answer the question raised by the previous sentence. For each token in the second sentence, BERT will use the output embeddings of the token to make two predictions, representing whether the token is the beginning or the end of the answer. For example, if the third token of the second sentence is considered to be the beginning of the answer, and the fifth token is considered to be the end of the answer, then BERT will use the third token to the fifth token as the result to answer the questions raised by the first sentence. If the fifth token is considered to be the beginning of the answer and the third token is considered to be the end of the answer, that is, the end appears before the beginning, then the resulting output by BERT will be: No Answer. The true answer in reading comprehension may happen to be No Answer. BERT performs fine-tuning by comparing the loss between the prediction and the true value. It is worth noting that in reading comprehension or summarization tasks, BERT is not doing real summarization. It cannot generate new vocabulary by itself, but can only choose from the vocabulary of the latter sentence. This may be the reason why BERT does not perform so well in corresponding tasks.
+
+As for token-level classification (e.g.~NER, Task (d) in the figure), BERT takes the output of the last layer transformer of all tokens then feeds it to the softmax layer for classification and uses the prediction of each token of the model to compare with the real answer and fine-tune the parameters.
 
 \hypertarget{feature-extraction}{%
 \subsection{Feature Extraction}\label{feature-extraction}}
 
-Like other Language model, the pre-trained BERT can create contextualized word embeddings. Then the word embeddings can be used as features in other models. Readers can try out BERT through \href{https://colab.research.google.com/github/tensorflow/tpu/blob/master/tools/colab/bert_finetuning_with_cloud_tpus.ipynb}{BERT FineTuning with Cloud TPUs}.
+Like many other Language models, the pre-trained BERT can create contextualized word embeddings. Then the word embeddings can be used as features in other models. Readers can try out BERT through \href{https://colab.research.google.com/github/tensorflow/tpu/blob/master/tools/colab/bert_finetuning_with_cloud_tpus.ipynb}{BERT FineTuning with Cloud TPUs}.
 
 \hypertarget{bert-like-models}{%
 \subsection{BERT-like models}\label{bert-like-models}}
 
-The state-of-the-art performance of BERT reveals the deep bidirectional language model can significantly improve the model performance in NLP tasks, and BERT chart a new course that how a real bidirectional model should be. However, BERT has also the following weaknesses: first of all, the input to BERT contains artificial symbols like {[}MASK{]} that never occur in downstream tasks, which creates a pre-train-fine-tuning discrepancy problem. Secondly, BERT assumes the predicted tokens are independent of others given the unmasked tokens, which is oversimplified for natural language. Several models are inspired by BERT to solve these problems.
+The state-of-the-art performance of BERT reveals the deep bidirectional language model can significantly improve the model performance in NLP tasks, and BERT chart a new course that how a real bidirectional model should be.
+
+However, BERT has also the following weaknesses:
+
+\begin{itemize}
+\tightlist
+\item
+  First of all, the input to BERT contains artificial symbols like {[}MASK{]} that never occur in downstream tasks, which creates a pre-train-fine-tuning discrepancy problem.
+\item
+  Secondly, BERT assumes the predicted tokens are independent of others given the unmasked tokens, which is oversimplified for natural language.
+\end{itemize}
+
+Several models are inspired by BERT to solve these problems:
 
 Roberta \citet{liu2019roberta} shows hyperparameter choices have a significant impact on the final results. It improves BERT pre-training in the following aspects to get better performance:
 
@@ -2181,10 +2636,12 @@ ALBERT \citet{lan2019albert} mainly makes three improvements to BERT, which redu
   Replacing NSP with Sentence-order prediction loss (SOP).
 \end{itemize}
 
-There are also BERT-like models pre-trained on domain-specific corpora, SciBERT \citet{beltagy2019scibert} on scientific publications ,ERNIE \citet{zhang2019ernie} on a large corpus incorporating knowledge graph in the input. In comparison to fine-tune original BERT, training on the domain-specific corpora then fine-tuning them on downstream NLP tasks has shown to yield better performance.
+There are also BERT-like models pre-trained on domain-specific corpora, for example, SciBERT \citet{beltagy2019scibert} on scientific publications, ERNIE \citet{zhang2019ernie} on a large corpus incorporating knowledge graph in the input. In comparison to fine-tune original BERT, training on the domain-specific corpora then fine-tuning them on downstream NLP tasks has shown to yield better performance.
 
 \hypertarget{generative-pre-traininggpt-2}{%
 \section{Generative Pre-Training(GPT-2)}\label{generative-pre-traininggpt-2}}
+
+The GDP-2 mentioned next is also the most important NLP model in recent years. It and BERT are often mentioned at the same time because the model structure it uses is also based on the transformer, but it is the transformer decoder. As mentioned in \protect\hyperlink{ux5cux2520Attentionux5cux2520andux5cux2520Self-Attentionux5cux2520forux5cux2520NLP}{\textbf{chapter 9}}, the transformer decoder can be regarded as a unidirectional language model, so GDP-2 represents a different way of thinking from BERT and has the surprising ability in writing tasks.
 
 \hypertarget{auto-regressive-language-modelar}{%
 \subsection{Auto-regressive Language Model(AR)}\label{auto-regressive-language-modelar}}
@@ -2198,21 +2655,28 @@ There are also BERT-like models pre-trained on domain-specific corpora, SciBERT 
 \caption{Autoregressive}\label{fig:ch02-03-figure06}
 \end{figure}
 
-Figure \ref{fig:ch02-03-figure06} shows the modelling of Auto-regressive language model, it tries to estimate the probability distribution of a sequence with a auto-regressive pattern. Specifically, given a text sequence \(X = (x_1,...,x_T)\), AR language model factorizes the log-likelihood into a forward sum \(logp(x) = \sum^T_{t=1} p(x_t|x<t)\) or a backward one \(logp(x) = \sum^{t=1}_{T} p(x_t|x>t)\) \citet{yang2019xlnet}. Since an AR language model is only trained to encode a uni-directional context (either forward or backward), it is not effective at modeling deep bidirectional contexts. On the contrary, downstream language understanding tasks often require bidirectional context information.
+GPT-2 is a unidirectional language model, such model structure is also called Auto-regressive language model. Figure \ref{fig:ch02-03-figure06} shows the modelling of Auto-regressive language model, it tries to estimate the probability distribution of a sequence with a auto-regressive pattern. Specifically, given a text sequence \(X = (x_1,...,x_T)\), AR language model factorizes the log-likelihood into a forward sum \(logp(x) = \sum^T_{t=1} p(x_t|x<t)\) or a backward one \(logp(x) = \sum^{t=1}_{T} p(x_t|x>t)\) \citet{yang2019xlnet}. Since an AR language model is only trained to encode a uni-directional context (either forward or backward), it is not effective at modeling deep bidirectional contexts. On the contrary, downstream language understanding tasks often require bidirectional context information.
 
 \hypertarget{introduction-of-gpt-2}{%
 \subsection{Introduction of GPT-2}\label{introduction-of-gpt-2}}
 
-GPT-2 is proposed by researchers at OpenAI in 2019. It captures the attention of the NLP community for the following characters:\\
-First of all, instead of the fine-tuning model with specific tasks, GPT-2 demonstrates language models can perform down-stream tasks in a zero-shot setting, which means without any parameter or architecture modification. Secondly, in order to perform better under the zero-shot setting, GPT-2 becomes extremely large. On the other hand, training GPT-2 also needs enormous data, so researchers also create a new dataset ``WebText'', which contains millions of webpages.\\
+GPT-2 is proposed by researchers at OpenAI in 2019. It captures the attention of the NLP community for the following characters:
+
+\begin{itemize}
+\item
+  Instead of the fine-tuning model with specific tasks, GPT-2 demonstrates language models can perform down-stream tasks in a zero-shot setting, which means without any parameter or architecture modification.
+\item
+  To perform better under the zero-shot setting, GPT-2 becomes extremely large. The result is that training GPT-2 needs enormous data, so researchers also create a new dataset \href{https://skylion007.github.io/OpenWebTextCorpus/}{WebText}, which contains millions of webpages.
+\end{itemize}
+
 With the characters above, GPT-2 achieves state-of-the-art results on 7 out of 8 tested language modeling datasets in a zero-shot setting but still underfits WebText.
 
-Readers can experiment with GPT-2 by using \href{https://demo.allennlp.org/next-token-lm?text=AllenNLP\%20is}{AllenAI GPT-2}. You can input a sentence and see the prediction of next words.
+Readers can experiment with GPT-2 by using \href{https://demo.allennlp.org/next-token-lm?text=AllenNLP\%20is}{AllenAI GPT-2}. You can input a sentence and see the prediction of the next words.
 
 \hypertarget{input-representation-of-gpt-2}{%
 \subsection{Input Representation of GPT-2}\label{input-representation-of-gpt-2}}
 
-GPT-2 uses a human-curated dataset called \href{https://skylion007.github.io/OpenWebTextCorpus/}{``WebText''}, that contains text scraped from 45 million web-links. All results presented in paper use a preliminary version of WebText which after de-duplication and some heuristic based cleaning contains slightly over 8 million documents for a total of 40GB of text \citet{radford2019gpt2}.
+GPT-2 uses a human-curated dataset called \href{https://skylion007.github.io/OpenWebTextCorpus/}{WebText}, that contains text scraped from 45 million web-links. All results presented in paper use a preliminary version of WebText, which contains slightly over 8 million documents for a total of 40GB of text after de-duplication and some heuristic-based cleaning \citet{radford2019gpt2}.
 
 \begin{figure}
 
@@ -2239,7 +2703,7 @@ Figure \ref{fig:ch02-03-figure07} shows the input representation of GPT-2. The i
  Alammar, Jay (2018). The Illustrated GPT-2 co. [Blog post]. Retrieved from http://jalammar.github.io/illustrated-gpt2/}\label{fig:ch02-03-figure08}
 \end{figure}
 
-Figure \ref{fig:ch02-03-figure08} shows the model of GPT-2. This model essentially is the Transformer decoder, except they threw away the second self-attention layer. In each decoder, Layer normalization \citet{ba2016layer} was moved to the input of each sub-block, similar to a pre-activation residual network \citet{he2016identity} and an additional layer normalization was added after the final self-attention block. A modified initialization which accounts for the accumulation on the residual path with model depth is used \citet{radford2019gpt2}.
+Figure \ref{fig:ch02-03-figure08} shows the model of GPT-2. This model essentially is the Transformer decoder, except they threw away the second self-attention layer. In each decoder, Layer normalization \citet{ba2016layer} is moved to the input of each sub-block, similar to a pre-activation residual network \citet{he2016identity}, and an additional layer normalization is added after the final self-attention block. A modified initialization which accounts for the accumulation on the residual path with model depth is used \citet{radford2019gpt2}.
 
 GPT-2 reads from the start token {[}s{]} till the last predicted token to predict the next token. For example, in the first round, model uses {[}s{]} to predict {[}robot{]}, in the next round the input is updated as \{{[}s{]},{[}robot{]}\} since {[}robot{]} has been predicted. This is how Masked self-Attention in Decoder block works.
 
@@ -2247,7 +2711,7 @@ Otherwise, since a general system should be able to perform many different tasks
 The model of GPT-2 should be :
 \[log p(x)=log\sum^{n}_{i=1}p(s_n|s_1,...,s_{n-1};task_i)\]
 
-For example, a translation training example can be written as the sequence (translate to french, English text, French text). Likewise, a reading comprehension training example can be written as (answer the question, document, question, answer).
+For example, a translation training example can be represented as the sequence (Translate to the french, English text, French text). Likewise, a reading comprehension training example can be written as (Answer the question, Document, Question, Answer).
 
 By using the specially designed WebText, GPT-2 can be used by following patterns for different tasks.
 
@@ -2257,7 +2721,7 @@ By using the specially designed WebText, GPT-2 can be used by following patterns
 \item
   Summarization: data sequence, ``TL;DR:''
 \item
-  Translation: English sentence 1 = ``French sentence 1, English sentence 2 = French sentence 2, English sentence 3 =''
+  Translation: English sentence 1 = French sentence 1, English sentence 2 = French sentence 2, ``English sentence 3 =''
 \end{itemize}
 
 \hypertarget{gpt-2-models}{%
@@ -2289,7 +2753,7 @@ Four versions models are trained, the architectures are summarized in \ref{tab:c
 
 The framework of GPT-2 is the combination of pre-training based on Transformer Decoder and fine-tuning based on unsupervised downstream tasks.
 
-After the great success of bidirectional models like BERT, GPT-2 insists on using unidirectional models and still achieves state-of-the-art performance. It proves that the performance of language models can be significantly improved by simply increasing the size of training datasets, which is exactly what GPT-2 did and even GPT-2, which has 1.5 billion parameters, still underfits WebText. This result suggests that datasets are as important as models.
+After the great success of bidirectional models like BERT, GPT-2 insists on using unidirectional models and still achieves state-of-the-art performance. It proves that the performance of language models can be significantly improved by simply increasing the size of training datasets and models, which is exactly what GPT-2 did and even GPT-2, which has 1.5 billion parameters, still underfits WebText. This result also suggests that datasets are as important as models.
 
 \hypertarget{xlnet}{%
 \section{XLNet}\label{xlnet}}
@@ -2306,7 +2770,9 @@ After the great success of bidirectional models like BERT, GPT-2 insists on usin
 \caption{AR Language Modeling  and AE}\label{fig:ch02-03-figure09}
 \end{figure}
 
-XLNet is proposed by researchers at Google in 2019. Since the autoregressive language model (e.g.GPT-2) is only trained to encode a unidirectional context and not effective at modeling deep bidirectional contexts and autoencoding (e.g.BERT) suffers from the pretrain-finetune discrepancy, XLNet borrows ideas from the two types of objectives while avoiding their limitations. It is a new objective called Permutation Language Modeling. By using a permutation operation during training time, bidirectional context information can be captured and makes it a generalized order-aware autoregressive language model. Besides, XLNet introduces a two-stream self-attention to solve the problem that standard parameterization will reduce the model to bag-of-words.
+XLNet is proposed by researchers at Google in 2019. Since the autoregressive language model (e.g.GPT-2) is only trained to encode a unidirectional context and not effective at modeling deep bidirectional contexts and autoencoding (e.g.BERT) suffers from the pre-train-fine-tune discrepancy, XLNet borrows ideas from the two types of objectives while avoiding their limitations.
+
+It is a new objective called Permutation Language Modeling. By using a permutation operation during training time, bidirectional context information can be captured and makes it a generalized order-aware autoregressive language model. Besides, XLNet introduces a two-stream self-attention to solve the problem that standard parameterization will reduce the model to bag-of-words.
 
 Two XLNet are released, i.e.~XLNet-Base and XLNet-Large, and include the similar settings of corresponding BERT. Empirically, XLNet outperforms BERT on 20 tasks and achieves state-of-the-art results on 18 tasks.
 
@@ -2330,33 +2796,43 @@ Specifically, for a sequence \(X\) of length \(T\), there are \(T!\) different o
 \max_{\theta} \mathbb{E}_{p\sim P_T} \left[\sum_{t=1}^Tlogp_{\theta}(x_{z_t|x_{z_{<t}}})\right]
 \end{equation}
 
-For instance, when we have a factorization order: \{ New York is a city \}. The probability of sequence can be expressed as follows:
+For instance, assume we have a input sequence \{I love my dog\}.
+
+In the upper left plot of the above Figure \ref{fig:ch02-03-figure010}, when we have a factorization order: \{3, 2, 4, 1\}, the probability of sequence can be expressed as follows:
 
 \begin{equation}
 \begin{aligned}
-P(New, York, is, a, city) = P(New) * P(York | New) * P(is | New, York) * \\  P(a | New, York, is) * P(city | New, York, is, a)
+P(I, love, my, dog) = P(my) * P(love | my) * P(dog | love, my) * P(I | love, my, dog)
 \end{aligned}
 \end{equation}
 
-As for another factorization order: \{city a is New York\}, then the probability of sequence can be expressed differently:
+as for the third token: \{my\}, it cannot use the information of all other tokens, so only one arrow from the starting token points to the third token in the plot.
+
+In the upper right plot of the above Figure \ref{fig:ch02-03-figure010}, when we have a factorization order: \{2, 4, 3, 1\}, the probability of sequence can be expressed as follows:
 
 \begin{equation}
 \begin{aligned}
-P(New, York, is, a, city) = P(city) * P(a | city) * P(is | city, a) * \\ P(New | city, a, is) * P(York | city, a, is, New)
+P(I, love, my, dog) = P(love) * P(dog | love) * P(my | love, dog) * P(I | love, my, dog)
 \end{aligned}
 \end{equation}
 
-It is noteworthy that sequence order is not shuffled and only attention masks are changed to reflect factorization order. With PLM, XLNet can model bidirectional context and the dependency within each token of the sequence.
+as for the third token: \{my\}, it can use the information of the second and fourth tokens because it places after these two tokens in the factorization order. Correspondingly, it cannot use the information of the first token. So in the plot, in addition to the arrow from the starting token, there are arrows from the second and fourth tokens pointing to the third token. The rest two plots in the figure have the same interpretation.
+
+During training, for a fixed factorization order, XL-Net is a unidirectional language model based on the transformer decoder, which performs normal model training. But different factorization order makes the model see different order of words when traversing sentences. In this way, although the model is unidirectional, it can also learn the bidirectional information of the sentence.
+
+It is noteworthy that the sequence order is not actually shuffled but only attention masks are changed to reflect factorization order. With PLM, XLNet can model bidirectional context and the dependency within each token of the sequence.
 
 \hypertarget{the-problem-of-standard-parameterization}{%
 \subsection{The problem of Standard Parameterization}\label{the-problem-of-standard-parameterization}}
+
+As just mentioned, XL-Net is a language model when the factorization order is fixed, which means that we want the model to be able to predict the t-th word under the condition of knowing the word before t.
 
 The Standard Parameterization can be expressed as follows:
 
 \[p_{\theta}(X_{p_t}=x|x_{p<t})=\frac{e(x)^Th_{\theta}(x_{p<t})}{\sum_{x^{'}}e(x^{'})^Th_{\theta}(x_{p<t})}\]
 where \(e(x)\) denotes the embedding of input token and \(h_{\theta}(x_{p<t})\) denotes the hidden representation of \(x_{p<t}\).
 
-While the permutation language modeling objective has desired properties, naive implementation with standard Transformer parameterization may not work. Specifically, let's consider two different permutations \(p^1\text{:{New York is a city}}\) and \(p^2:\text{{New York a city is}}\). The probability of \(\text{{is}}\) in \(p^1\): \(\text{P(is|New, York)}\) and the probability of \(\text{{a}}\) in \(p^2\): \(\text{P(a|New, York)}\) are identical. The model will be reduced to predicting a bag-of-words, because \(h_{\theta}(x_{z<t})\) does not contain the position of the target.
+While the permutation language modeling objective has desired properties, naive implementation with standard Transformer parameterization may not work. Specifically, let's consider two different permutations \(p^1\text{:{I love my dog}}\) and \(p^2:\text{{I love dog my}}\). The probability of \(\text{{my}}\) in \(p^1\): \(\text{P(my|I, love)}\) and the probability of \(\text{{dog}}\) in \(p^2\): \(\text{P(dog|I, love)}\)are identical. The model will be reduced to predicting a bag-of-words, because \(h_{\theta}(x_{z<t})\) does not contain the position of the target.
 
 XLNet resolves the problem by reparameterizing with positions:
 
@@ -2398,7 +2874,7 @@ Figure \ref{fig:ch02-03-figure011} is an example with the Factorization order: \
 \item
   \(g_i^{(t)}\) denote the query representation of the i-th token on the t-th layer of self-attention. It does not have access information about the content \(x_{p_t}\), other trivial.
 \item
-  Computationally, \(h_i^{(0)}\) is the word embeddings, and \(g_i^{(0)}\) is a trainable parameter initialized with a trainable vector. Only \(h_i^{(t)}\) is used during fine-tuning. The last \(g_i^{(t)}\) is used for optimizing the LM loss. A self-attention layer \(m=1,...,M\) are schematically updated with a shared set of parameters as follows:
+  Computationally, \(h_i^{(0)}\) is the word embeddings, and \(g_i^{(0)}\) is a trainable parameter initialized with a trainable vector. Only \(h_i^{(t)}\) is used during fine-tuning. The last \(g_i^{(t)}\) is used for optimizing the LM loss. A self-attention layer \(m=1,..., M\) are schematically updated with a shared set of parameters as follows:
 \end{itemize}
 
 \[
@@ -2421,7 +2897,7 @@ While the PLM has several benefits, optimization is challenging due to the permu
 \max_{\theta}   \mathbb{E}_{p\sim P_T} \left[logp_{\theta}(x_{z_{>c}|x_{z_{\leq c}}})\right] =
 \mathbb{E}_{p\sim P_T} \left[\sum_{t=c+1}^{|z|} logp_{\theta}(x_{z_t|x_{z_{\leq t}}})\right]
 \end{equation}
-For unselected tokens, their query representations need not be computed, which saves speed and memory. XLNet incorporates ideas from Transformer-XL and inherits two important characters of it, Segment-Level Recurrence and Relative Position Encoding, to enable the learning of long-term dependency and resolve the context fragmentation.
+For unselected tokens, their query representations need not be computed, which saves speed and memory. XLNet incorporates ideas from Transformer-XL and inherits two important characters of it, i.e.~Segment-Level Recurrence and Relative Position Encoding, to enable the learning of long-term dependency and resolve the context fragmentation \citet{dai2019transformer}. There is also a good \href{https://medium.com/@shoray.goel/transformer-xl-9fc13473e0a4}{Blog} to introduce Transformer-XL, Readers can read if interested.
 
 \hypertarget{xlnet-pre-training-model}{%
 \subsection{XLNet Pre-training Model}\label{xlnet-pre-training-model}}
@@ -2441,18 +2917,18 @@ Analogous to BERT, two versions of XLNet have been trained:
 \hypertarget{conclusion-1}{%
 \subsection{Conclusion}\label{conclusion-1}}
 
-Language modeling has been a rapidly developing research area. However, most language modelings are unidirectional and BERT \citet{bert} shows that bidirectional modeling can significantly improve model performance. Unidrectional modelings without specific structure are hard to capture the bidirectional context. Now with the permutation operator, the unidirectional language modelings can become bidirectional modeling. XLNet has built a bridge between language modeling and bidrectional model. Overall, XLNet is a generalized AR pre-training method that uses a permutation language modeling objective to combine the advantages of AR and AE methods.
+Language modeling has been a rapidly developing research area. However, most language modelings are unidirectional and BERT \citet{bert} shows that bidirectional modeling can significantly improve model performance. Unidirectional modelings without specific structure are hard to capture the bidirectional context. Now with the permutation operator, the unidirectional language modelings can become bidirectional modeling. XLNet has built a bridge between language modeling and bidirectional models. Overall, XLNet is a generalized AR pre-training method that uses a permutation language modeling objective to combine the advantages of AR and AE methods.
 
 \hypertarget{latest-nlp-models}{%
 \section{Latest NLP models}\label{latest-nlp-models}}
 
 Nowadays NLP has become a competition between big companies. When BERT first came, people talked about it may cost thousands of dollars to train it. Then came GPT-2, which has 1.5 billion parameters and is trained on 40GB data. As I mentioned above, GPT-2 of Open-AI shows that increasing the size of models and datasets is at least as important as proposing a new model architecture.
 
-After GPT-2, researchers at Google did the same thing, they proposed a general language model called T5 \citet{raffel2019exploring}, which is trained on 750GB corpus - \href{https://www.tensorflow.org/datasets/catalog/c4}{``C4 (Colossal Clean Crawled Corpus)''}. If you read the paper, the last page of it is a table of several experience results, which may cost millions of dollars to reproduce it.
+After GPT-2, researchers at Google did the same thing, they proposed a general language model called T5 \citet{raffel2019exploring}, which is trained on 750GB corpus - \href{https://www.tensorflow.org/datasets/catalog/c4}{``C4 (Colossal Clean Crawled Corpus)''}. If you read the paper, you will find that the last page of it is a table of several experience results, which may cost millions of dollars to reproduce it.
 
 On 28th May 2020, the ``Arms race'' goes into another level, GPT-3 \citet{brown2020language} emerged, the new paper takes GPT to the next level by making it even bigger - GPT-3 has 175 billion parameters and is trained on a dataset that has 450 billion of tokens \href{https://github.com/openai/gpt-3}{``GPT-3 Dataset''}. GPT-3 experiments with the three different settings: zero-shot, one-shot, and Few-shot to show that scaling up language models can greatly improve performance, sometimes even reaching competitiveness with prior SOTA approaches. However, it is conservatively estimated that training GPT-3 will cost one hundred million dollars.
 
-Models like T5 and GPT-3 are very impressive, but the biggest problem at the moment is to find a way to make the current model put into use in industry. If it can't bring benefits, the AI industry can't be sustained by burning money. As for researchers, the truth is, with the resources it is also possible to fail, but it is certainly impossible to succeed without resources now.
+Models like T5 and GPT-3 are very impressive, but the biggest problem at the moment is to find a way to make the current model put into use in the industry. If it can't bring benefits, the AI industry can't be sustained by burning money. As for researchers, the truth is, with the resources it is also possible to fail, but it is certainly impossible to succeed without resources now.
 
 \hypertarget{introduction-resources-for-nlp}{%
 \chapter{Introduction: Resources for NLP}\label{introduction-resources-for-nlp}}

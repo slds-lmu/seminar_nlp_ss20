@@ -151,10 +151,12 @@
 <li class="chapter" data-level="8.1" data-path="attention-and-self-attention-for-nlp.html"><a href="attention-and-self-attention-for-nlp.html#attention"><i class="fa fa-check"></i><b>8.1</b> Attention</a><ul>
 <li class="chapter" data-level="8.1.1" data-path="attention-and-self-attention-for-nlp.html"><a href="attention-and-self-attention-for-nlp.html#bahdanau-attention"><i class="fa fa-check"></i><b>8.1.1</b> Bahdanau-Attention</a></li>
 <li class="chapter" data-level="8.1.2" data-path="attention-and-self-attention-for-nlp.html"><a href="attention-and-self-attention-for-nlp.html#luong-attention"><i class="fa fa-check"></i><b>8.1.2</b> Luong-Attention</a></li>
-<li class="chapter" data-level="8.1.3" data-path="attention-and-self-attention-for-nlp.html"><a href="attention-and-self-attention-for-nlp.html#attention-models"><i class="fa fa-check"></i><b>8.1.3</b> Attention Models</a></li>
+<li class="chapter" data-level="8.1.3" data-path="attention-and-self-attention-for-nlp.html"><a href="attention-and-self-attention-for-nlp.html#computational-difference-between-luong--and-bahdanau-attention"><i class="fa fa-check"></i><b>8.1.3</b> Computational Difference between Luong- and Bahdanau-Attention</a></li>
+<li class="chapter" data-level="8.1.4" data-path="attention-and-self-attention-for-nlp.html"><a href="attention-and-self-attention-for-nlp.html#attention-models"><i class="fa fa-check"></i><b>8.1.4</b> Attention Models</a></li>
 </ul></li>
 <li class="chapter" data-level="8.2" data-path="introduction-transfer-learning-for-nlp.html"><a href="introduction-transfer-learning-for-nlp.html#self-attention"><i class="fa fa-check"></i><b>8.2</b> Self-Attention</a><ul>
-<li class="chapter" data-level="8.2.1" data-path="attention-and-self-attention-for-nlp.html"><a href="attention-and-self-attention-for-nlp.html#transformers"><i class="fa fa-check"></i><b>8.2.1</b> Transformers</a></li>
+<li class="chapter" data-level="8.2.1" data-path="attention-and-self-attention-for-nlp.html"><a href="attention-and-self-attention-for-nlp.html#the-transformer"><i class="fa fa-check"></i><b>8.2.1</b> The Transformer</a></li>
+<li class="chapter" data-level="8.2.2" data-path="attention-and-self-attention-for-nlp.html"><a href="attention-and-self-attention-for-nlp.html#transformers-as-rnns"><i class="fa fa-check"></i><b>8.2.2</b> Transformers as RNNs</a></li>
 </ul></li>
 </ul></li>
 <li class="chapter" data-level="9" data-path="transfer-learning-for-nlp-ii.html"><a href="transfer-learning-for-nlp-ii.html"><i class="fa fa-check"></i><b>9</b> Transfer Learning for NLP II</a><ul>
@@ -163,7 +165,7 @@
 <li class="chapter" data-level="9.1.2" data-path="transfer-learning-for-nlp-ii.html"><a href="transfer-learning-for-nlp-ii.html#introduction-of-bert"><i class="fa fa-check"></i><b>9.1.2</b> Introduction of BERT</a></li>
 <li class="chapter" data-level="9.1.3" data-path="transfer-learning-for-nlp-ii.html"><a href="transfer-learning-for-nlp-ii.html#input-representation-of-bert"><i class="fa fa-check"></i><b>9.1.3</b> Input Representation of BERT</a></li>
 <li class="chapter" data-level="9.1.4" data-path="transfer-learning-for-nlp-ii.html"><a href="transfer-learning-for-nlp-ii.html#masked-language-model"><i class="fa fa-check"></i><b>9.1.4</b> Masked Language Model</a></li>
-<li class="chapter" data-level="9.1.5" data-path="transfer-learning-for-nlp-ii.html"><a href="transfer-learning-for-nlp-ii.html#next-sentence-tasks"><i class="fa fa-check"></i><b>9.1.5</b> Next-sentence Tasks</a></li>
+<li class="chapter" data-level="9.1.5" data-path="transfer-learning-for-nlp-ii.html"><a href="transfer-learning-for-nlp-ii.html#next-sentence-prediction"><i class="fa fa-check"></i><b>9.1.5</b> Next-sentence Prediction</a></li>
 <li class="chapter" data-level="9.1.6" data-path="transfer-learning-for-nlp-ii.html"><a href="transfer-learning-for-nlp-ii.html#pre-training-procedure-of-bert"><i class="fa fa-check"></i><b>9.1.6</b> Pre-training Procedure of BERT</a></li>
 <li class="chapter" data-level="9.1.7" data-path="transfer-learning-for-nlp-ii.html"><a href="transfer-learning-for-nlp-ii.html#fine-tuning-procedure-of-bert"><i class="fa fa-check"></i><b>9.1.7</b> Fine-tuning Procedure of BERT</a></li>
 <li class="chapter" data-level="9.1.8" data-path="transfer-learning-for-nlp-ii.html"><a href="transfer-learning-for-nlp-ii.html#feature-extraction"><i class="fa fa-check"></i><b>9.1.8</b> Feature Extraction</a></li>
@@ -260,6 +262,9 @@
 
 <div id="refs" class="references">
 <div>
+<p>Alammar, Jay. 2018. “The Illustrated Transformer [Blog Post].” <em>Http://Jalammar.github.io/</em>. <a href="http://jalammar.github.io/illustrated-transformer/" class="uri">http://jalammar.github.io/illustrated-transformer/</a>.</p>
+</div>
+<div>
 <p>Ba, Jimmy Lei, Jamie Ryan Kiros, and Geoffrey E Hinton. 2016. “Layer Normalization.” <em>arXiv Preprint arXiv:1607.06450</em>.</p>
 </div>
 <div>
@@ -302,6 +307,12 @@
 <p>Chen, Gang. 2016. “A Gentle Tutorial of Recurrent Neural Network with Error Backpropagation.” <em>arXiv Preprint arXiv:1610.02583</em>.</p>
 </div>
 <div>
+<p>Cheng, Jianpeng, Li Dong, and Mirella Lapata. 2016. “Long Short-Term Memory-Networks for Machine Reading.” <em>arXiv Preprint arXiv:1601.06733</em>.</p>
+</div>
+<div>
+<p>Child, Rewon, Scott Gray, Alec Radford, and Ilya Sutskever. 2019. “Generating Long Sequences with Sparse Transformers.”</p>
+</div>
+<div>
 <p>Cho, Kyunghyun, Bart Van Merriënboer, Caglar Gulcehre, Dzmitry Bahdanau, Fethi Bougares, Holger Schwenk, and Yoshua Bengio. 2014. “Learning Phrase Representations Using Rnn Encoder-Decoder for Statistical Machine Translation.” <em>arXiv Preprint arXiv:1406.1078</em>.</p>
 </div>
 <div>
@@ -309,6 +320,9 @@
 </div>
 <div>
 <p>Chomsky, Noam. 1957. <em>Syntactic Structures</em>. The Hague: Mouton.</p>
+</div>
+<div>
+<p>Choromanski, Krzysztof, Valerii Likhosherstov, David Dohan, Xingyou Song, Jared Davis, Tamas Sarlos, David Belanger, Lucy Colwell, and Adrian Weller. 2020. “Masked Language Modeling for Proteins via Linearly Scalable Long-Context Transformers.”</p>
 </div>
 <div>
 <p>Chung, Junyoung, Çaglar Gülçehre, KyungHyun Cho, and Yoshua Bengio. 2014. “Empirical Evaluation of Gated Recurrent Neural Networks on Sequence Modeling.” <em>CoRR</em> abs/1412.3555. <a href="http://arxiv.org/abs/1412.3555" class="uri">http://arxiv.org/abs/1412.3555</a>.</p>
@@ -335,6 +349,9 @@
 <p>Gao, Bin, Jiang Bian, and Tie-Yan Liu. 2014. “Wordrep: A Benchmark for Research on Learning Word Representations.” <em>arXiv Preprint arXiv:1407.1640</em>.</p>
 </div>
 <div>
+<p>Gehring, Jonas, Michael Auli, David Grangier, Denis Yarats, and Yann N. Dauphin. 2017. “Convolutional Sequence to Sequence Learning.”</p>
+</div>
+<div>
 <p>Gerz, Daniela, Ivan Vulić, Felix Hill, Roi Reichart, and Anna Korhonen. 2016. “Simverb-3500: A Large-Scale Evaluation Set of Verb Similarity.” <em>arXiv Preprint arXiv:1608.00869</em>.</p>
 </div>
 <div>
@@ -354,6 +371,12 @@
 </div>
 <div>
 <p>Graves, Alex, Abdel-rahman Mohamed, and Geoffrey Hinton. 2013. “Speech Recognition with Deep Recurrent Neural Networks.” In <em>2013 Ieee International Conference on Acoustics, Speech and Signal Processing</em>, 6645–9. IEEE.</p>
+</div>
+<div>
+<p>Graves, Alex, Greg Wayne, and Ivo Danihelka. 2014. “Neural Turing Machines.” <em>CoRR</em> abs/1410.5401. <a href="http://arxiv.org/abs/1410.5401" class="uri">http://arxiv.org/abs/1410.5401</a>.</p>
+</div>
+<div>
+<p>Gregor, Karol, Ivo Danihelka, Alex Graves, Danilo Jimenez Rezende, and Daan Wierstra. 2015. “Draw: A Recurrent Neural Network for Image Generation.” <em>arXiv Preprint arXiv:1502.04623</em>.</p>
 </div>
 <div>
 <p>Hancox, Peter. 1996. <em>Natural Language Processing</em>. <a href="https://www.cs.bham.ac.uk/~pjh/sem1a5/pt1/pt1_history.html" class="uri">https://www.cs.bham.ac.uk/~pjh/sem1a5/pt1/pt1_history.html</a>.</p>
@@ -404,13 +427,22 @@
 <p>Kaiser, Lukasz, Aidan N Gomez, Noam Shazeer, Ashish Vaswani, Niki Parmar, Llion Jones, and Jakob Uszkoreit. 2017. “One Model to Learn Them All.” <em>arXiv Preprint arXiv:1706.05137</em>.</p>
 </div>
 <div>
-<p>Kalchbrenner, Nal, Lasse Espeholt, Karen Simonyan, Aäron van den Oord, Alex Graves, and Koray Kavukcuoglu. 2016. “Neural Machine Translation in Linear Time.” <em>ArXiv</em> abs/1610.10099. <a href="https://arxiv.org/pdf/1610.10099.pdf" class="uri">https://arxiv.org/pdf/1610.10099.pdf</a>.</p>
+<p>Kalchbrenner, Nal, Lasse Espeholt, Karen Simonyan, Aaron van den Oord, Alex Graves, and Koray Kavukcuoglu. 2016a. “Neural Machine Translation in Linear Time.”</p>
+</div>
+<div>
+<p>Kalchbrenner, Nal, Lasse Espeholt, Karen Simonyan, Aäron van den Oord, Alex Graves, and Koray Kavukcuoglu. 2016b. “Neural Machine Translation in Linear Time.” <em>ArXiv</em> abs/1610.10099. <a href="https://arxiv.org/pdf/1610.10099.pdf" class="uri">https://arxiv.org/pdf/1610.10099.pdf</a>.</p>
 </div>
 <div>
 <p>Kalchbrenner, Nal, Edward Grefenstette, and Phil Blunsom. 2014. <em>A Convolutional Neural Network for Modelling Sentences</em>. <em>ArXiv</em>. Vol. abs/1404.2188. <a href="http://mirror.aclweb.org/acl2014/P14-1/pdf/P14-1062.pdf" class="uri">http://mirror.aclweb.org/acl2014/P14-1/pdf/P14-1062.pdf</a>.</p>
 </div>
 <div>
+<p>Katharopoulos, Angelos, Apoorv Vyas, Nikolaos Pappas, and François Fleuret. 2020. “Transformers Are Rnns: Fast Autoregressive Transformers with Linear Attention.”</p>
+</div>
+<div>
 <p>Kim, Yoon. 2014. <em>Convolutional Neural Networks for Sentence Classification</em>. <a href="https://www.aclweb.org/anthology/D14-1181.pdf" class="uri">https://www.aclweb.org/anthology/D14-1181.pdf</a>.</p>
+</div>
+<div>
+<p>Kitaev, Nikita, Łukasz Kaiser, and Anselm Levskaya. 2020. “Reformer: The Efficient Transformer.”</p>
 </div>
 <div>
 <p>Krizhevsky, Alex, Ilya Sutskever, and Geoffrey E. Hinton. 2012. <em>ImageNet Classification with Deep Convolutional Neural Networks</em>. <a href="http://www.cs.toronto.edu/~hinton/absps/imagenet.pdf" class="uri">http://www.cs.toronto.edu/~hinton/absps/imagenet.pdf</a>.</p>
@@ -548,10 +580,16 @@
 <p>Scherer, Dominik, Andreas C. Müller, and Sven Behnke. 2010. “Evaluation of Pooling Operations in Convolutional Architectures for Object Recognition.” In <em>ICANN</em>. <a href="http://ais.uni-bonn.de/papers/icann2010_maxpool.pdf" class="uri">http://ais.uni-bonn.de/papers/icann2010_maxpool.pdf</a>.</p>
 </div>
 <div>
+<p>Schuster, Mike, and Kuldip K Paliwal. 1997. “Bidirectional Recurrent Neural Networks.” <em>IEEE Transactions on Signal Processing</em> 45 (11). Ieee: 2673–81.</p>
+</div>
+<div>
 <p>Schwenk, Holger, Loïc Barrault, Alexis Conneau, and Yann LeCun. 2017. <em>Very Deep Convolutional Networks for Text Classification</em>. <a href="https://www.aclweb.org/anthology/E17-1104.pdf" class="uri">https://www.aclweb.org/anthology/E17-1104.pdf</a>.</p>
 </div>
 <div>
 <p>Sennrich, Rico, Barry Haddow, and Alexandra Birch. 2015. “Neural Machine Translation of Rare Words with Subword Units.” <em>arXiv Preprint arXiv:1508.07909</em>.</p>
+</div>
+<div>
+<p>Shen, Zhuoran, Mingyuan Zhang, Haiyu Zhao, Shuai Yi, and Hongsheng Li. 2018. “Efficient Attention: Attention with Linear Complexities.”</p>
 </div>
 <div>
 <p>Simonyan, Karen, and Andrew Zisserman. 2015. “Very Deep Convolutional Networks for Large-Scale Image Recognition.” <em>CoRR</em> abs/1409.1556. <a href="https://arxiv.org/pdf/1409.1556.pdf" class="uri">https://arxiv.org/pdf/1409.1556.pdf</a>.</p>
@@ -564,6 +602,9 @@
 </div>
 <div>
 <p>Tenney, Ian, James Wexler, Jasmijn Bastings, Tolga Bolukbasi, Andy Coenen, Sebastian Gehrmann, Ellen Jiang, et al. 2020. “The Language Interpretability Tool: Extensible, Interactive Visualizations and Analysis for Nlp Models.” <em>arXiv Preprint arXiv:2008.05122</em>.</p>
+</div>
+<div>
+<p>Tsai, Yao-Hung Hubert, Shaojie Bai, Makoto Yamada, Louis-Philippe Morency, and Ruslan Salakhutdinov. 2019. “Transformer Dissection: A Unified Understanding of Transformer’s Attention via the Lens of Kernel.”</p>
 </div>
 <div>
 <p>Turing, Alan M. 1950. “Computing Machinery and Intelligence.” <em>Mind</em> LIX (236): 433–60. <a href="https://doi.org/10.1093/mind/lix.236.433" class="uri">https://doi.org/10.1093/mind/lix.236.433</a>.</p>
@@ -596,7 +637,7 @@
 <p>Wang, Alex, Amanpreet Singh, Julian Michael, Felix Hill, Omer Levy, and Samuel R Bowman. 2018. “Glue: A Multi-Task Benchmark and Analysis Platform for Natural Language Understanding.” <em>arXiv Preprint arXiv:1804.07461</em>.</p>
 </div>
 <div>
-<p>Wang, Sinong, Belinda Li, Madian Khabsa, Han Fang, and Hao Ma. 2020. “Linformer: Self-Attention with Linear Complexity.” <em>arXiv Preprint arXiv:2006.04768</em>.</p>
+<p>Wang, Sinong, Belinda Z. Li, Madian Khabsa, Han Fang, and Hao Ma. 2020. “Linformer: Self-Attention with Linear Complexity.”</p>
 </div>
 <div>
 <p>Weaver, Warren. 1949. “The Mathematics of Communication.” <em>Scientific American</em> 181 (1): 11–15. <a href="https://doi.org/10.1038/scientificamerican0749-11" class="uri">https://doi.org/10.1038/scientificamerican0749-11</a>.</p>
@@ -605,10 +646,16 @@
 <p>Weizenbaum, Joseph. 1966. “ELIZA-a Computer Program for the Study of Natural Language Communication Between Man and Machine.” <em>Communications of the ACM</em> 9 (1). ACM New York, NY, USA: 36–45.</p>
 </div>
 <div>
+<p>Weng, Lilian. 2018. “Attention? Attention!” <em>Lilianweng.github.io/Lil-Log</em>. <a href="http://lilianweng.github.io/lil-log/2018/06/24/attention-attention.html" class="uri">http://lilianweng.github.io/lil-log/2018/06/24/attention-attention.html</a>.</p>
+</div>
+<div>
 <p>Winograd, Terry. 1972. “SHRDLU: A System for Dialog.” CUMINCAD.</p>
 </div>
 <div>
 <p>Wu, Yonghui, Mike Schuster, Zhifeng Chen, Quoc V Le, Mohammad Norouzi, Wolfgang Macherey, Maxim Krikun, et al. 2016. “Google’s Neural Machine Translation System: Bridging the Gap Between Human and Machine Translation.” <em>arXiv Preprint arXiv:1609.08144</em>.</p>
+</div>
+<div>
+<p>Xu, Kelvin, Jimmy Ba, Ryan Kiros, Kyunghyun Cho, Aaron Courville, Ruslan Salakhudinov, Rich Zemel, and Yoshua Bengio. 2015. “Show, Attend and Tell: Neural Image Caption Generation with Visual Attention.” In <em>International Conference on Machine Learning</em>, 2048–57.</p>
 </div>
 <div>
 <p>Yamaguchi, Kouichi, Kenji Sakamoto, Toshio Akabane, and Yoshiji Fujimoto. 1990. <em>A Neural Network for Speaker-Independent Isolated Word Recognition</em>. <a href="https://www.isca-speech.org/archive/archive_papers/icslp_1990/i90_1077.pdf" class="uri">https://www.isca-speech.org/archive/archive_papers/icslp_1990/i90_1077.pdf</a>.</p>
