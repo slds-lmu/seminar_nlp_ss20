@@ -9,6 +9,7 @@ output:
 
 *Supervisor: Daniel Schalk, Matthias Aßenmacher*
 
+
 Over the course of the past decades the importance and utilization of artificial intelligence technology has continuously gained traction. In the present times, it is already inextricably linked with most of the surroundings that constitute the human shaped environment. Consequently, a myriad of sectors such as commerce, research and development, information services, engineering, social services, and medical science have already been irreversibly impacted by the capabilities of artificial intelligence.
 There are three major fields of artificial intelligence that comprise the technology: speech recognition, computer vision, and natural language processing (see @yeung2020).
 In this book we will take a closer look at the modern approaches in natural language processing (NLP).
