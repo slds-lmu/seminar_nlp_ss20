@@ -24,7 +24,7 @@
 <meta name="author" content="" />
 
 
-<meta name="date" content="2020-08-28" />
+<meta name="date" content="2020-09-01" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
@@ -260,25 +260,24 @@
 <p><em>Supervisor: Prof. Dr. Christian Heumann</em></p>
 <div id="introduction-to-basic-architecture-of-cnn" class="section level2">
 <h2><span class="header-section-number">5.1</span> Introduction to Basic Architecture of CNN</h2>
-<p>This section presents a brief introduction of the Convolutional neural network (CNN) and its main elements, based on which it would be more effective for further exploration of the applications of Convolutional neural network in the field of NLP.</p>
+<p>This section presents a brief introduction of the Convolutional neural network (CNN) and its main elements, based on which it would be more effective for further exploration of the applications of a Convolutional neural network in the field of Natural language processing (NLP).</p>
 <div class="figure" style="text-align: center"><span id="fig:figs"></span>
 <img src="figures/01-03-cnns-and-their-applications-in-nlp/basic_structure.png" alt="Basic structure of CNN" width="105%" />
 <p class="caption">
 FIGURE 5.1: Basic structure of CNN
 </p>
 </div>
-<p>As illustrated in Figure <a href="convolutional-neural-networks-and-their-applications-in-nlp.html#fig:figs">5.1</a>, a convolutional neural networks includes successively an input layer, multiple hidden layers, and an output layer, the input layer will be dissimilar according to various application. The hidden layers, which is the core block of a CNN architecture, consist of a series of <strong>convolutional layers</strong>, <strong>pooling layers</strong>, and finally export the output through the <strong>fully-connected layer</strong>. In the following sub-chapters, descriptions of the critical layer of CNN and their corresponding intuitive example will be provided in detail.
-<span class="citation">Scherer, Müller, and Behnke (<a href="#ref-Scherer2010EvaluationOP">2010</a>)</span></p>
+<p>As illustrated in Figure <a href="convolutional-neural-networks-and-their-applications-in-nlp.html#fig:figs">5.1</a>, a convolutional neural network includes successively an input layer, multiple hidden layers, and an output layer, the input layer will be dissimilar according to various applications. The hidden layers, which are the core block of a CNN architecture, consist of a series of <strong>convolutional layers</strong>, <strong>pooling layers</strong>, and finally export the output through the <strong>fully-connected layer</strong>. In the following sub-chapters, descriptions of the critical layers of CNN and their corresponding intuitive examples will be provided in detail.</p>
 <div id="convolutional-layer" class="section level3">
 <h3><span class="header-section-number">5.1.1</span> Convolutional Layer</h3>
-<p>The convolutional layer is the core building block of a CNN. In short, the input with a specific shape will be abstracted to a <strong>feature map</strong> after passing the convolutional layer. a set of learnable <strong>filters (or kernels)</strong> play an important role throughout this process. The following Figure <a href="convolutional-neural-networks-and-their-applications-in-nlp.html#fig:figs-2">5.2</a> provide a more intuitive explanation of the convolutional layer.</p>
+<p>The convolutional layer is the core building block of a CNN. In short, the input with a specific shape will be abstracted to a <strong>feature map</strong> after passing the convolutional layer. a set of learnable <strong>filters (or kernels)</strong> plays an important role throughout this process. The following Figure <a href="convolutional-neural-networks-and-their-applications-in-nlp.html#fig:figs-2">5.2</a> provides a more intuitive explanation of the convolutional layer.</p>
 <div class="figure" style="text-align: center"><span id="fig:figs-2"></span>
 <img src="figures/01-03-cnns-and-their-applications-in-nlp/Matrix.png" alt="Basic operational structure of the convolutional layer" width="65%" />
 <p class="caption">
 FIGURE 5.2: Basic operational structure of the convolutional layer
 </p>
 </div>
-<p>The input of the Neural Networks might be assumed as a <span class="math inline">\(6 \times 6\)</span> matrix and each element of which can be presented as the integer ‘0’,‘1’. As mentioned before, there is a set of learnable filters in the convolutional layer and each filter can be considered as a matrix, which is similar to a neuron in a fully-connected layer. In this instance, filters of size <span class="math inline">\(3 \times 3\)</span> slide back and forth with a specific stride across the entire input image and each element of the matrix or filter serves as a parameter (weight and bias) of Neural Networks. Traditionally, these parameter are not based on the initial setting but are trained through the training data.</p>
+<p>The input of the Neural Networks might be assumed as a <span class="math inline">\(6\times6\)</span> matrix and each element of which can be presented as the integer ‘0’, ‘1’. As mentioned before, there is a set of learnable filters in the convolutional layer and each filter can be considered as a matrix, which is similar to a neuron in a fully-connected layer. In this instance, filters of size <span class="math inline">\(3 \times 3\)</span> slide over with a specific stride across the entire input image, and each element of the matrix or filter serves as a parameter (weight and bias) of Neural Networks. Traditionally, these parameters are not based on the initial setting but are trained through the training data.</p>
 <p>An activated filter of size <span class="math inline">\(3 \times 3\)</span> has an ability to detect a pattern of the same size at some spatial position in the input. The algebraic operation explicates the transformation process from the input to the feature map.</p>
 <p><span class="math display">\[ X  : = \begin{pmatrix}
 X_{11} &amp; X_{12} &amp; \cdots &amp; X_{16}\\ \\
@@ -301,8 +300,8 @@ where <span class="math inline">\(\beta\)</span> is a unrolled matrix or filter;
 \beta \cdot \begin{pmatrix}
 w_{11} &amp; w_{12} &amp; w_{13} &amp; w_{21} &amp; w_{22} &amp; w_{23} &amp; w_{31} &amp; w_{32} &amp; w_{33}\\
 \end{pmatrix}^{T}\\\]</span>
-Therefore, the first element of the feature map <span class="math inline">\(A_{11}\)</span> can been calculated through dot product operation shown as above. Sequentially, the second element of the feature map is determined by the sliding dot product of filter and the succeeding input matrix with the same size after setting a specific value of stride, which can be considered as a moving distance. After the whole process, a feature map of size <span class="math inline">\(4 \times 4\)</span> has been generated. Generally, there is more than one filter in the convolutional layer and each filter generate a feature map with the same size. The result of this convolutional layer is multiple feature maps (also referred to as activation map) and these feature maps correspond to different filters are stacked together along the depth dimension.</p>
-<p>Another improved convolutional layer was proposed by (<span class="citation">Kalchbrenner et al. (<a href="#ref-Kalchbrenner2016NeuralMT">2016</a>)</span>) and this kind of convolution is named Dilated convolutionn, in order to solve the problem that the pooling operation in the pooling layer will lose a lot of information. The critical contribution of this convolution is that the receptive field of the network will not be reduced by removing the pooling operation. In other words, the units of feature maps in the deeper hidden layer can still map a larger region of the original input. As illustrated in Figure <a href="convolutional-neural-networks-and-their-applications-in-nlp.html#fig:figs-dilated">5.3</a>, although there is no pooling layer, the original input information is still increased as the layers are deeper.</p>
+Therefore, the first element of the feature map <span class="math inline">\(A_{11}\)</span> can be calculated through the dot product operation shown above. Sequentially, the second element of the feature map is determined by the sliding dot product of filter and the succeeding input matrix with the same size after setting a specific value of stride, which can be considered as a moving distance. After the whole process, a feature map of size <span class="math inline">\(4 \times 4\)</span> has been generated. Generally, there is more than one filter in the convolutional layer and each filter generates a feature map with the same size. The result of this convolutional layer is multiple feature maps (also referred to as activation map) and these feature maps corresponding to different filters are stacked together along the depth dimension.</p>
+<p>Another improved convolutional layer was proposed by (<span class="citation">Kalchbrenner et al. (<a href="#ref-Kalchbrenner2016NeuralMT">2016</a>)</span>) and this kind of convolution is named Dilated convolution, in order to solve the problem that the pooling operation in the pooling layer will lose a lot of information. The critical contribution of this convolution is that the receptive field of the network will not be reduced by removing the pooling operation. In other words, the units of feature maps in the deeper hidden layer can still map a larger region of the original input. As illustrated in Figure <a href="convolutional-neural-networks-and-their-applications-in-nlp.html#fig:figs-dilated">5.3</a> provided by (<span class="citation">Oord et al. (<a href="#ref-Oord2016WaveNetAG">2016</a>)</span>), although there is no pooling layer, the original input information is still increased as the layers are deeper.</p>
 <div class="figure" style="text-align: center"><span id="fig:figs-dilated"></span>
 <img src="figures/01-03-cnns-and-their-applications-in-nlp/Temporal.png" alt="Visualization of dilated causal convolutional layers" width="65%" />
 <p class="caption">
@@ -315,23 +314,25 @@ FIGURE 5.3: Visualization of dilated causal convolutional layers
 <p>A non-linear layer (or activation layer) will be the subsequent process after each convolutional layer and the purpose of which is to introduce non-linearity to the neural networks because the operations during the convolutional layer are still linear (element-wise multiplications and summations). Generally, the major reason for introducing non-linearity is that there is a certain non-linear relationship between separate neurons. However, a convolutional layer is to perform basically a linear operation, and therefore, consecutive convolution layers are essentially equivalent to a single convolution layer, which is only used to reduce the representational power of the networks. As a result, the property of non-linearity between neurons has not been reflected and it is necessary to establish an activation function between the convolutional layer to avoid such an issue.</p>
 <p><strong>Activation function</strong>, which performs a non-linear transformation, plays a critical role in CNN to decide whether a neuron should be activated or ignored. Several activation functions are available after the convolutional layer, such as hyperbolic function and sigmoid function, etc., among of which ReLU is the most commonly used activation function in neural networks, especially in CNNs<span class="citation">(Krizhevsky, Sutskever, and Hinton <a href="#ref-Krizhevsky2012ImageNetCW">2012</a>)</span> because of its two properties:</p>
 <ul>
-<li><p>Non-linearity: ReLU is the abbreviation of Rectified Linear Unit and defined mathematically as below:
-<span class="math display">\[ R(z)=z^{+}= max(0,z)\]</span>
-Where z denotes the output element of the previous convolutional layer. All negative values of feature map from the previous will be replaced by setting them to zero.</p></li>
+<li>Non-linearity: ReLU is the abbreviation of Rectified Linear Unit and defined mathematically as below:
+<span class="math display">\[ R(z)=z^{+}= max(0,z)\]</span></li>
+</ul>
+<p>Where z denotes the output element of the previous convolutional layer. All negative values of feature maps from the previous will be replaced by setting them to zero.</p>
+<ul>
 <li>Non-Saturation: Saturation arithmetic is a kind of arithmetic in which all operations are limited to a fixed range between a minimum and maximum value.
 <ul>
 <li><span class="math inline">\(f\)</span> is non-saturating iff <span class="math inline">\((|\displaystyle{\lim_{z \to -\infty}f(z)}|=+\infty) \cup (|\displaystyle{\lim_{z \to +\infty}f(z)}|=+\infty)\)</span></li>
 <li><span class="math inline">\(f\)</span> is saturating iff <span class="math inline">\(f\)</span> is not non-saturating</li>
 </ul></li>
 </ul>
-<p>As illustrated in Figure <a href="convolutional-neural-networks-and-their-applications-in-nlp.html#fig:figs-3">5.4</a>, compared with saturating activation sigmoid function that saturate at large values of input, ReLU activation function do not saturate<span class="citation">(Krizhevsky, Sutskever, and Hinton <a href="#ref-Krizhevsky2012ImageNetCW">2012</a>)</span> and the gradient of it is 0 on the negative x-axis and 1 on the positive side, which is a benefit of using this activation function because the updates to the weights of the neural networks at each iteration are consistent with the gradient of activation function. To be more specific, a neuron`s weights will stop updating if its gradient is close to zero. It is obviously problematic if such scenario appears too early in the training process.</p>
+<p>As illustrated in Figure <a href="convolutional-neural-networks-and-their-applications-in-nlp.html#fig:figs-3">5.4</a>, compared with saturating activation sigmoid function that saturate at large values of the input, ReLU activation function does not saturate<span class="citation">(Krizhevsky, Sutskever, and Hinton <a href="#ref-Krizhevsky2012ImageNetCW">2012</a>)</span> and the gradient of it is 0 on the negative x-axis and 1 on the positive side, which is a benefit of using this activation function because the updates to the weights of the neural networks at each iteration are consistent with the gradient of the activation function. To be more specific, neuron`s weights will stop updating if its gradient is close to zero. It is obviously problematic if such a scenario appears too early in the training process.</p>
 <div class="figure" style="text-align: center"><span id="fig:figs-3"></span>
 <img src="figures/01-03-cnns-and-their-applications-in-nlp/ReLU_sigmoid.png" alt="Comparison between saturating and non-saturating activation function " width="60%" />
 <p class="caption">
 FIGURE 5.4: Comparison between saturating and non-saturating activation function
 </p>
 </div>
-<p>The following Figure <a href="convolutional-neural-networks-and-their-applications-in-nlp.html#fig:figs-4">5.5</a> based on Figure <a href="convolutional-neural-networks-and-their-applications-in-nlp.html#fig:figs-2">5.2</a> indicates a simplified version of the ReLU layer. Each single element of multiple feature maps, which is determined from the previous convolutional layer, will be further calculated by the ReLU activation function in this layer. Specifically, all positive values remain the same and negative values are replaced by setting them to zero. The output after the ReLU layer, which has the identical networks structure with the feature map from previous convolutional layer, will be used as an input for subsequent convolutional layer.</p>
+<p>The following Figure <a href="convolutional-neural-networks-and-their-applications-in-nlp.html#fig:figs-4">5.5</a> based on Figure <a href="convolutional-neural-networks-and-their-applications-in-nlp.html#fig:figs-2">5.2</a> indicates a simplified version of the ReLU layer. Every single element of multiple feature maps, which is determined from the previous convolutional layer, will be further calculated by the ReLU activation function in this layer. Specifically, all positive values remain the same, and negative values are replaced by setting them to zero. The output after the ReLU layer, which has an identical network structure with the feature map from the previous convolutional layer, will be used as an input for the subsequent convolutional layer.</p>
 <div class="figure" style="text-align: center"><span id="fig:figs-4"></span>
 <img src="figures/01-03-cnns-and-their-applications-in-nlp/ReLU.png" alt="Basic operational structure of the ReLU layer " width="50%" />
 <p class="caption">
@@ -341,24 +342,24 @@ FIGURE 5.5: Basic operational structure of the ReLU layer
 </div>
 <div id="pooling-layer" class="section level3">
 <h3><span class="header-section-number">5.1.3</span> Pooling layer</h3>
-<p>Pooling layer is a concept that can be intuitively understood. The purpose of pooling layer is to reduce progressively the spatial size of feature map, which is generated from the previous convolutional layer, and identify important features.
-There are multiple pooling operations, such as average pooling, <span class="math inline">\(l_{2}-norm\)</span> pooling, and <strong>max pooling</strong>, Among which max pooling is the most commonly used function(<span class="citation">Scherer, Müller, and Behnke (<a href="#ref-Scherer2010EvaluationOP">2010</a>)</span>), and the idea of max pooling is that the exact location of a feature is less important than its rough location relative to other features (<span class="citation">Yamaguchi et al. (<a href="#ref-Yamaguchi1990ANN">1990</a>)</span>). Simultaneously, this process helps to control overfitting to a certain extent. The following Figure <a href="convolutional-neural-networks-and-their-applications-in-nlp.html#fig:figs-5">5.6</a> illustrates an example that constructs a basic operational structure of the max pooling.</p>
+<p>The pooling layer is a concept that can be intuitively understood. The purpose of the pooling layer is to reduce progressively the spatial size of the feature map, which is generated from the previous convolutional layer, and identify important features.</p>
+<p>There are multiple pooling operations, such as average pooling, <span class="math inline">\(l_{2}-norm\)</span> pooling, and <strong>max pooling</strong>, Among which max pooling is the most commonly used function(<span class="citation">Scherer, Müller, and Behnke (<a href="#ref-Scherer2010EvaluationOP">2010</a>)</span>), and the idea of max pooling is that the exact location of a feature is less important than its rough location relative to other features (<span class="citation">Yamaguchi et al. (<a href="#ref-Yamaguchi1990ANN">1990</a>)</span>). Simultaneously, this process helps to control overfitting to a certain extent. The following Figure <a href="convolutional-neural-networks-and-their-applications-in-nlp.html#fig:figs-5">5.6</a> illustrates an example that constructs a basic operational structure of the max pooling.</p>
 <div class="figure" style="text-align: center"><span id="fig:figs-5"></span>
 <img src="figures/01-03-cnns-and-their-applications-in-nlp/Max_Pooling_finish.png" alt="Basic operational structure of the max pooling layer " width="80%" />
 <p class="caption">
 FIGURE 5.6: Basic operational structure of the max pooling layer
 </p>
 </div>
-<p>The above mentioned example shows that two feature maps are generated according to two different filters. In this case, these feature maps of size <span class="math inline">\(4\times4\)</span> are separated into four non-overlapping sub-regions of size <span class="math inline">\(2\times2\)</span>, and each single sub-region is names as depth slice. The Maximum value of each sub-region will be stored in the output of pooling layer. As a result, the input dimensions are further reduced from <span class="math inline">\(4\times4\)</span> to <span class="math inline">\(2\times2\)</span>.</p>
+<p>The example mentioned above shows that two feature maps are generated according to two different filters. In this case, these feature maps of size <span class="math inline">\(4\times4\)</span> are separated into four non-overlapping sub-regions of size <span class="math inline">\(2\times2\)</span>, and every single sub-region is named as depth slice. The Maximum value of each sub-region will be stored in the output of the pooling layer. As a result, the input dimensions are further reduced from <span class="math inline">\(4\times4\)</span> to <span class="math inline">\(2\times2\)</span>.</p>
 <p>Some of the most critical reasons why adding max pooling layer to neural networks include the following:</p>
 <ul>
-<li><strong>Reducing computation complexity</strong>: Since max pooling is reducing the dimension of the given output of a convolutional layer, the networks will be able to detect larger areas of the output. This process reduces the amount of parameters in the neural networks and consequently reduces computational load.</li>
-<li><strong>Controlling overfitting</strong>: Overfitting appears when the model too complex or fits the training data too well. It may lose the true structure and then becomes difficult to generalize to new cases that are in the test data. With max pooling operation, not all features but the primary feature from each sub-region are extracted. Therefore, max pooling reduces the probability of overfitting to the great extent.</li>
+<li><strong>Reducing computation complexity</strong>: Since max pooling is reducing the dimension of the given output of a convolutional layer, the networks will be able to detect larger areas of the output. This process reduces the number of parameters in the neural networks and consequently reduces computational load.</li>
+<li><strong>Controlling overfitting</strong>: Overfitting appears when the model is too complex or fits the training data too well. It may lose the true structure and then becomes difficult to generalize to new cases that are in the test data. With max-pooling operation, not all features but the primary features from each sub-region are extracted. Therefore, max-pooling operation reduces the probability of overfitting to a great extent.</li>
 </ul>
 <p>Except for this most commonly applied operation in NLP, several pooling operations for different intention include the following:</p>
 <ul>
 <li><p><strong>Average pooling</strong> is usually used for topic models. If a sentence has different topics and the researchers assume that max pooling extracts insufficient information, average pooling can be considered as an alternative.</p></li>
-<li><p><strong>Dynamic pooling</strong> proposed by (<span class="citation">Kalchbrenner, Grefenstette, and Blunsom (<a href="#ref-Kalchbrenner2014ACN">2014</a>)</span>) has an ability to dynamically adjust the number of features according to the network structure. More specific, by combining the adjacent word information at the bottom and passing it gradually, new semantic information is recombined at the upper layer, so that words far away in the sentence also have interactive behavior (or some kind of semantic connection). Eventually, the most important semantic information in the sentence is extracted through the pooling layer.</p></li>
+<li><p><strong>Dynamic pooling</strong> proposed by (<span class="citation">Kalchbrenner, Grefenstette, and Blunsom (<a href="#ref-Kalchbrenner2014ACN">2014</a>)</span>) has an ability to dynamically adjust the number of features according to the network structure. More specifically, by combining the adjacent word information at the bottom and passing it gradually, new semantic information is recombined at the upper layer, so that words far away in the sentence also have interactive behavior (or some kind of semantic connection). Eventually, the most important semantic information in the sentence is extracted through the pooling layer.</p></li>
 </ul>
 </div>
 <div id="fully-connected-layer" class="section level3">
@@ -374,11 +375,10 @@ FIGURE 5.7: Basic operational structure of the fully connected layer
 </div>
 <div id="cnn-for-sentence-classification" class="section level2">
 <h2><span class="header-section-number">5.2</span> CNN for sentence classification</h2>
-<p>The explanation of CNN basic architecture provided in the first sub-
-is based on a general example. Many researchers constructed their own specific CNN models based on this basic architecture in recent years and achieved outsanding results in the field of NLP. Therefore, this section explores five superior CNN architecture with some technical detail and their performanc comparison will be provided in later sub-chapter of this report.</p>
+<p>The explanation of CNN’s basic architecture provided in the first sub-chapters is based on a general example. Many researchers constructed their own specific CNN models based on this basic architecture in recent years and achieved outstanding results in the field of NLP. Therefore, this section explores four superior CNN architecture with some technical detail and their performance comparison will be provided in later sub-chapters of this report.</p>
 <div id="cnn-randcnn-staticcnn-non-staticcnn-multichannel" class="section level3">
 <h3><span class="header-section-number">5.2.1</span> CNN-rand/CNN-static/CNN-non-static/CNN-multichannel</h3>
-<p>The first model to explore is published by (<span class="citation">Kim (<a href="#ref-Kim2014ConvolutionalNN">2014</a>)</span>), one of the highlights of this model is that the architecture is conceptually simple and efficient when dealing with the tasks of sentiment analysis and question classification. As illustrated in Figure <a href="convolutional-neural-networks-and-their-applications-in-nlp.html#fig:figs-7">5.8</a>, <span class="citation">Kim (<a href="#ref-Kim2014ConvolutionalNN">2014</a>)</span> utilizes a simple CNN architecture of (<span class="citation">Collobert et al. (<a href="#ref-Collobert2011NaturalLP">2011</a>)</span>) with single convolutional layer and the general architecture include the following sub-structure:</p>
+<p>The first model to explore is published by (<span class="citation">Kim (<a href="#ref-Kim2014ConvolutionalNN">2014</a>)</span>), one of the highlights of this model is that the architecture is conceptually simple and efficient when dealing with the tasks of sentiment analysis and question classification. As illustrated in Figure <a href="convolutional-neural-networks-and-their-applications-in-nlp.html#fig:figs-7">5.8</a> provided by (<span class="citation">Kim (<a href="#ref-Kim2014ConvolutionalNN">2014</a>)</span>), a simple CNN architecture of (<span class="citation">Collobert et al. (<a href="#ref-Collobert2011NaturalLP">2011</a>)</span>) with a single convolutional layer is utilized and the general architecture includes the following sub-structure:</p>
 <div class="figure" style="text-align: center"><span id="fig:figs-7"></span>
 <img src="figures/01-03-cnns-and-their-applications-in-nlp/CNN_Sentence_Classification.png" alt="Model architecture of CNN for sentence classification" width="70%" />
 <p class="caption">
@@ -392,21 +392,21 @@ Where <span class="math inline">\(\oplus\)</span> is the concatenation operator.
 <li><p><strong>Convolutional layer</strong>: Let a filter denote as <span class="math inline">\(w \in \mathbb{R}^{hk}\)</span>, which is used to a window of <span class="math inline">\(h\)</span> words. A feature map <span class="math inline">\(c=[c_1,c_2,…,c_{n-h+1}]\)</span> can be generated by:
 <span class="math display">\[ c_i=f(w×x_{i:i+h-1}+b) \]</span>
 where <span class="math inline">\(b \in \mathbb{R}\)</span> is a bias term.</p></li>
-<li><p><strong>Max-over-time pooling</strong>: Pooling operation has been applied for respective filter to select the most important feature from each feature map <span class="math inline">\(\hat{c} =max(\boldsymbol{c})\)</span>, notice that one feature <span class="math inline">\(\hat{c}\)</span> is generated by one filter, and these features will be passed to the last layer.</p></li>
+<li><p><strong>Max-over-time pooling</strong>: Pooling operation has been applied for the respective filter to select the most important feature from each feature map <span class="math inline">\(\hat{c} =max(\boldsymbol{c})\)</span>, notice that one feature <span class="math inline">\(\hat{c}\)</span> is generated by one filter, and these features will be passed to the last layer.</p></li>
 <li><p><strong>Fully connected layer</strong>: The selected features <span class="math inline">\(\boldsymbol{Z}=[\hat{c}_1,\hat{c}_2,…,\hat{c}_j]\)</span> from the previous layer have been flattened into a single vector, in order to aggregate each of them and therefore a specific class can be assigned to it based on the entire input.</p></li>
 </ol>
-<p>CNN is a feed forward model without cyclic connection. To be more specific, the direction of information flow in a forward model is in one direction (i.e from inputs to outputs). However, the models are trained or learned by the use of backward propagation (i.e from outputs to inputs), where the gradients are recalculated at each epoch to avoid co-adaptation.</p>
+<p>CNN is a feed-forward model without cyclic connection. To be more specific, the direction of information flow in a forward model is in one direction (i.e from inputs to outputs). However, the models are trained or learned by the use of backward propagation (i.e from outputs to inputs), where the gradients are recalculated at each epoch to avoid co-adaptation.</p>
 <p>In a forward propagation of this CNN, the output unit y based on the selected features <span class="math inline">\(\boldsymbol{Z}\)</span> is determined by using
 <span class="math display">\[y=w \cdot z+b\]</span>
-In a backward propagation, a dropout mechanism is applied as follow.
+In a backward propagation, a dropout mechanism is applied as follows.
 <span class="math display">\[y=w \cdot (z \circ r)+b\]</span>
 Where <span class="math inline">\(\circ\)</span> is the element-wise multiplication operator and <span class="math inline">\(r \in \mathbb{R}^{m}\)</span> denotes a ‘masking’ vector of Bernoulli random variables with probability <span class="math inline">\(p\)</span> of being 1. As a result, gradients are backpropagated with probability <span class="math inline">\(p\)</span> and weights <span class="math inline">\(\hat{w}\)</span> are trained by using
-<span class="math display">\[\hat{w}=pw\]</span>
-On the basis of the model architecture described above, four derivative CNN models are introduced by (<span class="citation">Kim (<a href="#ref-Kim2014ConvolutionalNN">2014</a>)</span>) and the major difference among them are listed below:</p>
+<span class="math display">\[\hat{w}=pw\]</span></p>
+<p>Based on the model architecture described above, four derivative CNN models are introduced by (<span class="citation">Kim (<a href="#ref-Kim2014ConvolutionalNN">2014</a>)</span>) and the major difference among them are listed below:</p>
 <ul>
 <li><strong>CNN-rand</strong>: All words are randomly initialized and then modified during training.</li>
-<li><strong>CNN-static</strong>: A model with pre-trained word vectors by using word2vec and kept them static.</li>
-<li><strong>CNN-non-static</strong>: A model with pre-trained word vectors by using word2vec and these word vectors are fine-tuned for each tasks.</li>
+<li><strong>CNN-static</strong>: A model with pre-trained word vectors by using word2vec and keep them static.</li>
+<li><strong>CNN-non-static</strong>: A model with pre-trained word vectors by using word2vec and these word vectors are fine-tuned for each task.</li>
 <li><strong>CNN-Multichannel</strong>: A model with two channels generated by two sets of words vectors and each filter is employed to both channels.</li>
 </ul>
 </div>
@@ -415,7 +415,7 @@ On the basis of the model architecture described above, four derivative CNN mode
 <p>The second model is published by (<span class="citation">Zhang, Zhao, and LeCun (<a href="#ref-Zhang2015CharacterlevelCN">2015</a>)</span>), the two major differences of which compared with the previous model from (<span class="citation">Kim (<a href="#ref-Kim2014ConvolutionalNN">2014</a>)</span>) include the following:</p>
 <ol style="list-style-type: decimal">
 <li>The model architecture with 6 convolutional layers and 3 fully-connected layers (9 layers deep) is relatively more complex.</li>
-<li>Different from the previous word-based Convolutional neural networks (ConvNets), this model is at character-level by implement character quantization.</li>
+<li>Different from the previous word-based Convolutional neural networks (ConvNets), this model is at character-level by using character quantization.</li>
 </ol>
 <div class="figure" style="text-align: center"><span id="fig:figs-8"></span>
 <img src="figures/01-03-cnns-and-their-applications-in-nlp/Character_level_CNN.png" alt="\label{fig:fig_8} Model architecture of character-level CNN" width="70%" />
@@ -423,38 +423,274 @@ On the basis of the model architecture described above, four derivative CNN mode
 FIGURE 5.9:  Model architecture of character-level CNN
 </p>
 </div>
-<p>The Figure <a href="convolutional-neural-networks-and-their-applications-in-nlp.html#fig:figs-8">5.9</a> above shows the basic architecture of Character-level ConvNets, the corresponding explanation of the main components will be provided below:</p>
+<p>The Figure <a href="convolutional-neural-networks-and-their-applications-in-nlp.html#fig:figs-8">5.9</a> above provided by (<span class="citation">Zhang, Zhao, and LeCun (<a href="#ref-Zhang2015CharacterlevelCN">2015</a>)</span>) shows the basic architecture of Character-level ConvNets, the corresponding explanation of the main components will be provided below:</p>
 <ol style="list-style-type: decimal">
 <li><p><strong>Character quantization</strong>: The input characters will be transformed into an encoding matrix of size <span class="math inline">\(m \times l_0\)</span> by using 1-of-<span class="math inline">\(m\)</span> encoding (or “one-hot” encoding). To be noticed that, The length of the character exceeds the determined value <span class="math inline">\(l_0\)</span> and will be ignored and the black characters as well as the characters that are not in the alphabet will be quantized as zero vectors.</p></li>
 <li><p><strong>Temporal convolutional module</strong>: A sequence of encoded characters followed by a temporal convolutional module, which is a variation over Convolutional Neural Networks works for sequence modelling tasks. To be more specific, when sentiment analysis is performed by using ConvNets, a fixed-size input will be a precondition, we can adjust the initial input length by truncating or padding the actual input to satisfy this criterion without affecting the sentiment and sequentially generate fixed-size outputs. Conceptually, this kind of 1-D convolution is called temporal convolution and the convolutional function defined as follow:
 <span class="math display">\[h(y)=\sum_{x=1}^{k}f(x)\cdot g(y \cdot d -x+c)\]</span>
-where <span class="math inline">\(h_{j}(y)\)</span> denotes outputs of the conmolutional layer; a discrete kernel functions <span class="math inline">\(f_{i,j} \in [1,k] \to \mathbb{R}\)</span> (<span class="math inline">\((i=1,...,m\)</span> and <span class="math inline">\(j=1,...,n)\)</span>) is also called weights; <span class="math inline">\(d\)</span> is denoted as stride; <span class="math inline">\(c= k-d+1\)</span> is used as an offset constant.</p></li>
+where <span class="math inline">\(h_{j}(y)\)</span> denotes outputs of the convolutional layer; a discrete kernel functions <span class="math inline">\(f_{i,j} \in [1,k] \to \mathbb{R}\)</span> (<span class="math inline">\((i=1,...,m\)</span> and <span class="math inline">\(j=1,...,n)\)</span>) is also called weights; <span class="math inline">\(d\)</span> is denoted as stride; <span class="math inline">\(c= k-d+1\)</span> is used as an offset constant.</p></li>
 <li><p><strong>Temporal max-pooling</strong>: Based on the research of (<span class="citation">Boureau, Ponce, and LeCun (<a href="#ref-Boureau2010ATA">2010</a>)</span>), a 1-D version of the max-pooling <span class="math inline">\(h(y)\)</span> is employed in this ConvNets, which is defined as</p></li>
 </ol>
 <p><span class="math display">\[h(y)=max (g(y \cdot d -x+c))\]</span>
 With the help of this pooling function, it is possible to train ConvNets deeper than 6 layers.</p>
 <ol start="4" style="list-style-type: decimal">
-<li><strong>ReLU layer</strong>: the activation function used in this modelis similar to ReLU <span class="math inline">\(h(x)=max\{0,x\}\)</span>. More spesific, the algprithm is stochastic gradient descent (SGD). However, SGD is inflenced by strong curvature of the optimization function and moves slowly towards the minimum. Therefore, based on the research of <span class="citation">Sutskever et al. (<a href="#ref-Sutskever2013OnTI">2013</a>)</span>, a momentum of 0.9 and initial step size 0.01 are established to reach the minimum more quickly.</li>
+<li><strong>ReLU layer</strong>: the activation function used in this model is similar to ReLU <span class="math inline">\(h(x)=max\{0,x\}\)</span>. More specifically, the algorithm is stochastic gradient descent (SGD). However, SGD is influenced by the strong curvature of the optimization function and moves slowly towards the minimum. Therefore, based on the research of <span class="citation">Sutskever et al. (<a href="#ref-Sutskever2013OnTI">2013</a>)</span>, a momentum of 0.9 and an initial step size 0.01 are established to reach the minimum more quickly.</li>
 </ol>
 </div>
 <div id="very-deep-cnn" class="section level3">
 <h3><span class="header-section-number">5.2.3</span> Very Deep CNN</h3>
+<p>The third character-level model to explore is from <span class="citation">Schwenk et al. (<a href="#ref-Schwenk2017VeryDC">2017</a>)</span>. Inspired by (<span class="citation">Simonyan and Zisserman (<a href="#ref-Simonyan2015VeryDC">2015</a>)</span>), a CNN model with deep architectures of many convolutional layers is developed, the significant difference of which from the previous model architecture is that this model applies much deeper architectures (i.e. using up to 29 convolutional layers), in order to learn hierarchical representations of whole sentences. The overall architecture will be explored based on Figure <a href="convolutional-neural-networks-and-their-applications-in-nlp.html#fig:figs-9">5.10</a> and <a href="convolutional-neural-networks-and-their-applications-in-nlp.html#fig:figs-10">5.11</a> also provided by (<span class="citation">Schwenk et al. (<a href="#ref-Schwenk2017VeryDC">2017</a>)</span>).</p>
+<div class="figure" style="text-align: center"><span id="fig:figs-9"></span>
+<img src="figures/01-03-cnns-and-their-applications-in-nlp/Convolutional_Block.png" alt="\label{fig:fig_9} Architecture of convolutional block" width="100%" />
+<p class="caption">
+FIGURE 5.10:  Architecture of convolutional block
+</p>
+</div>
+<p>The above Figure <a href="convolutional-neural-networks-and-their-applications-in-nlp.html#fig:figs-9">5.10</a> shows an architecture of a convolutional block with 256 feature maps and the kernel size of all the convolutions is 3. The convolutional block is composed of two consecutive convolutional layers, and each one followed by a temporal BatchNorm layer (<span class="citation">Ioffe and Szegedy (<a href="#ref-Ioffe2015BatchNA">2015</a>)</span>) and a ReLU activation.</p>
+<p><strong>Batch normalization</strong>, as the name suggests, is a normalized operation commonly used to improve the speed and stability of neural networks, especially for the deep neural network. The following shows the algorithm of Batch Normalizing Transform.</p>
+<p>For a layer with <span class="math inline">\(d\)</span>-dimensional input <span class="math inline">\(x = (x^{(1)},...,x^{(d)})\)</span></p>
+<ol style="list-style-type: decimal">
+<li><p><span class="math inline">\(\mu_B = \frac 1 m \sum_{i=1}^m x_i\)</span> //mini-batch mean</p></li>
+<li><p><span class="math inline">\(\sigma_B^2 = \frac 1 m \sum_{i=1}^m (x_i-\mu_B)^2\)</span> // mini-batch variance</p></li>
+<li><p><span class="math inline">\(\hat{x}_{i}^{(k)} = \frac {x_i^{(k)}-\mu_B^{(k)}}{\sqrt{\sigma_B^{(k)^2}+\epsilon}}\)</span> // normalize</p></li>
+</ol>
+<p>where <span class="math inline">\(k \in [1,d]\)</span> and <span class="math inline">\(i \in [1,m]\)</span>; <span class="math inline">\(\mu_B^{(k)}\)</span>and <span class="math inline">\(\sigma_B^{(k)^2}\)</span> are the per-dimension mean and variance; <span class="math inline">\(\epsilon\)</span> is an arbitrarily small constant.</p>
+<ol start="4" style="list-style-type: decimal">
+<li><span class="math inline">\(y_i^{(k)} = \gamma^{(k)} \hat{x}_{i}^{(k)} +\beta^{(k)}\)</span> // scale and shift</li>
+</ol>
+<p>where the parameters <span class="math inline">\(\gamma^{(k)}\)</span>and <span class="math inline">\(\beta^{(k)}\)</span> are subsequently learned in the optimization process.</p>
+<p>To be more specific, in the SGD training process, use mini-batch to normalize the corresponding activation so that the mean value of the results (all dimensions of the output signal) is <span class="math inline">\(0\)</span> and the variance is <span class="math inline">\(1\)</span>. Subsequently, two independent learnable parameters <span class="math inline">\(\beta\)</span> and <span class="math inline">\(\gamma\)</span> will be introduced in the final operation “scale and shift”.</p>
+<div class="figure" style="text-align: center"><span id="fig:figs-10"></span>
+<img src="figures/01-03-cnns-and-their-applications-in-nlp/VDCNN.png" alt="\label{fig:fig_10} Very Deep Convolutional Networks architecture" width="65%" />
+<p class="caption">
+FIGURE 5.11:  Very Deep Convolutional Networks architecture
+</p>
+</div>
+<p>The overall architecture of VDCNN is shown in Figure <a href="convolutional-neural-networks-and-their-applications-in-nlp.html#fig:figs-10">5.11</a> above, The first layer contains 64 convolutions of size 3 after importing the initial text, a series of convolutional blocks are connected after the convolutional layer, and the number of feature maps is determined by two rules:</p>
+<ol style="list-style-type: decimal">
+<li>If the temporal resolution of output remains the same，the layers have the same number of feature maps.</li>
+<li>If the temporal resolution is halved, the number of feature maps is doubled.</li>
+</ol>
+<p>Based on the above rules, the size of resolution will be halved after each pooling operation, so the number of feature maps will be corresponding to double from 128 to 512.</p>
+<p><strong>k-max pooling</strong>: The result of k-max pooling is not to return a single maximum value, but to return k sets of maximum values, which are a subsequence of the original input. The parameter <span class="math inline">\(k\)</span> in the pooling can be a dynamic function, and this specific value depends on the input or other parameters of the network. the specific dynamic function is as follows.</p>
+<p><span class="math display">\[k_{l}=max(k_{top},\lceil \frac{L-l}{L}s \rceil)\]</span>
+In this formula, <span class="math inline">\(s\)</span> denotes the length of the sentence, <span class="math inline">\(L\)</span> represents the total number of convolutional layers, and <span class="math inline">\(l\)</span> represents the number of convolutional layers that are currently in. so it can be seen that <span class="math inline">\(k\)</span> varies with the length of the sentence and the depth of the network change. The advantage of K-max pooling is that it not only extracts more than one important information in the sentence but also retains their order.</p>
+<p>The output of k-max pooling is transformed into a single vector which will be used as input to a three fully-connected layer with ReLU activation function and softmax outputs.</p>
 </div>
 <div id="deep-pyramid-cnn" class="section level3">
 <h3><span class="header-section-number">5.2.4</span> Deep Pyramid CNN</h3>
+<p>The last model we will discuss in this chapter is Deep Pyramid Convolutional Neural Networks (DPCNN), which is published by (<span class="citation">Johnson and Zhang (<a href="#ref-Johnson2017DeepPC">2017</a>)</span>). The major difference from the previous deep CNN is that this model is constructed of a low-complexity word-level deep CNN architecture. The motivation for using such an architecture based on the point of view of (<span class="citation">Johnson and Zhang (<a href="#ref-Johnson2017DeepPC">2017</a>)</span>) includes the following:</p>
+<p><strong>low-complexity</strong>: As the research of (<span class="citation">Johnson and Zhang (<a href="#ref-Johnson2016ConvolutionalNN">2016</a>)</span>) shows that very shallow 1-layer word-level CNNs such as (<span class="citation">Kim (<a href="#ref-Kim2014ConvolutionalNN">2014</a>)</span>) performs more accurate and much faster than the deep character-level CNNs of (<span class="citation">Schwenk et al. (<a href="#ref-Schwenk2017VeryDC">2017</a>)</span>).</p>
+<p><strong>word-level</strong>: word-level CNNs are more accurate and much faster than the state-of-the-art very deep networks such as character-level CNNs even in the setting of large training data.</p>
+<p>The description of key features of DPCNN will be provided based on the Figure <a href="convolutional-neural-networks-and-their-applications-in-nlp.html#fig:figs-11">5.12</a> from (<span class="citation">Johnson and Zhang (<a href="#ref-Johnson2017DeepPC">2017</a>)</span>) as follows.</p>
+<div class="figure" style="text-align: center"><span id="fig:figs-11"></span>
+<img src="figures/01-03-cnns-and-their-applications-in-nlp/DPCNN.png" alt="\label{fig:fig_11} Architecture of Deep Pyramid CNN" width="35%" />
+<p class="caption">
+FIGURE 5.12:  Architecture of Deep Pyramid CNN
+</p>
+</div>
+<p><strong>Text region embedding with unsupervised embeddings</strong>: This technique is based on the basic region embedding. More specifically, the embedding generated after performing a set of convolution operations on different sizes of text area/segment (such as bi-grams or tri-grams) and these convolution operations are achieved by using multi-size learnable convolutional filters. There are two options when performing convolution operation on a text area, For example, by using tri-grams, one is to preserve the word order, which means that setting a set of 2D convolution kernels with size= <span class="math inline">\(3 \times D\)</span> to convolve the 3 words (where D is the word embedding dimension), another is not to preserve the word order (i.e. using the Bag-of-words model). Preliminary experiments indicated that considering word order does not significantly help to improve accuracy and increase computational complexity. Therefore, DPCNN adopts a method similar to the Bag-of-words model. In addition to this, to avoid the overfitting caused by high representation power of n-gram, a technique called tv-embedding (two-views embedding) will be introduced in DPCNN, which means that a region of text as view-1 and its adjacent regions as view-2 will be pre-defined, and view-1 will be trained to predict view-2 in one hidden layer and it will be considered as input, this process is called unsupervised embedding.</p>
+<p><strong>Shortcut connections with pre-activation</strong> : From experience, the depth of the network is critical to the performance of the model，Because by giving the model more parameters, the model can fit the train data at least as well as before and detect more complex feature patterns. However, the experimental results show that the training accuracy will decrease as the depth of the network increases, the reason is Degradation problem or so-called vanishing/exploding gradients. More specifically, Assume we consider a shallow architecture and add more layers linked by identity mapping (i.e. <span class="math inline">\(f(z) = z\)</span>). The value of the output after multiple nonlinear layers should also be z, but the result will be biased due to the existence of this Degradation problem. Therefore, the shortcut connections were proposed by (<span class="citation">He et al. (<a href="#ref-He2016DeepRL">2016</a><a href="#ref-He2016DeepRL">a</a>)</span>). Formally, denoting the desired underlying mapping as <span class="math inline">\(H(z)\)</span>, <span class="math inline">\(f(z) := H(z)−z\)</span> is denoted as a residual function, so the original mapping is recast into <span class="math inline">\(f(z)+z\)</span>. This technique is used to solve the problem of depth model accuracy.</p>
+<p><strong>Downsampling with the number of feature maps fixed</strong>: Similar to the VDCNN described in the previous sub-chapter is that multiple convolutional blocks are also introduced to the architecture of DPCNN. However, the difference is that the number of feature maps is fixed instead of increasing like VDCNN, because (<span class="citation">Johnson and Zhang (<a href="#ref-Johnson2017DeepPC">2017</a>)</span>) thinks increasing the number of feature maps will lead to increased computation time substantially without accuracy improvement, Therefore, the computation time and sample size for each convolution layer are halved (Downsampling).</p>
 </div>
 </div>
 <div id="datasets-and-experimental-evaluation" class="section level2">
 <h2><span class="header-section-number">5.3</span> Datasets and Experimental Evaluation</h2>
+<p>A brief description of the eight data sets will be provided in this sub-chapter, based on which the performance comparison of all four models mentioned above will also be listed.</p>
 <div id="datasets" class="section level3">
 <h3><span class="header-section-number">5.3.1</span> Datasets</h3>
+<p>The comparison results of all CNN models explored in this chapter are based on the eight datasets complied by (<span class="citation">Zhang, Zhao, and LeCun (<a href="#ref-Zhang2015CharacterlevelCN">2015</a>)</span>), summarized in the following table.</p>
+<table>
+<thead>
+<tr class="header">
+<th align="left">Data</th>
+<th align="left">AG</th>
+<th>Sogou</th>
+<th>Dbpedia</th>
+<th>Yelp.p</th>
+<th>Yelp.f</th>
+<th align="left">Yahoo</th>
+<th>Ama.f</th>
+<th>Ama.p</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="left"># of training documents</td>
+<td align="left">120K</td>
+<td>450K</td>
+<td>560K</td>
+<td>560K</td>
+<td>650K</td>
+<td align="left">1.4M</td>
+<td>3M</td>
+<td>3.6M</td>
+</tr>
+<tr class="even">
+<td align="left"># of test documents</td>
+<td align="left">7.6K</td>
+<td>60K</td>
+<td>70K</td>
+<td>38K</td>
+<td>50K</td>
+<td align="left">60K</td>
+<td>650K</td>
+<td>400K</td>
+</tr>
+<tr class="odd">
+<td align="left"># of classes</td>
+<td align="left">4</td>
+<td>5</td>
+<td>14</td>
+<td>2</td>
+<td>5</td>
+<td align="left">10</td>
+<td>5</td>
+<td>2</td>
+</tr>
+<tr class="even">
+<td align="left">Average #words</td>
+<td align="left">45</td>
+<td>578</td>
+<td>55</td>
+<td>153</td>
+<td>155</td>
+<td align="left">112</td>
+<td>93</td>
+<td>91</td>
+</tr>
+</tbody>
+</table>
+<p>Based on the description of the datasets of (<span class="citation">Johnson and Zhang (<a href="#ref-Johnson2017DeepPC">2017</a>)</span>), <strong>AG</strong> and <strong>Sogou</strong> are news. <strong>Dbpedia</strong> is an ontology. <strong>Yahoo</strong> consists of questions and answers from the ‘Yahoo! Answers’ website. <strong>Yelp</strong> and <strong>Amazon (‘Ama’)</strong> are reviews where <code>.p</code> (polarity) in the names indicates that labels are binary (positive/negative), and <code>.f</code> (full) indicates that labels are the number of stars. <strong>Sogou</strong> is in Romanized Chinese, and the others are in English. Classes are balanced on all the datasets. Furthermore, These eight datasets can be subdivided into two groups, the first four datasets are relatively smaller datasets and the rest of them can be classified as relatively larger data sets.</p>
 </div>
 <div id="experimental-evaluation" class="section level3">
 <h3><span class="header-section-number">5.3.2</span> Experimental Evaluation</h3>
+<p>The following table provided by (<span class="citation">Johnson and Zhang (<a href="#ref-Johnson2017DeepPC">2017</a>)</span>) shows the error rates in percentage on datasets described in the previous sub-chapter in comparison with all models. To be more specific, a lower error rate represents better model performance and the corresponding best results are marked in bold. <code>tv</code> stands for tv-embeddings. <code>w2v</code> stands for word2vec. <code>(w2v)</code> indicates that the best results among those with and without word2vec pretraining are shown. Note that <code>best</code> next to the model name is denoted as the model by choosing the best test error rate among several variations presented in the respective papers.</p>
+<table>
+<thead>
+<tr class="header">
+<th align="left">Models</th>
+<th align="center">Deep</th>
+<th align="right">Unsup. embed.</th>
+<th align="center">AG</th>
+<th align="right">Sogou</th>
+<th align="right">Dbpedia</th>
+<th align="right">Yelp.p</th>
+<th align="right">Yelp.f</th>
+<th align="right">Yahoo</th>
+<th align="right">Ama.f</th>
+<th align="right">Ama.p</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="left">DPCNN + unsupervised embed.(<span class="citation">Johnson and Zhang (<a href="#ref-Johnson2017DeepPC">2017</a>)</span>)</td>
+<td align="center"><span class="math inline">\(\surd\)</span></td>
+<td align="right">tv</td>
+<td align="center">6.87</td>
+<td align="right"><strong>1.84</strong></td>
+<td align="right">0.88</td>
+<td align="right"><strong>2.64</strong></td>
+<td align="right"><strong>30.58</strong></td>
+<td align="right"><strong>23.90</strong></td>
+<td align="right"><strong>34.81</strong></td>
+<td align="right"><strong>3.32</strong></td>
+</tr>
+<tr class="even">
+<td align="left">ShallowCNN + unsup. embed.(<span class="citation">Kim (<a href="#ref-Kim2014ConvolutionalNN">2014</a>)</span>)</td>
+<td align="center"></td>
+<td align="right">tv</td>
+<td align="center"><strong>6.57</strong></td>
+<td align="right">1.89</td>
+<td align="right"><strong>0.84</strong></td>
+<td align="right">2.90</td>
+<td align="right">32.39</td>
+<td align="right">24.85</td>
+<td align="right">36.24</td>
+<td align="right">3.79</td>
+</tr>
+<tr class="odd">
+<td align="left">Very Deep char-level CNN: best (<span class="citation">Schwenk et al. (<a href="#ref-Schwenk2017VeryDC">2017</a>)</span>)</td>
+<td align="center"><span class="math inline">\(\surd\)</span></td>
+<td align="right"></td>
+<td align="center">8.67</td>
+<td align="right">3.18</td>
+<td align="right">1.29</td>
+<td align="right">4.28</td>
+<td align="right">35.28</td>
+<td align="right">26.57</td>
+<td align="right">37.00</td>
+<td align="right">4.28</td>
+</tr>
+<tr class="even">
+<td align="left">fastText bigrams (<span class="citation">Joulin et al. (<a href="#ref-Joulin2017BagOT">2017</a>)</span>)</td>
+<td align="center"></td>
+<td align="right"></td>
+<td align="center">7.5</td>
+<td align="right">3.2</td>
+<td align="right">1.4</td>
+<td align="right">4.3</td>
+<td align="right">36.1</td>
+<td align="right">27.7</td>
+<td align="right">39.8</td>
+<td align="right">5.4</td>
+</tr>
+<tr class="odd">
+<td align="left">[ZZL15]’s char-level CNN: best(<span class="citation">Zhang, Zhao, and LeCun (<a href="#ref-Zhang2015CharacterlevelCN">2015</a>)</span>)</td>
+<td align="center"><span class="math inline">\(\surd\)</span></td>
+<td align="right"></td>
+<td align="center">9.51</td>
+<td align="right">4.88</td>
+<td align="right">1.55</td>
+<td align="right">4.88</td>
+<td align="right">37.95</td>
+<td align="right">28.80</td>
+<td align="right">40.43</td>
+<td align="right">4.93</td>
+</tr>
+<tr class="even">
+<td align="left">[ZZL15]’s word-level CNN : best(<span class="citation">Zhang, Zhao, and LeCun (<a href="#ref-Zhang2015CharacterlevelCN">2015</a>)</span>)</td>
+<td align="center"><span class="math inline">\(\surd\)</span></td>
+<td align="right">(w2v)</td>
+<td align="center">8.55</td>
+<td align="right">4.39</td>
+<td align="right">1.37</td>
+<td align="right">4.60</td>
+<td align="right">39.58</td>
+<td align="right">28.84</td>
+<td align="right">42.39</td>
+<td align="right">5.51</td>
+</tr>
+<tr class="odd">
+<td align="left">[ZZL15]’s linear model: best(<span class="citation">Zhang, Zhao, and LeCun (<a href="#ref-Zhang2015CharacterlevelCN">2015</a>)</span>)</td>
+<td align="center"></td>
+<td align="right"></td>
+<td align="center">7.64</td>
+<td align="right">2.81</td>
+<td align="right">1.31</td>
+<td align="right">4.36</td>
+<td align="right">40.14</td>
+<td align="right">28.96</td>
+<td align="right">44.74</td>
+<td align="right">7.98</td>
+</tr>
+</tbody>
+</table>
+<p>Based on the comparison results shown above, some of the significant results include the following:</p>
+<ol style="list-style-type: decimal">
+<li><p>DPCNN achieves an outstanding performance, which shows the lowest error rate in six of the eight datasets.</p></li>
+<li><p>Shallow CNN, which possesses the simplest model architecture with only one convolutional layer, performs even better than other deep models.</p></li>
+<li><p>By mere comparison of character-level CNN (<span class="citation">Zhang, Zhao, and LeCun (<a href="#ref-Zhang2015CharacterlevelCN">2015</a>)</span>) and word-level CNN (<span class="citation">Zhang, Zhao, and LeCun (<a href="#ref-Zhang2015CharacterlevelCN">2015</a>)</span>), the result will be that words-level CNN performs better in the smaller datasets and character-level CNN performs better in the bigger datasets.</p></li>
+</ol>
 </div>
 </div>
 <div id="conclusion-and-discussion" class="section level2">
 <h2><span class="header-section-number">5.4</span> Conclusion and Discussion</h2>
+<p>In summary, this chapter introduces the architecture of multiple CNN models and compares the performance of these models in the application of NLP especially for text categorization in different scale datasets. Subsequently, we will discuss the results obtained from the previous table in two ways including a comparison between the character-level approach and the word-level approach and depth of the model.</p>
+<ol style="list-style-type: decimal">
+<li><p><strong>Character-level and word-level</strong> Extending from the experimental studies and the corresponding comparison results shown in the previous sub-chapter, word-level CNN possesses higher accuracy presented in lower error rate in comparison of character-level CNNs in general, although character-level CNN holds an advantage in not having to deal with millions of distinct words, word-level approach displays higher accuracy than character-level because the advantage of word-level is that Word can represent the meaning.</p></li>
+<li><p><strong>Deep and shallow model architecture</strong> DPCNN, which shows the best test error rate among all CNN models discussed in this chapter, could be considered as a kind of deeper Shallow CNN. Consequently, increasing the depth of the model can lead to an increase in parameters and increased capacity to handle complex feature patterns. Better performance of DPCNN compared with Shallow CNN evidence that increasing depth can improve accuracy to a certain extent. However, it comes to the opposite conclusion by comparing with Very Deep CNN since the probability of potential issues such as vanishing/exploding gradients will increase as the number of layers increases. Therefore, it is essential to improve the accuracy of complex and deep models by introducing appropriate components (e.g. shortcut connections).</p></li>
+</ol>
 
 </div>
 </div>
@@ -465,6 +701,21 @@ With the help of this pooling function, it is possible to train ConvNets deeper 
 </div>
 <div id="ref-Collobert2011NaturalLP">
 <p>Collobert, Ronan, Jason Weston, Léon Bottou, Michael Karlen, Koray Kavukcuoglu, and Pavel P. Kuksa. 2011. <em>Natural Language Processing (Almost) from Scratch</em>. <em>J. Mach. Learn. Res.</em> Vol. 12. <a href="http://www.jmlr.org/papers/volume12/collobert11a/collobert11a.pdf" class="uri">http://www.jmlr.org/papers/volume12/collobert11a/collobert11a.pdf</a>.</p>
+</div>
+<div id="ref-He2016DeepRL">
+<p>He, Kaiming, Xiangyu Zhang, Shaoqing Ren, and Jian Sun. 2016a. “Deep Residual Learning for Image Recognition.” <em>2016 IEEE Conference on Computer Vision and Pattern Recognition (CVPR)</em>, 770–78. <a href="https://arxiv.org/pdf/1512.03385v1.pdf" class="uri">https://arxiv.org/pdf/1512.03385v1.pdf</a>.</p>
+</div>
+<div id="ref-Ioffe2015BatchNA">
+<p>Ioffe, Sergey, and Christian Szegedy. 2015. “Batch Normalization: Accelerating Deep Network Training by Reducing Internal Covariate Shift.” <em>ArXiv</em> abs/1502.03167. <a href="https://arxiv.org/pdf/1502.03167.pdf" class="uri">https://arxiv.org/pdf/1502.03167.pdf</a>.</p>
+</div>
+<div id="ref-Johnson2016ConvolutionalNN">
+<p>Johnson, Rie, and Tong Zhang. 2016. “Convolutional Neural Networks for Text Categorization: Shallow Word-Level Vs. Deep Character-Level.” <em>ArXiv</em> abs/1609.00718. <a href="https://arxiv.org/pdf/1609.00718.pdf" class="uri">https://arxiv.org/pdf/1609.00718.pdf</a>.</p>
+</div>
+<div id="ref-Johnson2017DeepPC">
+<p>Johnson, Rie, and Tong Zhang. 2017. “Deep Pyramid Convolutional Neural Networks for Text Categorization.” In <em>ACL</em>. <a href="https://pdfs.semanticscholar.org/2f79/66bd3bc7aaf64c7db40fb7f3309f5207cbf7.pdf" class="uri">https://pdfs.semanticscholar.org/2f79/66bd3bc7aaf64c7db40fb7f3309f5207cbf7.pdf</a>.</p>
+</div>
+<div id="ref-Joulin2017BagOT">
+<p>Joulin, Armand, Edouard Grave, Piotr Bojanowski, and Tomas Mikolov. 2017. “Bag of Tricks for Efficient Text Classification.” <em>ArXiv</em> abs/1607.01759. <a href="https://arxiv.org/pdf/1607.01759.pdf" class="uri">https://arxiv.org/pdf/1607.01759.pdf</a>.</p>
 </div>
 <div id="ref-Kalchbrenner2016NeuralMT">
 <p>Kalchbrenner, Nal, Lasse Espeholt, Karen Simonyan, Aäron van den Oord, Alex Graves, and Koray Kavukcuoglu. 2016. “Neural Machine Translation in Linear Time.” <em>ArXiv</em> abs/1610.10099. <a href="https://arxiv.org/pdf/1610.10099.pdf" class="uri">https://arxiv.org/pdf/1610.10099.pdf</a>.</p>
@@ -478,8 +729,17 @@ With the help of this pooling function, it is possible to train ConvNets deeper 
 <div id="ref-Krizhevsky2012ImageNetCW">
 <p>Krizhevsky, Alex, Ilya Sutskever, and Geoffrey E. Hinton. 2012. <em>ImageNet Classification with Deep Convolutional Neural Networks</em>. <a href="http://www.cs.toronto.edu/~hinton/absps/imagenet.pdf" class="uri">http://www.cs.toronto.edu/~hinton/absps/imagenet.pdf</a>.</p>
 </div>
+<div id="ref-Oord2016WaveNetAG">
+<p>Oord, Aäron van den, Sander Dieleman, Heiga Zen, Karen Simonyan, Oriol Vinyals, Alex Graves, Nal Kalchbrenner, Andrew W. Senior, and Koray Kavukcuoglu. 2016. <em>WaveNet: A Generative Model for Raw Audio</em>. <em>ArXiv</em>. Vol. abs/1609.03499. <a href="https://arxiv.org/pdf/1609.03499.pdf" class="uri">https://arxiv.org/pdf/1609.03499.pdf</a>.</p>
+</div>
 <div id="ref-Scherer2010EvaluationOP">
 <p>Scherer, Dominik, Andreas C. Müller, and Sven Behnke. 2010. “Evaluation of Pooling Operations in Convolutional Architectures for Object Recognition.” In <em>ICANN</em>. <a href="http://ais.uni-bonn.de/papers/icann2010_maxpool.pdf" class="uri">http://ais.uni-bonn.de/papers/icann2010_maxpool.pdf</a>.</p>
+</div>
+<div id="ref-Schwenk2017VeryDC">
+<p>Schwenk, Holger, Loïc Barrault, Alexis Conneau, and Yann LeCun. 2017. <em>Very Deep Convolutional Networks for Text Classification</em>. <a href="https://www.aclweb.org/anthology/E17-1104.pdf" class="uri">https://www.aclweb.org/anthology/E17-1104.pdf</a>.</p>
+</div>
+<div id="ref-Simonyan2015VeryDC">
+<p>Simonyan, Karen, and Andrew Zisserman. 2015. “Very Deep Convolutional Networks for Large-Scale Image Recognition.” <em>CoRR</em> abs/1409.1556. <a href="https://arxiv.org/pdf/1409.1556.pdf" class="uri">https://arxiv.org/pdf/1409.1556.pdf</a>.</p>
 </div>
 <div id="ref-Sutskever2013OnTI">
 <p>Sutskever, Ilya, James Martens, George E. Dahl, and Geoffrey E. Hinton. 2013. “On the Importance of Initialization and Momentum in Deep Learning.” In <em>ICML</em>.</p>

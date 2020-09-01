@@ -24,7 +24,7 @@
 <meta name="author" content="" />
 
 
-<meta name="date" content="2020-08-28" />
+<meta name="date" content="2020-09-01" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
@@ -444,7 +444,7 @@ FIGURE 9.8: GPT-2 Model<br />
 Alammar, Jay (2018). The Illustrated GPT-2 co. [Blog post]. Retrieved from <a href="http://jalammar.github.io/illustrated-gpt2/" class="uri">http://jalammar.github.io/illustrated-gpt2/</a>
 </p>
 </div>
-<p>Figure <a href="transfer-learning-for-nlp-ii.html#fig:ch02-03-figure08">9.8</a> shows the model of GPT-2. This model essentially is the Transformer decoder, except they threw away the second self-attention layer. In each decoder, Layer normalization <span class="citation">Ba, Kiros, and Hinton (<a href="#ref-ba2016layer">2016</a>)</span> was moved to the input of each sub-block, similar to a pre-activation residual network <span class="citation">He et al. (<a href="#ref-he2016identity">2016</a>)</span> and an additional layer normalization was added after the final self-attention block. A modified initialization which accounts for the accumulation on the residual path with model depth is used <span class="citation">Radford et al. (<a href="#ref-radford2019gpt2">2019</a>)</span>.</p>
+<p>Figure <a href="transfer-learning-for-nlp-ii.html#fig:ch02-03-figure08">9.8</a> shows the model of GPT-2. This model essentially is the Transformer decoder, except they threw away the second self-attention layer. In each decoder, Layer normalization <span class="citation">Ba, Kiros, and Hinton (<a href="#ref-ba2016layer">2016</a>)</span> was moved to the input of each sub-block, similar to a pre-activation residual network <span class="citation">He et al. (<a href="#ref-he2016identity">2016</a><a href="#ref-he2016identity">b</a>)</span> and an additional layer normalization was added after the final self-attention block. A modified initialization which accounts for the accumulation on the residual path with model depth is used <span class="citation">Radford et al. (<a href="#ref-radford2019gpt2">2019</a>)</span>.</p>
 <p>GPT-2 reads from the start token [s] till the last predicted token to predict the next token. For example, in the first round, model uses [s] to predict [robot], in the next round the input is updated as {[s],[robot]} since [robot] has been predicted. This is how Masked self-Attention in Decoder block works.</p>
 <p>Otherwise, since a general system should be able to perform many different tasks, even for the same input, it should condition not only on the input but also on the task to be performed.
 The model of GPT-2 should be :
@@ -619,7 +619,7 @@ For unselected tokens, their query representations need not be computed, which s
 <p>Devlin, Jacob, Ming-Wei Chang, Kenton Lee, and Kristina Toutanova. 2018. “BERT: Pre-Training of Deep Bidirectional Transformers for Language Understanding.” <em>CoRR</em> abs/1810.04805. <a href="http://arxiv.org/abs/1810.04805" class="uri">http://arxiv.org/abs/1810.04805</a>.</p>
 </div>
 <div id="ref-he2016identity">
-<p>He, Kaiming, Xiangyu Zhang, Shaoqing Ren, and Jian Sun. 2016. “Identity Mappings in Deep Residual Networks.” In <em>European Conference on Computer Vision</em>, 630–45. Springer.</p>
+<p>He, Kaiming, Xiangyu Zhang, Shaoqing Ren, and Jian Sun. 2016b. “Identity Mappings in Deep Residual Networks.” In <em>European Conference on Computer Vision</em>, 630–45. Springer.</p>
 </div>
 <div id="ref-kaiser2017one">
 <p>Kaiser, Lukasz, Aidan N Gomez, Noam Shazeer, Ashish Vaswani, Niki Parmar, Llion Jones, and Jakob Uszkoreit. 2017. “One Model to Learn Them All.” <em>arXiv Preprint arXiv:1706.05137</em>.</p>
