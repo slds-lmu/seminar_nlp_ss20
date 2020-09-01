@@ -23,7 +23,7 @@ Reiter and Dale (2000) defined Natural Language Generation (NLG) as “the sub-f
 Two aspects need to be highlighted. First is generation of *understandable* text in a human language and second is the input to such a generation system is *non-linguistic* representation of information. For our purposes, we will drop the second requirement; which means that the source can be text as well. With such a definition in mind, we can have following taxonomy of NLG systems :
 
 1. Text-to-Text
-    - Machine Translation : Automatically translating between various human languages 
+    - Machine Translation : Automatically translating between various human languages
     - Text Summarization : Summarizing a (big) text document into a shorter summary/abstract.
 
 2. Data-to-Text
@@ -104,9 +104,10 @@ It's like pure sampling decoder, but instead of sampling from whole vocabulary, 
 
 ### Memory Networks
 
-Memory Networks is another architecture that is potentially quite useful in language generation tasks. The basic premise is that LSTMs/RNNs and even Transformer architecture stores all the information only in the weights of the network. When we want to generate text that should include information from a large knowledge base, this 'storage' of network weights is insufficient. Memory networks resolve this problem by employing an external storage (the memory) that it can use during language generation. Conceptual diagram is showing in the following figure, followed by a brief description. 
+Memory Networks is another architecture that is potentially quite useful in language generation tasks. The basic premise is that LSTMs/RNNs and even Transformer architecture stores all the information only in the weights of the network. When we want to generate text that should include information from a large knowledge base, this 'storage' of network weights is insufficient. Memory networks resolve this problem by employing an external storage (the memory) that it can use during language generation. Conceptual diagram is showing in the following figure, followed by a brief description.
 
 ![Encoder-Decoder (Attention)](figures/04-01-use-case1/memory_networks.jpg)
+
 Memory (M) in this context can be any database that can be queried by the network. Usually it is of the form of key-value pairs or a simple array of vectors embedding a corpus of knowledge (eg DBPedia/wikipedia). For any query input (x), first we get an embedding. This is then used to attend over the memory M in the usual attention mechanism ([Chapter 9](./02-02-attention-and-self-attention-for-nlp.html)). The output is the weighted sum of memory that incorporates information from complete knowledge corpus. In some cases the output can also be used to update the memory database.
 
 ### Language Models

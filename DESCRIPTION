@@ -9,4 +9,5 @@ Depends:
   ggpubr,
   svglite,
   here,
-  cowplot
+  cowplot,
+  rmarkdown

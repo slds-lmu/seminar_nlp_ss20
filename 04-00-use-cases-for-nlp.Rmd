@@ -1,7 +1,20 @@
-# Use-Bases for NLP
+# Use-Cases for NLP
 
-*Authors: Author 1, Author 2*
+*Author: Matthias Aßenmacher*
 
-*Supervisor: Supervisor*
+Since it is all fine and good to know the theory and how everything's working on the inside,
+we thought that this booklet could also benefit from showcasing some exemplary use case(s).
+Initially we had planned to include two chapters on different use cases, but during the course
+a student assigned to one of these chapters dropped out of the course. So we were left with only
+one (but highly motivated) student willing to pursue this issue.  
 
+The following chapter will contain a use case on Natural Language Generation (NLG) which is a task
+that (oftentimes) strongly relies on an encoder-decoder style architecture. Recently, these types 
+of models could benefit __a lot__ from the use of Attention mechanisms (@bahdanau2014neural) and the 
+proposal of the Transformer architecture (@vaswani2017attention) presented in Chapter 8.
+Nevertheless the task of NLU requires more than just good architectures, it is also necessary to
+handle the output of these models in a suitable way in order to generate meaningful text.  
 
+So without further ado: The following chapter will showcase the challenges of NLU by touching upon
+the the tow topic _Chatbots_ and _Image Captioning_, where the latter represents a hybrid task of 
+Computer Vision and NLP.

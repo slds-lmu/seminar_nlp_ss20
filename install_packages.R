@@ -6,5 +6,6 @@ install.packages(c(
   "ggpubr",
   "svglite",
   "here",
-  "cowplot"
+  "cowplot",
+  "rmarkdown"
 ))
