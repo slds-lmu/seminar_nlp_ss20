@@ -14,25 +14,31 @@ For many of the benchmarking datasets in natural language processing, a leaderbo
   
 **Exact match (EM):** The percentage of predictions that match any one of the answers exactly.
   
-**(Macro-averaged) F1 score (F1):** Each answer and prediction is tokenized into words. For every answer to a given question, the overlap between the prediction and each answer is calculated and the maximum F1 is chosen. This score is then averaged over all of the questions. Formally speaking:
+**(Macro-averaged) F1 score (F1):** Each answer and prediction is tokenized into words. For every answer to a given question, the overlap between the prediction and each answer is calculated and the maximum F1 is chosen. This score is then averaged over all the questions. Formally speaking:
+  
+
 $$
-F1 = \frac{2 \cdot \hbox{precision}\cdot\hbox{recall}}{\hbox{precision}+\hbox{recall}} 
-$$
-$$
-\hbox{precision} = \frac{\hbox{number of same tokens}}{\hbox{length(predicted tokens)}} \\
-$$
-$$
-\hbox{recall} = \frac{\hbox{number of same tokens}}{\hbox{length(labeled tokens)}} \\
+\begin{aligned}
+F1 &= \frac{2 \cdot \hbox{precision}\cdot\hbox{recall}}{\hbox{precision}+\hbox{recall}} \\
+\hbox{precision} &= \frac{\hbox{number of same tokens}}{\hbox{length(predicted tokens)}} \\
+\hbox{recall} &= \frac{\hbox{number of same tokens}}{\hbox{length(labeled tokens)}} 
+\end{aligned}
 $$
 
 **Perplexity:** Perplexity is a measurement of how well a probability model predicts a sample. A low perplexity indicates the probability distribution is good at predicting the sample. In NLP, perplexity is a way of evaluating language models. A model of an unknown probability distribution $p$, may be proposed based on a training sample that was drawn from $p$. Given a proposed probability model $q$, one may evaluate $q$ by asking how well it predicts a separate test sample $x_1, x_2, ..., x_N$ also drawn from $p$. The perplexity of the model $q$ is defined as
 $$ b^{-\frac{1}{N}\sum_{i=1}^N\log_bq(x_i)} $$
-where $b$ is customarily $2$.
+where $b$ is customarily $2$. [@martinc2019supervised]
 
 **BLEU:** BLEU (**B**i**l**ingual **E**valuation **U**nderstudy) is an algorithm for evaluating the quality of text which has been machine-translated from one natural language to another. Scores are calculated for individual translated segments—generally sentences—by comparing them with a set of good quality reference translations. Those scores are then averaged over the whole corpus to reach an estimate of the translation's overall quality. Intelligibility or grammatical correctness are not taken into account. [@papineni2002bleu]
 
 **Accuracy:** Accuracy is the ratio of number of correct predictions to the total number of input samples.
+  
+$$\hbox{Accuracy}=\frac{\hbox{TP}+\hbox{TN}}{\hbox{TP}+\hbox{TN}+\hbox{FP}+\hbox{FN}}$$
 
+**Matthews correlation coefficient**: The MCC is used as a measure of quality of binary classifications. It takes true and false positives and negatives into account and is regarded as a balanced measure which can be used even if the classes are imbalanced. The MCC can be calculated directly from the confusion matrix using the following formula:
+  
+$$\hbox{MCC}=\frac{\hbox{TP}\cdot\hbox{TN}-\hbox{FP}\cdot\hbox{FN}}{\sqrt{(\hbox{TP}+\hbox{FP})(\hbox{TP}+\hbox{FN})(\hbox{TN}+\hbox{FP})(\hbox{TN}+\hbox{FN})}} $$
+[@boughorbel2017optimal]
 
 ## Benchmark Datasets
 ### SQuAD
@@ -50,7 +56,7 @@ One shortcoming of reading comprehension systems is that they tend to make unrel
 
 The accuracy of models trained on SQuAD is evaluated using two different metrics, exact match and (Macro-averaged) F1 score, both ignoring punctuation and articles.  
   
-To evaluate human performance, the second answer to each question is treated as the human prediction.[@rajpurkar2016squad; @rajpurkar2018know]  
+To evaluate human performance, the second answer to each question is treated as the human prediction. [@rajpurkar2016squad; @rajpurkar2018know]  
   
 Humans achieve an **EM** score of 86.831 and a **F1** score of 89.452.  
   
@@ -88,12 +94,54 @@ Examples of CoQA and the leaderboard and can be viewed here:
 ### (Super)GLUE
 Most models in NLP are designed to solve a specific task, such as answering questions from a particular domain. This limits the use of models for understanding natural language. In order to process language in a way that is not limited to a specific task, genre, or dataset, models should be able to solve a variety of tasks well.
   
-The **G**eneral **L**anguage **U**nderstanding **E**valuation benchmark dataset is a collection of tools created with this in mind. It is designed to encourage and favour models that share common linguistic knowledge across tasks. These tasks include textual entailment, sentiment analysis and question answering. Some tasks come with a lot of training data, others with less. Common to all datasets is that they were not created specifically for GLUE, but are existing datasets. Models that are evaluated on GLUE only need to have the ability to process single-sentence and sentence-pair inputs and make appropriate predictions.
-This test suite contains a total of nine sentence or sentence-pair NLU tasks, built on established annotated datasets.
+The **G**eneral **L**anguage **U**nderstanding **E**valuation benchmark dataset is a collection of tools created with this in mind. It is designed to encourage and favor models that share common linguistic knowledge across tasks. These tasks include textual entailment, sentiment analysis and question answering. Some tasks come with a lot of training data, others with less. Common to all datasets is that they were not created specifically for GLUE, but are existing datasets. Models that are evaluated on GLUE only need to have the ability to process single-sentence and sentence-pair inputs and make appropriate predictions.
+This test suite contains a total of nine sentence or sentence-pair NLU tasks, built on established annotated datasets. There are three distinct types of tasks in GLUE: Single-Sentence Tasks, Similarity and Paraphrase Tasks and Inference Tasks.
+  
+**Single-Sentence Tasks**:
+  
+The first single-sentence task is CoLA, the **Co**rpus of **L**inguistic **A**cceptability, which consists of English acceptability judgments derived from books and journal articles on linguistic theory. Each datapoint consists of a sequence of words and an annotation as to whether this sequence is a grammatical English sentence. Matthews correlation coefficient is used as the evaluation metric.
+  
+The **S**tanford **S**entiment **T**reebank task consists of sentences from movie reviews and the corresponding sentiment (positive/negative). Accuracy is used for evaluation.
+
+**Similarity and Paraphrase Tasks**
+  
+The **M**icrosoft **R**esearch **P**araphrase **C**orpus consists of pairs of sentences and the goal is to predict whether two sentences are semantically equivalent. For evaluation, F1 score and accuracy is used.
+  
+**Q**uora **Q**uestion **P**airs is similar to MRP in that the aim is to predict whether two questions are semantically equivalent and F1 and accuracy is used for evaluation.
+  
+The **S**emantic **T**extual **S**imilarity **B**enchmark consists of sentence pairs human-annotated with a similarity score from 1 to 5. The goal is to predict these scores. Pearson and Spearman correlation coefficients are used for evaluation.
+  
+**Inference Tasks**:
+  
+The **M**ulti-Genre **N**atural **L**anguage **I**nference Corpus is a collection of sentence pairs with textual entailment annotations. Based on a premise sentence and a hypothesis sentence, the aim is to predict whether the premise entails the hypothesis, contradicts the hypothesis, or neither of the two. Models are evaluated using accuracy.
+  
+**R**ecognizing **T**extual **E**ntailment is akin to MNLI, only this time with a two-class split.
+  
+The Winograd Schema Challenge is a reading comprehension task in which a system must read a sentence containing a pronoun and pick the speaker of that pronoun from a list of choices. To transform this task into a classification problem, pairs of sentences are constructed by replacing the ambiguous pronoun with any possible referent. The task is to predict if the sentence with the pronoun substituted is entailed by the original sentence. Evaluation is done using accuracy.
+  
+The last task in GLUE is based on the first version of SQuAD. The task is converted into a sentence pair classification task by pairing each question and each sentence in the respective context, with the aim of determining whether or not a sentence contains the answer to the question. The task is evaluated on accuracy.
+
+
 The models are scored separately for each task and then a macro-average of these scores is calculated to determine a system's position on the ranking. If a task has multiple metrics, an unweighted average of these metrics is used as the score for the task when calculating the overall macro average. [@wang2018glue]
+  
 The human baseline score is 87.1, while the best model score is currently 90.6.
   
-Roughly one year after the release of GLUE, models surpassed human performance. In response to this, a new benchmark, SuperGLUE, was introduced. It follows the same principles as GLUE, however the tasks included are more challenging. The two hardest tasks in GLUE remain, the rest were selected based on difficulty for current NLP approaches. [@wang2019superglue]
+Roughly one year after the release of GLUE, models surpassed human performance. In response to this, a new benchmark, SuperGLUE, was introduced. It follows the same principles as GLUE, however the tasks included are more challenging. The two hardest tasks in GLUE, Recognizing Textual Entailment and the Winograd Schema Challenge, remain, the rest were selected based on difficulty for current NLP approaches. There are a total of eight different tasks in this benchmark.
+  
+**Bool**ean **Q**uestions consists of a text passage together with a corresponding yes/no question. Models are evaluated using accuracy.
+  
+**C**ommitment **B**ank is a three-class textual entailment task. Accuracy and F1 is used for evaluation, where for multi-class F1 the unweighted average of the F1 per class is calculated.
+  
+**C**hoice **o**f **P**lausible **A**nswers is a causal reasoning task in which a model is given a premise sentence, a question and two possible answers. It must then decide which answer is the correct one. Accuracy is used for the evaluation.
+  
+**Multi**-Sentence **R**eading **C**omprehension is a QA task where each example consists of a paragraph, a question and a list of answers. Models must predict which answers are correct. Evaluation metrics are F1 over all answer choices and the exact match of the answer set of each question.
+
+**Re**ading **Co**mprehension with **Co**mmonsense **R**easoning **D**ataset is a multiple choice QA task. Each data point consists of a paragraph, a fill-in-the-gap sentence in which an entity is masked, and a list of possible entities to choose from. The entities can be expressed using several different surface forms, all of which are considered correct. Models are evaluated using max (over all mentions) token-level F1 and exact match.
+  
+**W**ords **i**n **C**ontext is a word sense disambiguation task in which a model is given two sentences and a polysemous word. Models must decide whether the word is used with the same meaning in both sentences. Accuracy is used for evaluation.
+  
+[@wang2019superglue]
+  
 For SuperGLUE, the human baseline score is 89.8, which is above the best model score, presently 89.3.
 
 More information about the tasks and the leaderboard for both GLUE and SuperGLUE is available here:
@@ -106,12 +154,12 @@ More information about the tasks and the leaderboard for both GLUE and SuperGLUE
 One task that most people know from their time at school is solving algebraic word problems. For humans, this task can be easy, depending on a person's mathematical abilities, since we only have to perform a series of arithmetic operations. However, since programs can be endlessly complicated, it is a considerable challenge to induce them directly from question-answer pairs. The **A**lgebra **Qu**estion **A**nswering with **Rat**ionales dataset attempts to make this task more feasible for machines by providing not only the correct answer but also step-by-step instructions for deriving the correct answer, the so-called rationale. Models trained on AQuA-Rat must not only predict the correct answer, but also the rationale.
   
 The dataset contains over 100.000 questions, and each question has five different options as to what the correct answer is. It also contains the answer rationale and the correct option. The problems cover a wide range of topics, for instance probability theory or calculus, with a variety of difficulty levels. To create the dataset, examples of exams such as the GMAT (Graduate Management Admission Test) and GRE (General Test) were taken from the Internet. This part of the dataset is called the seed dataset.
-Besides, crowdsourcing was used to generate further questions. For this users were presented with five questions from the seed dataset and asked to select one of these questions and write a similiar question. Users were also forced to rephrase the rationales and answers to avoid paraphrasing the original questions.
+Besides, crowdsourcing was used to generate further questions. For this users were presented with five questions from the seed dataset and asked to select one of these questions and write a similar question. Users were also forced to rephrase the rationales and answers to avoid paraphrasing the original questions.
 These created questions were then passed to another user for quality control.
   
 The rationales are evaluated using average sentence level perplexity and the BLEU score. If a model is unable to generate a token for perplexity computation, an unknown token is predicted. The correctness of the answers is evaluated by calculating the accuracy of the predictions.
 
-This is a relatively new dataset and as of now there is no online leaderboard for it. The authors of the original paper used an attention-based sequence to sequence model as their baseline method. The authors generated a program containing both instructions that generate output and instructions that simply generate intermediate values used by following instructions. The program uses a latent predictor network which generates an output sequence conditioned on an arbitrary number of input functions and staged back-progagation to save memory. Going into further depth about this program would be beyond this book so I'd advise to have a look at the original paper.
+This is a relatively new dataset and as of now there is no online leaderboard for it. The authors of the original paper used an attention-based sequence to sequence model as their baseline method. The authors generated a program containing both instructions that generate output and instructions that simply generate intermediate values used by following instructions. The program uses a latent predictor network which generates an output sequence conditioned on an arbitrary number of input functions and staged back-propagation to save memory. Going into further depth about this program would be beyond this book so I'd advise to have a look at the original paper.
 The program outperformed the baseline model and achieved a perplexity of 28.5, a BLEU score of 27.2 and has and accuracy of 36.4. [@ling2017program]
   
 The paper and examples of the dataset can be found here:
@@ -121,30 +169,178 @@ The paper and examples of the dataset can be found here:
 
 
 ### SNLI
-Understanding entailment and contradiction is fundamental to understanding natural language, and conclusions about entailment and contradiction are a valuable testing ground for the development of semantic representations. The **S**tanford **N**atural **L**anguage **I**nference Corpus is a collection of sentence pairs that are labeled either as entailment, contradiction or semantic independence. While other datasets exist that try to tackle this specific task, they all have issues of size, quality, and indeterminacy.
-  
-SNLI consists of about 570k record pairs. Again, croworkers were used to create the data set. To do this, they were shown the caption of a photo but not the photo, and they were asked to write three alternative captions: One that is definitely a true description of the photo, one that could be a true description of the photo, and one caption that is definitely a false description of the photo. By not showing the photo, the authors wanted to ensure that each pair of sentences could be reconstructed based on the available text alone.
-To measure the quality of the corpus, about 10% of all created sentence pairs were validated. For this purpose, each crowdorker was shown five sentences and asked to mark them with one of the three labels. Each sentence was shown to a total of five crowdorkers. For each pair, a gold label was assigned if at least three of the five annotators chose the same label. Around 98% of all sentence pairs were assigned a gold label, the rest was assigned a placeholder label.[@bowman2015large]
-  
-Models are once again evaluated with the accuracy of the predicted label. For the SNLI corpus there is no measurement for human performance. Currently, the best performing model is a semantics-aware BERT (SemBERT) with an accuracy of 91.9. 
-- Understanding entailment and contradiction
-- https://nlp.stanford.edu/projects/snli/
+When it comes to understanding natural language, the understanding of entailment and contradiction is essential. The characterization and use of these relationships in computational systems is called natural language inference and is fundamental for tasks such as commonsense reasoning and information retrieval. The **S**tanford **N**atural **L**anguage **I**nference Corpus is a collection of sentence pairs that are labeled either as entailment, contradiction or semantic independence.
+While there are other datasets that try to accomplish this particular task, they all have problems of size, quality and vagueness.
 
-### LAMBADA 
-- **LA**nguage **M**odeling **B**roadened to **A**ccount for **D**iscourse **A**spects
-- Word prediction task
-  - Predict the last word of a sentence depending on the context
-- Models can't rely on local context, must be able to keep track of information in the broader discourse
-- https://www.aclweb.org/anthology/P16-1144.pdf
+SNLI consists of about 570k record pairs. Again, crowdworkers were used to construct the dataset. For this purpose they were shown the caption of a photo but not the photo itself, and asked to write three alternative captions: One that is definitely a true description of the photo, one that could be a true description of the photo, and one caption that is definitely a false description of the photo. By not showing the photo, the authors wanted to ensure that each pair of sentences could be reconstructed based on the available text alone.
+To quantify the quality of the corpus, about 10% of all created sentence pairs were validated. For this purpose, each crowdworker was shown five pairs of sentences and asked to mark them with one of the three labels. Each set was shown to a total of five crowdworkers. For each pair, a gold label was awarded if at least three of the five annotators chose the same label. About 98% of all sentence pairs received a gold label, the rest were given a placeholder label. [@bowman2015large]
 
-## Pre-Training Resources
-- BERT/ALBERT/CamemBERT
-  - Trained on unlabeled data over different pre-training tasks
-  - WordPiece embeddings with a 30k token vocabulary
-- OpenAI GPT2
-- GPT-3
-- Google 5T
+The models are evaluated again with the accuracy of the predicted label. There is no measurement of human performance for the SNLI corpus. At present, the most accurate model is a semantics-aware BERT (SemBERT) with an accuracy of 91.9.
+The paper and examples of the dataset can be found here:
+\center https://nlp.stanford.edu/projects/snli/
+  
+\flushleft
+
+### Overview
+Below is a brief overview of all of the datasets discussed in this chapter, including some other interesting datasets. If you would like to learn more about one of the datasets, for each dataset the corresponding paper is linked.
+```{r table2, echo=FALSE, message=FALSE, warnings=FALSE, results='asis'}
+dt_url <- c(
+  "https://arxiv.org/pdf/1806.03822.pdf",
+  "https://arxiv.org/pdf/1808.07042.pdf",
+  "https://openreview.net/pdf?id=rJ4km2R5t7",
+  "https://w4ngatang.github.io/static/papers/superglue.pdf",
+  "https://arxiv.org/pdf/1705.04146.pdf",
+  "https://nlp.stanford.edu/pubs/snli_paper.pdf",
+  "http://www.roman-klinger.de/publications/ling2016.pdf",
+  "https://arxiv.org/pdf/1609.07843.pdf",
+  "https://nlp.stanford.edu/pubs/luong-manning-iwslt15.pdf",
+  "",
+  "https://arxiv.org/pdf/1804.05053.pdf"
+)
+
+datasets <- data.frame(
+  name = c(
+    "SQuAD 2.0",
+    "CoQA",
+    "GLUE",
+    "SuperGLUE",
+    "AQuA-Rat",
+    "SNLI",
+    "Irony Sarcasm Analysis Corpus",
+    "WikiText-103 & 2",
+    "WMT 14 English-German",
+    "",
+    "VOiCES"
+    ),
+  task = c(
+    "Question Answering, Reading Comprehension",
+    "Question Answering, Reading Comprehension",
+    "General Language Understanding",
+    "General Language Understanding",
+    "Question Answering, Reading Comprehension, Mathematical Reasoning",
+    "Natural Language Inference",
+    "Classification, Sentiment Analysis",
+    "Language Modeling",
+    "Language Translation",
+    "",
+    "Speech Recognition"
+    ),
+  size = c(
+    "150,000",
+    "127,000",
+    "---",
+    "---",
+    "100,000",
+    "570,000",
+    "33,000",
+    "100M+",
+    "4.5M",
+    "",
+    "3,900"
+    ),
+  description = c(
+    "Paragraphs w questions and answers",
+    "Answering interconnected questions",
+    "Nine different NLU tasks",
+    "Eight different NLU tasks",
+    "Solving algebraic word problems",
+    "Understanding entailment and contradiction",
+    "Ironic, sarcastic, regular and figurative tweets",
+    "Word and character level tokens from Wikipedia",
+    "Sentence pairs for translation",
+    "",
+    "Voices in complex environmental settings. 15h material"
+    )
+)
+
+datasets$name <-  paste0("[", datasets$name, "](", dt_url, ")")
+# just for me
+a <- kable(datasets, "markdown")
+```
+|Name                                                                                   |Task                                                              |Size                        |Description                                                      |
+|:--------------------------------------------------------------------------------------|:-----------------------------------------------------------------|:---------------------------|:----------------------------------------------------------------|
+|[SQuAD 2.0](https://arxiv.org/pdf/1806.03822.pdf)                                      |Question Answering, Reading Comprehension                         |150,000                     |Paragraphs w questions and answers                               |
+|[CoQA](https://arxiv.org/pdf/1808.07042.pdf)                                           |Question Answering, Reading Comprehension                         |127,000                     |Answering interconnected questions                               |
+|[GLUE](https://openreview.net/pdf?id=rJ4km2R5t7)                                       |General Language Understanding                                    |---                         |Nine different NLU tasks                                         |
+|[SuperGLUE](https://w4ngatang.github.io/static/papers/superglue.pdf)                   |General Language Understanding                                    |---                         |Eight different NLU tasks                                        |
+|[AQuA-Rat](https://arxiv.org/pdf/1705.04146.pdf)                                       |Question Answering, Reading Comprehension, Mathematical Reasoning |100,000                     |Solving algebraic word problems                                  |
+|[SNLI](https://nlp.stanford.edu/pubs/snli_paper.pdf)                                   |Natural Language Inference                                        |570,000                     |Understanding entailment and contradiction                       |
+|[Irony Sarcasm Analysis Corpus](http://www.roman-klinger.de/publications/ling2016.pdf) |Classification, Sentiment Analysis                                |33,000                      |Ironic, sarcastic, regular and figurative tweets                 |
+|[WikiText-103 & 2](https://arxiv.org/pdf/1609.07843.pdf)                               |Language Modelling                                                |100M+                       |Word and character level tokens from Wikipedia                   |
+|[WMT 14 English-German](https://nlp.stanford.edu/pubs/luong-manning-iwslt15.pdf)       |Language Translation                                              |4.5M                        |Sentence pairs for translation                                   |
+|                                                                                       |                                                                  |                            |                                                                 |
+|[VOiCES](https://arxiv.org/pdf/1804.05053.pdf)                                         |Speech Recognition                                                |3,900                       |Voices in complex environmental settings. 15h material           |
+
+
+## Pre-Trained Models
+In the last chapters we've already heard quite a bit about pre-trained models like BERT or GPT-3. But exactly on what data are they trained on? Let's find out.
+
+### BERT
+The pre-training corpus used for BERT consists of the BookCorpus and the entirety of the English Wikipedia.
+  
+**The BookCorpus**: This dataset was released in 2015. To create the corpus, 11,038 free books were collected from the Internet. All of these were written by authors who have not yet been published. To be included, a book had to have more than 20,000 words to filter out the shorter stories that might be noisy. The dataset includes over 16 different genres, for example *Romance*, *Science Fiction* or *Fantasy*. In total there are about 1 billion words, 1.3 million unique words and 74 million sentences with an average sentence length of 13 words in the BookCorpus. [@bookCorpus]
+  
+**English Wikipedia**: For Wikipedia only text passages were extracted, while lists, tables and headings were ignored. In total, this dataset contains 2.5 billion words.
+  
+According to the authors, it is crucial to use a document-level corpus rather than a shuffled sentence-level corpus like the Billion Word benchmark dataset to extract long sentences. [@bert]
+
+### OpenAI GPT-3
+The dataset used for pre-training GPT-3 consists of a filtered version of the Common Crawl dataset and multiple curated high quality datasets, including an extended version of WebText, two books corpora and the English language Wikipedia.
+  
+**Common Crawl**: The Common Crawl corpus contains petabytes of data collected over 8 years of web crawling. The corpus contains raw web page data, metadata and text extracts. To improve the quality of Common Crawl, two techniques are used: (1) filtering Common Crawl and (2) fuzzy deduplication.
+  
+1. To improve the quality, the original WebText was used as a proxy for high quality documents. A classifier was trained to distinguish these documents from the raw text in the Common Crawl. This classifier was used to re-sample Common Crawl by prioritizing documents for which higher quality was predicted. A logistic regression was trained for the classifier using characteristics from the standard Spark and HashingTF tokenizer. A document was kept in the dataset, if
+
+$$\hbox{np.random.pareto}(\alpha) > 1 - \hbox{document\_score}.$$ A value of 9 was chosen for $\alpha$ in order to obtain both high and low scoring, but mostly high scoring documents.
+  
+2. To prevent overfitting, documents were fuzzily deduplicated using Spark's MinHashLSH implementation with 10 hashes. WebText was also fuzzily removed from Common Crawl. This decreased dataset size by around 10%.
+
+**WebText**: The WebText dataset is a dataset created by web scraping that emphasizes the quality of the documents. Only websites that have been curated/filtered by humans have been scrapped. To simplify this task, all outbound links from Reddit, a social media platform, which received at least 3 Karma, were used. The resulting dataset contains the text subset of these 45 million links. Fuzzy deduplication was also used here.
+
+**Books1 and Books2**: These are two internet-based books corpora on which fuzzy deduplication was performed. Nothing more is known about these datasets.
+  
+The datasets used to train GPT-3 are shown in the table below.
+
+```{r, echo=FALSE}
+cc <- data.frame(
+  Dataset = c("Common Crawl (filtered)", "WebText2", "Books1", "Books2", "Wikipedia"),
+  Quantity = c("410 billion", "19 billion", "12 billion", "55 billion", "3 billion"),
+  Weight = c("60%", "22%", "8%", "8%", "3%")
+)
+colnames(cc) <- c("Dataset", "Quantity (tokens)", "Weight in training mix")
+knitr::kable(cc)
+```
+
+[@brown2020language]
+
+### Google 5T
+Google 5T also uses a dataset based on Common Crawl for pre-training their model, called the "Colossal Clean Crawled Corpus" (C4). To improve the quality of Common Crawl, the following heuristics were used:
+  
+- Only keep lines that end in a period, exclamation mark, question mark, or closing quotation mark.
+- Remove any page that contains a word from the "List of Dirty, Naughty, Obscene or Otherwise Bad Words".
+- Remove any line containing the word Javascript to remove warnings about enabling Javascript.
+- Remove any page containing the phrase "lorem ipsum".
+- Remove all pages that contain "{" because some pages may have accidentally contained code.
+- To deduplicate the dataset, discard all but one on any three-sentence span occurring more than once in the dataset.
+  
+Furthermore, **langdetect** was used to filter out any pages that were not classified as English with a probability of at least 99%.
+
+[@raffel2019exploring]
 
 ## Resources for Resources
-https://paperswithcode.com/area/natural-language-processing
-https://datasets.quantumstat.com/
+If you are interest in further NLP tasks or dataset, there are two websites worth checking out.
+  
+Papers With Code highlights trending Machine Learning research and the code to implement it. Their mission is to create a free and open resource with ML papers, code and evaluation tables. Anyone can contribute by downloading data, training their own model and comparing their model to others.
+  
+To see the newest trends in NLP, check out the link below.
+  
+\center https://paperswithcode.com/area/natural-language-processing
+  
+\flushleft
+  
+If you want to refine your natural language processing (NLP) skills, finding accessible and relevant datasets can be one of the biggest bottlenecks. A lot of time can be spent searching for accessible datasets for the learning task at hand or trying to curate your own data instead. This is where The Big Bad NLP Database, managed by Quantum Stat, comes in. It is a central location for NLP datasets. Currently there are over 500 data entries for general NLP tasks, such as question answering or language modeling. While most of the datasets are in English, there are also a number of datasets in other languages.
+Just have a look for yourself!
+
+\center https://datasets.quantumstat.com/
+  
+\flushleft
