@@ -14,7 +14,7 @@ link-citations: yes
 
 *Authors: Rui Yang*
 
-*Supervisor: Prof. Dr. Christian Heumann*
+*Supervisor: Christian Heumann*
 
 ## Introduction to Basic Architecture of CNN
 

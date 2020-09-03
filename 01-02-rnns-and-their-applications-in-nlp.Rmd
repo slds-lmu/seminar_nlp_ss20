@@ -7,7 +7,7 @@ link-citations: yes
 
 *Author: Marianna Plesiak*
 
-*Supervisor: Prof. Dr. Christian Heumann*
+*Supervisor: Christian Heumann*
 
 
 ## Structure and Training of Simple RNNs
