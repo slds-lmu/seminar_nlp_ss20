@@ -24,7 +24,7 @@
 <meta name="author" content="" />
 
 
-<meta name="date" content="2020-09-01" />
+<meta name="date" content="2020-09-08" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
@@ -260,7 +260,7 @@
 <div id="recurrent-neural-networks-and-their-applications-in-nlp" class="section level1">
 <h1><span class="header-section-number">Chapter 4</span> Recurrent neural networks and their applications in NLP</h1>
 <p><em>Author: Marianna Plesiak</em></p>
-<p><em>Supervisor: Prof. Dr. Christian Heumann</em></p>
+<p><em>Supervisor: Christian Heumann</em></p>
 <div id="structure-and-training-of-simple-rnns" class="section level2">
 <h2><span class="header-section-number">4.1</span> Structure and Training of Simple RNNs</h2>
 <p><strong>R</strong>ecurrent <strong>n</strong>eural <strong>n</strong>etworks (<strong>RNNs</strong>) enable to relax the condition of non-cyclical connections in the classical feedforward neural networks which were described in the previous chapter. This means, while simple multilayer perceptrons can only map from input to output vectors, RNNs allow the entire history of previous inputs to influence the network output. <span class="citation">(Graves <a href="#ref-graves2013generating">2013</a>)</span></p>
@@ -283,16 +283,11 @@ FIGURE 4.1: Unfolded computatinal graph of an RNN. Source: Own figure.
 <p>where, according to <span class="citation">Graves (<a href="#ref-graves2013generating">2013</a>)</span>, the parameters and functions denote the following:</p>
 <ul>
 <li><span class="math inline">\(x^{(t)}\)</span>, <span class="math inline">\(h^{(t)}\)</span> and <span class="math inline">\(y^{(t)}\)</span>: input, hidden state and output at time step <span class="math inline">\(t\)</span> respectively;</li>
-<li><span class="math inline">\(\mathcal{f}\)</span>: activation function of the hidden layer. Usually it is a saturating nonlinear function such as a sigmoid activation function ( <span class="citation">Sutskever, Vinyals, and Le (<a href="#ref-sutskever2014sequence">2014</a>)</span> and <span class="citation">Mikolov et al. (<a href="#ref-mikolov2010recurrent">2010</a>)</span>);<br />
-</li>
-<li><span class="math inline">\(W_{hh}\)</span>: weight matrix connecting recurrent connections between hidden states;<br />
-</li>
-<li><span class="math inline">\(W_{xh}\)</span>: weight matrix connecting inputs to a hidden layer;<br />
-</li>
-<li><span class="math inline">\(W_{hy}\)</span>: weight matrix connecting hidden states to outputs;<br />
-</li>
-<li><span class="math inline">\(\mathcal{s}\)</span>: output layer function. If the model is used to predict words, the softmax function is usually chosen as it returns valid probabilities over the possible outputs <span class="citation">(Mikolov et al. <a href="#ref-mikolov2010recurrent">2010</a>)</span>;<br />
-</li>
+<li><span class="math inline">\(\mathcal{f}\)</span>: activation function of the hidden layer. Usually it is a saturating nonlinear function such as a sigmoid activation function ( <span class="citation">Sutskever, Vinyals, and Le (<a href="#ref-sutskever2014sequence">2014</a>)</span> and <span class="citation">Mikolov et al. (<a href="#ref-mikolov2010recurrent">2010</a>)</span>);</li>
+<li><span class="math inline">\(W_{hh}\)</span>: weight matrix connecting recurrent connections between hidden states;</li>
+<li><span class="math inline">\(W_{xh}\)</span>: weight matrix connecting inputs to a hidden layer;</li>
+<li><span class="math inline">\(W_{hy}\)</span>: weight matrix connecting hidden states to outputs;</li>
+<li><span class="math inline">\(\mathcal{s}\)</span>: output layer function. If the model is used to predict words, the softmax function is usually chosen as it returns valid probabilities over the possible outputs <span class="citation">(Mikolov et al. <a href="#ref-mikolov2010recurrent">2010</a>)</span>;</li>
 <li><span class="math inline">\(a\)</span>, <span class="math inline">\(b\)</span>: input and output bias vectors.</li>
 </ul>
 <p>Since inputs <span class="math inline">\(x^{(t)}\)</span> are usually encoded as one-hot-vectors, the dimension of a vector representing one word corresponds to the size of vocabulary. The size of a hidden layer must reflect the size of training data. The model training requires initialization of the initial state <span class="math inline">\(h^{(0)}\)</span> as well as the weight matrices, which are usually set to small random values <span class="citation">(Mikolov et al. <a href="#ref-mikolov2010recurrent">2010</a>)</span>. Since the model is used to compute the predictive distributions <span class="math inline">\(Pr(x^{(t+1)}|y^{(t)})\)</span> at each time instance <span class="math inline">\(t\)</span>, the network distribution is denoted as following:</p>

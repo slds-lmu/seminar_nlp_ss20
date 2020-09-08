@@ -124,7 +124,7 @@
 
 \title{Modern Approaches in Natural Language Processing}
 \author{}
-\date{\vspace{-2.5em}2020-09-01}
+\date{\vspace{-2.5em}2020-09-08}
 
 \begin{document}
 \maketitle
@@ -259,15 +259,15 @@ Combining the understanding of words and grammar, many NLP problems can be solve
 This booklet circumstantiate modern approaches used for natural language processing, such as Deep Learning and Transfer Learning. Moreover, the resources that are available for the training of NLP tasks will be investigated and a use-case where NLP will be applied for generation of natural language will be shown.
 
 For the analysis and comprehension of human language, NLP programs need to extract information from words and sentences. As neural networks and other machine learning algorithms require a numeric input for training, word embeddings, using dense vector representations for words, are applied. Those are usually learned by neural networks with multiple hidden layers, deep neural networks. In order to solve easy tasks, simple structured neural networks can be applied. In order to overcome the limitations of those simple structures, recurrent and convolutional neural networks are utilized. Thereby, recurrent neural networks are used for models that can learn sequences without pre-defined optimal fixed dimensions while convolutional neural networks are applied for sentence classification.
-Chapter \href{Chapter\%20Introduction:\%20Deep\%20Learning\%20for\%20NLP}{2} of the booklet gives a short introduction to Deep Learning in NLP. The Foundations and Applications of Modern NLP will be described in chapter \href{Foundations/Applications\%20of\%20Modern\%20NLP}{3}. In chapter \href{Recurrent\%20neural\%20networks\%20and\%20their\%20applications\%20in\%20NLP}{4} and \href{Convolutional\%20neural\%20networks\%20and\%20their\%20applications\%20in\%20NLP}{5} recurrent neural networks and convolutional neural networks and their applications in NLP will be explained and discussed.
+Chapter \href{./introduction-deep-learning-for-nlp.html}{2} of the booklet gives a short introduction to Deep Learning in NLP. The Foundations and Applications of Modern NLP will be described in chapter \href{./foundationsapplications-of-modern-nlp.html}{3}. In chapter \href{./recurrent-neural-networks-and-their-applications-in-nlp.html}{4} and \href{./convolutional-neural-networks-and-their-applications-in-nlp.html}{5} recurrent neural networks and convolutional neural networks and their applications in NLP will be explained and discussed.
 
 Transfer learning is an alternative to learning models for every task or domain. Here, existing labeled data of related tasks or domains can be used for training a model and applying it onto the task or domain of interest. The advantage of this approach is that there is no need for a long training in the target domain, and that time for training of the model can be saved, while still resulting in a (mostly) better performance. A concept used in transfer learning is Attention, which enables the decoder to attend to the entire input sequence, or Self-Attention, which allows a transformer model to process all input words at once and model the relationships between all words in a sentence, which renders fast modelling of long-range dependencies in a sentence possible.
-The concepts of transfer learning will be briefly introduced in chapter \href{Introduction:\%20Transfer\%20Learning\%20for\%20NLP}{6} of the booklet. Chapter \href{Transfer\%20Learning\%20for\%20NLP\%20I}{7} will describe transfer learning and LSTMs by presenting the models ELMo, ULMFiT, and GPT. Chapter \href{Attention\%20and\%20Self-Attention\%20for\%20NLP}{8} will illustrate the concepts of Attention and Self-Attention for NLP in detail. In chapter \href{Transfer\%20Learning\%20for\%20NLP\%20II}{9}, transfer learning is combined with Self-Attention, introducing the models BERT, GTP2, and XLNet.
+The concepts of transfer learning will be briefly introduced in chapter \href{./introduction-transfer-learning-for-nlp.html}{6} of the booklet. Chapter \href{./transfer-learning-for-nlp-i.html}{7} will describe transfer learning and LSTMs by presenting the models ELMo, ULMFiT, and GPT. Chapter \href{./attention-and-self-attention-for-nlp.html}{8} will illustrate the concepts of Attention and Self-Attention for NLP in detail. In chapter \href{./transfer-learning-for-nlp-ii.html}{9}, transfer learning is combined with Self-Attention, introducing the models BERT, GTP2, and XLNet.
 
 For NLP modelling, resources are needed. In order to find the best model for a task, benchmarks can be used. For comparing different models within a benchmark experiment, metrics such as exact match, F\beta score, perplexity, or bilingual evaluation understudy, or accuracy, are required.
-Chapter \href{Introduction:\%20Resources\%20for\%20NLP}{10} of the booklet provides a brief introduction to the resources for NLP and the manner in which they are used. Chapter \href{Resources\%20and\%20Benchmarks\%20for\%20NLP}{11} will explain the different metrics, give an insight into the benchmark datasets SQuAD, CoQa, GLUE and SuperGLUE, AQuA-Rat, SNLI, and LAMBADA as well as pre-trained models and databases where resources can be found, such as ``Papers with Code'' and ``The Big Bad NLP Database''.
+Chapter \href{./introduction-resources-for-nlp.html}{10} of the booklet provides a brief introduction to the resources for NLP and the manner in which they are used. Chapter \href{./resources-and-benchmarks-for-nlp.html}{11} will explain the different metrics, give an insight into the benchmark datasets SQuAD, CoQa, GLUE and SuperGLUE, AQuA-Rat, SNLI, and LAMBADA as well as pre-trained models and databases where resources can be found, such as ``Papers with Code'' and ``The Big Bad NLP Database''.
 
-In the \href{Natural\%20Language\%20Generation}{last} chapter of the booklet, the generative NLP process Natural Language Generation, thus the generation of understandable text in a human language, is presented. Therefore, different algorithms will be described and chatbots as well as image captioning will be shown for illustrating the possibilities of application.
+In the \href{./natural-language-generation.html}{last} chapter of the booklet, the generative NLP process Natural Language Generation, thus the generation of understandable text in a human language, is presented. Therefore, different algorithms will be described and chatbots as well as image captioning will be shown for illustrating the possibilities of application.
 
 This introduction to the various methods in NLP functions as the foundation for the following deliberations. The individual chapters of the booklet will present modern methods in NLP and provide a more detailled discussion of the potential as well as the limitations along with various examples.
 
@@ -276,7 +276,7 @@ This introduction to the various methods in NLP functions as the foundation for 
 
 \emph{Authors: Viktoria Szabo, Marianna Plesiak, Rui Yang}
 
-\emph{Supervisor: Prof.~Dr.~Christian Heumann}
+\emph{Supervisor: Christian Heumann}
 
 \hypertarget{word-embeddings-and-neural-network-language-models}{%
 \section{Word Embeddings and Neural Network Language Models}\label{word-embeddings-and-neural-network-language-models}}
@@ -560,7 +560,7 @@ Last but not least some resources for downloading pre-calculated word embeddings
 
 \emph{Author: Marianna Plesiak}
 
-\emph{Supervisor: Prof.~Dr.~Christian Heumann}
+\emph{Supervisor: Christian Heumann}
 
 \hypertarget{structure-and-training-of-simple-rnns}{%
 \section{Structure and Training of Simple RNNs}\label{structure-and-training-of-simple-rnns}}
@@ -598,7 +598,7 @@ Considering a recurrent neural network with one hidden layer that is used to pre
 
 \begin{align}
 h^{(t)} & = \mathcal{f}(a+W_{hh}h^{(t-1)}+W_{xh}x^{(t)}) \label{eq:input-to-hidden} \\
-y^{(t)} & = \mathcal{s}(b+W_{hy}h^{(t)}) \label{eq:hidden-to-output} 
+y^{(t)} & = \mathcal{s}(b+W_{hy}h^{(t)}) \label{eq:hidden-to-output}
 \end{align}
 
 where, according to \citet{graves2013generating}, the parameters and functions denote the following:
@@ -608,15 +608,15 @@ where, according to \citet{graves2013generating}, the parameters and functions d
 \item
   \(x^{(t)}\), \(h^{(t)}\) and \(y^{(t)}\): input, hidden state and output at time step \(t\) respectively;
 \item
-  \(\mathcal{f}\): activation function of the hidden layer. Usually it is a saturating nonlinear function such as a sigmoid activation function ( \citet{sutskever2014sequence} and \citet{mikolov2010recurrent});\\
+  \(\mathcal{f}\): activation function of the hidden layer. Usually it is a saturating nonlinear function such as a sigmoid activation function ( \citet{sutskever2014sequence} and \citet{mikolov2010recurrent});
 \item
-  \(W_{hh}\): weight matrix connecting recurrent connections between hidden states;\\
+  \(W_{hh}\): weight matrix connecting recurrent connections between hidden states;
 \item
-  \(W_{xh}\): weight matrix connecting inputs to a hidden layer;\\
+  \(W_{xh}\): weight matrix connecting inputs to a hidden layer;
 \item
-  \(W_{hy}\): weight matrix connecting hidden states to outputs;\\
+  \(W_{hy}\): weight matrix connecting hidden states to outputs;
 \item
-  \(\mathcal{s}\): output layer function. If the model is used to predict words, the softmax function is usually chosen as it returns valid probabilities over the possible outputs \citep{mikolov2010recurrent};\\
+  \(\mathcal{s}\): output layer function. If the model is used to predict words, the softmax function is usually chosen as it returns valid probabilities over the possible outputs \citep{mikolov2010recurrent};
 \item
   \(a\), \(b\): input and output bias vectors.
 \end{itemize}
@@ -624,13 +624,13 @@ where, according to \citet{graves2013generating}, the parameters and functions d
 Since inputs \(x^{(t)}\) are usually encoded as one-hot-vectors, the dimension of a vector representing one word corresponds to the size of vocabulary. The size of a hidden layer must reflect the size of training data. The model training requires initialization of the initial state \(h^{(0)}\) as well as the weight matrices, which are usually set to small random values \citep{mikolov2010recurrent}. Since the model is used to compute the predictive distributions \(Pr(x^{(t+1)}|y^{(t)})\) at each time instance \(t\), the network distribution is denoted as following:
 
 \begin{align}
-Pr(x) & =\prod_{t} Pr(x^{(t+1)}|y^{(t)}) \label{eq:rnn-probability} 
+Pr(x) & =\prod_{t} Pr(x^{(t+1)}|y^{(t)}) \label{eq:rnn-probability}
 \end{align}
 
 and the total loss \(\mathcal{L(x)}\), which must be minimized during the training, is simply the sum of losses over all time steps denoted as the negative log-likelihood of \(Pr(x)\):
 
 \begin{align}
-\mathcal{L(x)} & =-\sum_{t} \log{Pr(x^{(t+1)}|y^{(t)})} \label{eq:rnn-log-loss}   
+\mathcal{L(x)} & =-\sum_{t} \log{Pr(x^{(t+1)}|y^{(t)})} \label{eq:rnn-log-loss}
 \end{align}
 
 \citep{graves2013generating}
@@ -649,7 +649,7 @@ To train the model, one must calculate the gradients for the three weight matric
 Since \(W_{hy}\) is shared across all time sequence, the total loss w.r.t. the weight matrix connecting hidden states to outputs is simply a sum of single losses:
 
 \begin{align}
-\frac{\partial \mathcal{L}}{\partial W_{hy}} & = \sum_{t} \frac{\partial \mathcal{L^{(t)}}}{\partial y^{(t)}} \frac{\partial y^{(t)}} {\partial W_{hy}}  \label{eq:rnn-back-hy-all} \\    
+\frac{\partial \mathcal{L}}{\partial W_{hy}} & = \sum_{t} \frac{\partial \mathcal{L^{(t)}}}{\partial y^{(t)}} \frac{\partial y^{(t)}} {\partial W_{hy}}  \label{eq:rnn-back-hy-all} \\
 \end{align}
 
 Similarly, derivation of the gradient w.r.t. \(W_{hh}\) for a single time step is obtained as follows:
@@ -690,7 +690,7 @@ In order to better understand the mathematical challenges of BPTT, one should co
 \begin{align}
 \frac{\partial h^{(t)}}{\partial h^{(k)}}
 & = \prod_{t\geq\ i>k}^{} \frac{\partial h^{(i)}}{\partial h^{(i-1)}}
-= \prod_{t\geq\ i>k}^{} W_{hh}^{T}diag(\mathcal{f}^{'}(h^{(i-1)}))  \label{eq:rnn-back-vanishing} 
+= \prod_{t\geq\ i>k}^{} W_{hh}^{T}diag(\mathcal{f}^{'}(h^{(i-1)}))  \label{eq:rnn-back-vanishing}
 \end{align}
 
 Thus, with small values in \(W_{hh}\) and many matrix multiplications the norm of the gradient shrinks to zero exponentially fast with \(t-k\) which results in a vanishing gradient problem and the loss of long term contributions. Exploding gradients refer to the opposite behaviour when the norm of the gradient increases largely and leads to a crash of the model. \citet{pascanu2013difficulty} give an overview of techniques for dealing with the exploding and vanishing gradients. Among other solutions they mention proper initialisation of weight matrices, sampling \(W_{hh}\) and \(W_{xh}\) instead of learning them, rescaling or clipping the gradient's components (putting a maximum limit on it) or using L1 or L2 penalties on the recurrent weights. Even more popular models are gated RNNs which explicitly address the vanishing gradients problem and will be explained in the next subchapter.
@@ -821,7 +821,7 @@ RNNs are powerful models for sequential data. Even in their simple form they can
 
 \emph{Authors: Rui Yang}
 
-\emph{Supervisor: Prof.~Dr.~Christian Heumann}
+\emph{Supervisor: Christian Heumann}
 
 \hypertarget{introduction-to-basic-architecture-of-cnn}{%
 \section{Introduction to Basic Architecture of CNN}\label{introduction-to-basic-architecture-of-cnn}}
